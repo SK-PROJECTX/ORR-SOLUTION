@@ -1,5 +1,39 @@
 @import "tailwindcss";
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  --color-background: #0d223c;
+  --color-foreground: #111111;
+  --color-primary: #0ec277;
+  --color-secondary: #e2e8f0;
+  --color-lemon: #5ef558;
+  --color-green: #0ec277;
+  --color-card: #204460;
+  --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
 }
+
+.dark {
+  --color-background: #191919;
+  --color-foreground: #ffffff;
+  --color-primary: #0ec277;
+  --color-secondary: #1e293b;
+  --color-lemon: #5ef558;
+  --color-green: #0ec277;
+  --color-card: #191919;
+  --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
+
+}
+
+body {
+  background-color: var(--color-background);
+ 
+  color: var(--color-foreground);
+  transition: background-color 0.3s ease;
+}
+.star{
+   background-image: radial-gradient(circle, rgba(255,255,255,1) 1px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.1) 3px, transparent 4px),
+                    radial-gradient(circle, rgba(255,255,255,0.8) 1px, rgba(255,255,255,0.2) 2px, transparent 3px);
+  background-size: 150px 150px, 200px 200px;
+  background-position: 0 0, 75px 75px;
+}
+
+
