@@ -1,4 +1,4 @@
-import { ThemeToggle } from "./components/ThemeToggle";
+import { ThemeToggle } from "../components/ThemeToggle"; 
 
 export default function Home() {
   return (
@@ -11,20 +11,20 @@ export default function Home() {
       <main className="max-w-4xl mx-auto space-y-8">
         <section>
           <h2 className="text-2xl font-semibold mb-4">Available Color Variables</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg" style={{backgroundColor: 'var(--color-primary)'}}>
-              <strong>--color-primary:</strong> Main brand color (#0ec277)
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-primary text-white">
+                <strong>--color-primary:</strong> Main brand color (#0ec277)
+              </div>
+              <div className="p-4 rounded-lg bg-lemon text-black">
+                <strong>--color-lemon:</strong> Bright accent (#5ef558)
+              </div>
+              <div className="p-4 rounded-lg bg-card text-white">
+                <strong>--color-card:</strong> Card backgrounds
+              </div>
+              <div className="p-4 rounded-lg bg-gradient-primary text-white">
+                <strong>--gradient-primary:</strong> Main gradient
+              </div>
             </div>
-            <div className="p-4 rounded-lg" style={{backgroundColor: 'var(--color-lemon)'}}>
-              <strong>--color-lemon:</strong> Bright accent (#5ef558)
-            </div>
-            <div className="p-4 rounded-lg" style={{backgroundColor: 'var(--color-card)'}}>
-              <strong>--color-card:</strong> Card backgrounds
-            </div>
-            <div className="p-4 rounded-lg text-black" style={{background: 'var(--gradient-primary)'}}>
-              <strong>--gradient-primary:</strong> Main gradient
-            </div>
-          </div>
         </section>
 
         <section>
