@@ -38,7 +38,8 @@ export default function Services() {
 					</div>
 					<div className="bg-background rounded-lg p-2 backdrop-opacity-10">
 						<div className="bg-card rounded-lg p-8">
-							<div className="grid md:grid-cols-2 gap-8 divide-x divide-gray-600/30">
+							<div className="grid md:grid-cols-2 gap-8 relative">
+								<div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2"></div>
 								{/* Strategic Advisory & Compliance */}
 								<div className="flex flex-col h-full pr-4">
 									<h3 className="text-xl font-bold mb-4 text-gray-300">
@@ -61,7 +62,7 @@ export default function Services() {
 											className="w-full h-48 object-cover rounded-lg"
 										/>
 									</div>
-									<button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors mt-auto">
+									<button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
 										Learn More
 									</button>
 								</div>
@@ -88,7 +89,7 @@ export default function Services() {
 											className="w-full h-48 object-cover rounded-lg"
 										/>
 									</div>
-									<button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors mt-auto">
+									<button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
 										Learn More
 									</button>
 								</div>
