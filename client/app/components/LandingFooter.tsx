@@ -1,3 +1,7 @@
+import { FaInstagram } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa6";
+import { FaSquareXTwitter } from "react-icons/fa6";
+
 export function LandingFooter() {
   return (
     <footer className="w-full py-12 px-6 bg-card">
@@ -19,16 +23,16 @@ export function LandingFooter() {
 
         {/* Contact Info */}
         <div className="flex flex-col items-center">
-          <p className="text-foreground text-base mb-3">Contact Info</p>
+          <p className="text-white font-semibold text-3xl mb-4 ">Contact Info</p>
           <div className="flex items-center gap-3">
             <a href="#" className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity">
-              <span className="text-sm">📷</span>
+              <span className="text-sm"><FaInstagram /></span>
             </a>
             <a href="#" className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity">
-              <span className="text-sm">💼</span>
+              <span className="text-sm"><FaLinkedin /></span>
             </a>
             <a href="#" className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity">
-              <span className="text-sm">🐦</span>
+              <span className="text-sm"><FaSquareXTwitter /></span>
             </a>
           </div>
         </div>
