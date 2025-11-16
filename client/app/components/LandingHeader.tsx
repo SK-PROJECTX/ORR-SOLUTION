@@ -32,6 +32,8 @@ export function LandingHeader() {
           <Link href="/legacy-policy" className="text-gray-100 hover:opacity-70">Legacy & Policy</Link>
           <Link href="/contact" className="text-gray-100 hover:opacity-70">Contact</Link>
         </nav>
+
+        <button className='bg-white py-3 px-5 text-black rounded-xl ml-15 hover:bg-[#13BE77] hover:text-white'>Sign in</button>
         <ThemeToggle />
       </div>
     </header>
