@@ -21,13 +21,13 @@ export default function Services() {
 
       {/* Services Overview */}
       <section className="py-16 px-6 relative">
-        <div className="absolute -top-90 left-0 w-full opacity-80">
+        <div className="absolute inset-x-0 -top-12 md:-top-[600px] opacity-80 pointer-events-none -z-10" aria-hidden>
           <Image
             src="/bgSvg.svg"
             alt="Background"
             width={1920}
             height={160}
-            className="w-full h-full object-cover"
+            className="w-full h-auto object-contain mx-auto"
           />
         </div>
         <div className="max-w-6xl mx-auto relative z-10">
@@ -36,10 +36,10 @@ export default function Services() {
               SERVICES <span className="text-primary">OVERVIEW</span>
             </h2>
           </div>
-          <div className="bg-background rounded-lg p-2 backdrop-opacity-10">
-            <div className="bg-card rounded-lg p-8">
+          <div className="rounded-lg p-1 bg-linear-to-tr from-[#052b3f] via-[#0ec277] to-[#052b3f]">
+            <div className="bg-card rounded-lg p-8 overflow-hidden">
               <div className="grid md:grid-cols-2 gap-8 relative">
-                <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2"></div>
+                <div className="hidden md:block md:absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2" aria-hidden></div>
                 {/* Strategic Advisory & Compliance */}
                 <div className="flex flex-col h-full pr-4">
                   <h3 className="text-xl font-bold mb-4 text-gray-300">
@@ -62,7 +62,7 @@ export default function Services() {
                       className="w-full h-48 object-cover rounded-lg"
                     />
                   </div>
-                  <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
+                  <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block w-fit">
                     Learn More
                   </button>
                 </div>
@@ -90,7 +90,7 @@ export default function Services() {
                       className="w-full h-48 object-cover rounded-lg"
                     />
                   </div>
-                  <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
+                  <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-80 transition-colors inline-block w-fit">
                     Learn More
                   </button>
                 </div>
