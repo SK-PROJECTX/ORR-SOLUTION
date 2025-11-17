@@ -28,7 +28,7 @@ export default function GPMetaphorSection() {
       </div>
 
       {/* Top row: two fixed-width cards aligned to container edges on desktop; stack on mobile */}
-      <div className="relative z-10 w-full mx-auto flex justify-between items-start mb-10 gap-25">
+      <div className="relative z-10 w-full mx-auto flex justify-between items-start mb-20 gap-25">
         {/* Card 1 */}
         <div
           initial={{ opacity: 0, y: 40 }}
@@ -40,10 +40,10 @@ export default function GPMetaphorSection() {
             <Image src="/images/doctor.png" alt="Living system" fill className="object-cover" />
 
             {/* Number */}
-            <div className="absolute top-4 left-4 text-[#8effd0] text-4xl font-semibold">01</div>
+            <div className="absolute top-9 left-9 text-[#8effd0] text-4xl font-semibold">01</div>
 
             {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
+            <div className="absolute top-12 right-12 w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
               <span className="text-black text-2xl font-bold leading-none">+</span>
             </div>
           </div>
@@ -56,16 +56,16 @@ export default function GPMetaphorSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className={`${CARD_CLASS} bg-[#0E2A45]  rounded-tl-[4rem] rounded-bl-[4rem] overflow-hidden shadow-lg flex-1 `}
+          className={`${CARD_CLASS} bg-card  rounded-tl-[4rem] rounded-bl-[4rem] overflow-hidden shadow-lg flex-1 `}
         >
           <div className="relative w-full h-[360px]">
             <Image src="/images/organism.png" alt="Systems working together" fill className="object-cover" />
 
             {/* Number */}
-            <div className="absolute top-4 left-4 text-[#8effd0] text-4xl font-semibold">02</div>
+            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">02</div>
 
             {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
+            <div className="absolute top-12 right-12  w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
               <span className="text-black text-2xl font-bold leading-none">+</span>
             </div>
           </div>
@@ -82,16 +82,16 @@ export default function GPMetaphorSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className={`${CARD_CLASS} w-full max-w-[720px] bg-[#0E2A45] rounded-[4rem] overflow-hidden shadow-lg`}
+          className={` w-5xl max-w-[] bg-card rounded-[4rem] overflow-hidden shadow-lg`}
         >
           <div className="relative w-full h-[380px]">
             <Image src="/images/planting.png" alt="ORR Solutions" fill className="object-cover" />
 
             {/* Number */}
-            <div className="absolute top-4 left-4 text-[#8effd0] text-4xl font-semibold">03</div>
+            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">03</div>
 
             {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
+            <div className="absolute top-12 right-12  w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
               <span className="text-black text-2xl font-bold leading-none">+</span>
             </div>
           </div>
