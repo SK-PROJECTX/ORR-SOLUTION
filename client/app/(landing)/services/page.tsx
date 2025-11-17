@@ -26,7 +26,7 @@ export default function Services() {
             src="/bgSvg.svg"
             alt="Background"
             width={1920}
-            height={160}
+            height={260}
             className="w-full h-auto object-contain mx-auto"
           />
         </div>
@@ -36,7 +36,7 @@ export default function Services() {
               SERVICES <span className="text-primary">OVERVIEW</span>
             </h2>
           </div>
-          <div className="rounded-lg p-1 bg-linear-to-tr from-[#052b3f] via-[#0ec277] to-[#052b3f]">
+          <div className="rounded-lg p-1 bg-linear-to-tr from-[#052b3f] via-[#0ec277] to-[#052b3f] ">
             <div className="bg-card rounded-lg p-8 overflow-hidden">
               <div className="grid md:grid-cols-2 gap-8 relative">
                 <div className="hidden md:block md:absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2" aria-hidden></div>
