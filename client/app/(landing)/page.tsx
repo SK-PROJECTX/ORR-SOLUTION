@@ -5,7 +5,6 @@ export default function Home() {
     <div className="min-h-screen w-full p-6 star">
       <header className="flex justify-between items-center mb-12">
         <h1 className="text-3xl font-bold">Theme System Demo</h1>
-        <ThemeToggle />
       </header>
 
       <main className="max-w-4xl mx-auto space-y-8">
