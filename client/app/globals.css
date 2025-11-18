@@ -58,4 +58,15 @@ body {
 
 .bg-gradient-primary { background-image: var(--gradient-primary); }
 
+/* Glowing border effect matching SVG color */
+.glow-border {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 20px rgba(14, 194, 119, 0.6), inset 0 0 20px rgba(14, 194, 119, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.glow-border:hover {
+  box-shadow: 0 0 30px rgba(14, 194, 119, 0.8), inset 0 0 20px rgba(14, 194, 119, 0.2);
+}
+
 
