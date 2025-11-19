@@ -14,9 +14,6 @@ export default function GPMetaphorSection() {
 
       {/* Heading */}
       <div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
         className="relative z-10 text-center mb-12"
       >
         <h2 className="text-white text-3xl md:text-4xl font-semibold leading-snug">
@@ -31,9 +28,6 @@ export default function GPMetaphorSection() {
       <div className="relative z-10 w-full mx-auto flex justify-between items-start mb-20 gap-25">
         {/* Card 1 */}
         <div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           className={`${CARD_CLASS} bg-card rounded-tr-[4rem] rounded-br-[4rem] overflow-hidden shadow-lg flex-1 `}
         >
           <div className="relative w-full h-[360px]">
@@ -53,9 +47,6 @@ export default function GPMetaphorSection() {
 
         {/* Card 2 */}
         <div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
           className={`${CARD_CLASS} bg-card  rounded-tl-[4rem] rounded-bl-[4rem] overflow-hidden shadow-lg flex-1 `}
         >
           <div className="relative w-full h-[360px]">
@@ -79,9 +70,6 @@ export default function GPMetaphorSection() {
       {/* Bottom card - centered */}
       <div className="relative z-10 w-full flex justify-center">
         <div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
           className={` w-5xl max-w-[] bg-card rounded-[4rem] overflow-hidden shadow-lg`}
         >
           <div className="relative w-full h-[380px]">
