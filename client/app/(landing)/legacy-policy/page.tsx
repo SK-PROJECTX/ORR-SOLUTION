@@ -10,10 +10,12 @@ export default function LegacyPolicy() {
 						Legacy & Policy
 					</h1>
 					<p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-						Lorem ipsm jgdu mplexity. From regulatory and sustainability frameworks to biotechnology and
-						compliance consulting, our experts guide clients through evolving legal, scientific, and
-						operational standards. Our approach combines deep technical insight with strategic foresight —
-						ensuring every initiative is compliant, sustainable, and built for growth.
+						Lorem ipsm jgdu mplexity. From regulatory and sustainability
+						frameworks to biotechnology and compliance consulting, our experts
+						guide clients through evolving legal, scientific, and operational
+						standards. Our approach combines deep technical insight with
+						strategic foresight — ensuring every initiative is compliant,
+						sustainable, and built for growth.
 					</p>
 				</div>
 			</section>
@@ -27,53 +29,56 @@ export default function LegacyPolicy() {
 							alt="background"
 							width={1000}
 							height={1000}
-							className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[225deg] opacity-20"
+							className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[225deg] opacity-50"
 						/>
-						<div className="bg-card rounded-2xl p-2 border-primary/30 relative">
+						<div className="bg-card rounded-2xl p-4 border-primary/30 relative">
 							{/* Policy Item 01 */}
-							<div className="flex gap-6 mb-12">
-								<div className="text-6xl font-bold text-primary flex-shrink-0">
+							<div className="flex gap-6 mb-12 ">
+								<div className="text-6xl font-bold text-primary shrink-0">
 									01
 								</div>
 								<div className="flex-1">
 									<p className="text-gray-300 leading-relaxed">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability frameworks to
-										biotechnology and compliance consulting, our experts guide clients through
-										evolving legal, scientific, and operational standards. Our approach combines
-										deep technical insight with strategic foresight — ensuring every initiative is
-										compliant, sustainable, and built for growth.
+										Lorem ipsm jgdu mplexity. From regulatory and sustainability
+										frameworks to biotechnology and compliance consulting, our
+										experts guide clients through evolving legal, scientific,
+										and operational standards. Our approach combines deep
+										technical insight with strategic foresight — ensuring every
+										initiative is compliant, sustainable, and built for growth.
 									</p>
 								</div>
 							</div>
 
 							{/* Policy Item 02 */}
 							<div className="flex gap-6 mb-12">
-								<div className="text-6xl font-bold text-primary flex-shrink-0">
+								<div className="text-6xl font-bold text-primary shrink-0">
 									02
 								</div>
 								<div className="flex-1">
 									<p className="text-gray-300 leading-relaxed">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability frameworks to
-										biotechnology and compliance consulting, our experts guide clients through
-										evolving legal, scientific, and operational standards. Our approach combines
-										deep technical insight with strategic foresight — ensuring every initiative is
-										compliant, sustainable, and built for growth.
+										Lorem ipsm jgdu mplexity. From regulatory and sustainability
+										frameworks to biotechnology and compliance consulting, our
+										experts guide clients through evolving legal, scientific,
+										and operational standards. Our approach combines deep
+										technical insight with strategic foresight — ensuring every
+										initiative is compliant, sustainable, and built for growth.
 									</p>
 								</div>
 							</div>
 
 							{/* Policy Item 03 */}
-							<div className="flex gap-6">
-								<div className="text-6xl font-bold text-primary flex-shrink-0">
+							<div className="flex gap-6 pb-8">
+								<div className="text-6xl font-bold text-primary shrink-0">
 									03
 								</div>
 								<div className="flex-1">
 									<p className="text-gray-300 leading-relaxed">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability frameworks to
-										biotechnology and compliance consulting, our experts guide clients through
-										evolving legal, scientific, and operational standards. Our approach combines
-										deep technical insight with strategic foresight — ensuring every initiative is
-										compliant, sustainable, and built for growth.
+										Lorem ipsm jgdu mplexity. From regulatory and sustainability
+										frameworks to biotechnology and compliance consulting, our
+										experts guide clients through evolving legal, scientific,
+										and operational standards. Our approach combines deep
+										technical insight with strategic foresight — ensuring every
+										initiative is compliant, sustainable, and built for growth.
 									</p>
 								</div>
 							</div>

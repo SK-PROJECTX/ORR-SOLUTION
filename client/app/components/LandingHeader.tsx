@@ -17,7 +17,7 @@ export function LandingHeader() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 p-2 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 p- transition-all duration-300 ${
         isScrolled ? 'bg-card shadow-lg' : 'bg-transparent'
       }`}
     >
@@ -32,6 +32,8 @@ export function LandingHeader() {
           <Link href="/legacy-policy" className="text-gray-100 hover:opacity-70">Legacy & Policy</Link>
           <Link href="/contact" className="text-gray-100 hover:opacity-70">Contact</Link>
         </nav>
+
+        <button className='bg-white py-3 px-5 text-black rounded-xl ml-15 hover:bg-[#13BE77] hover:text-white'>Sign in</button>
         <ThemeToggle />
       </div>
     </header>
