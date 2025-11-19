@@ -1,23 +1,23 @@
 ﻿import Image from "next/image";
 
 export default function Services() {
-	return (
-		<div className="min-h-screen text-foreground">
-			{/* Hero Section */}
-			<section className="pt-32 pb-16 px-6">
-				<div className="max-w-6xl mx-auto text-center">
-					<h1 className="text-5xl font-bold mb-6 text-gray-300 ">
-						Our Services
-					</h1>
-					<p className="text-lg text-gray-300 max-w-3xl mx-auto">
-						Just like a skilled general practitioner, we take time to understand
-						your whole business before prescribing solutions. We'll work closely
-						with you, strengthen your systems, and when you need specialized
-						expertise, we tap into our global network of partners to get you the
-						right results — fast.
-					</p>
-				</div>
-			</section>
+  return (
+    <div className="min-h-screen text-foreground">
+      {/* Hero Section */}
+      <section className="pt-32 pb-16 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-6 text-gray-300 ">
+            Our Services
+          </h1>
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+            Just like a skilled general practitioner, we take time to understand
+            your whole business before prescribing solutions. We'll work closely
+            with you, strengthen your systems, and when you need specialized
+            expertise, we tap into our global network of partners to get you the
+            right results — fast.
+          </p>
+        </div>
+      </section>
 
 			{/* Services Overview */}
 			<section className="py-16 px-6 relative">
