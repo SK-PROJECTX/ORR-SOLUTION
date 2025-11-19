@@ -6,7 +6,7 @@ export default function Services() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-6 relative">
         <div
-          className="absolute inset-x-0 top-0 -translate-y-12 opacity-80 pointer-events-none -z-10"
+          className="absolute inset-x-0 top-96 sm:top-86 md:top-20 lg:top-0 xl:-top-64 -translate-y-12 opacity-80 pointer-events-none -z-10"
           aria-hidden
         >
           <Image
@@ -33,7 +33,7 @@ export default function Services() {
 
 			{/* Services Overview */}
 			<section className="py-16 px-6 relative">
-				<div
+				{/* <div
 					className="absolute inset-x-0 -top-12 md:-top-[600px] opacity-80 pointer-events-none -z-10"
 					aria-hidden>
 					<Image
@@ -43,7 +43,7 @@ export default function Services() {
 						height={260}
 						className="w-full h-auto object-contain mx-auto"
 					/>
-				</div>
+				</div> */}
 				<div className="max-w-6xl mx-auto relative z-10">
 					<div className="text-center mb-12">
 						<h2 className="text-3xl font-bold text-gray-300">

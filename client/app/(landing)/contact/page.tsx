@@ -6,7 +6,7 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-8">
+          <h1 className="text-5xl font-bold mb-8 text-white">
             Contact <span className="text-primary">Us</span>
           </h1>
         </div>
@@ -121,7 +121,7 @@ export default function Contact() {
                 <label className="block text-gray-300 text-sm mb-4">
                   Select Subject?
                 </label>
-                <div className="flex flex-wrap gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   {[
                     "General Inquiry",
                     "General Inquiry",
@@ -169,7 +169,7 @@ export default function Contact() {
                     Send Message
                   </button>
                   {/* Lucide-style send icon positioned overlapping the button */}
-                  <Send className="absolute -right-6 -bottom-6 w-12 h-12 text-white" />
+                  <Send className="absolute right-28 -bottom-8 w-12 h-12 text-white" />
                 </div>
               </div>
             </form>
