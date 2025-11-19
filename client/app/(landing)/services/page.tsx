@@ -4,7 +4,19 @@ export default function Services() {
   return (
     <div className="min-h-screen text-foreground">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
+      <section className="pt-32 pb-16 px-6 relative">
+        <div
+          className="absolute inset-x-0 top-0 -translate-y-12 opacity-80 pointer-events-none -z-10"
+          aria-hidden
+        >
+          <Image
+            src="/bgSvg.svg"
+            alt=""
+            width={1920}
+            height={160}
+            className="w-full h-auto object-contain mx-auto"
+          />
+        </div>
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-6 text-gray-300 ">
             Our Services
