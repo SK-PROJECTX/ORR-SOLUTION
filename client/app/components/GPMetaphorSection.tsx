@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-// import { } from "framer-motion";
+import { motion } from "framer-motion";
 
 // Responsive card class: full width on small screens, fixed on md+
 const CARD_CLASS = "w-full md:w-[540px]";
@@ -13,7 +13,7 @@ export default function GPMetaphorSection() {
       <div className="absolute inset-0 bg-[url('/stars.png')] bg-cover opacity-8 pointer-events-none" />
 
       {/* Heading */}
-      <div
+      <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -25,12 +25,12 @@ export default function GPMetaphorSection() {
         <p className="text-[#27DD62] text-xl md:text-2xl font-semibold mt-2">
           The GP Metaphor Visual
         </p>
-      </div>
+      </motion.div>
 
       {/* Top row: two fixed-width cards aligned to container edges on desktop; stack on mobile */}
       <div className="relative z-10 w-full mx-auto flex justify-between items-start mb-20 gap-25">
         {/* Card 1 */}
-        <div
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -49,10 +49,10 @@ export default function GPMetaphorSection() {
           </div>
 
           <div className="p-6 py-10 text-white text-lg tracking-wide">Your Business as a Living System</div>
-        </div>
+        </motion.div>
 
         {/* Card 2 */}
-        <div
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
@@ -73,12 +73,12 @@ export default function GPMetaphorSection() {
           <div className="p-6 py-10 text-white text-lg tracking-wide">
             Businesses thrive like living organisms when all their systems work together
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom card - centered */}
       <div className="relative z-10 w-full flex justify-center">
-        <div
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
@@ -99,7 +99,7 @@ export default function GPMetaphorSection() {
           <div className="p-6 py-10 text-white text-lg tracking-wide leading-relaxed">
             ORR Solutions keeps your ‘business physiology’ in peak condition — ensuring your operations, communication, cash flow, compliance, and data all work in harmony.
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Responsive: ensure cards stack nicely on small screens - handled by tailwind classes */}

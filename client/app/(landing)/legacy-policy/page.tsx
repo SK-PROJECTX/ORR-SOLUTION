@@ -23,15 +23,16 @@ export default function LegacyPolicy() {
 			{/* Policy Items */}
 			<section className="pb-16 px-6">
 				<div className="max-w-4xl mx-auto">
-					<div className="bg-card/70 p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl">
+					<div className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl ">
 						<Image
 							src="/bgSvg.svg"
 							alt="background"
-							width={1000}
-							height={1000}
-							className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[225deg] opacity-50"
+							width={1500}
+							height={1500}
+							className="absolute top-1/2 left-1/2 scale-200 -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-50"
 						/>
-						<div className="bg-card rounded-2xl p-4 border-primary/30 relative">
+						
+						<div className="bg-card rounded-2xl p-4 relative">
 							{/* Policy Item 01 */}
 							<div className="flex gap-6 mb-12 ">
 								<div className="text-6xl font-bold text-primary shrink-0">
