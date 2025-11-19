@@ -8,7 +8,7 @@
   --color-lemon: #5ef558;
   --color-green: #0ec277;
   --color-card: #204460;
-  --gradient-primary: linear-gradient(135deg, 1D5E65#28b026, #03f6ca);
+  --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
 }
 
 .dark {
