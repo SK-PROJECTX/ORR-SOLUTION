@@ -17,9 +17,7 @@ export function LandingHeader() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 p- transition-all duration-300 ${
-        isScrolled ? 'bg-card shadow-lg' : 'bg-transparent'
-      }`}
+      className='fixed top-0 left-0 right-0 z-50 p- transition-all duration-300 bg-transparent'
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center">
@@ -33,7 +31,7 @@ export function LandingHeader() {
           <Link href="/contact" className="text-gray-100 hover:opacity-70">Contact</Link>
         </nav>
 
-        <button className='bg-white py-3 px-5 text-black rounded-xl ml-15 hover:bg-[#13BE77] hover:text-white'>Sign in</button>
+        <Link href="/login" className='bg-white py-3 px-5 text-black rounded-xl ml-15 hover:bg-[#13BE77] hover:text-white'>Sign in</Link>
         <ThemeToggle />
       </div>
     </header>
