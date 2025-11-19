@@ -4,7 +4,19 @@ export default function Services() {
   return (
     <div className="min-h-screen text-foreground">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6">
+      <section className="pt-32 pb-16 px-6 relative">
+        <div
+          className="absolute inset-x-0 top-0 -translate-y-12 opacity-80 pointer-events-none -z-10"
+          aria-hidden
+        >
+          <Image
+            src="/bgSvg.svg"
+            alt=""
+            width={1920}
+            height={160}
+            className="w-full h-auto object-contain mx-auto"
+          />
+        </div>
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-6 text-gray-300 ">
             Our Services
@@ -20,17 +32,17 @@ export default function Services() {
       </section>
 
       {/* Services Overview */}
-      <section className="py-16 px-6 relative">
-        <div className="absolute inset-x-0 -top-12 md:-top-[600px] opacity-80 pointer-events-none -z-10" aria-hidden>
+      <section className="py-16 px-6 relative ">
+        <div className="max-w-6xl mx-auto  z-10">
+          {/* <div className="absolute inset-x-0 -top-[100px] sm:-top-[300px] opacity-80 pointer-events-none -z-10" aria-hidden>
           <Image
             src="/bgSvg.svg"
             alt="Background"
             width={1920}
-            height={260}
+            height={560}
             className="w-full h-auto object-contain mx-auto"
           />
-        </div>
-        <div className="max-w-6xl mx-auto relative z-10">
+        </div> */}
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-300">
               SERVICES <span className="text-primary">OVERVIEW</span>
@@ -39,7 +51,10 @@ export default function Services() {
           <div className="rounded-lg p-1 bg-linear-to-tr from-[#052b3f] via-[#0ec277] to-[#052b3f] ">
             <div className="bg-card rounded-lg p-8 overflow-hidden">
               <div className="grid md:grid-cols-2 gap-8 relative">
-                <div className="hidden md:block md:absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2" aria-hidden></div>
+                <div
+                  className="hidden md:block md:absolute left-1/2 top-0 bottom-0 w-px bg-white/60 transform -translate-x-1/2"
+                  aria-hidden
+                ></div>
                 {/* Strategic Advisory & Compliance */}
                 <div className="flex flex-col h-full pr-4">
                   <h3 className="text-xl font-bold mb-4 text-gray-300">

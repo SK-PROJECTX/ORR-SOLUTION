@@ -1,3 +1,5 @@
+import { Phone, Mail, MapPin, Send } from "lucide-react";
+
 export default function Contact() {
   return (
     <div className="min-h-screen text-foreground star">
@@ -23,19 +25,7 @@ export default function Contact() {
             {/* Phone */}
             <div className="flex items-center gap-4 mb-6">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ color: "white" }}
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.77 3.03a2 2 0 0 1-.45 2.11L8.09 12.91a16 16 0 0 0 6 6l2.05-2.35a2 2 0 0 1 2.11-.45c.96.39 1.98.65 3.03.77A2 2 0 0 1 22 16.92z" />
-                </svg>
+                <Phone className="w-5 h-5 text-white" />
               </div>
               <p className="text-lg">+012 3456 789</p>
             </div>
@@ -43,41 +33,15 @@ export default function Contact() {
             {/* Email */}
             <div className="flex items-center gap-4 mb-6">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ color: "white" }}
-                >
-                  <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
-                  <polyline points="3 7 12 13 21 7" />
-                </svg>
+                <Mail className="w-5 h-5 text-white" />
               </div>
               <p className="text-lg">demo@gmail.com</p>
             </div>
 
             {/* Address */}
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ color: "white" }}
-                >
-                  <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z" />
-                  <circle cx="12" cy="10" r="2" />
-                </svg>
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-1">
+                <MapPin className="w-5 h-5 text-white" />
               </div>
               <p className="text-lg">
                 132 Dartmouth Street Boston, Massachusetts 02156 United States
@@ -205,22 +169,7 @@ export default function Contact() {
                     Send Message
                   </button>
                   {/* Lucide-style send icon positioned overlapping the button */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="absolute -right-6 -bottom-6 w-12 h-12 drop-shadow-lg"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ color: "white" }}
-                  >
-                    <path d="M22 2L11 13" stroke="currentColor" />
-                    <path
-                      d="M22 2L15 22L11 13L2 9L22 2z"
-                      stroke="currentColor"
-                    />
-                  </svg>
+                  <Send className="absolute -right-6 -bottom-6 w-12 h-12 text-white" />
                 </div>
               </div>
             </form>
