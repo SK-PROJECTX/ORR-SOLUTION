@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Stepper from "../../components/Stepper";
 
 export default function AboutUs() {
 
@@ -96,13 +97,13 @@ const PictureSection = () => {
 
 function CoreVisionSection() {
   return (
-    <section className="w-full  text-white px-6 md:px-12 lg:px-24 py-20 relative overflow-hidden font-poppins">
+    <section className="w-full text-white px-4 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 lg:py-20 relative overflow-hidden font-poppins">
       {/* Background subtle stars */}
       <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto text-xl">
+      <div className="relative z-10 max-w-6xl mx-auto text-sm sm:text-base lg:text-xl">
         {/* Header */}
-        <h2 className="text-center text-3xl md:text-4xl font-semibold mb-10">
+        <h2 className="text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 sm:mb-8 lg:mb-10">
           Core Vision <span className="text-[#33FF99]">& Philosophy</span>
         </h2>
 
@@ -123,25 +124,17 @@ function CoreVisionSection() {
           established company, ORR helps you:
         </p>
 
-        {/* Bullet List */}
-        <ul className="space-y-4 mb-10">
-          {[
-            "Identify and resolve administrative bottlenecks",
-            "Outsource and automate routine work",
-            "Implement structured operational systems (SOPs, workflows, dashboards)",
-            "Optimise data and client information to generate new value streams",
-          ].map((item, index) => (
-            <li
-              key={index}
-              className="flex items-start gap-4 text-[#D4D8E3] leading-relaxed item-center "
-            >
-              <div className=" w-7 h-7 bg-[#1F6F75] rounded-full flex items-center justify-center ">
-                <div className="w-4 h-4 bg-[#3DFF7C] rounded-full" />
-              </div>
-              {item}
-            </li>
-          ))}
-        </ul>
+        {/* Stepper */}
+        <div className="mb-6 sm:mb-8 lg:mb-10">
+          <Stepper 
+            steps={[
+              "Identify and resolve administrative bottlenecks",
+              "Outsource and automate routine work",
+              "Implement structured operational systems (SOPs, workflows, dashboards)",
+              "Optimise data and client information to generate new value streams",
+            ]}
+          />
+        </div>
 
         {/* Closing Paragraphs */}
         <p className="text-[#D4D8E3] leading-relaxed mb-6">
@@ -162,56 +155,56 @@ function CoreVisionSection() {
 
 const SpecialisedFocus = () => {
   return (
-    <section className="w-full bg-white/10 text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
+    <section className="w-full bg-white/10 text-white px-4 sm:px-6 md:px-12 lg:px-24 py-16 sm:py-20 lg:py-24 relative overflow-hidden font-poppins">
       <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto grid grid-cols-2 gap-y-32 gap-x-24 place-items-center">
+      <div className="relative z-10 max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-y-16 sm:gap-y-20 lg:gap-y-32 gap-x-8 sm:gap-x-12 lg:gap-x-24 place-items-center">
         
         {/* ---------- COLUMN 1 ---------- */}
-        <div className="relative flex flex-col justify-start text-center gap-15 items-center ">
+        <div className="relative flex flex-col justify-start text-center gap-8 sm:gap-12 lg:gap-15 items-center">
           
           {/* LINE (ABSOLUTE) */}
           <div className="hidden md:block absolute left-[4rem] bg-[#16FF99] w-[7px] h-[200px] top-[12px]" />
 
           {/* TOP ITEM */}
-          <div className="flex items-center gap-4 mb-4 relative z-10">
-            <div className="w-28 h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
-              <img src="/images/sprout.svg" className="w-17 h-17 pointer-events-none" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 relative z-10">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
+              <img src="/images/sprout.svg" className="w-12 h-12 sm:w-14 sm:h-14 lg:w-17 lg:h-17 pointer-events-none" />
             </div>
-            <p className="text-[#33FF99] text-xl font-medium">Agriculture</p>
+            <p className="text-[#33FF99] text-lg sm:text-xl font-medium">Agriculture</p>
           </div>
 
           {/* BOTTOM ITEM */}
-          <div className="flex items-center gap-4 mt-4 relative z-10">
-            <div className="w-28 h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
-              <img src="/images/management.svg" className="w-17 h-17 pointer-events-none" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-4 relative z-10">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
+              <img src="/images/management.svg" className="w-12 h-12 sm:w-14 sm:h-14 lg:w-17 lg:h-17 pointer-events-none" />
             </div>
-            <p className="text-[#33FF99] text-xl font-medium">Management</p>
+            <p className="text-[#33FF99] text-lg sm:text-xl font-medium">Management</p>
           </div>
 
         </div>
 
         {/* ---------- COLUMN 2 ---------- */}
-        <div className="relative flex flex-col items-center text-center gap-15">
+        <div className="relative flex flex-col items-center text-center gap-8 sm:gap-12 lg:gap-15">
 
           {/* LINE (ABSOLUTE) */}
         {/* LINE (ABSOLUTE) */}
           <div className="hidden md:block absolute left-[4rem] bg-[#16FF99] w-[7px] h-[200px] top-[12px]" />
 
           {/* TOP ITEM */}
-          <div className="flex items-center gap-4 mb-4 relative z-10">
-            <div className="w-28 h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
-              <img src="/images/passport.svg" className="w-17 h-17 pointer-events-none" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 relative z-10">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
+              <img src="/images/passport.svg" className="w-12 h-12 sm:w-14 sm:h-14 lg:w-17 lg:h-17 pointer-events-none" />
             </div>
-            <p className="text-[#33FF99] text-xl font-medium">Immigration</p>
+            <p className="text-[#33FF99] text-lg sm:text-xl font-medium">Immigration</p>
           </div>
 
           {/* BOTTOM ITEM */}
-          <div className="flex items-center gap-4 mt-4 relative z-10">
-            <div className="w-28 h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
-              <img src="/images/house.svg" className="w-14 h-14" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-4 relative z-10">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 bg-card rounded-full flex items-center justify-center shadow-[0_0_40px_#16FF99]">
+              <img src="/images/house.svg" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14" />
             </div>
-            <p className="text-[#33FF99] text-xl font-medium">Property</p>
+            <p className="text-[#33FF99] text-lg sm:text-xl font-medium">Property</p>
           </div>
 
         </div>
