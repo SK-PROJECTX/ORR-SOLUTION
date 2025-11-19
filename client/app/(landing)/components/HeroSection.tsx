@@ -10,12 +10,12 @@ export function HeroSection() {
     : 'https://res.cloudinary.com/depeqzb6z/video/upload/v1763167291/Final_Comp_yiiy1e.mp4';
 
   return (
-    <section className="hero-section">
-      <video 
-        className="hero-video"
-        autoPlay 
-        loop 
-        muted 
+    <section className="w-full flex justify-center items-center">
+      <video
+        className="w-full max-w-full h-auto  object-cover"
+        autoPlay
+        loop
+        muted
         playsInline
         key={theme}
       >
