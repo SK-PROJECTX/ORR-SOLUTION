@@ -164,7 +164,7 @@ export default function Contact() {
                 <div className="relative inline-block">
                   <button
                     type="submit"
-                    className="bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-all"
+                    className="bg-gradient-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-all"
                   >
                     Send Message
                   </button>

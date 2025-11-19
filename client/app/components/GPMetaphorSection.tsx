@@ -37,18 +37,29 @@ export default function GPMetaphorSection() {
           className={`${CARD_CLASS} bg-card rounded-tr-[4rem] rounded-br-[4rem] overflow-hidden shadow-lg flex-1 `}
         >
           <div className="relative w-full h-[360px]">
-            <Image src="/images/doctor.png" alt="Living system" fill className="object-cover" />
+            <Image
+              src="/images/doctor.png"
+              alt="Living system"
+              fill
+              className="object-cover"
+            />
 
             {/* Number */}
-            <div className="absolute top-9 left-9 text-[#8effd0] text-4xl font-semibold">01</div>
+            <div className="absolute top-9 left-9 text-[#8effd0] text-4xl font-semibold">
+              01
+            </div>
 
             {/* + Icon centered inside its circle */}
             <div className="absolute top-12 right-12 w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-2xl font-bold leading-none">+</span>
+              <span className="text-black text-2xl font-bold leading-none">
+                +
+              </span>
             </div>
           </div>
 
-          <div className="p-6 py-10 text-white text-lg tracking-wide">Your Business as a Living System</div>
+          <div className="p-6 py-10 text-white text-lg tracking-wide">
+            Your Business as a Living System
+          </div>
         </motion.div>
 
         {/* Card 2 */}
@@ -59,19 +70,29 @@ export default function GPMetaphorSection() {
           className={`${CARD_CLASS} bg-card  rounded-tl-[4rem] rounded-bl-[4rem] overflow-hidden shadow-lg flex-1 `}
         >
           <div className="relative w-full h-[360px]">
-            <Image src="/images/organism.png" alt="Systems working together" fill className="object-cover" />
+            <Image
+              src="/images/organism.png"
+              alt="Systems working together"
+              fill
+              className="object-cover"
+            />
 
             {/* Number */}
-            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">02</div>
+            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">
+              02
+            </div>
 
             {/* + Icon centered inside its circle */}
             <div className="absolute top-12 right-12  w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-2xl font-bold leading-none">+</span>
+              <span className="text-black text-2xl font-bold leading-none">
+                +
+              </span>
             </div>
           </div>
 
           <div className="p-6 py-10 text-white text-lg tracking-wide">
-            Businesses thrive like living organisms when all their systems work together
+            Businesses thrive like living organisms when all their systems work
+            together
           </div>
         </motion.div>
       </div>
@@ -85,19 +106,30 @@ export default function GPMetaphorSection() {
           className={` w-5xl max-w-[] bg-card rounded-[4rem] overflow-hidden shadow-lg`}
         >
           <div className="relative w-full h-[380px]">
-            <Image src="/images/planting.png" alt="ORR Solutions" fill className="object-cover" />
+            <Image
+              src="/images/planting.png"
+              alt="ORR Solutions"
+              fill
+              className="object-cover"
+            />
 
             {/* Number */}
-            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">03</div>
+            <div className="absolute top-12 left-12 text-[#8effd0] text-4xl font-semibold">
+              03
+            </div>
 
             {/* + Icon centered inside its circle */}
             <div className="absolute top-12 right-12  w-10 h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-2xl font-bold leading-none">+</span>
+              <span className="text-black text-2xl font-bold leading-none">
+                +
+              </span>
             </div>
           </div>
 
           <div className="p-6 py-10 text-white text-lg tracking-wide leading-relaxed">
-            ORR Solutions keeps your ‘business physiology’ in peak condition — ensuring your operations, communication, cash flow, compliance, and data all work in harmony.
+            ORR Solutions keeps your ‘business physiology’ in peak condition —
+            ensuring your operations, communication, cash flow, compliance, and
+            data all work in harmony.
           </div>
         </motion.div>
       </div>
