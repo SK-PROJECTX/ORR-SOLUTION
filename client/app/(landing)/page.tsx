@@ -14,6 +14,8 @@ export default function LandingPage() {
       <GPMetaphorSection />
       <MiniClientJourney />
       <FiveStagesSection />
+      <ORRReportSection />
+      <PackagePreviewSection />
     </div>
   );
 }
@@ -149,6 +151,140 @@ function MiniClientJourney() {
           src="/clients/c6.png"
           className="absolute right-4 bottom-24 w-24 h-24 rounded-full border-4 border-[#33FF99] shadow-[0_0_25px_#33FF99] object-cover"
         />
+      </div>
+    </section>
+  );
+}
+
+function ORRReportSection() {
+  return (
+    <section className="w-full text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
+      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
+      
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+          What you Get: <span className="text-[#33FF99]">The ORR Report</span>
+        </h2>
+        <p className="text-blue-400 text-center mb-16 underline cursor-pointer">
+          After your first meeting, you receive a free ORR report that outlines the key issues in your business that could be hurting your conversions.
+        </p>
+        
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <div className="bg-[#16314B] p-6 rounded-2xl border border-[#1e4769]">
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">assess your situation in your language</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">highlight key issues and risks that affect your customers and team</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">propose quick fixes and longer-term improvements that respect your constraints</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">shows where advisory, digital systems fit, or living systems work will have most impact</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="flex justify-center">
+            <img src="/images/meeting.jpg" alt="Meeting" className="rounded-2xl max-w-full h-auto" />
+          </div>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
+          <div className="flex justify-center">
+            <img src="/images/teamwork.jpg" alt="Teamwork" className="rounded-2xl max-w-full h-auto" />
+          </div>
+          
+          <div className="space-y-6">
+            <div className="bg-[#16314B] p-6 rounded-2xl border border-[#1e4769]">
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">assess your situation in your language</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">highlight key issues and risks that affect your customers and team</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">propose quick fixes and longer-term improvements that respect your constraints</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-[#33FF99] rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-300">shows where advisory, digital systems fit, or living systems work will have most impact</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PackagePreviewSection() {
+  return (
+    <section className="w-full text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
+      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
+      
+      <div className="relative z-10 max-w-4xl mx-auto">
+        {/* Skewed outer container */}
+        <div className="bg-gradient-to-r from-[#33FF99] to-[#00CC7A] p-2 rounded-3xl transform -skew-y-1">
+          {/* Straight inner container */}
+          <div className="bg-[#1a3a52] p-8 rounded-3xl transform skew-y-1">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">
+              Package <span className="text-[#33FF99]">Preview</span>
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl p-6 text-black relative">
+                <div className="bg-[#33FF99] text-black px-3 py-1 rounded-full text-sm font-medium inline-block mb-4">
+                  Starter
+                </div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded"></div>
+                  </div>
+                </div>
+                <div className="text-4xl font-bold mb-2">
+                  45<span className="text-lg font-normal">/hrs</span>
+                </div>
+                <p className="text-gray-600 mb-6">per month (billed per hour)</p>
+                <button className="w-full bg-[#33FF99] text-black py-3 rounded-lg font-medium hover:bg-[#2ee889] transition-colors">
+                  ⚡ Book Now
+                </button>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 text-black relative">
+                <div className="bg-[#33FF99] text-black px-3 py-1 rounded-full text-sm font-medium inline-block mb-4">
+                  Growth
+                </div>
+                <div className="absolute top-4 right-4 bg-[#33FF99] text-black px-2 py-1 rounded text-xs font-medium">
+                  Best seller
+                </div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded"></div>
+                  </div>
+                </div>
+                <div className="text-4xl font-bold mb-2">220</div>
+                <p className="text-gray-600 mb-6">per month per employee</p>
+                <button className="w-full bg-[#33FF99] text-black py-3 rounded-lg font-medium hover:bg-[#2ee889] transition-colors">
+                  ⚡ Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
