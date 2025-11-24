@@ -12,7 +12,7 @@ export function HeroSection() {
   return (
     <section className="w-full flex justify-center items-center">
       <video
-        className="w-full max-w-full h-auto  object-cover"
+        className="w-full h-auto min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] object-cover"
         autoPlay
         loop
         muted
