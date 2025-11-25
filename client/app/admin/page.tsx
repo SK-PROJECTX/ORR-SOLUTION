@@ -46,10 +46,10 @@ export default function AdminDashboard() {
                       <span className="text-white/70">{row.visits}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-white/70">{row.type}</span>
+                      <span className="text-white/70 px-4 py-2 rounded text-sm font-medium">{row.type}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium">
+                      <span className="bg-primary text-white px-4 py-2 rounded text-sm font-medium">
                         {row.status}
                       </span>
                     </td>
