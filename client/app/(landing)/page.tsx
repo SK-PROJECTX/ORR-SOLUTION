@@ -194,13 +194,13 @@ function ORRReportSection() {
           </div>
           
           <div className="flex justify-center">
-            <img src="/images/meeting.jpg" alt="Meeting" className="rounded-2xl max-w-full h-auto" />
+            <img src="/global networking 1.jpg" alt="global networking 1. Meeting" className="rounded-2xl max-w-full h-auto" />
           </div>
         </div>
         
         <div className="grid md:grid-cols-2 gap-12 items-center mt-16">
           <div className="flex justify-center">
-            <img src="/images/teamwork.jpg" alt="Teamwork" className="rounded-2xl max-w-full h-auto" />
+            <img src="/global networking 1.jpg" alt="global networking 1. Teamwork" className="rounded-2xl max-w-full h-auto" />
           </div>
           
           <div className="space-y-6">
@@ -236,50 +236,65 @@ function PackagePreviewSection() {
     <section className="w-full text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
       
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Skewed outer container */}
-        <div className="bg-gradient-to-r from-[#33FF99] to-[#00CC7A] p-2 rounded-3xl transform -skew-y-1">
-          {/* Straight inner container */}
-          <div className="bg-[#1a3a52] p-8 rounded-3xl transform skew-y-1">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">
+      <div className="relative z-10 max-w-5xl mx-auto">
+        {/* Custom skewed outer container - more space top-right, space top-left, small space bottom-left */}
+        <div 
+          className="bg-[#33FF99] rounded-[40px] transform -skew-y-2"
+          style={{
+            padding: '40px 0px 4px 20px',
+            clipPath: 'polygon(0% 0.5%, 100% 0%, 100% 100%, 1% 100%, 0% 0%)'
+          }}
+        >
+          {/* Inner container with dark blue background */}
+          <div 
+            className="bg-[#1e3a52] rounded-[35px] p-8 md:p-12 transform skew-y-2"
+            style={{
+              clipPath: 'polygon(100% 0%, 100% 100%, 0% 100%, 0% 0%)'
+            }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center text-white">
               Package <span className="text-[#33FF99]">Preview</span>
             </h2>
             
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-6 text-black relative">
-                <div className="bg-[#33FF99] text-black px-3 py-1 rounded-full text-sm font-medium inline-block mb-4">
-                  Starter
+            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+              {/* Starter Package - with Best Value tag */}
+              <div className="bg-white rounded-2xl p-6 text-black relative border-4 border-[#33FF99]">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#33FF99] text-black px-4 py-1 rounded-full text-sm font-semibold">
+                  Best value
                 </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
-                    <div className="w-4 h-4 bg-white rounded"></div>
+                <div className="bg-[#d4f8e8] text-[#00a86b] px-3 py-1 rounded-lg text-sm font-medium inline-block mb-4">
+                  Meetings
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <div className="w-5 h-5 bg-white rounded-sm"></div>
                   </div>
                 </div>
-                <div className="text-4xl font-bold mb-2">
-                  45<span className="text-lg font-normal">/hrs</span>
+                <div className="text-5xl font-bold mb-2">
+                  <span className="text-gray-400 text-2xl">€</span>45<span className="text-2xl font-normal">/hrs</span>
                 </div>
-                <p className="text-gray-600 mb-6">per month (billed per hour)</p>
-                <button className="w-full bg-[#33FF99] text-black py-3 rounded-lg font-medium hover:bg-[#2ee889] transition-colors">
-                  ⚡ Book Now
+                <p className="text-gray-500 text-sm mb-6">pro-rata (short, focused and value-densed)</p>
+                <button className="w-full bg-[#33FF99] text-white py-3 rounded-xl font-semibold hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2">
+                  <span>🔥</span> Book Now
                 </button>
               </div>
               
-              <div className="bg-white rounded-2xl p-6 text-black relative">
-                <div className="bg-[#33FF99] text-black px-3 py-1 rounded-full text-sm font-medium inline-block mb-4">
-                  Growth
+              {/* Growth Package */}
+              <div className="bg-white rounded-2xl p-6 text-black relative border-4 border-[#33FF99]">
+                <div className="bg-[#d4f8e8] text-[#00a86b] px-3 py-1 rounded-lg text-sm font-medium inline-block mb-4">
+                  Report Fee
                 </div>
-                <div className="absolute top-4 right-4 bg-[#33FF99] text-black px-2 py-1 rounded text-xs font-medium">
-                  Best seller
-                </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
-                    <div className="w-4 h-4 bg-white rounded"></div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <div className="w-5 h-5 bg-white rounded-sm"></div>
                   </div>
                 </div>
-                <div className="text-4xl font-bold mb-2">220</div>
-                <p className="text-gray-600 mb-6">per month per employee</p>
-                <button className="w-full bg-[#33FF99] text-black py-3 rounded-lg font-medium hover:bg-[#2ee889] transition-colors">
-                  ⚡ Book Now
+                <div className="text-5xl font-bold mb-2">
+                  <span className="text-gray-400 text-2xl">€</span>220
+                </div>
+                <p className="text-gray-500 text-sm mb-6">fee depends on complexity</p>
+                <button className="w-full bg-[#33FF99] text-white py-3 rounded-xl font-semibold hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2">
+                  <span>🔥</span> Book Now
                 </button>
               </div>
             </div>
