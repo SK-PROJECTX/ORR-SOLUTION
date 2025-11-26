@@ -12,7 +12,11 @@ export default function Hero() {
           </h1>
 
           <p className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-            Your business GP - streamlining operations, solving admin challenges and unlocking data-driven growth
+            Your business GP for complex systems — digital and living.
+          </p>
+
+            <p className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
+            We diagnose your bottlenecks, treat your administrative and compliance headaches, and unlock hidden value in your data, your operations, and your projects.
           </p>
 
           <div className="pt-2">

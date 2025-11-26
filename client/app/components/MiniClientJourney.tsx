@@ -5,15 +5,15 @@ export default function MiniClientJourney() {
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
-          Mini Client <span className="text-[#33FF99]">Journey</span>
+          Message <span className="text-[#33FF99]">Strip</span>
         </h2>
 
         <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-[#33FF99]/20 rounded-full blur-[100px] sm:blur-[150px]"></div>
 
         <div className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-xl border border-white/20">
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-left">"</div>
-          <p className="text-foreground leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9">
-            We worked with ORR to redesign our customer onboarding process. They delivered exactly as they requested. In the end, the client found a 50% increase in traffic within days since its launch.
+          <p className="text-[#ffffff] leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9">
+           Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your “business physiology” in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve
           </p>
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mt-3 sm:mt-4 text-right">"</div>
         </div>

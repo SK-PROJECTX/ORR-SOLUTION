@@ -10,71 +10,91 @@ export default function GPMetaphorSection() {
 
       {/* Heading */}
       <div className="relative z-10 text-center mb-8 sm:mb-10 lg:mb-12">
-        <h2 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-snug">
-          Businesses as a Living System –
+        <h2 className="text-white text-4xl font-poppins sm:text-2xl md:text-3xl lg:text-5xl font-extrabold leading-snug">
+          Businesses as a <span className="text-[#3DFF7C]">Living System </span>
         </h2>
-        <p className="text-[#27DD62] text-lg sm:text-xl md:text-2xl font-semibold mt-2">
-          The GP Metaphor Visual
+        <p className="text-white font-poppins font-light text-[15px] sm:text-xl md:text-2xl  mt-2">
+          Think of your organisation like a body
         </p>
       </div>
 
       {/* Top row: responsive layout */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-12 sm:mb-16 lg:mb-20 gap-6 lg:gap-8">
+      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-12 sm:mb-16 lg:mb-20 gap-6 lg:gap-8 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
         {/* Card 1 */}
-        <div className="w-full max-w-md lg:max-w-lg bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] lg:rounded-tl-2xl lg:rounded-bl-2xl overflow-hidden shadow-lg">
-          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[360px]">
-            <Image src="/images/doctor.png" alt="Living system" fill className="object-cover" />
-
-            {/* Number */}
-            <div className="absolute top-4 sm:top-6 lg:top-9 left-4 sm:left-6 lg:left-9 text-[#8effd0] text-2xl sm:text-3xl lg:text-4xl font-semibold">01</div>
-
-            {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 sm:top-6 lg:top-12 right-4 sm:right-6 lg:right-12 w-8 sm:w-9 lg:w-10 h-8 sm:h-9 lg:h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-lg sm:text-xl lg:text-2xl font-bold leading-none">+</span>
-            </div>
+        <div className="w-full max-w-md lg:max-w-xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/organ.png" alt="Living system" fill className="object-cover" />
           </div>
 
-          <div className="p-4 sm:p-6 lg:py-10 text-white text-sm sm:text-base lg:text-lg tracking-wide">Your Business as a Living System</div>
+          <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Organ</div>
+          <p className="px-5 py-3 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your departments and teams</p>         
         </div>
 
         {/* Card 2 */}
-        <div className="w-full max-w-md lg:max-w-lg bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] lg:rounded-tr-2xl lg:rounded-br-2xl overflow-hidden shadow-lg">
-          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[360px]">
-            <Image src="/images/organism.png" alt="Systems working together" fill className="object-cover" />
-
-            {/* Number */}
-            <div className="absolute top-4 sm:top-6 lg:top-12 left-4 sm:left-6 lg:left-12 text-[#8effd0] text-2xl sm:text-3xl lg:text-4xl font-semibold">02</div>
-
-            {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 sm:top-6 lg:top-12 right-4 sm:right-6 lg:right-12 w-8 sm:w-9 lg:w-10 h-8 sm:h-9 lg:h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-lg sm:text-xl lg:text-2xl font-bold leading-none">+</span>
-            </div>
+        <div className="w-full max-w-md lg:max-w-lg bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/nervous-system.png" alt="Systems working together" fill className="object-cover" />
           </div>
 
-          <div className="p-4 sm:p-6 lg:py-10 text-white text-sm sm:text-base lg:text-lg tracking-wide">
-            Businesses thrive like living organisms when all their systems work together
-          </div>
+        <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Nervous System</div>
+          <p className="px-5 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your communication channels</p>
         </div>
       </div>
+
+      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-12 sm:mb-16 lg:mb-20 gap-6 lg:gap-8 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
+        {/* Card 3  */}
+        <div className="w-full max-w-md lg:max-w-xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/circulatory-system.png" alt="Living system" fill className="object-cover" />
+          </div>
+
+          <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Circulatory System</div>
+          <div className="px-5 py-3 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your cashflow and resources </div>         
+        </div>
+
+        {/* Card 4 */}
+        <div className="w-full max-w-md lg:max-w-lg bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/immune-system.png" alt="Systems working together" fill className="object-cover" />
+          </div>
+
+        <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Immune System</div>
+          <div className="px-5 mb-3 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your risk management and compliance</div>
+        </div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-12 sm:mb-16 lg:mb-20 gap-6 lg:gap-8 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
+        {/* Card 5 */}
+        <div className="w-full max-w-md lg:max-w-xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/dna.png" alt="Living system" fill className="object-cover" />
+          </div>
+
+          <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">DNA </div>
+          <div className="px-5 py-3 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your values, SOPs and Cultures</div>         
+        </div>
+
+        {/* Card 6 */}
+        <div className="w-full max-w-md lg:max-w-lg bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+          <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
+            <Image src="/images/metabolism.png" alt="Systems working together" fill className="object-cover" />
+          </div>
+
+        <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Metabolism</div>
+          <div className="px-5 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your day-to-day operations </div>
+        </div>
+      </div>
+
 
       {/* Bottom card - centered */}
       <div className="relative z-10 w-full flex justify-center">
         <div className="w-full max-w-2xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[380px]">
-            <Image src="/images/planting.png" alt="ORR Solutions" fill className="object-cover" />
-
-            {/* Number */}
-            <div className="absolute top-4 sm:top-6 lg:top-12 left-4 sm:left-6 lg:left-12 text-[#8effd0] text-2xl sm:text-3xl lg:text-4xl font-semibold">03</div>
-
-            {/* + Icon centered inside its circle */}
-            <div className="absolute top-4 sm:top-6 lg:top-12 right-4 sm:right-6 lg:right-12 w-8 sm:w-9 lg:w-10 h-8 sm:h-9 lg:h-10 rounded-full bg-[#22E374] flex items-center justify-center">
-              <span className="text-black text-lg sm:text-xl lg:text-2xl font-bold leading-none">+</span>
-            </div>
+            <Image src="/images/senses.png" alt="ORR Solutions" fill className="object-cover" /> 
           </div>
 
-          <div className="p-4 sm:p-6 lg:py-10 text-white text-sm sm:text-base lg:text-lg tracking-wide leading-relaxed">
-            ORR Solutions keeps your 'business physiology' in peak condition — ensuring your operations, communication, cash flow, compliance, and data all work in harmony.
-          </div>
+        <div className="p-4 sm:p-6 lg:py-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Metabolism</div>
+          <div className="px-5 mb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your day-to-day operations </div>
         </div>
       </div>
     </section>

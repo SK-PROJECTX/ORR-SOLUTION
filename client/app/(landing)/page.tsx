@@ -8,7 +8,8 @@ import MiniClientJourney from "../components/MiniClientJourney";
 import FiveStagesSection from "../components/FiveStagesSection";
 import ORRReportSection from "../components/ORRReportSection";
 import PackagePreviewSection from "../components/PackagePreviewSection";
-import FAQSection from "../components/FAQSection"
+import FAQSection from "../components/FAQSection";
+import ORRRoleSection from "../components/ORRRoleSection";
 
 export default function LandingPage() {
   return (
@@ -18,6 +19,7 @@ export default function LandingPage() {
       <ApproachCard />
       <ServicePillar />
       <GPMetaphorSection />
+      <ORRRoleSection />
       <MiniClientJourney />
       <FiveStagesSection />
       <ORRReportSection />
