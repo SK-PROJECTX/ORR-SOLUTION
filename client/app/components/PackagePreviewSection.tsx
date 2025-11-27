@@ -1,6 +1,6 @@
 export default function PackagePreviewSection() {
   return (
-    <section className="w-full py-24 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a3a52 0%, #0d2238 100%)' }}>
+    <section className="w-full py-24 px-6 relative overflow-hidden" >
       <div className="absolute inset-0 star opacity-20" />
       
       <div className="relative z-10 max-w-6xl mx-auto">
