@@ -2,24 +2,18 @@ import React from "react";
 
 export default function ServicePillar() {
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/path-to-your-stars-bg.png')" }}>
+    <section className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/path-to-your-stars-bg.png')" }}>
       {/* Title */}
-      <div className='text-center mb-12 sm:mb-16 lg:mb-20'>
-
-    
-      <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold">
+      <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold w-full">
         Quick Service Snapshot - 
         <span className="text-[#3DFF7C] font-poppins font-extrAbold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
           3 Pillars
         </span>
       </h2>
 
-    <p className="text-center text-white font-poppins font-light ">All three pillars are shaped around your context - no generic playbooks</p>  
-    </div>
+      <p className="text-center text-white font-poppins font-light mb-12 sm:mb-16 lg:mb-20 w-full">All three pillars are shaped around your context - no generic playbooks</p>
 
-
-   
-      <div className="relative w-full max-w-7xl mx-auto">
+      <div className="relative w-full max-w-7xl mr-0">
         {/* Glow Image - Hidden on mobile */}
         <img
           src="/images/glowww.png"
@@ -28,7 +22,7 @@ export default function ServicePillar() {
         />
 
         {/* CARD */}
-        <div className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-20 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
+        <div className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-0 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
           {/* CONTENT LAYOUT: RESPONSIVE GRID */}
           <div className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-6 md:gap-8">
 
