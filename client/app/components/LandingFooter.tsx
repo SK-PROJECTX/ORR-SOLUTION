@@ -38,14 +38,14 @@ export function LandingFooter() {
         </div>
 
         {/* Newsletter */}
-        <div className="w-full max-w-xs">
+        <div className="flex w-full max-w-xs">
           <input
             type="email"
             placeholder="Email"
-            className="px-4 py-3 w-full rounded-t-lg outline-none text-sm bg-secondary text-gray-100 placeholder-gray-400 mb-1"
+            className="px-4 py-3 flex-1 rounded-l-2xl outline-none text-sm bg-secondary text-white placeholder-white/70"
           />
-          <button className="px-4 py-3 w-full rounded-b-lg font-medium bg-primary text-background hover:opacity-90 transition-opacity text-sm">
-            Subscribe
+          <button className="px-4 py-3 rounded-r-2xl font-medium bg-green-500 text-black hover:bg-green-400 transition-colors text-sm whitespace-nowrap">
+            Sign up
           </button>
         </div>
 

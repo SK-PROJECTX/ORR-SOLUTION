@@ -80,12 +80,15 @@ export default function Services() {
               <p className="text-gray-300 text-sm mb-4">Typical Outputs:</p>
               <ul className="text-gray-300 text-sm space-y-2 mb-8 flex-grow">
                 <li>• SOPs and standardised workflows</li>
-                <li>• Governance structures and decision pathways</li>
-                <li>• Tech stacks, integration and all user code</li>
-                <li>• Simple concepts for lead, nurture and close</li>
+                <li>• Communication and decision pathways</li>
+                <li>• Tech stacks, integration and AI use-case</li>
+                <li>• Simple concepts for field or nurture projects</li>
                 <li>• Clean, structured data ready for reporting</li>
               </ul>
-              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto">Sign up</button>
+              <div className="flex flex-col gap-3 mt-auto">
+                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Sign up</button>
+                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Learn More on living systems & augmentation</button>
+              </div>
             </div>
 
             {/* Stage 4 - Deploy */}
