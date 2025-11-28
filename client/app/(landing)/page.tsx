@@ -10,6 +10,7 @@ import ORRReportSection from "../components/ORRReportSection";
 import PackagePreviewSection from "../components/PackagePreviewSection";
 import FAQSection from "../components/FAQSection";
 import ORRRoleSection from "../components/ORRRoleSection";
+import MidClientJourneySection from "../components/MidClientJourneySection";
 
 export default function LandingPage() {
   return (
@@ -25,6 +26,7 @@ export default function LandingPage() {
       <ORRReportSection />
       <PackagePreviewSection />
       <FAQSection />
+      <MidClientJourneySection />
     </div>
   );
 }

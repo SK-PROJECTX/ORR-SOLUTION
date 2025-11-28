@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Plus, X } from 'lucide-react';
 
 export default function FAQSection() {
   const [openFAQ, setOpenFAQ] = useState(0);
@@ -39,21 +40,25 @@ export default function FAQSection() {
         
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-[#1e3a52] rounded-2xl overflow-hidden border border-[#2a4a6b]">
+            <div key={index} className={` rounded-2xl overflow-hidden border border-[#2a4a6b] ${openFAQ === index ? 'bg-primary' : 'bg-[#2a4a6b]'}`}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === index ? -1 : index)}
                 className="w-full p-6 text-left flex items-center justify-between hover:bg-[#2a4a6b] transition-colors"
               >
                 <span className="text-lg font-medium">{faq.question}</span>
-                <div className={`w-8 h-8 rounded-full bg-[#33FF99] flex items-center justify-center transition-transform ${openFAQ === index ? 'rotate-45' : ''}`}>
-                  <span className="text-black font-bold text-xl">+</span>
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                  {openFAQ === index ? (
+                    <X className="w-5 h-5 text-red-500" />
+                  ) : (
+                    <Plus className="w-5 h-5 text-black" />
+                  )}
                 </div>
               </button>
               
               {openFAQ === index && (
                 <div className="px-6 pb-6">
-                  <div className="bg-[#33FF99] rounded-xl p-4 text-black">
-                    <p className="leading-relaxed">{faq.answer}</p>
+                  <div className="rounded-xl p-4">
+                    <p className="leading-relaxed text-white">{faq.answer}</p>
                   </div>
                 </div>
               )}
