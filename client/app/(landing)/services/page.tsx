@@ -136,6 +136,39 @@ export default function Services() {
         </div>
       </section>
 
+      {/* The Three Pillars */}
+      <section className="py-16 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white">
+              The Three <span className="text-[#5ef558]">Pillars</span>
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Digital Systems Pillar */}
+            <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
+              <h3 className="text-3xl font-bold mb-8 text-center">Digital Systems, Automation & AI</h3>
+              <p className="text-gray-300 text-xl mb-8 text-center flex-grow">SOPs, workflows, portals, dashboards, and AI helpers that make work flow with less effort and fewer surprises.</p>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+            </div>
+
+            {/* Strategic Advisory Pillar */}
+            <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
+              <h3 className="text-3xl font-bold mb-8 text-center">Strategic Advisory & Compliance</h3>
+              <p className="text-gray-300 text-xl mb-8 text-center flex-grow">Short, sharp clarity on rules, risk, and direction — from regulation and ESG to biotech and environmental questions.</p>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+            </div>
+
+            {/* Living Systems Pillar */}
+            <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
+              <h3 className="text-3xl font-bold mb-8 text-center">Living Systems & Regeneration</h3>
+              <p className="text-gray-300 text-xl mb-8 text-center flex-grow">Support for land, water, species, and ecosystems — from production systems to restoration and incident response.</p>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Overview */}
       <section className="py-16 px-6 relative">
         {/* <div
