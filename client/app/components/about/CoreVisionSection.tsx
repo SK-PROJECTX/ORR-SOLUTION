@@ -3,7 +3,7 @@ export function CoreVisionSection() {
     <section className="w-full  text-white px-6 md:px-12 lg:px-24 py-20 relative overflow-hidden font-poppins">
       <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto text-xl">
+      <div className="relative z-10 max-w-6xl mx-auto text-2xl">
         <h2 className="text-center text-3xl md:text-4xl font-semibold mb-10">
           Core Vision <span className="text-[#33FF99]">& Philosophy</span>
         </h2>
@@ -22,6 +22,11 @@ export function CoreVisionSection() {
         <p className="text-[#D4D8E3] leading-relaxed mb-10">
           Whether you're a self-employed professional, a freelancer, or an
           established company, ORR helps you:
+        </p>
+
+
+        <p className="text-[#D4D8E3] leading-relaxed mb-10">
+         We see your organisation as a connected whole:
         </p>
 
         <ul className="space-y-4 mb-10">
@@ -44,16 +49,17 @@ export function CoreVisionSection() {
         </ul>
 
         <p className="text-[#D4D8E3] leading-relaxed mb-6">
-          We believe every client relationship generates data — and within that
-          data lies opportunity. By capturing and analysing these patterns, ORR
-          transforms information into insight, helping businesses evolve
-          intelligently.
+         We believe every client relationship generates data — and within that data lies opportunity. By capturing and analysing these patterns, ORR transforms information into insight, helping businesses evolve intelligently.
         </p>
 
         <p className="text-[#D4D8E3] leading-relaxed">
           Our team and network of trusted subcontractors provide tailored
           solutions spanning multiple industries, with specialised focus in:
         </p>
+
+        <p className="text-[#D4D8E3] leading-relaxed">
+          In essence — 'You can manage everything yourself. ORR can make it work better        
+          </p>
       </div>
     </section>
   );

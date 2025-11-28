@@ -67,7 +67,7 @@ export default function AboutUs() {
       <PictureSection />
       <ProcessSection />
       <CoreVisionSection />
-      <SpecialisedFocus />
+      {/* <SpecialisedFocus /> */}
     </section>
   );
 }

@@ -72,41 +72,41 @@ export const ProcessSection = () => {
       <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
       
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {processCards.map((card) => (
-            <div key={card.id} className="relative rounded-[2rem] overflow-hidden p-1">
-              <div className="rounded-[2rem] h-full flex flex-col">
-                <div className="h-64 relative">
-                  <Image 
-                    src={card.image} 
-                    alt={card.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                    <div className="w-16 h-16 bg-[#334155] rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      {card.id}
-                    </div>
-                    <div className="w-10 h-10 bg-[#10b981] rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold text-xl">+</span>
-                    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {processCards.map((card) => (
+          <div key={card.id} className={`w-full ${card.id === "07" ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">{card.title}</h2>
+            
+            <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden">
+              <div className="h-80 md:h-96 relative">
+                <Image 
+                  src={card.image} 
+                  alt={card.title}
+                  fill
+                  className="object-cover rounded-t-[2rem]"
+                />
+                <div className="absolute top-6 left-6 right-6 flex items-center justify-between">
+                  <div className="w-16 h-16 bg-slate-600/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {card.id}
                   </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex-1 mb-6">
-                    <h3 className="text-[#10b981] text-2xl font-bold mb-4">{card.subtitle}</h3>
-                    <p className="text-white text-base font-medium mb-3">{card.description}</p>
-                    <p className="text-gray-300 text-sm leading-relaxed">{card.details}</p>
+                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-2xl">+</span>
                   </div>
-
-                  <button className="w-full bg-gradient-to-r from-[#10b981] to-[#059669] text-black font-bold py-4 px-6 rounded-2xl hover:from-[#059669] hover:to-[#047857] transition-all duration-300 text-lg">
-                    {card.buttonText}
-                  </button>
                 </div>
               </div>
+
+              <div className="p-8 md:p-10">
+                <h3 className="text-emerald-400 text-3xl md:text-4xl font-bold mb-4">{card.subtitle}</h3>
+                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description}</p>
+                <p className="text-gray-400 text-base leading-relaxed mb-8">{card.details}</p>
+
+                <button className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-slate-900 font-bold py-4 px-8 rounded-2xl hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 text-lg">
+                  {card.buttonText}
+                </button>
+              </div>
             </div>
-          ))}
+          </div>
+        ))}
         </div>
       </div>
     </section>
