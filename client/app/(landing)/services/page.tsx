@@ -4,7 +4,7 @@ export default function Services() {
   return (
     <div className="min-h-screen text-foreground">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6 relative min-h-[60vh] flex items-center">
+      <section className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center">
         <div className="absolute inset-0 " />
         <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-30 pointer-events-none" />
         
@@ -15,7 +15,7 @@ export default function Services() {
             <br />
             <span className="text-white">Solve. Optimise.</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-300 maThe Threex-w-3xl mx-auto leading-relaxed">
             We treat your organisation as a whole system — digital, regulatory, and 
             living. We listen first, then design the right mix of advisory, systems, 
             AI, and on-the-ground projects so you can move better and grow 
@@ -137,10 +137,10 @@ export default function Services() {
       </section>
 
       {/* The Three Pillars */}
-      <section className="py-16 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800">
+      <section className="py-20 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800 min-h-[80vh] flex items-center">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white">
+            <h2 className="text-4xl font-bold text-white">
               The Three <span className="text-[#5ef558]">Pillars</span>
             </h2>
           </div>
@@ -169,7 +169,61 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services Overview */}
+      {/* Business GP Section */}
+      <section className="py-20 px-6 bg-background star relative min-h-[80vh] flex items-center">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-6">
+                ORR is your Business GP for
+              </h2>
+              <h3 className="text-4xl font-bold mb-8">
+                complex <span className="text-green-400">systems — digital and living.</span>
+              </h3>
+              <p className="text-gray-300 text-xl mb-8">
+                We listen to the whole organisation, solve with structure and insight, and optimise so you can grow with confidence.
+              </p>
+              <button className="bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+                Contact Us
+              </button>
+            </div>
+            <div>
+              <img 
+                src="/images/handshake.png"
+                alt="Business handshake" 
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
+    </div>
+  );
+}
+{/* Stage 5 - Grow (Full Width) */}
+{/* <div className="bg-slate-700 rounded-2xl p-8 text-white">
+  <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mb-6">
+    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  </div>
+  <h2 className="text-xl font-bold mb-4">STAGE 5 - GROW</h2>
+  <h3 className="text-lg font-semibold mb-4">Optimise.</h3>
+  <p className="text-gray-300 text-sm mb-6">Once systems are live, we keep them learning.</p>
+  <p className="text-gray-300 text-sm mb-4">How we support growth:</p>
+  <ul className="text-gray-300 text-sm space-y-2 mb-8">
+    <li>• Ongoing data capture and light analytics</li>
+    <li>• Quarterly reviews and system tuning</li>
+    <li>• AI-assisted monitoring and early warnings</li>
+    <li>• Scenario and 'what if' thinking</li>
+    <li>• Light, regular check-ins — your systems clinic</li>
+  </ul>
+  <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Sign up</button>
+</div> */}
+
+ {/* Services Overview */}
       <section className="py-16 px-6 relative">
         {/* <div
 					className="absolute inset-x-0 -top-12 md:-top-[600px] opacity-80 pointer-events-none -z-10"
@@ -285,26 +339,3 @@ export default function Services() {
           </div>
         </div>
       </section>
-    </div>
-  );
-}
-{/* Stage 5 - Grow (Full Width) */}
-<div className="bg-slate-700 rounded-2xl p-8 text-white">
-  <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mb-6">
-    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-    </svg>
-  </div>
-  <h2 className="text-xl font-bold mb-4">STAGE 5 - GROW</h2>
-  <h3 className="text-lg font-semibold mb-4">Optimise.</h3>
-  <p className="text-gray-300 text-sm mb-6">Once systems are live, we keep them learning.</p>
-  <p className="text-gray-300 text-sm mb-4">How we support growth:</p>
-  <ul className="text-gray-300 text-sm space-y-2 mb-8">
-    <li>• Ongoing data capture and light analytics</li>
-    <li>• Quarterly reviews and system tuning</li>
-    <li>• AI-assisted monitoring and early warnings</li>
-    <li>• Scenario and 'what if' thinking</li>
-    <li>• Light, regular check-ins — your systems clinic</li>
-  </ul>
-  <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Sign up</button>
-</div>
