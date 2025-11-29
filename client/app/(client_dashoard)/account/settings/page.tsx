@@ -83,7 +83,7 @@ export default function AccountSettingsPage() {
                 <option>Normal text</option>
               </select>
 
-              <p className="mt-4  bg-[rgb(var(--bg-card)_/_0.8)] text-gray-300 text-sm border border-[#1E3A4B] p-4 rounded-md">
+              <p className="mt-4  bg-[rgb(var(--bg-card)_/_0.8)] text-gray-300 text-sm border border-[#22C55E] p-4 rounded-md">
                 Lorem ipsum, in graphical and textual context, refers to filler
                 text that is placed in a document or visual presentation. Lorem
                 ipsum is derived from the Latin "dolorem ipsum" roughly

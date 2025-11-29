@@ -53,16 +53,16 @@ export default function Sidebar() {
             open={open.pages}
             onClick={() => toggle("pages")}
             items={[
-              { 
-                label: "Profile", 
-                href: "/profile",
-                subItems: [
-                  { label: "Profile Overview", href: "/profile/overview" },
-                  { label: "Teams", href: "/profile/teams" },
-                  { label: "All Projects", href: "/profile/projects" }
-                ]
-              },
-              { label: "Users", href: "/users" },
+              // { 
+              //   label: "Profile", 
+              //   href: "/profile",
+              //   subItems: [
+              //     { label: "Profile Overview", href: "/profile/overview" },
+              //     { label: "Teams", href: "/profile/teams" },
+              //     { label: "All Projects", href: "/profile/projects" }
+              //   ]
+              // },
+              // { label: "Users", href: "/users" },
               {
                 label: "Account",
                 href: "/account",
@@ -73,8 +73,7 @@ export default function Sidebar() {
                   { label: "Security", href: "/account/security" }
                 ]
               },
-              { label: "Projects", href: "/projects" },
-              { label: "Pricing Page", href: "/pricing" },
+              // { label: "Projects", href: "/projects" },
                {
                 label: "Pricing Page",
                 href: "/pricing",
@@ -84,14 +83,14 @@ export default function Sidebar() {
                   { label: "Billing History", href: "/pricing/billing" },
                 ]
               },
-              { label: "Charts", href: "/charts" },
+              // { label: "Charts", href: "/charts" },
               { label: "Support History", href: "/support-history" },
               { label: "Meeting Request System", href: "/meeting-request" },
               { label: "Favorite /Saved Items", href: "/favourite" },
               { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
               { label: "Feedback Mechanisms", href: "/feedback" },
               { label: "Resources", href: "/resources" },
-              { label: "Notification", href: "/notification" },
+              { label: "Notifications", href: "/notifications" },
             ]}
             pathname={pathname}
             subOpen={subOpen}
@@ -104,9 +103,9 @@ export default function Sidebar() {
             onClick={() => toggle("applications")}
             items={[
               { label: "Kanban", href: "/kanban" },
-              { label: "Wizard", href: "/wizard" },
-              { label: "Data Tables", href: "/data-tables" },
-              { label: "Calendar", href: "/calendar" }
+              // { label: "Wizard", href: "/wizard" },
+              // { label: "Data Tables", href: "/data-tables" },
+              // { label: "Calendar", href: "/calendar" }
             ]}
             pathname={pathname}
             subOpen={subOpen}

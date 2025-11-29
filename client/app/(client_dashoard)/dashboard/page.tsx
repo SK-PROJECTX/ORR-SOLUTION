@@ -13,7 +13,7 @@ interface StatProps {
 
 const StatBox: React.FC<StatProps> = ({ icon, title, value, small }) => {
   return (
-    <div className="flex-1 bg-card rounded-xl p-5 shadow-lg">
+    <div className="flex-1 bg-background rounded-xl p-5 shadow-lg">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
           {icon}
@@ -36,15 +36,15 @@ const StatBox: React.FC<StatProps> = ({ icon, title, value, small }) => {
 export default function Dashboard() {
   return (
     <main className="min-h-full p-6 bg-background text-foreground relative">
-      <div className="max-w-[1200px] mx-auto">
+      <div className=" mx-auto">
         {/* Header */}
         <header className="flex items-center justify-between gap-6 mb-6">
-          <h1 className="text-2xl font-extrabold text-primary">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
 
           <div className="flex-1 max-w-lg">
             <div className="relative">
               <input
-                className="w-full rounded-full py-2 px-4 bg-card text-foreground placeholder:opacity-60 border border-secondary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-full py-2 px-4 bg-card text-foreground placeholder:opacity-60 border border-[#13be77] outline-none"
                 placeholder="Search anything here..."
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
@@ -149,7 +149,7 @@ export default function Dashboard() {
 
           {/* Right sidebar */}
           <aside className="lg:col-span-4 space-y-6">
-            <div className="bg-[#0b3942] rounded-xl p-5">
+            <div className="bg-card rounded-xl p-5">
               <h4 className="text-[#6ff3ab] font-semibold">
                 Your earning this month
               </h4>
@@ -164,7 +164,7 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="bg-[#0b3942] rounded-xl p-5">
+            <div className="bg-card rounded-xl p-5">
               <h5 className="text-[#6ff3ab] font-semibold mb-3">
                 Earnings by item
               </h5>
@@ -192,7 +192,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-[#0b3942] rounded-xl p-4">
+            <div className="bg-card rounded-xl p-4">
               <h6 className="text-[#6ff3ab] font-semibold">Impression</h6>
 
               <div className="mt-4 flex items-end gap-4 bg-[#082935] p-3 rounded-lg h-28">

@@ -1,10 +1,15 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 export default function PaymentDetailsPage() {
+  const [contactOpen, setContactOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(true);
+
   return (
     <div className="min-h-screen w-full text-foreground px-4 py-10 flex flex-col items-center">
       {/* Header */}
-      <div className="w-full max-w-6xl">
+      <div className="w-full">
         <div className="flex justify-between ">
 
         <h1 className="text-3xl font-semibold text-lemon mb-6 text-nowrap">Payment Details</h1>
@@ -26,17 +31,41 @@ export default function PaymentDetailsPage() {
 
 
         {/* Contact Dropdown */}
-        <div className="bg-card rounded-lg py-4 px-6 flex justify-between items-center mb-4 cursor-pointer">
-          <h3 className="text-lg font-semibold text-foreground">Contact</h3>
-          <span className="text-lemon text-xl">⌄</span>
+        <div className="bg-card border border-secondary rounded-lg mb-4">
+          <div 
+            className="py-4 px-6 flex justify-between items-center cursor-pointer hover:bg-card/80"
+            onClick={() => setContactOpen(!contactOpen)}
+          >
+            <h3 className="text-lg font-semibold text-[]">Contact</h3>
+            <ChevronDown className={`text-lemon w-5 h-5 transition-transform ${contactOpen ? 'rotate-180' : ''}`} />
+          </div>
+          {contactOpen && (
+            <div className="px-6 pb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-2">Full Name</label>
+                  <input className="w-full bg-background border border-secondary rounded-md px-4 py-3 text-sm focus:outline-none" placeholder="John Doe" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-2">Email</label>
+                  <input className="w-full bg-background border border-secondary rounded-md px-4 py-3 text-sm focus:outline-none" placeholder="john@example.com" />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Payment Dropdown (Open) */}
-        <div className="bg-card  rounded-lg p-6">
-          <div className="flex justify-between items-center cursor-pointer mb-6">
+        {/* Payment Dropdown */}
+        <div className="bg-card border border-secondary rounded-lg">
+          <div 
+            className="py-4 px-6 flex justify-between items-center cursor-pointer hover:bg-card/80"
+            onClick={() => setPaymentOpen(!paymentOpen)}
+          >
             <h3 className="text-lg font-semibold text-lemon">Payment</h3>
-            <span className="text-lemon text-xl rotate-180">⌄</span>
+            <ChevronDown className={`text-lemon w-5 h-5 transition-transform ${paymentOpen ? 'rotate-180' : ''}`} />
           </div>
+          {paymentOpen && (
+            <div className="px-6 pb-6">
 
           {/* Payment Method */}
           <h4 className="text-md font-semibold mb-4">Payment method</h4>
@@ -116,6 +145,8 @@ export default function PaymentDetailsPage() {
 
           {/* Pay Button */}
           <button className="w-full bg-lemon text-black font-semibold rounded-md py-3">Pay $67.00</button>
+            </div>
+          )}
         </div>
       </div>
     </div>

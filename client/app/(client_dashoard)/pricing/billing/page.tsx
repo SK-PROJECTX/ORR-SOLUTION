@@ -3,9 +3,11 @@ import React from "react";
 export default function PlansBillingPage() {
   return (
     <div className="min-h-screen w-full text-white px-4 py-10 flex flex-col items-center">
-      <div className="w-full max-w-6xl">
+      <div className="w-full ">
+        <div className="flex justify-baseline">
+
         {/* Page Title */}
-        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">Plans and billing</h1>
+        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6 text-nowrap">Plans and billing</h1>
 
         {/* Search Bar */}
         <div className="w-full flex justify-center mb-10">
@@ -18,6 +20,7 @@ export default function PlansBillingPage() {
             <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[#22C55E] text-lg">🔍</button>
           </div>
         </div>
+              </div>
 
         {/* Two Top Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
