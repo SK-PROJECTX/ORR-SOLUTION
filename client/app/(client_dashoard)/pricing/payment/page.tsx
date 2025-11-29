@@ -1,0 +1,123 @@
+import React from "react";
+
+export default function PaymentDetailsPage() {
+  return (
+    <div className="min-h-screen w-full text-foreground px-4 py-10 flex flex-col items-center">
+      {/* Header */}
+      <div className="w-full max-w-6xl">
+        <div className="flex justify-between ">
+
+        <h1 className="text-3xl font-semibold text-lemon mb-6 text-nowrap">Payment Details</h1>
+
+        {/* Search Bar */}
+        <div className="w-full flex justify-center mb-10">
+          <div className="w-full max-w-xl relative">
+            <input
+              type="text"
+              placeholder="Search anything here..."
+              className="w-full bg-card rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none"
+            />
+            <button className="absolute right-4 top-1/2 -translate-y-1/2 text-lemon text-lg">
+              🔍
+            </button>
+          </div>
+        </div>
+        </div>
+
+
+        {/* Contact Dropdown */}
+        <div className="bg-card rounded-lg py-4 px-6 flex justify-between items-center mb-4 cursor-pointer">
+          <h3 className="text-lg font-semibold text-foreground">Contact</h3>
+          <span className="text-lemon text-xl">⌄</span>
+        </div>
+
+        {/* Payment Dropdown (Open) */}
+        <div className="bg-card  rounded-lg p-6">
+          <div className="flex justify-between items-center cursor-pointer mb-6">
+            <h3 className="text-lg font-semibold text-lemon">Payment</h3>
+            <span className="text-lemon text-xl rotate-180">⌄</span>
+          </div>
+
+          {/* Payment Method */}
+          <h4 className="text-md font-semibold mb-4">Payment method</h4>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {/* Visa */}
+            <div className="bg-white text-black rounded-lg p-4 flex items-center justify-between shadow cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 bg-lemon rounded-sm"></div>
+                <div>
+                  <p className="font-semibold text-sm">347809</p>
+                  <span className="text-xs text-gray-500">Visa · Edit</span>
+                </div>
+              </div>
+              <span className="text-lg font-bold">VISA</span>
+            </div>
+
+            {/* Paypal */}
+            <div className="bg-white text-black rounded-lg p-4 flex items-center justify-between shadow cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-sm"></div>
+                <div>
+                  <p className="font-semibold text-sm">347809</p>
+                  <span className="text-xs text-gray-500">Paypal · Edit</span>
+                </div>
+              </div>
+              <span className="text-lg font-bold text-blue-600">PP</span>
+            </div>
+
+            {/* Add New */}
+            <div className="bg-white text-black rounded-lg p-4 flex flex-col items-center justify-center shadow cursor-pointer">
+              <div className="w-8 h-8 rounded-md bg-lemon flex items-center justify-center text-black font-bold text-xl mb-2">+</div>
+              <p className="text-sm font-semibold">New users</p>
+            </div>
+          </div>
+
+          {/* Form Inputs */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm mb-2">Card holder name</label>
+              <input
+                className="w-full bg-background border border-lemon rounded-md px-4 py-3 text-sm focus:outline-none"
+                placeholder="John Walden"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm mb-2">Billing address</label>
+              <input
+                className="w-full bg-background border border-lemon rounded-md px-4 py-3 text-sm focus:outline-none"
+                placeholder="Germany"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm mb-2">Zip code</label>
+              <input
+                className="w-full bg-background border border-lemon rounded-md px-4 py-3 text-sm focus:outline-none"
+                placeholder="6789123"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm mb-2">City</label>
+              <input
+                className="w-full bg-background border border-lemon rounded-md px-4 py-3 text-sm focus:outline-none"
+                placeholder="Berlain"
+              />
+            </div>
+          </div>
+
+          {/* Invoice Address */}
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-4 h-4 border border-lemon rounded-sm bg-lemon"></div>
+            <label className="text-sm">Invoice Address</label>
+          </div>
+
+          {/* Pay Button */}
+          <button className="w-full bg-lemon text-black font-semibold rounded-md py-3">Pay $67.00</button>
+        </div>
+      </div>
+    </div>
+  );
+}
