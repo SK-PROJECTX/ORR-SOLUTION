@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function ServicePillar() {
@@ -53,9 +54,9 @@ export default function ServicePillar() {
               <div className="relative">
                 {/* Mobile bullet */}
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
-                <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
+                <Link href="/strategy_advisory" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
                   Strategic Advisory & Compliance
-                </h3>
+                </Link>                
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
                  Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation.
                 </p>
