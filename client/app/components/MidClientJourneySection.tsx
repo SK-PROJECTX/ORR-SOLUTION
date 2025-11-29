@@ -10,7 +10,7 @@ export default function MidClientJourneySection() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="bg-primary rounded-3xl h-48 w-full"></div>
+            <div key={item} className="bg-primary rounded-3xl h-60 w-full"></div>
           ))}
         </div>
       </div>
