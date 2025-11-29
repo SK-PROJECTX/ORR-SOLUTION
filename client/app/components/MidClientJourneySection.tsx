@@ -9,11 +9,6 @@ export default function MidClientJourneySection() {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<<<<<<< HEAD
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="bg-primary rounded-3xl h-60 w-full"></div>
-          ))}
-=======
           <div className="bg-primary rounded-3xl p-6 h-auto">
             <h3 className="text-xl font-bold text-white mb-4">Step 1:</h3>
             <h4 className="text-lg font-semibold text-white mb-3">First Meeting</h4>
@@ -44,7 +39,6 @@ export default function MidClientJourneySection() {
             <h4 className="text-lg font-semibold text-white mb-3">Ongoing Partnership</h4>
             <p className="text-white text-sm">If you continue, we deploy solutions, monitor progress, and optimise as you grow — through a tailored retainer package aligned with your budget, pace, and customer needs.</p>
           </div>
->>>>>>> a1e69419bdc7ac4340eadff04d4cd044672200a5
         </div>
       </div>
     </section>
