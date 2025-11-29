@@ -1,5 +1,4 @@
 import { ThemeProvider } from "../components/ThemeProvider";
-import Sidebar from "../components/admin/Sidebar";
 
 export default function RootLayout({
   children,
@@ -7,13 +6,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
-      </div>
-    </div>
+    <ThemeProvider>
+      {children}
+    </ThemeProvider>
   );
 }
