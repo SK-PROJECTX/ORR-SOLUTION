@@ -55,17 +55,17 @@ export default function StrategyAdvisoryPage() {
         
         <div className="max-w-7xl mx-auto">
           {/* First 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-32 gap-x-12 mb-24 justify-center">
             {/* Regulatory & Compliance Consulting */}
-            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20">
-              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-2xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
+            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20  max-w-4xl ">
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-black shadow-4xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8H11C9.9 8 9 7.1 9 6V4L3 7V9H21ZM3 10V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V10H3Z"/>
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Regulatory & Compliance Consulting</h3>
               <p className="text-slate-300 text-sm mb-4">Navigate complex regulatory landscapes with confidence. We help organizations understand, implement, and maintain compliance across multiple jurisdictions and industry standards.</p>
-              <ul className="text-slate-400 text-sm space-y-1">
+              <ul className="text-slate-300 text-sm space-y-1">
                 <li>• Regulatory framework assessment and gap analysis</li>
                 <li>• Compliance program design and implementation</li>
                 <li>• Policy development and documentation</li>
@@ -75,7 +75,7 @@ export default function StrategyAdvisoryPage() {
             </div>
 
             {/* Sustainability & ESG Strategy */}
-            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20">
+            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20  max-w-4xl " >
               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-2xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
@@ -83,7 +83,7 @@ export default function StrategyAdvisoryPage() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Sustainability & ESG Strategy</h3>
               <p className="text-slate-300 text-sm mb-4">Build sustainable practices that meet regulatory requirements while creating a real business value. We develop ESG strategies that align with global frameworks and stakeholder expectations.</p>
-              <ul className="text-slate-400 text-sm space-y-1">
+              <ul className="text-slate-300 text-sm space-y-1">
                 <li>• Sustainability assessment and materiality analysis</li>
                 <li>• ESG reporting framework implementation (GRI, SASB, TCFD)</li>
                 <li>• Carbon footprint measurement and reduction strategies</li>
@@ -93,7 +93,7 @@ export default function StrategyAdvisoryPage() {
             </div>
 
             {/* Biotechnology & Scientific Consulting */}
-            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20">
+            <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20  max-w-4xl ">
               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-2xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C11.5 2 11 2.19 10.59 2.59L2.59 10.59C1.8 11.37 1.8 12.63 2.59 13.41L10.59 21.41C11.37 22.2 12.63 22.2 13.41 21.41L21.41 13.41C22.2 12.63 22.2 11.37 21.41 10.59L13.41 2.59C13 2.19 12.5 2 12 2M12 4L20 12L12 20L4 12L12 4M12 7C9.79 7 8 8.79 8 11S9.79 15 12 15 16 13.21 16 11 14.21 7 12 7M12 9C13.1 9 14 9.9 14 11S13.1 13 12 13 10 12.1 10 11 10.9 9 12 9Z"/>
@@ -101,17 +101,16 @@ export default function StrategyAdvisoryPage() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Biotechnology & Scientific Consulting</h3>
               <p className="text-slate-300 text-sm mb-4">Leverage our network of scientific experts to navigate the technical and regulatory complexities of biotechnology and life sciences.</p>
-              <ul className="text-slate-400 text-sm space-y-1">
+              <ul className="text-slate-300 text-sm space-y-1">
                 <li>• Product development and sales regulatory pathways</li>
                 <li>• Scientific literature review and analysis</li>
                 <li>• Biosafety and biosecurity protocols</li>
                 <li>• Quality management system (QMS) implementation</li>
               </ul>
             </div>
-          </div>
 
           {/* Last 2 cards centered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          
             {/* Risk Management & Due Diligence */}
             <div className="bg-card rounded-lg p-6 border border-slate-700 relative pt-20">
               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-2xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
@@ -121,7 +120,7 @@ export default function StrategyAdvisoryPage() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Risk Management & Due Diligence</h3>
               <p className="text-slate-300 text-sm mb-4">Identify and mitigate operational and compliance risks before they become problems. We conduct thorough due diligence for strategic decisions and partnerships.</p>
-              <ul className="text-slate-400 text-sm space-y-1">
+              <ul className="text-slate-300 text-sm space-y-1">
                 <li>• Compliance risk assessment</li>
                 <li>• Third-party due diligence</li>
                 <li>• Regulatory impact assessment</li>
@@ -138,7 +137,7 @@ export default function StrategyAdvisoryPage() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Policy Development & Implementation</h3>
               <p className="text-slate-300 text-sm mb-4">Create robust policies that protect your organization while enabling operational efficiency. We develop clear, actionable policies that are practical and compliant.</p>
-              <ul className="text-slate-400 text-sm space-y-1">
+              <ul className="text-slate-300 text-sm space-y-1">
                 <li>• Corporate governance frameworks</li>
                 <li>• Data protection and privacy policies (GDPR, CCPA)</li>
                 <li>• Health and safety protocols</li>
@@ -146,7 +145,9 @@ export default function StrategyAdvisoryPage() {
                 <li>• Industry-specific compliance manuals</li>
               </ul>
             </div>
+
           </div>
+
         </div>
       </section>
 
@@ -253,7 +254,7 @@ export default function StrategyAdvisoryPage() {
           </div>
         </div>
       </section>
-
+fo the offer section 
       {/* The ORR Network Advantage Section */}
       <section className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
         <div className="text-center mb-16">
@@ -479,6 +480,100 @@ export default function StrategyAdvisoryPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Case Example Section */}
+      <section className="relative z-10 py-16 bg-gradient-to-br from-slate-700 to-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
+          <div className="relative">
+            {/* Left Content */}
+            <div className="max-w-3xl relative">
+              <h2 className="text-5xl font-bold text-primary mb-6">
+                Case Example
+              </h2>
+            
+              
+              {/* Three Cards */}
+              <div className="bg-white p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Challenge Card */}
+                <div className="text-left">
+                  <div className="w-12 h-12 mb-4 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8H11C9.9 8 9 7.1 9 6V4L3 7V9H21ZM3 10V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V10H3Z"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    Challenge
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    A cooperative operating in a niche market faced decreased profits and pressure from stakeholders to reverse the trend. The board understood the severity of the issue and recognized that scientific studies were essential to inform their strategic decisions. However, lacking scientific expertise internally, the cooperative was spending hundreds of thousands of euros on external scientific study reports with limited guidance on how to action the findings.
+                  </p>
+                </div>
+                
+                {/* Solution Card */}
+                <div className="text-left">
+                  <div className="w-12 h-12 mb-4 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 21C9 22.1 9.9 23 11 23H13C14.1 23 15 22.1 15 21V20H9V21M12 2A7 7 0 0 0 5 9C5 11.38 6.19 13.47 8 14.74V17A1 1 0 0 0 9 18H15A1 1 0 0 0 16 17V14.74C17.81 13.47 19 11.38 19 9A7 7 0 0 0 12 2Z"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    Solution
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    ORR was brought in to assess the situation and provide strategic direction. Within days, we delivered a detailed report outlining the ideal modus operandi. The report covered market pricing for scientific analysis, relevant regulatory frameworks to guide compliance, and how to strategically increase the value of their niche market through product specialization — including a roadmap for PDO (Protected Designation of Origin) or IGP (Protected Geographical Indication) applications.
+                  </p>
+                </div>
+                
+                {/* Result Card */}
+                <div className="text-left">
+                  <div className="w-12 h-12 mb-4 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 6L18.29 8.29L13.41 13.17L9.41 9.17L2 16.59L3.41 18L9.41 12L13.41 16L20.71 8.71L23 11V6H16Z"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    Result
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    Armed with ORR's strategic report, the cooperative immediately redirected their approach, significantly reducing unnecessary scientific study expenses while focusing resources on high-impact initiatives. The specialization strategy aimed them toward premium market segments, and the cooperative is now pursuing PDO certification to differentiate their product and command higher prices. Stakeholder confidence has been restored as profits begin to recover.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Image - Positioned absolutely */}
+            <div className="absolute top-0 right-0 w-96 h-[620px] hidden lg:block -z-10">
+              <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-full flex items-center justify-center transform -skew-x-12">
+                <Image 
+                  src="/parallelogram.jpg"
+                  alt="Business documents and reports on a desk"
+                  className="w-full h-full object-cover rounded-xl"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="relative z-10 py-24 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Ready to Navigate Complexity
+          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#47ff4c] mb-8">
+            with Confidence?
+          </h2>
+          <p className="text-slate-200 text-lg mb-12 max-w-2xl mx-auto">
+            Let's assess your compliance landscape and design strategies that protect and enable your growth.
+          </p>
+          <button className="bg-gradient-to-r from-[#47ff4c] to-[#0ec277] text-black px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-[#47ff4c]/25 transition-all duration-300">
+            Book a free compliance assessment
+          </button>
         </div>
       </section>
     </div>
