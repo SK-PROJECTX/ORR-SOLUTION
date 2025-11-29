@@ -7,6 +7,7 @@ import {
   BarChart3,
   Settings,
   LucideProps,
+  Settings2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
@@ -24,6 +25,7 @@ const navigationItems: ItemType[] = [
   { icon: Image, label: "Payments", active: false, value: "payment-management" },
   { icon: Settings, label: "Project Service", active: false, value: "project-service-management" },
   { icon: BarChart3, label: "SEO and Analytics", active: false, value: "seo-and-analytics" },
+  { icon: Settings2, label: "Settings", active: false, value: "settings" },
 ];
 
 export default function Sidebar() {
