@@ -177,7 +177,7 @@ export default function Services() {
               <h2 className="text-4xl font-bold text-white mb-6">
                 ORR is your Business GP for
               </h2>
-              <h3 className="text-4xl font-bold mb-8">
+              <h3 className="text-4xl font-bold mb-8 text-white">
                 complex <span className="text-green-400">systems — digital and living.</span>
               </h3>
               <p className="text-gray-300 text-xl mb-8">

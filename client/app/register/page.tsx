@@ -24,12 +24,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Image + Text */}
-
-    
-     
-
-        {/* Right side - Form */}
+      {/* Right side - Form */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
