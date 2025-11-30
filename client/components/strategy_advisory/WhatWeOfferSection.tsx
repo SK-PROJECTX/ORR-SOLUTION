@@ -8,7 +8,7 @@ interface OfferCardProps {
 
 function OfferCard({ title, description, icon, features, className = '' }: OfferCardProps) {
   return (
-    <div className={`bg-card rounded-lg p-6 border border-slate-700 relative pt-20 ${className}`}>
+    <div className={`bg-card rounded-lg p-6 border border-slate-700 relative pt-20 flex-1 min-w-0 basis-full md:basis-[calc(50%-1.5rem)] xl:basis-[calc(33.333%-2rem)] max-w-md ${className}`}>
       <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-40 h-32 bg-card flex items-center justify-center shadow-2xl" style={{clipPath: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)'}}>
         <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d={icon}/>
@@ -94,7 +94,7 @@ export default function WhatWeOfferSection() {
       </h2>
       
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-32 gap-x-12 mb-24 justify-items-center">
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-32 mb-24">
           {offers.map((offer, index) => (
             <OfferCard
               key={index}
