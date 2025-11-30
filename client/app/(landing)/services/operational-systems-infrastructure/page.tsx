@@ -1,4 +1,3 @@
-import AnimatedBackground from "@/components/AnimatedBackground";
 import HeroSection from "@/components/operational_systems/HeroSection";
 import WhatWeOfferSection from "@/components/operational_systems/WhatWeOfferSection";
 import HowWeWorkSection from "@/components/operational_systems/HowWeWorkSection";
@@ -10,7 +9,6 @@ import FinalCTASection from "@/components/operational_systems/FinalCTASection";
 export default function OperationalSystemsPage() {
   return (
     <div className="min-h-screen py-12 relative overflow-hidden">
-      <AnimatedBackground />
       <HeroSection />
       <WhatWeOfferSection />
       <HowWeWorkSection />
