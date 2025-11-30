@@ -6,13 +6,12 @@ import {
   dateFnsLocalizer,
   Views,
   Navigate,
-  DateLocalizer,
 } from "react-big-calendar";
-import format from "date-fns/format";
-import parse from "date-fns/parse";
-import startOfWeek from "date-fns/startOfWeek";
-import getDay from "date-fns/getDay";
-import enUS from "date-fns/locale/en-US";
+import {format} from "date-fns/format";
+import { parse } from "date-fns/parse";
+import { startOfWeek }from "date-fns/startOfWeek";
+import { getDay } from "date-fns/getDay";
+import {enUS} from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -45,8 +44,7 @@ const calendarStyles = `
 // You should also include the react-big-calendar css in your global CSS if using Next.js.
 
 const locales = { "en-US": enUS };
-const localizer: DateLocalizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
-
+const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 type EventItem = {
   id: number;
   title: string;
@@ -153,7 +151,9 @@ export default function SchedulingPage() {
     const styleElement = document.createElement('style');
     styleElement.textContent = calendarStyles;
     document.head.appendChild(styleElement);
-    return () => document.head.removeChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
   }, []);
   const eventStyleGetter = (event: EventItem) => {
     const style: React.CSSProperties = {
@@ -199,7 +199,7 @@ export default function SchedulingPage() {
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 style={{ height: '100%' }}
                 components={{ toolbar: CustomToolbar }}
-                eventPropGetter={(ev) => eventStyleGetter(ev as EventItem)}
+                eventPropGetter={(ev: any) => eventStyleGetter(ev as EventItem)}
                 popup
               />
             </div>
