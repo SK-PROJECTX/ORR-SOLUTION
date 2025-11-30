@@ -1,12 +1,14 @@
 "use client";
-
 import {
   Home,
   FileText,
-  Image,
+  CreditCard,
   BarChart3,
   Settings,
   LucideProps,
+  Settings2,
+  Calendar,
+  Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
@@ -18,12 +20,46 @@ type ItemType = {
   active: boolean;
   value: string;
 };
+
 const navigationItems: ItemType[] = [
   { icon: Home, label: "Dashboard", active: true, value: "" },
-  { icon: FileText, label: "Contents", active: false, value: "content-management" },
-  { icon: Image, label: "Payments", active: false, value: "payment-management" },
-  { icon: Settings, label: "Project Service", active: false, value: "project-service-management" },
-  { icon: BarChart3, label: "SEO and Analytics", active: false, value: "seo-and-analytics" },
+  {
+    icon: FileText,
+    label: "Contents",
+    active: false,
+    value: "content-management",
+  },
+  {
+    icon: CreditCard,
+    label: "Payments",
+    active: false,
+    value: "payment-management",
+  },
+  {
+    icon: Settings,
+    label: "Project Service",
+    active: false,
+    value: "project-service-management",
+  },
+  {
+    icon: BarChart3,
+    label: "SEO and Analytics",
+    active: false,
+    value: "seo-and-analytics",
+  },
+  { icon: Settings2, label: "Settings", active: false, value: "settings" },
+  {
+    icon: Users,
+    label: "Client Management",
+    active: false,
+    value: "client-management",
+  },
+  {
+    icon: Calendar,
+    label: "Schedule Meetings",
+    active: false,
+    value: "schedule-meetings",
+  },
 ];
 
 export default function Sidebar() {
@@ -36,16 +72,13 @@ export default function Sidebar() {
 
   return (
     <div className="w-64 bg-card min-h-screen p-4">
-      <div className="flex items-center gap-3 mb-8 text-foreground">
-        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-          <div className="w-6 h-6 bg-background rounded-sm"></div>
-        </div>
-        <div>
-          <div className="font-bold text-lg">ORR</div>
-          <div className="text-sm text-foreground/70">Solutions</div>
-          <div className="text-xs text-foreground/50">
-            Listen. Solve. Optimise.
-          </div>
+      <div className="flex items-center gap-3 text-foreground">
+        <div className="justify-start flex items-start">
+          <img
+            src="/images/logo.svg"
+            alt="ORR Solutions"
+            className="w-32 h-32 ml-10"
+          />
         </div>
       </div>
 
