@@ -1,4 +1,4 @@
-import AnimatedBackground from "@/components/strategy_advisory/AnimatedBackground";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import HeroSection from "@/components/strategy_advisory/HeroSection";
 import WhatWeOfferSection from "@/components/strategy_advisory/WhatWeOfferSection";
 import HowWeWorkSection from "@/components/strategy_advisory/HowWeWorkSection";
