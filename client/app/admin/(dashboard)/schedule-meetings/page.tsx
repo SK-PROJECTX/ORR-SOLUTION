@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
-import enUS from "date-fns/locale/en-US";
+import { enUS } from "date-fns/locale/en-US";
 import { MoreVertical } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar as CalendarIcon } from "lucide-react";
