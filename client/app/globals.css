@@ -8,6 +8,7 @@
   --color-lemon: #13be77;
   --color-green: #0ec277;
   --color-card: #204460;
+  --color-card-light: #2D597D;
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
 }
 
@@ -47,7 +48,9 @@ body {
 
 .bg-background { background-color: var(--color-background); }
 .bg-card { background-color: var(--color-card); }
+.bg-card-light { background-color: var(--color-card-light); }
 .bg-primary { background-color: var(--color-primary); }
+.border-primary { border-color: var(--color-primary); }
 .bg-secondary { background-color: var(--color-secondary); }
 .bg-lemon { background-color: var(--color-lemon); }
 .border-lemon { border: var(--color-lemon); }
@@ -67,6 +70,29 @@ body {
 
 .glow-border:hover {
   box-shadow: 0 0 30px rgba(14, 194, 119, 0.8), inset 0 0 20px rgba(14, 194, 119, 0.2);
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .star {
+    background-size: 200px 200px, 250px 250px;
+    background-position: 0 0, 100px 100px;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 
