@@ -62,8 +62,8 @@ export default function Page() {
 
         <div className="absolute bottom-10 w-full px-6 text-start">
           <p className="text-[48px] font-poppins font-extrabold text-[32px] md:text-[48px] lg:text-[48px] xl:text-[40px] ml-5 mx-auto">
-            <span className="text-[#86FF22] ">ORR Solutions</span> - Listen. <br />
-            Solve. Optimise.
+            <span className="text-[#86FF22] ">ORR Solutions</span>  <br />
+            Listen.  Solve. Optimise.
           </p>
         </div>
       </div>
