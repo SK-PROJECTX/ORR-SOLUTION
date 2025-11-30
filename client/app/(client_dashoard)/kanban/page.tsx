@@ -1,10 +1,31 @@
 'use client'
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
 import { Calendar, Ellipsis, Filter, MenuIcon } from "lucide-react";
 
+// Types
+type Task = {
+  id: string;
+  title: string;
+  team: string;
+  days: number;
+  comments: number;
+  attachments: number;
+};
+
+type Column = {
+  id: string;
+  title: string;
+  tasks: Task[];
+};
+
+type BoardData = {
+  columns: Record<string, Column>;
+};
+
 // Dummy Data
-const initialData = {
+const initialData: BoardData = {
   columns: {
     todo: {
       id: "todo",
@@ -92,9 +113,9 @@ const initialData = {
 };
 
 export default function OrganisationBoard() {
-  const [data, setData] = React.useState(initialData);
+  const [data, setData] = React.useState<BoardData>(initialData);
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
 
