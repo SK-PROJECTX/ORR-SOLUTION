@@ -28,27 +28,64 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-br from-[#2A4A6B] to-[#1E3A5F] rounded-3xl p-1">
-            <div className="bg-[#1E3A5F]/90 rounded-3xl">
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                {sections.map((section, index) => (
-                  <div key={index} className={`p-8 lg:p-12 ${index === 0 ? 'lg:border-r border-[#47ff4c]/30' : ''}`}>
+            <div className="bg-[#1E3A5F]/90 rounded-3xl p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-6 lg:gap-8">
+                {/* Listen & Report - spans full left side */}
+                <div className="lg:row-span-2 bg-[#1E3A5F]/60 p-8 lg:border-r border-[#47ff4c]/30 lg:mr-4">
+                  <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6">
+                    {sections[0]?.title}
+                  </h3>
+                  {sections[0]?.subtitle && (
+                    <h4 className="text-gray-300 text-lg font-semibold mb-6">
+                      {sections[0].subtitle}
+                    </h4>
+                  )}
+                  <div className="space-y-4 text-gray-300 leading-relaxed">
+                    {sections[0]?.content.map((paragraph, pIndex) => (
+                      <p key={pIndex}>{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Decide section - top right */}
+                {sections[1] && (
+                  <div className="bg-[#1E3A5F]/60 rounded-2xl p-8">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6">
-                      {section.title}
+                      {sections[1].title}
                     </h3>
-                    {section.subtitle && (
+                    {sections[1].subtitle && (
                       <h4 className="text-gray-300 text-lg font-semibold mb-6">
-                        {section.subtitle}
+                        {sections[1].subtitle}
                       </h4>
                     )}
                     <div className="space-y-4 text-gray-300 leading-relaxed">
-                      {section.content.map((paragraph, pIndex) => (
+                      {sections[1].content.map((paragraph, pIndex) => (
                         <p key={pIndex}>{paragraph}</p>
                       ))}
                     </div>
                   </div>
-                ))}
+                )}
+                
+                {/* Optimize section - bottom right */}
+                {sections[2] && (
+                  <div className="bg-[#1E3A5F]/60 rounded-2xl p-8 ">
+                    <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6">
+                      {sections[2].title}
+                    </h3>
+                    {sections[2].subtitle && (
+                      <h4 className="text-gray-300 text-lg font-semibold mb-6">
+                        {sections[2].subtitle}
+                      </h4>
+                    )}
+                    <div className="space-y-4 text-gray-300 leading-relaxed">
+                      {sections[2].content.map((paragraph, pIndex) => (
+                        <p key={pIndex}>{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
