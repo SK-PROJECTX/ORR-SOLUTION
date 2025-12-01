@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Page() {
   
@@ -61,8 +62,8 @@ export default function Page() {
 
         <div className="absolute bottom-10 w-full px-6 text-start">
           <p className="text-[48px] font-poppins font-extrabold text-[32px] md:text-[48px] lg:text-[48px] xl:text-[40px] ml-5 mx-auto">
-            <span className="text-[#86FF22] ">ORR Solutions</span> - Listen. <br />
-            Solve. Optimise.
+            <span className="text-[#86FF22] ">ORR Solutions</span>  <br />
+            Listen.  Solve. Optimise.
           </p>
         </div>
       </div>
@@ -79,13 +80,23 @@ export default function Page() {
               />
             </div>
          
+          <div className="flex justify-between items-center mb-6">
 
-          <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-            Welcome <span className="text-[#61FD51]">Back</span>
-          </h2>
-          <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-            Sign in to your dashboard
-          </p>
+            <div className="mt-0">
+                <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
+                Welcome <span className="text-[#61FD51]">Back</span>
+              </h2>
+              <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
+                Sign in to your dashboard
+              </p>
+            </div>
+
+            <div className="mb-8">
+                <ThemeToggle />
+            </div>
+          
+          </div>
+          
 
           <form className="space-y-7">
             <input

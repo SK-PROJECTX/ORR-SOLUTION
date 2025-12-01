@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Page() {
   
@@ -23,12 +24,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Image + Text */}
-
-    
-     
-
-        {/* Right side - Form */}
+      {/* Right side - Form */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
@@ -40,13 +36,22 @@ export default function Page() {
               />
             </div>
          
+          <div className="flex justify-between items-center mb-6">
+          <div className="mt-0">
+                <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
+                Welcome 
+              </h2>
+              <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
+                Create a new account
+              </p>
+          </div>
+         
 
-          <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-            Welcome 
-          </h2>
-          <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-            Create a new account
-          </p>
+          <div className="mb-8">
+            <ThemeToggle />
+          </div>
+          
+          </div>
 
           <form className="space-y-7">
              <input
@@ -107,7 +112,7 @@ export default function Page() {
               type="submit"
               className="w-full bg-[#13BE77] text-white py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {loading ? "Signing In..." : "Login"}
+              {loading ? "Registering..." : "Register"}
             </button>
 
                 <div className="hidden md:flex items-end  justify-end mt-4 ">
@@ -115,7 +120,7 @@ export default function Page() {
                   href="/login"
                   className="px-6 font-extrabold text-md text-[#FFFFFF] "
                 >
-                  Already have an account <span className="text-[#61FD51] underline">Login</span>
+                  Already have an account? <span className="text-[#61FD51] underline">Login</span>
                 </Link>
               </div>
           </form>

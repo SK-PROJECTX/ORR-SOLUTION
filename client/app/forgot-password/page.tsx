@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import { ThemeToggle } from "../components/ThemeToggle";
 export default function Page() {
   
   const [formData, setFormData] = useState({
@@ -41,12 +41,20 @@ export default function Page() {
             </div>
          
 
-          <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-            Welcome 
-          </h2>
-          <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-            Create a new account
-          </p>
+          <div className="flex justify-between items-center mb-6">
+                   <div className="mt-0">
+                         <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
+                         Forgot Your Password
+                       </h2>
+                   </div>
+                  
+         
+                   <div className="mb-8">
+                     <ThemeToggle />
+                   </div>
+                   
+                   </div>
+
 
           <form className="space-y-7">
            
