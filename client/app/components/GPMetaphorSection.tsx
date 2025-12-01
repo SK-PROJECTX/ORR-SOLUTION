@@ -21,7 +21,7 @@ export default function GPMetaphorSection() {
       {/* Top row: responsive layout */}
       <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
         {/* Card 1 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/organ.png" alt="Living system" fill className="object-cover" />
           </div>
@@ -31,7 +31,7 @@ export default function GPMetaphorSection() {
         </div>
 
         {/* Card 2 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/nervous-system.png" alt="Systems working together" fill className="object-cover" />
           </div>
@@ -43,7 +43,7 @@ export default function GPMetaphorSection() {
 
       <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
         {/* Card 3  */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/circulatory-system.png" alt="Living system" fill className="object-cover" />
           </div>
@@ -53,7 +53,7 @@ export default function GPMetaphorSection() {
         </div>
 
         {/* Card 4 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/immune-system.png" alt="Systems working together" fill className="object-cover" />
           </div>
@@ -65,7 +65,7 @@ export default function GPMetaphorSection() {
 
       <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
         {/* Card 5 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card  lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/dna.png" alt="Living system" fill className="object-cover" />
           </div>
@@ -75,7 +75,7 @@ export default function GPMetaphorSection() {
         </div>
 
         {/* Card 6 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
+        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src="/images/metabolism.png" alt="Systems working together" fill className="object-cover" />
           </div>

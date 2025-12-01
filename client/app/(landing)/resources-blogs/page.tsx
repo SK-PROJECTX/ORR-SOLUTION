@@ -1,169 +1,213 @@
 "use client";
 
-import Image from "next/image";
-// import QuarterImg from "images/image.png"; // your uploaded image
-
+import { useRef } from "react";
 
 export default function ResourcesBlogs() {
-	return (
-		<div className="min-h-screen text-foreground star">
-			<Blog/>
-			<AdminTips/>
-			{/* <ProcessImprovementSection/> */}
-
-		</div>
-	);
+  return (
+    <div className="min-h-screen bg-[#0A1B2E] text-white">
+      <HeroSection />
+      <ContentSection />
+    </div>
+  );
 }
 
- function Blog () {
-  const cards = [1, 2, 3, 4];
-
+function HeroSection() {
   return (
-    <section className="relative w-full px-6 md:px-16 py-20 star">
-      {/* Title */}
-      <h2 className="text-center text-4xl md:text-5xl font-bold text-white mb-6">
-        Resources <span className="text-green-400">/ Blogs</span>
-      </h2>
-
-      {/* Subtitle */}
-      <p className="text-center max-w-3xl mx-auto text-gray-300 text-[15px] mb-16 leading-relaxed">
-        Lorem ipsm ticles, practical guides, and future-focused insights on digital transformation, AI,
-        software development, and cloud innovation, written to help your business scale with confidence.
+    <section className="relative px-6 md:px-16 py-20 min-h-[100vh] flex flex-col items-start justify-center">
+      <h1 className="text-4xl md:text-6xl font-bold mb-6">
+        Resources
+        <br />
+        <span className="text-green-400">& Client Portal</span>
+      </h1>
+      
+      <p className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
+        Your digital HQ for business clarity, timelines, and real-time status.
+        This isn't a traditional blog.
       </p>
+      
+      <p className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
+        Our resources are organized around the ORR client portal — a dashboard where
+        you can read FAQs, download material, request meetings, and chat with a live
+        operator or consultant.
+      </p>
+      
+      <p className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
+        Instead of scattered articles, you get structured guidance that follows our live
+        project — following blogs have insight, how-to — and real-time alerts.
+        Everything is organized around live project management, AI marketing
+        systems & implementation.
+      </p>
+      
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
+          Request access to the client portal
+        </button>
+        <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
+          Learn how we operate
+        </button>
+      </div>
+    </section>
+  );
+}
 
-      {/* Blog Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-6xl mx-auto">
-        {cards.map((item) => (
-          <div
-            key={item}
-            className="rounded-4xl overflow-hidden bg-card border border-green-700/30 shadow-[0_0_15px_rgba(0,255,120,0.15)] hover:shadow-[0_0_25px_rgba(0,255,140,0.3)] transition-all duration-300"
-          >
-            {/* Image */}
-			<div className="p-6">
-			
-            <img
-              src="/images/image.png" /* Replace with real path */
-              alt="Blog Visual"
-              className="w-full h-52 object-cover rounded-2xl"
-			  />
-			  </div>
+function ContentSection() {
+  return (
+    <section className="px-6 md:px-16 pb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        {/* Left Column */}
+        <ContentCard
+          badge="Blog"
+          title="WHY A PORTAL, NOT JUST A BLOG?"
+          content={[
+            "Designed for people who want to act, not just read.",
+            "Everything you need is one location.",
+            "Live ORR client portal connects resources, FAQs, chat, and project management in one place.",
+            "Questions or decisions can be live chat with consultants.",
+            "Sharing links, documents, and project updates happens in real-time.",
+            "Sharing FAQs",
+            "Everything you need to know about how we work and the projects we deliver is in one place.",
+            "Project workflow is dynamic."
+          ]}
+          image="/images/image.png"
+        />
+        
+        {/* Right Column */}
+        <ContentCard
+          badge="Guide"
+          title="HOW CONTENT IS ORGANISED"
+          content={[
+            "Resources that follow the way we work.",
+            "Everything here is project-focused live resources — not standalone articles or random tips.",
+            "By Stage:",
+            "• Discovery — understand, feedback, and next steps",
+            "• Define — deliverables, timelines, and expectations",
+            "• Deploy — live development, testing, and launch",
+            "• Deliver — handover, training, and ongoing support",
+            "By Type:",
+            "• FAQs — quick answers to common questions",
+            "• Guides — step-by-step processes for clients, stakeholders, and change management",
+            "• Resources — templates, checklists, and tools",
+            "• Updates — real-time project status, new features, and announcements"
+          ]}
+          image="/images/image.png"
+        />
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto mt-8">
+        {/* Bottom Left */}
+        <ContentCard
+          badge="Guide"
+          title="WHAT YOU CAN DO TODAY"
+          content={[
+            "Before, during, and after working with ORR.",
+            "Whether you're just starting or already — or just thinking about it:",
+            "Read our FAQ and request a call with us.",
+            "Before you engage:",
+            "Read how our live meeting and client work happens — so you know what to expect when we start working together.",
+            "During engagement:",
+            "Access live project status in real-time — see progress, ask questions, and get immediate answers from our team.",
+            "After project is complete:",
+            "Download resources from completed work, get ongoing support, and access to our alumni network.",
+            "Download resources from completed work, get ongoing support, and access to our alumni network.",
+            "Access resources on key development, project management, and business growth topics.",
+            "Access resources on key development, project management, and business growth topics."
+          ]}
+          image="/images/image.png"
+        />
+        
+        {/* Bottom Right */}
+        <ContentCard
+          badge="Access"
+          title="HOW ACCESS WORKS"
+          content={[
+            "Simple. Immediate access.",
+            "Request access:",
+            "Click above button and we'll send you an email with your login details.",
+            "Receive your login:",
+            "Check your email for credentials and the link to your client portal.",
+            "Start exploring:",
+            "Log in and start exploring resources, FAQs, and project tools.",
+            "Book your first chat:",
+            "Use our in-app calendar to book a 15-minute call with our team to discuss your project and next steps.",
+            "Request your first project:",
+            "Submit your first project request directly through the portal and begin our 4-stage process."
+          ]}
+          image="/images/image.png"
+          buttons={[
+            "Request access to the client portal",
+            "Learn how we operate"
+          ]}
+        />
+      </div>
+    </section>
+  );
+}
 
-            {/* Card Content */}
-            <div className="p-6">
-              <span className="bg-green-400 text-[#002b17] text-xs font-semibold px-3 py-1 rounded-full inline-block mb-4">
-                Article
-              </span>
+function ContentCard({ badge, title, content, image, buttons }: {
+  badge: string;
+  title: string;
+  content: string[];
+  image: string;
+  buttons?: string[];
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
 
-              <h3 className="text-white text-lg font-semibold leading-snug">
-                Mobile Apps & PWAs for Maltese Insurers: Boost Engagement | Born Digital
-              </h3>
-            </div>
-          </div>
+  const handleMouseEnter = () => {
+    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  return (
+    <div 
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      className="bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 group hover:bg-[#1F3247] transition-all duration-300"
+    >
+      <div className="mb-6">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-48 object-cover rounded-2xl"
+        />
+      </div>
+      
+      <div className="mb-4">
+        <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
+          {badge}
+        </span>
+      </div>
+      
+      <h3 className="text-xl font-bold mb-6">{title}</h3>
+      
+      <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+        {content.slice(0, 2).map((item, index) => (
+          <p key={index}>{item}</p>
         ))}
-      </div>
-    </section>
-  );
-}
-
- function AdminTips() {
-  return (
-    <section className="relative w-full px-6 md:px-16 py-20 star">
-      {/* Title */}
-      <h2 className="text-center text-3xl md:text-4xl font-semibold text-white mb-20">
-        Admin <span className="text-green-400">Tips</span>
-      </h2>
-
-      {/* Container */}
-      <div className="flex flex-col gap-24 max-w-5xl mx-auto">
-        {/* Item 1 */}
-        <div className="flex items-start gap-10">
-          <h3 className="text-6xl md:text-7xl font-bold text-green-400">01</h3>
-
-          <div className="flex flex-col gap-3 max-w-3xl">
-            <h4 className="text-xl font-semibold text-white">Lorem ipsum</h4>
-            <div className="w-24 h-[3px] bg-green-400 rounded-full"></div>
-            <p className="text-gray-300 leading-relaxed text-[15px]">
-              Lorem ipsum jgdu mplexity. From regulatory and sustainability
-              frameworks to biotechnology and compliance consulting, our experts
-              guide clients through evolving legal, scientific, and operational
-              standards. Our approach combines deep technical insight with
-              strategic foresight — ensuring every initiative is compliant,
-              sustainable, and built for growth.
-            </p>
-          </div>
-        </div>
-
-        {/* Item 2 */}
-        <div className="flex items-start gap-10">
-          <h3 className="text-6xl md:text-7xl font-bold text-green-400">02</h3>
-
-          <div className="flex flex-col gap-3 max-w-3xl">
-            <h4 className="text-xl font-semibold text-white">Lorem ipsum</h4>
-            <div className="w-24 h-[3px] bg-green-400 rounded-full"></div>
-            <p className="text-gray-300 leading-relaxed text-[15px]">
-              Lorem ipsum jgdu mplexity. From regulatory and sustainability
-              frameworks to biotechnology and compliance consulting, our experts
-              guide clients through evolving legal, scientific, and operational
-              standards. Our experts help clients navigate complex requirements
-              with confidence.
-            </p>
-          </div>
-        </div>
-
-        {/* Item 3 */}
-        <div className="flex items-start gap-10">
-          <h3 className="text-6xl md:text-7xl font-bold text-green-400">03</h3>
-
-          <div className="flex flex-col gap-3 max-w-3xl">
-            <h4 className="text-xl font-semibold text-white">Lorem ipsum</h4>
-            <div className="w-24 h-[3px] bg-green-400 rounded-full"></div>
-            <p className="text-gray-300 leading-relaxed text-[15px]">
-              Lorem ipsum jgdu mplexity. From regulatory and sustainability
-              frameworks to biotechnology and compliance consulting, our experts
-              guide clients through evolving legal, scientific, and operational
-              standards.
-            </p>
+        <p className="group-hover:opacity-0 text-gray-400 transition-opacity duration-300">...</p>
+        <div className="max-h-0 overflow-hidden group-hover:max-h-96 transition-all duration-500 ease-in-out">
+          <div className="space-y-3 pt-3">
+            {content.slice(2).map((item, index) => (
+              <p key={index + 2}>{item}</p>
+            ))}
           </div>
         </div>
       </div>
-    </section>
-  );
-}
-
-function ProcessImprovementSection() {
-  return (
-    <section className="relative w-full bg-[#0A1B2E] overflow-hidden py-[6rem] px-4">
-      {/* Starry BG Pattern */}
-      <div className="absolute inset-0 pointer-events-none bg-[url('/stars.svg')] bg-cover opacity-40"></div>
-
-      {/* Green Glow (top-left & bottom-right) */}
-      <div className="absolute -top-20 -left-20 w-[25rem] h-[25rem] bg-[#40B25B]/40 blur-[120px] rounded-full hidden md:block"></div>
-      <div className="absolute bottom-0 right-0 w-[32rem] h-[32rem] bg-[#379898]/30 blur-[130px] rounded-full hidden md:block"></div>
-
-      {/* Content Wrapper */}
-      <div className="relative max-w-4xl mx-auto text-center">
-        <h2 className="text-white text-[2rem] md:text-[2.3rem] font-semibold leading-tight">
-          Process <span className="text-[#40B25B]">Improvement</span>
-        </h2>
-
-        <p className="mt-4 text-[#C8D2DF] text-sm md:text-base leading-relaxed px-2">
-          Lorem ipsum jsgdu mplxety. From regulatory and sustainability frameworks 
-          to biotechnology and compliance consulting, our experts guide clients through 
-          evolving legal, scientific, and operational standards. Our approach combines 
-          deep technical insight with strategic foresight — ensuring every initiative is 
-          compliant, sustainable, and built for growth.
-        </p>
-
-        {/* White Card */}
-        <div className="mt-10 mx-auto w-full max-w-[900px] bg-white rounded-[2rem] shadow-[0_0_40px_rgba(0,0,0,0.35)] p-4 md:p-6">
-          {/* <Image
-            src={QuarterImg}
-            alt="Quarter Overview"
-            className="w-full rounded-xl"
-          /> */}
+      
+      {buttons && (
+        <div className="flex flex-col gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {buttons.map((button, index) => (
+            <button
+              key={index}
+              className={`px-6 py-3 rounded-full font-semibold transition-colors ${
+                index === 0
+                  ? 'bg-green-400 text-black hover:bg-green-300'
+                  : 'border border-green-400 text-green-400 hover:bg-green-400 hover:text-black'
+              }`}
+            >
+              {button}
+            </button>
+          ))}
         </div>
-      </div>
-    </section>
+      )}
+    </div>
   );
 }
-
