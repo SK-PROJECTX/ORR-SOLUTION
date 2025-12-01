@@ -1,6 +1,6 @@
 export default function AnimatedBackground() {
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 overflow-hidden">
       {[...Array(500)].map((_, i) => (
         <div
           key={i}

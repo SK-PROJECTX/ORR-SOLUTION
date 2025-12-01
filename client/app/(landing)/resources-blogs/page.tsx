@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function ResourcesBlogs() {
   return (
-    <div className="min-h-screen bg-[#0A1B2E] text-white">
+    <div className="min-h-screen text-white">
       <HeroSection />
       <ContentSection />
     </div>
@@ -13,7 +13,7 @@ export default function ResourcesBlogs() {
 
 function HeroSection() {
   return (
-    <section className="relative px-6 md:px-16 py-20 min-h-[100vh] flex flex-col items-start justify-center">
+    <section className="relative px-6 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 className="text-4xl md:text-6xl font-bold mb-6">
         Resources
         <br />
@@ -151,16 +151,24 @@ function ContentCard({ badge, title, content, image, buttons }: {
   buttons?: string[];
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleMouseEnter = () => {
-    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const handleClick = () => {
+    setIsExpanded(!isExpanded);
+    if (!isExpanded) {
+      setTimeout(() => {
+        cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
   };
 
   return (
     <div 
       ref={cardRef}
-      onMouseEnter={handleMouseEnter}
-      className="bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 group hover:bg-[#1F3247] transition-all duration-300"
+      onClick={handleClick}
+      className={`bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 cursor-pointer transition-all duration-300 ${
+        isExpanded ? 'bg-[#1F3247]' : 'hover:bg-[#1A2B3D]/80'
+      }`}
     >
       <div className="mb-6">
         <img
@@ -178,22 +186,23 @@ function ContentCard({ badge, title, content, image, buttons }: {
       
       <h3 className="text-xl font-bold mb-6">{title}</h3>
       
-      <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
-        {content.slice(0, 2).map((item, index) => (
-          <p key={index}>{item}</p>
-        ))}
-        <p className="group-hover:opacity-0 text-gray-400 transition-opacity duration-300">...</p>
-        <div className="max-h-0 overflow-hidden group-hover:max-h-96 transition-all duration-500 ease-in-out">
-          <div className="space-y-3 pt-3">
-            {content.slice(2).map((item, index) => (
-              <p key={index + 2}>{item}</p>
+      <div className="text-gray-300 text-sm leading-relaxed">
+        {!isExpanded ? (
+          <div>
+            <p className="line-clamp-3">{content.slice(0, 2).join(' ')}</p>
+            <p className="text-gray-400 mt-2">...</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {content.map((item, index) => (
+              <p key={index}>{item}</p>
             ))}
           </div>
-        </div>
+        )}
       </div>
       
-      {buttons && (
-        <div className="flex flex-col gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      {buttons && isExpanded && (
+        <div className="flex flex-col gap-3 mt-6">
           {buttons.map((button, index) => (
             <button
               key={index}

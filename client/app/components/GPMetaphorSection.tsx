@@ -2,7 +2,22 @@
 
 import Image from "next/image";
 
+const cardData = [
+  { title: "Organ", description: "Your departments and teams", image: "/images/organ.png", position: "left" },
+  { title: "Nervous System", description: "Your communication channels", image: "/images/nervous-system.png", position: "right" },
+  { title: "Circulatory System", description: "Your cashflow and resources", image: "/images/circulatory-system.png", position: "left" },
+  { title: "Immune System", description: "Your risk management and compliance", image: "/images/immune-system.png", position: "right" },
+  { title: "DNA", description: "Your values, SOPs and Cultures", image: "/images/dna.png", position: "left" },
+  { title: "Metabolism", description: "Your day-to-day operations", image: "/images/metabolism.png", position: "right" },
+  { title: "Senses", description: "Your awareness and feedback loops", image: "/images/senses.png", position: "center" }
+];
+
 export default function GPMetaphorSection() {
+  const pairCards = [];
+  for (let i = 0; i < cardData.length - 1; i += 2) {
+    pairCards.push([cardData[i], cardData[i + 1]]);
+  }
+  
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background pattern (optional) */}
@@ -18,83 +33,29 @@ export default function GPMetaphorSection() {
         </p>
       </div>
 
-      {/* Top row: responsive layout */}
-      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
-        {/* Card 1 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/organ.png" alt="Living system" fill className="object-cover" />
-          </div>
-
-          <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Organ</div>
-          <p className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your departments and teams</p>         
+      {/* Paired cards */}
+      {pairCards.map((pair, index) => (
+        <div key={index} className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
+          {pair.map((card, cardIndex) => (
+            <div key={cardIndex} className={`w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl ${card.position === 'left' ? 'lg:rounded-tr-[4rem] lg:rounded-br-[4rem]' : 'lg:rounded-tl-[4rem] lg:rounded-bl-[4rem]'} overflow-hidden shadow-lg`}>
+              <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
+                <Image src={card.image} alt={card.title} fill className="object-cover" />
+              </div>
+              <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">{card.title}</div>
+              <p className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">{card.description}</p>
+            </div>
+          ))}
         </div>
+      ))}
 
-        {/* Card 2 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/nervous-system.png" alt="Systems working together" fill className="object-cover" />
-          </div>
-
-        <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Nervous System</div>
-          <p className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your communication channels</p>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
-        {/* Card 3  */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/circulatory-system.png" alt="Living system" fill className="object-cover" />
-          </div>
-
-          <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Circulatory System</div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your cashflow and resources </div>         
-        </div>
-
-        {/* Card 4 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/immune-system.png" alt="Systems working together" fill className="object-cover" />
-          </div>
-
-        <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Immune System</div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your risk management and compliance</div>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
-        {/* Card 5 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tr-[4rem] lg:rounded-br-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/dna.png" alt="Living system" fill className="object-cover" />
-          </div>
-
-          <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">DNA </div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your values, SOPs and Cultures</div>         
-        </div>
-
-        {/* Card 6 */}
-        <div className="w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl lg:rounded-tl-[4rem] lg:rounded-bl-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/metabolism.png" alt="Systems working together" fill className="object-cover" />
-          </div>
-
-        <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Metabolism</div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your day-to-day operations </div>
-        </div>
-      </div>
-
-
-      {/* Bottom card - centered */}
+      {/* Center card */}
       <div className="relative z-10 w-full flex justify-center">
         <div className="w-full max-w-4xl lg:max-w-6xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src="/images/senses.png" alt="ORR Solutions" fill className="object-cover" /> 
+            <Image src={cardData[6].image} alt={cardData[6].title} fill className="object-cover" />
           </div>
-
-        <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">Senses</div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">Your awareness and feedback loops</div>
+          <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">{cardData[6].title}</div>
+          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">{cardData[6].description}</div>
         </div>
       </div>
     </section>

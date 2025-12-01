@@ -12,7 +12,7 @@ export function LandingFooter() {
           <img 
             src="/images/logo.svg"
             alt="ORR Solutions Logo"
-            className="w-[15rem] h-auto"
+            className="w-60 h-auto"
           />
           {/* <div className="flex flex-col leading-tight">
             <h2 className="text-foreground text-3xl font-semibold">ORR</h2>
