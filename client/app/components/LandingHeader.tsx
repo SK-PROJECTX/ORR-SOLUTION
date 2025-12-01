@@ -83,10 +83,10 @@ export function LandingHeader() {
       )}
 
       {/* Mobile Menu Sidebar */}
-      <div className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-background transform transition-transform duration-300 ease-in-out z-50 ${
+      <div className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-card transform transition-transform duration-300 ease-in-out z-50 ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        <div className="p-6 backdrop-blur-2xl">
+        <div className="p-6">
           <div className="flex justify-between items-center mb-8">
             <img src="/images/logo.svg" alt="ORR Solutions" className="h-8 w-auto" />
             <button onClick={() => setIsMobileMenuOpen(false)} className="text-white p-2">

@@ -4,7 +4,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 
 export function LandingFooter() {
   return (
-    <footer className="w-full py-12 px-6 bg-card">
+    <footer className="w-full py-12 px-6 bg-card z-10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
 
         {/* Logo Section */}
