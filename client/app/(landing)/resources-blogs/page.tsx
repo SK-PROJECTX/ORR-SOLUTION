@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+
 export default function ResourcesBlogs() {
   return (
     <div className="min-h-screen bg-[#0A1B2E] text-white">
@@ -148,8 +150,18 @@ function ContentCard({ badge, title, content, image, buttons }: {
   image: string;
   buttons?: string[];
 }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = () => {
+    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
-    <div className="bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 group hover:bg-[#1F3247] transition-all duration-300">
+    <div 
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      className="bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 group hover:bg-[#1F3247] transition-all duration-300"
+    >
       <div className="mb-6">
         <img
           src={image}
