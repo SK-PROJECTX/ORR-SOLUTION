@@ -25,33 +25,28 @@ export default function DigitalSolutionsSection() {
               <ul className="space-y-3 text-slate-300">
                 <li className="flex items-start">
                   <span className="text-primary mr-2">•</span>
-                  Growing businesses struggling with operational inefficiencies 
-                  and manual processes
+                  Self-employed professionals and freelancers 
+                  ready to scale their operations with hiring full-time staff
                 </li>
                 <li className="flex items-start">
                   <span className="text-primary mr-2">•</span>
-                  Manufacturing companies seeking to optimize production 
-                  workflows and quality control
+                  Solo practitioners who want to digitalize and systematize their 
+                  business processes
                 </li>
                 <li className="flex items-start">
                   <span className="text-primary mr-2">•</span>
-                  Service organizations looking to standardize processes 
-                  and improve customer delivery
+                  Independent consultants seeking to professionalize their 
+                  operations through outsourced expertise
                 </li>
                 <li className="flex items-start">
                   <span className="text-primary mr-2">•</span>
-                  Companies preparing for ISO certification or quality 
-                  management system implementation
+                  Service providers who prefer to focus on their core work 
+                  while delegating operational setup to specialists
                 </li>
                 <li className="flex items-start">
                   <span className="text-primary mr-2">•</span>
-                  Organizations facing supply chain disruptions or 
-                  logistics challenges
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  Businesses needing data-driven insights to improve 
-                  operational decision-making
+                  Entrepreneurs growing beyond one-person operations who need 
+                  structured systems before scaling further
                 </li>
               </ul>
             </div>
@@ -62,14 +57,11 @@ export default function DigitalSolutionsSection() {
             {/* Header */}
             <div className="py-18">
               <h2 className="text-4xl font-bold text-white mb-4">
-                Digital Solutions for
+                Digital Solutions <span className="text-primary">We implement</span>
               </h2>
-              <h2 className="text-4xl font-bold text-primary mb-6">
-                Operational Excellence
-              </h2>
-              <p className="text-slate-200 text-lg">
-                We don't just optimize — we build digital infrastructure to operationalize 
-                efficiency:
+              <p className="text-slate-200 text-lg mb-6">
+                We don't just recommend off-the-shelf tools — we build and integrate 
+                customized software solutions tailored to your unique workflows:
               </p>
             </div>
 
@@ -77,39 +69,33 @@ export default function DigitalSolutionsSection() {
             <div className="border-2 border-primary rounded-2xl px-6 py-12">
               <ul className="space-y-3 text-slate-300 text-sm">
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Custom workflow management platforms with automated 
-                  task routing
+                  <span className="text-primary mr-2">•</span>
+                  Bespoke CRM systems with custom admin and client panels
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Real-time operational dashboards with KPI monitoring 
-                  and alerting
+                  <span className="text-primary mr-2">•</span>
+                  Tailored document management and knowledge base platforms
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Quality management systems with digital documentation 
-                  and audit trails
+                  <span className="text-primary mr-2">•</span>
+                  Custom communication dashboards and notification systems
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Supply chain visibility platforms with vendor integration
+                  <span className="text-primary mr-2">•</span>
+                  Client portals with role-based access and branded interfaces
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Inventory management systems with predictive analytics
+                  <span className="text-primary mr-2">•</span>
+                  Integrated automation workflows connecting multiple systems
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Process automation tools with exception handling
+                  <span className="text-primary mr-2">•</span>
+                  AI-powered solutions for process automation, data analysis, and 
+                  intelligent decision support
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Performance analytics platforms with trend analysis
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-2">-</span>
-                  Integrated reporting systems with automated data collection
+                  <span className="text-primary mr-2">•</span>
+                  Custom reporting and analytics dashboards
                 </li>
               </ul>
             </div>
