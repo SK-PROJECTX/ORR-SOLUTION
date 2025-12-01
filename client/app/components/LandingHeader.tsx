@@ -39,7 +39,7 @@ export function LandingHeader() {
               </Link>
               {isServicesOpen && (
                 <div className="absolute top-full left-0 mt-2 w-80 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
-                  <Link href="/services/strategy_advisory" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/services/strategy_advisory' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
+                  <Link href="/services/strategy-advisory-compliant" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/services/strategy-advisory-compliant' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                     Strategic Advisory & Compliance
                   </Link>
                   <Link href="/services/operational-systems-infrastructure" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/services/operational-systems-infrastructure' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
