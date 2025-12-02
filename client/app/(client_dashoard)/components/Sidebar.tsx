@@ -69,8 +69,8 @@ export default function Sidebar() {
                 subItems: [
                   { label: "Settings", href: "/account/settings" },
                   { label: "Billing", href: "/account/billing" },
-                  { label: "Invoice", href: "/account/invoice" },
-                  { label: "Security", href: "/account/security" }
+                  // { label: "Invoice", href: "/account/invoice" },
+                  // { label: "Security", href: "/account/security" }
                 ]
               },
               // { label: "Projects", href: "/projects" },
