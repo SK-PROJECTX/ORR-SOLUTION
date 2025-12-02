@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Page() {
   
@@ -17,9 +18,25 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { register, isLoading, error, clearError } = useAuthStore();
   const router = useRouter();
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => clearError(), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, clearError]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      return;
+    }
+
+    await register(formData.email, formData.password, formData.name);
+  };
 
 
   return (
@@ -58,7 +75,13 @@ export default function Page() {
           
           </div>
 
-          <form className="space-y-7">
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-7" onSubmit={handleSubmit}>
              <input
               type="name"
               placeholder="Full Name"
@@ -115,10 +138,15 @@ export default function Page() {
           
             <button
               type="submit"
+              disabled={isLoading || formData.password !== formData.confirmPassword}
               className="w-full bg-[#13BE77] text-white py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {loading ? "Registering..." : "Register"}
+              {isLoading ? "Registering..." : "Register"}
             </button>
+
+            {formData.password !== formData.confirmPassword && formData.confirmPassword && (
+              <p className="text-red-400 text-sm mt-2">Passwords do not match</p>
+            )}
 
                 <div className="hidden md:flex items-end  justify-end mt-4 ">
                 <Link
