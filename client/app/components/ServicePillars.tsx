@@ -16,11 +16,11 @@ export default function ServicePillar() {
 
       <div className="relative w-full max-w-7xl mr-0">
         {/* Glow Image - Hidden on mobile */}
-        <img
+        {/* <img
           src="/images/glowww.png"
           alt="glow"
           className="hidden lg:block absolute -top-32 xl:-top-45 -left-8 xl:-left-12 w-[35rem] xl:w-[45rem] opacity-90 pointer-events-none select-none z-[-5]"
-        />
+        /> */}
 
         {/* CARD */}
         <div className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-0 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
