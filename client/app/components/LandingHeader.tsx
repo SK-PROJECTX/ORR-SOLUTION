@@ -84,7 +84,7 @@ export function LandingHeader() {
       )}
 
       {/* Mobile Menu Sidebar */}
-      <div className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-card transform transition-transform duration-300 ease-in-out z-50 ${
+      <div className={`lg:hidden fixed top-0 right-0 h-screen w-80 bg-card transform transition-transform duration-300 ease-in-out z-50 ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-6 bg-card">
