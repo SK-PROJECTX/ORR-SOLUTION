@@ -13,7 +13,7 @@ export default function ResourcesBlogs() {
 
 function HeroSection() {
   return (
-    <section className="relative px-6 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
+    <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 className="text-4xl md:text-6xl font-bold mb-6">
         Resources
         <br />

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image"
 
 export default function PricingPage() {
   return (
@@ -28,56 +29,54 @@ export default function PricingPage() {
 
 
         {/* Pricing Container */}
-        <div className="bg-background border border-[#1d2223] rounded-3xl px-6 sm:px-10 py-20 relative shadow-xl">
-          <div className="absolute -top-6 left-0 right-0 mx-auto w-full h-full rounded-[40px] bg-gradient-to-br from-green-600/20 to-blue-600/10 blur-[60px] -z-10" />
-
-          {/* Pricing Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Essentials */}
-            <div className="border border-[#2b3134] rounded-2xl p-8 bg-background hover:border-[#22C55E] transition">
-              <div className="inline-block bg-[#1a2e1f] text-[#22C55E] px-4 py-1 rounded-md text-sm font-medium mb-5">
-                Essentials
+        <div className="absolute inset-0 star opacity-20" />
+              
+              <div className="relative z-10 max-w-6xl mx-auto">
+                <div className="bg-[#33FF99]/50 backdrop-blur-xl ml-10 rounded-[60px] pt-2 pr-0 pb-1 pl-0 transform -rotate-2 -translate-x-8 -translate-y-4">
+                  <div className="bg-[#2c4a63] rounded-[55px] px-12 py-16 transform rotate-2 translate-x-8  translate-y-4 scale-95">
+                  
+                    
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">             
+        
+                      <div className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
+                        <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
+                          Meetings
+                        </div>
+                        <div className="flex items-center justify-end mb-6 absolute top-4 right-4">
+                          <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-64 h-64"/>
+                        </div>
+                        <div className="text-6xl font-bold mt-18 mb-8 text-black">
+                          <span className="text-gray-400 text-3xl">€</span>45<span className="text-3xl font-normal">/hrs</span>
+                        </div>
+                        <p className="text-black text-sm my-12 font-medium">pro-rata (short, focused and value-densed)</p>
+                        <button className="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
+                          <span>🔥</span> Book Now
+                        </button>
+                      </div>
+        
+                      <div className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
+                        <Image src="/best value.png" alt="Best value" width={120} height={40} className="absolute -top-8 left-[75%] -translate-x-1/2 w-48" />                                <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
+                          Report Fee
+                        </div>
+                        <div className="flex items-center justify-end mb-6 absolute top-4 right-4">
+                          <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-64 h-64"/>
+                        </div>
+                        <div className="text-6xl font-bold mt-18 mb-8 text-black">
+                          <span className="text-gray-400 text-3xl">€</span>220
+                        </div>
+                        <p className="text-black text-sm my-12 font-medium">fee depends on complexity</p>
+                        <button className="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
+                          <span>🔥</span> Book Now
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-4xl font-bold mb-2">€ 1,500<span className="text-xl font-medium">/mo</span></h2>
-              <p className="text-gray-300 mb-8">Freelancers & small businesses</p>
 
-              <button className="w-full bg-gradient-to-b from-[#22C55E] to-[#0FAF52] rounded-full py-3 text-black font-semibold shadow-[0_0_20px_#22C55E80]">
-                Buy now
-              </button>
-            </div>
 
-            {/* Growth */}
-            <div className="border border-[#2b3134] rounded-2xl p-8 bg-background hover:border-[#22C55E] transition">
-              <div className="inline-block bg-[#1d2f38] text-[#22C55E] px-4 py-1 rounded-md text-sm font-medium mb-5">
-                Growth
-              </div>
-              <h2 className="text-4xl font-bold mb-2">€ 3,000<span className="text-xl font-medium">/mo</span></h2>
-              <p className="text-gray-300 mb-8">SMEs scaling up</p>
-
-              <button className="w-full bg-gradient-to-b from-[#22C55E] to-[#0FAF52] rounded-full py-3 text-black font-semibold shadow-[0_0_20px_#22C55E80]">
-                Buy now
-              </button>
-            </div>
-
-            {/* Enterprise */}
-            <div className="border border-[#22C55E] rounded-2xl p-8 bg-background relative shadow-[0_0_25px_#22C55E60]">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#22C55E] text-black px-4 py-1 rounded-md text-sm font-semibold">
-                Best value
-              </div>
-
-              <div className="inline-block bg-[#1a2e1f] text-[#22C55E] px-4 py-1 rounded-md text-sm font-medium mb-5 mt-4">
-                Enterprise
-              </div>
-              <h2 className="text-4xl font-bold mb-2">€ 6,000+<span className="text-xl font-medium">/mo</span></h2>
-              <p className="text-gray-300 mb-8">Large or multi-site</p>
-
-              <button className="w-full bg-gradient-to-b from-[#22C55E] to-[#0FAF52] rounded-full py-3 text-black font-semibold shadow-[0_0_20px_#22C55E80]">
-                Buy now
-              </button>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+  
   );
 }
