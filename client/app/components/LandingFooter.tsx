@@ -44,7 +44,7 @@ export function LandingFooter() {
             placeholder="Email"
             className="px-4 py-3 flex-1 rounded-l-2xl outline-none text-sm bg-secondary text-white placeholder-white/70"
           />
-          <button className="px-4 py-3 rounded-r-2xl font-medium bg-green-500 text-black hover:bg-green-400 transition-colors text-sm whitespace-nowrap">
+          <button className="px-4 py-3 rounded-r-2xl font-medium bg-primary text-black hover:bg-green-400 transition-colors text-sm whitespace-nowrap">
             Sign up
           </button>
         </div>
