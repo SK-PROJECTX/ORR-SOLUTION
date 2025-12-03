@@ -39,7 +39,7 @@ export default function LivingSystemsPage() {
           }
         ]}
         cardStyle="simple"
-        layout="grid"
+        // layout="grid"
       />
       <HowWeWorkSection 
         subtitle="Observe . Design . Regenerate"

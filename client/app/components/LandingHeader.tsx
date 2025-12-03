@@ -110,13 +110,20 @@ export function LandingHeader() {
               </button>
               {isMobileServicesOpen && (
                 <div className="ml-4 mt-2 space-y-2">
-                  <Link href="/services/strategy_advisory" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/strategy_advisory' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>Strategic Advisory & Compliance</Link>
-                  <Link href="/services/operational-systems-infrastructure" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/operational-systems-infrastructure' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>Operational Systems & Infrastructure</Link>
-                  <Link href="/services/living-systems-regeneration" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/living-systems-regeneration' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>Living Systems & Regeneration</Link>
+                  <Link href="/services/strategy-advisory-compliant" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/strategy_advisory' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Strategic Advisory & Compliance
+                  </Link>
+                  <Link href="/services/operational-systems-infrastructure" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/operational-systems-infrastructure' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Operational Systems & Infrastructure
+                  </Link>
+                  <Link href="/services/living-systems-regeneration" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/living-systems-regeneration' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Living Systems & Regeneration
+                  </Link>
                 </div>
               )}
             </div>
-            <Link href="/resources-blogs" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Resources & Blogs</Link>
+            <Link href="/resources-blogs" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Resources & Blogs
+            </Link>
             <Link href="/legacy-policy" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Legacy & Policy</Link>
             <Link href="/contact" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-6 border-t border-white/10 flex items-center justify-between">
