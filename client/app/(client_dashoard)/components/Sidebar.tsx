@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight, LayoutGrid } from "lucide-react";
+import { ChevronDown, ChevronRight, LayoutGrid, Menu, X } from "lucide-react";
 import Link from "next/link";
 
 type OpenState = {
@@ -23,12 +23,33 @@ export default function Sidebar() {
     auth: false,
   });
   const [subOpen, setSubOpen] = useState<{[key: string]: boolean}>({});
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggle = (key: keyof OpenState) => setOpen({ ...open, [key]: !open[key] });
   const toggleSub = (key: string) => setSubOpen({ ...subOpen, [key]: !subOpen[key] });
 
   return (
-    <aside className="w-64 h-screen bg-card text-foreground flex flex-col justify-between p-4 flex-shrink-0 overflow-y-auto">
+    <>
+      {/* Mobile Menu Button */}
+      <button 
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-card rounded-lg shadow-lg"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40" 
+          onClick={() => setIsMobileMenuOpen(false)} 
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`w-64 h-screen bg-card text-foreground flex flex-col justify-between p-4 flex-shrink-0 overflow-y-auto transition-transform duration-300 ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } lg:translate-x-0 fixed lg:relative z-50 lg:z-auto`}>
       <div>
         <div className="flex items-center px-2 mb-8">
           <img src="/images/logo.svg" alt="Logo" className="w-fit h-auto" />
@@ -122,6 +143,7 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }
 

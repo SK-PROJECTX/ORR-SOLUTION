@@ -15,7 +15,7 @@ export default function ApproachSection() {
         <img
           src="/images/curl.svg"
           alt="glow"
-          className="absolute -bottom-120 -right-30 w-[40rem] opacity-90 pointer-events-none select-none z-[-5]"
+          className="absolute -bottom-50 sm:-bottom-120 -right-30 w-[40rem] opacity-90 pointer-events-none select-none z-[-5]"
         />
       
       <div className=" w-full max-w-7xl ml-0 bg border-t-[0.5rem] border-r-[0.5rem] border-b-[0.5rem] border-l-0 border-white/20 backdrop-blur-md bg-card z-1 rounded-tr-[91.25px] rounded-br-[91.25px] p-10 md:p-14 shadow-lg space-y-7 ">

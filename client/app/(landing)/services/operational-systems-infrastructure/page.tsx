@@ -1,6 +1,6 @@
 import HeroSection from "@/components/operational_systems/HeroSection";
 import WhatWeOfferSection from "@/components/shared/WhatWeOfferSection";
-import HowWeWorkSection from "@/components/operational_systems/HowWeWorkSection";
+import HowWeWorkSection from "@/components/shared/HowWeWorkSection";
 import NetworkAdvantageSection from "@/components/shared/NetworkAdvantageSection";
 import DigitalSolutionsSection from "@/components/shared/DigitalSolutionsSection";
 import CaseExampleSection from "@/components/shared/CaseExampleSection";
@@ -66,7 +66,30 @@ export default function OperationalSystemsPage() {
         ]}
         cardStyle="detailed"
       />
-      <HowWeWorkSection />
+      <HowWeWorkSection 
+        subtitle="Listen . Solve . Optimize"
+        description="Just like your Business GP, we follow a systematic diagnostic and treatment approach to restore operational health."
+        sections={[
+          {
+            title: "Listen (Assess)",
+            content: [
+              "We start by listening — understanding your current systems, pain points, and goals. Through interviews, process observation, and data review, we diagnose what's working and what's not. Every business has its own operational 'symptoms,' and we take time to understand the root causes."
+            ]
+          },
+          {
+            title: "Solve (Design & Implement)",
+            content: [
+              "Based on our assessment, we prescribe tailored solutions — whether that's new SOPs, communication frameworks, or complete office infrastructure. Every solution is built for your specific context. Then we execute it, working alongside your team (and leveraging our trusted network of specialists when needed) to implement systems that work from day one."
+            ]
+          },
+          {
+            title: "Optimize (Refine & Evolve)",
+            content: [
+              "Systems need to evolve with your business. We provide ongoing support, training, and refinement to ensure your operational infrastructure continues to serve your growing organization. Like regular check-ups with your GP, we monitor performance and adjust as needed."
+            ]
+          }
+        ]}
+      />
       <NetworkAdvantageSection 
         description="When your needs extend beyond pure operations consulting, we activate our global network of trusted specialists:"
         networkCards={[
