@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function ServicePillar() {
@@ -53,13 +54,15 @@ export default function ServicePillar() {
               <div className="relative">
                 {/* Mobile bullet */}
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
-                <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
+                <Link href="/services/strategy-advisory-compliant" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
                   Strategic Advisory & Compliance
-                </h3>
+                </Link>                
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
                  Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation.
                 </p>
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold  rounded-lg cursor-pointer">Explore Strategic Advisory & Compliance</button>
+                <Link href="/services/strategy-advisory-compliant">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold  rounded-lg cursor-pointer">Explore Strategic Advisory & Compliance</button>
+                </Link>
               </div>
 
               {/* Item 2 */}
@@ -73,7 +76,9 @@ export default function ServicePillar() {
                  SOPs, workflows, portals, dashboards, and AI-assisted tools designed 
                 around your team’s habits, constraints and growth plans
                 </p>
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Digital Systems, Automation & AI</button>
+                <Link href="/services/operational-systems-infrastructure">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Digital Systems, Automation & AI</button>
+                </Link>
               </div>
 
               {/* Item 3 */}
@@ -87,7 +92,9 @@ export default function ServicePillar() {
                  Support for land, water, species, and ecosystems - tailored to your sites 
                 your risks, and your opportunities
                 </p>
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Living Systems & Regeneration</button>
+                <Link href="/services/living-systems-regeneration">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Living Systems & Regeneration</button>
+                </Link>
               </div>
             </div>
           </div>
