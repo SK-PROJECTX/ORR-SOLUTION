@@ -1,4 +1,6 @@
 "use client";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import ApproachCard from "../components/ApproachCard";
 import GPMetaphorSection from "../components/GPMetaphorSection";
 import Hero from "../components/Hero";
