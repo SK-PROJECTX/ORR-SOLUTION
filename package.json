@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "lucide-react": "^0.555.0"
+    "gsap": "^3.13.0"
   }
 }
