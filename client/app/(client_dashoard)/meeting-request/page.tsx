@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useMeetingStore } from "@/store/meetingStore";
 
 const meetingTypes = [
   "First meeting",
@@ -13,9 +14,27 @@ const meetingTypes = [
 const times = ["5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"];
 
 export default function MeetingRequestPage() {
-  const [selectedType, setSelectedType] = useState("First meeting");
+  const [selectedType, setSelectedType] = useState("Discovery");
   const [selectedDate, setSelectedDate] = useState<number | null>(14);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [agenda, setAgenda] = useState("");
+  const { createMeeting, isLoading } = useMeetingStore();
+
+  const handleSubmit = async () => {
+    if (!selectedDate || !selectedTime || !agenda.trim()) {
+      alert('Please fill all fields');
+      return;
+    }
+
+    const datetime = new Date(`2023-09-${selectedDate} ${selectedTime}`);
+    const meetingData = {
+      meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
+      requested_datetime: datetime.toISOString(),
+      agenda: agenda.trim(),
+    };
+
+    await createMeeting(meetingData);
+  };
 
   return (
     <div className="min-h-screen w-full bg-[#041428] text-white px-4 py-8 md:px-10">
@@ -168,14 +187,20 @@ export default function MeetingRequestPage() {
         <p className="text-center text-lg font-semibold mt-10 mb-3">Meeting Agenda</p>
 
         <textarea
+          value={agenda}
+          onChange={(e) => setAgenda(e.target.value)}
           placeholder="Input text"
           className="w-full h-40 bg-[#0F334F] rounded-xl p-4 outline-none text-sm text-white"
         />
 
         {/* SUBMIT BUTTON */}
         <div className="flex justify-center mt-8">
-          <button className="px-10 py-2 bg-[#18E3A3] text-[#041428] rounded-full font-semibold text-sm">
-            Submit
+          <button 
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="px-10 py-2 bg-[#18E3A3] text-[#041428] rounded-full font-semibold text-sm disabled:opacity-50"
+          >
+            {isLoading ? 'Submitting...' : 'Submit'}
           </button>
         </div>
 

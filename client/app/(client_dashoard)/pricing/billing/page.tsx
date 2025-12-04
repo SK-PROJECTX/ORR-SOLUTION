@@ -1,6 +1,14 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
+import { useBillingStore } from "@/store/billingStore";
 
 export default function PlansBillingPage() {
+  const { billingHistory, isLoading, fetchBillingHistory } = useBillingStore();
+
+  useEffect(() => {
+    fetchBillingHistory();
+  }, [fetchBillingHistory]);
+
   return (
     <div className="min-h-screen w-full text-white px-4 py-10 flex flex-col items-center">
       <div className="w-full ">
@@ -87,24 +95,38 @@ export default function PlansBillingPage() {
                 </tr>
               </thead>
               <tbody>
-                {[1,2,3,4,5].map((i) => (
-                  <tr key={i} className="border-b border-[#1E3A4B] text-gray-200">
-                    <td className="py-4 flex items-center gap-3">
-                      <div className="w-4 h-4 border border-[#22C55E] bg-[#22C55E] rounded-sm"></div>
-                      <span className="text-[#22C55E]">Billing #{i}80 - Dec 2022</span>
-                      <span className="text-gray-400">Paid</span>
-                    </td>
-
-                    <td>Dec 23, 2022</td>
-                    <td>USD $12.00</td>
-                    <td>Basic plan</td>
-                    <td>15 Users</td>
-
-                    <td>
-                      <button className="bg-[#22C55E] text-black font-semibold px-4 py-2 rounded-md text-sm">Download all</button>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-gray-400">
+                      Loading billing history...
                     </td>
                   </tr>
-                ))}
+                ) : billingHistory.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-gray-400">
+                      No billing history found
+                    </td>
+                  </tr>
+                ) : (
+                  billingHistory.map((bill) => (
+                    <tr key={bill.id} className="border-b border-[#1E3A4B] text-gray-200">
+                      <td className="py-4 flex items-center gap-3">
+                        <div className="w-4 h-4 border border-[#22C55E] bg-[#22C55E] rounded-sm"></div>
+                        <span className="text-[#22C55E]">Billing #{bill.id}</span>
+                        <span className="text-gray-400">{bill.status}</span>
+                      </td>
+
+                      <td>{new Date(bill.billing_date).toLocaleDateString()}</td>
+                      <td>{bill.amount}</td>
+                      <td>{bill.plan}</td>
+                      <td>{bill.users} Users</td>
+
+                      <td>
+                        <button className="bg-[#22C55E] text-black font-semibold px-4 py-2 rounded-md text-sm">Download</button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

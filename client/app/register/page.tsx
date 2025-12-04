@@ -10,7 +10,8 @@ import { useAuthStore } from "@/store/authStore";
 export default function Page() {
   
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: ""
@@ -35,7 +36,7 @@ export default function Page() {
       return;
     }
 
-    await register(formData.email, formData.password, formData.name);
+    await register(formData.email, formData.password, formData.firstName, formData.lastName);
   };
 
 
@@ -78,10 +79,19 @@ export default function Page() {
 
           <form className="space-y-7" onSubmit={handleSubmit}>
              <input
-              type="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+              className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />

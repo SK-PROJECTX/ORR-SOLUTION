@@ -31,18 +31,8 @@ export const useAuthStore = create<AuthState>()(
       register: async (email: string, password: string, firstName: string, lastName: string) => {
         set({ isLoading: true, error: null });
         try {
-          // Generate random username as required by API
-          const generateUsername = () => {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-_+@';
-            let result = '';
-            for (let i = 0; i < 80; i++) {
-              result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-          };
-
           const response = await api.post('/client/register', {
-            username: generateUsername(),
+            username: firstName.toLowerCase() + lastName.toLowerCase(),
             email,
             password,
             first_name: firstName,
@@ -69,7 +59,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await api.post('/login', {
-            email,
+            identifier: email,
             password,
           });
           

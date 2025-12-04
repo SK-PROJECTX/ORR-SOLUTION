@@ -5,6 +5,7 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'X-CSRFToken': 'iqyFKg5sIleZH1GGlYvV2WoQ1Sa3xsmOjPUPKnZfQALgcpW0hIk9StV5j0T0XigX',
   },
   withCredentials: true,
 });
@@ -29,10 +30,7 @@ api.interceptors.request.use(
     }
     
     if (['post', 'put', 'patch', 'delete'].includes(config.method?.toLowerCase() || '')) {
-      const csrfToken = getCSRFToken();
-      if (csrfToken) {
-        config.headers['X-CSRFToken'] = csrfToken;
-      }
+      config.headers['X-CSRFToken'] = 'iqyFKg5sIleZH1GGlYvV2WoQ1Sa3xsmOjPUPKnZfQALgcpW0hIk9StV5j0T0XigX';
     }
     
     return config;

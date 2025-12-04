@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useToastStore } from "@/store/toastStore";
+import { useOnboardingStore } from "@/store/onboardingStore";
 
 const steps = [1, 2, 3, 4, 5, 6];
 
@@ -177,42 +177,42 @@ export default function OnboardingPage() {
     }
   };
 
-  const handleComplete = () => {
-    // Save final text input if on text question
+  const { submitOnboarding, isLoading } = useOnboardingStore();
+
+  const handleComplete = async () => {
     let finalAnswers = { ...answers };
     if (currentStepData.type === "text") {
       const key = `${currentSection}-${currentStep}`;
       finalAnswers = { ...finalAnswers, [key]: textInput };
     }
 
-    // Log all answers to console
-    console.log("=== ONBOARDING QUESTIONNAIRE RESULTS ===");
-    console.log("Complete answers object:", finalAnswers);
-    
-    // Format and log by section
-    Object.keys(questionnaire).forEach(sectionNum => {
-      const section = questionnaire[parseInt(sectionNum) as keyof typeof questionnaire];
-      console.log(`\n--- ${section.title} ---`);
-      
-      section.steps.forEach((step, stepIndex) => {
-        const key = `${sectionNum}-${stepIndex}`;
-        const answer = finalAnswers[key];
-        console.log(`${step.question}`);
-        console.log(`Answer:`, answer || "No answer provided");
-      });
-    });
+    const onboardingData = {
+      jurisdiction: finalAnswers['1-0']?.toLowerCase() || 'malta',
+      jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other' : undefined,
+      language: finalAnswers['1-1']?.toLowerCase().substring(0, 2) || 'en',
+      language_other: finalAnswers['1-1'] === 'Others' ? 'other' : undefined,
+      keyboard_layout: finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
+      keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other' : undefined,
+      date_format: finalAnswers['1-3']?.includes('DD/MM') ? 'dd_mm_yyyy' : 'mm_dd_yyyy',
+      time_format_24h: finalAnswers['1-3']?.includes('24-hour') || false,
+      accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept',
+      portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
+      portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other' : undefined,
+      user_type: finalAnswers['4-0']?.toLowerCase().replace(/[^a-z]/g, '_') || 'founder',
+      user_type_other: finalAnswers['4-0'] === 'Others' ? 'other' : undefined,
+      project_stage: finalAnswers['4-1']?.toLowerCase().replace(/[^a-z]/g, '_') || 'exploration',
+      orr_pillars: finalAnswers['4-2'] || '',
+      has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
+      project_description: finalAnswers['4-4'] || '',
+      meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
+      communication_tone: finalAnswers['5-1']?.toLowerCase().split(' ')[0] || 'concise',
+      notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : 'portal',
+      ai_specialist_domains: Array.isArray(finalAnswers['6-0']) ? finalAnswers['6-0'].join(', ') : finalAnswers['6-0'] || '',
+      ai_specialist_other: finalAnswers['6-0']?.includes('Others') ? 'other' : undefined,
+      additional_context: finalAnswers['6-1'] || '',
+    };
 
-    // Save to localStorage for persistence
-    localStorage.setItem('onboarding-answers', JSON.stringify(finalAnswers));
-    localStorage.setItem('onboarding-completed', new Date().toISOString());
-    
-    // Show success toast
-    useToastStore.getState().addToast('Onboarding completed successfully!', 'success');
-    
-    // Optional: Redirect to dashboard after completion
-    setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 2000);
+    await submitOnboarding(onboardingData);
   };
 
   const getCurrentAnswer = () => {
@@ -303,9 +303,10 @@ export default function OnboardingPage() {
 
               <button 
                 onClick={currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? handleComplete : handleNext}
-                className="bg-lemon hover:bg-lemon/90 text-black px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all"
+                disabled={isLoading}
+                className="bg-lemon hover:bg-lemon/90 text-black px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all disabled:opacity-50"
               >
-                {currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? "COMPLETE" : "NEXT →"}
+                {isLoading ? "SUBMITTING..." : currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? "COMPLETE" : "NEXT →"}
               </button>
             </div>
           </div>
