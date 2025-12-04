@@ -18,16 +18,16 @@ export default function MeetingRequestPage() {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen w-full bg-[#041428] text-white px-4 py-8 md:px-10">
+    <div className="min-h-screen w-full bg-[#041428] text-white px-4 py-8 sm:px-6 md:px-10">
 
       {/* HEADER */}
-      <div className="max-w-6xl mx-auto flex justify-between items-center mb-10">
-        <h1 className="text-xl font-semibold text-[#18E3A3]">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <h1 className="text-lg sm:text-xl font-semibold text-[#18E3A3]">
           Meeting Request System
         </h1>
 
         {/* Search Box */}
-        <div className="flex items-center bg-[#08233E] px-5 py-2 rounded-full w-[320px] gap-3 border border-white/10">
+        <div className="flex items-center bg-[#08233E] px-4 sm:px-5 py-2 rounded-full w-full sm:w-[320px] gap-3 border border-white/10">
           <input
             type="text"
             placeholder="Search anything here..."
@@ -46,24 +46,24 @@ export default function MeetingRequestPage() {
       </div>
 
       {/* MAIN CARD */}
-      <div className="max-w-6xl mx-auto bg-[#0A2540] rounded-3xl px-6 py-10 shadow-xl border border-white/10">
+      <div className="max-w-6xl mx-auto bg-[#0A2540] rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-6 sm:py-10 shadow-xl border border-white/10">
 
         {/* SECTION TITLE */}
         <p className="text-sm opacity-80 mb-2">Form-based way to request official meetings</p>
 
-        <p className="text-lg font-semibold text-[#18E3A3]">
+        <p className="text-base sm:text-lg font-semibold text-[#18E3A3]">
           Choose meeting type
         </p>
 
         {/* MEETING TYPE STEPS */}
-        <div className="flex items-center gap-4 mt-6 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-4 mt-6 flex-wrap">
 
           {meetingTypes.map((type, idx) => (
             <div key={idx} className="flex items-center gap-4">
 
               <button
                 onClick={() => setSelectedType(type)}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all
+                className={`px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all
                   ${
                     selectedType === type
                       ? "bg-[#18E3A3] text-[#041428]"
@@ -75,9 +75,9 @@ export default function MeetingRequestPage() {
               </button>
 
               {idx !== meetingTypes.length - 1 && (
-                <div className="relative flex items-center">
-                  <div className="w-12 h-[2px] bg-[#18E3A3]"></div>
-                  <div className="w-3 h-3 rounded-full bg-[#18E3A3] absolute left-1/2 -translate-x-1/2"></div>
+                <div className="relative hidden sm:flex items-center">
+                  <div className="w-8 sm:w-12 h-0.5 bg-[#18E3A3]"></div>
+                  <div className="w-2 sm:w-3 h-2 sm:h-3 rounded-full bg-[#18E3A3] absolute left-1/2 -translate-x-1/2"></div>
                 </div>
               )}
 
@@ -87,28 +87,28 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* DATE + TIME SECTION */}
-        <p className="text-center text-lg font-semibold mt-10 mb-6">
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-6">
           Choose Preferred Date And Time
         </p>
 
-        <div className="w-full bg-[#071B33] p-8 rounded-3xl flex flex-col md:flex-row gap-8 justify-center">
+        <div className="w-full bg-[#071B33] p-4 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col lg:flex-row gap-6 sm:gap-8 justify-center">
 
           {/* CALENDAR */}
-          <div className="w-full md:w-1/2">
+          <div className="w-full lg:w-1/2">
             <div className="flex justify-between items-center mb-4">
               <button className="p-2 rounded-full bg-[#0A2540]">
-                <ChevronLeft size={18} />
+                <ChevronLeft size={16} className="sm:w-[18px] sm:h-[18px]" />
               </button>
 
-              <h3 className="text-lg font-semibold">September 2023</h3>
+              <h3 className="text-base sm:text-lg font-semibold">September 2023</h3>
 
               <button className="p-2 rounded-full bg-[#0A2540]">
-                <ChevronRight size={18} />
+                <ChevronRight size={16} className="sm:w-[18px] sm:h-[18px]" />
               </button>
             </div>
 
             {/* Days Grid */}
-            <div className="grid grid-cols-7 gap-4 text-center text-sm opacity-70 mb-4">
+            <div className="grid grid-cols-7 gap-2 sm:gap-4 text-center text-xs sm:text-sm opacity-70 mb-4">
               <div>So.</div>
               <div>Mo.</div>
               <div>Di.</div>
@@ -119,13 +119,13 @@ export default function MeetingRequestPage() {
             </div>
 
             {/* Dates */}
-            <div className="grid grid-cols-7 gap-4 text-center text-sm">
+            <div className="grid grid-cols-7 gap-2 sm:gap-4 text-center text-xs sm:text-sm">
 
               {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
                 <button
                   key={day}
                   onClick={() => setSelectedDate(day)}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+                  className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all
                     ${
                       selectedDate === day
                         ? "bg-[#18E3A3] text-[#041428] font-semibold"
@@ -141,15 +141,15 @@ export default function MeetingRequestPage() {
           </div>
 
           {/* TIME SELECTION */}
-          <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-white/20">
-            <h3 className="text-lg font-semibold mb-6">Monday, 18. September</h3>
+          <div className="w-full lg:w-1/2 pl-0 lg:pl-6 border-t pt-6 lg:pt-0 lg:border-t-0 lg:border-l border-white/20">
+            <h3 className="text-base sm:text-lg font-semibold mb-6">Monday, 18. September</h3>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
               {times.map((time) => (
                 <button
                   key={time}
                   onClick={() => setSelectedTime(time)}
-                  className={`px-6 py-3 rounded-lg text-center text-sm font-semibold transition-all
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all
                     ${
                       selectedTime === time
                         ? "bg-[#18E3A3] text-[#041428]"
@@ -165,16 +165,16 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* MEETING AGENDA */}
-        <p className="text-center text-lg font-semibold mt-10 mb-3">Meeting Agenda</p>
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">Meeting Agenda</p>
 
         <textarea
           placeholder="Input text"
-          className="w-full h-40 bg-[#0F334F] rounded-xl p-4 outline-none text-sm text-white"
+          className="w-full h-32 sm:h-40 bg-[#0F334F] rounded-xl p-3 sm:p-4 outline-none text-sm text-white"
         />
 
         {/* SUBMIT BUTTON */}
-        <div className="flex justify-center mt-8">
-          <button className="px-10 py-2 bg-[#18E3A3] text-[#041428] rounded-full font-semibold text-sm">
+        <div className="flex justify-center mt-6 sm:mt-8">
+          <button className="px-8 sm:px-10 py-2 bg-[#18E3A3] text-[#041428] rounded-full font-semibold text-sm w-full sm:w-auto">
             Submit
           </button>
         </div>
