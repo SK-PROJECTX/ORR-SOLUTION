@@ -91,9 +91,9 @@ function page() {
               <p className="text-gray-400 text-sm mt-2">Manage and track all your meeting requests</p>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-6">
               {/* Left Sidebar - Meeting Requests List */}
-              <div className="flex flex-col gap-4 lg:basis-[28%] max-h-[300px] lg:max-h-[600px] overflow-y-auto">
+              <div className="flex flex-col gap-4 max-h-[300px] lg:max-h-[600px] overflow-y-auto">
                 <div>
                   <h3 className="text-sm font-semibold text-white">Follow ups</h3>
                   <p className="text-xs text-gray-500 mt-1">
@@ -145,7 +145,7 @@ function page() {
               </div>
 
               {/* Right Side - Calendar */}
-              <div className="lg:basis-[72%] bg-gradient-to-br from-white/15 to-white/5 p-4 sm:p-6 rounded-xl flex flex-col border border-white/10 shadow-lg">
+              <div className="bg-gradient-to-br from-white/15 to-white/5 p-4 sm:p-6 rounded-xl flex flex-col border border-white/10 shadow-lg">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
                   <h2 className="text-base sm:text-lg font-semibold text-white">Schedule Events</h2>
                   <div className="flex items-center gap-2 sm:gap-3">
@@ -180,7 +180,7 @@ function page() {
                 </div>
 
                 {/* React Big Calendar */}
-                <div className="flex-1 bg-white/5 rounded-lg overflow-hidden calendar-wrapper border border-white/10 min-h-[400px] sm:min-h-[500px]">
+                <div className="flex-1 bg-white/5 rounded-lg overflow-x-auto calendar-wrapper border border-white/10 min-h-[350px] sm:min-h-[500px] h-full">
                   <Calendar
                     localizer={localizer}
                     events={events}
@@ -196,6 +196,7 @@ function page() {
                     selectable
                     eventPropGetter={(event: Event) => ({
                       style: {
+                        height: "100%",
                         backgroundColor: event.status === 'New' ? '#3B82F6' : 
                                        event.status === 'Confirmed' ? '#13BE77' :
                                        event.status === 'Rescheduled' ? '#F59E0B' :

@@ -111,3 +111,25 @@
 .rbc-off-range-bg {
   background: rgba(255, 255, 255, 0.02) !important;
 }
+
+/* Mobile Month View Fix */
+@media (max-width: 1024px) {
+  .calendar-wrapper {
+    height: 450px !important;
+  }
+  
+  .rbc-calendar {
+    height: 100% !important;
+  }
+  
+  .rbc-month-view {
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr !important;
+  }
+  
+  .rbc-month-row {
+    min-height: 60px !important;
+  }
+}
+
