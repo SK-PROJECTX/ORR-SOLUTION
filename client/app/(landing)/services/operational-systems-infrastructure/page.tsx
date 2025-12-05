@@ -64,7 +64,6 @@ export default function OperationalSystemsPage() {
             ]
           }
         ]}
-        cardStyle="detailed"
       />
       <HowWeWorkSection 
         subtitle="Listen . Solve . Optimize"
