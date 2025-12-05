@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Calendar,
   dateFnsLocalizer,
@@ -14,6 +14,7 @@ import { getDay } from "date-fns/getDay";
 import {enUS} from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSchedulingStore } from "@/store/schedulingStore";
 
 // Custom calendar styles
 const calendarStyles = `
@@ -54,25 +55,9 @@ type EventItem = {
   color?: string;
 };
 
-const events: EventItem[] = [
-  { id: 1, title: "Team Sync Meeting", start: new Date(2025, 10, 27, 10, 0), end: new Date(2025, 10, 27, 11, 0), color: "var(--color-secondary)" },
-  { id: 2, title: "Product Review", start: new Date(2025, 10, 28, 14, 0), end: new Date(2025, 10, 28, 15, 0), color: "var(--color-secondary)" },
-  { id: 3, title: "Design Handoff", start: new Date(2025, 10, 29, 9, 0), end: new Date(2025, 10, 29, 10, 30), color: "var(--color-secondary)" },
-  { id: 4, title: "UX Workshop", start: new Date(2025, 11, 5, 13, 0), end: new Date(2025, 11, 5, 16, 0), color: "var(--color-secondary)" },
-  { id: 5, title: "End of Year Conference", start: new Date(2025, 11, 12), end: new Date(2025, 11, 14), color: "var(--color-secondary)" },
-  { id: 6, title: "Holiday Gala", start: new Date(2025, 11, 20, 18, 0), end: new Date(2025, 11, 20, 22, 0), color: "var(--color-secondary)" },
-  { id: 7, title: "Client Presentation", start: new Date(2025, 11, 3, 15, 0), end: new Date(2025, 11, 3, 16, 30), color: "var(--color-secondary)" },
-  { id: 8, title: "Sprint Planning", start: new Date(2025, 11, 4, 9, 0), end: new Date(2025, 11, 4, 10, 0), color: "var(--color-secondary)" },
-  { id: 9, title: "Code Review Session", start: new Date(2025, 11, 6, 11, 0), end: new Date(2025, 11, 6, 12, 0), color: "var(--color-secondary)" },
-  { id: 10, title: "Marketing Sync", start: new Date(2025, 11, 7, 14, 0), end: new Date(2025, 11, 7, 15, 0), color: "var(--color-secondary)" },
-  { id: 11, title: "Budget Review", start: new Date(2025, 11, 9, 10, 0), end: new Date(2025, 11, 9, 11, 30), color: "var(--color-secondary)" },
-  { id: 12, title: "Team Building", start: new Date(2025, 11, 10, 16, 0), end: new Date(2025, 11, 10, 18, 0), color: "var(--color-secondary)" },
-  { id: 13, title: "Performance Review", start: new Date(2025, 11, 11, 13, 0), end: new Date(2025, 11, 11, 14, 0), color: "var(--color-secondary)" },
-  { id: 14, title: "Project Kickoff", start: new Date(2025, 11, 13, 9, 30), end: new Date(2025, 11, 13, 11, 0), color: "var(--color-secondary)" },
-  { id: 15, title: "Stakeholder Meeting", start: new Date(2025, 11, 16, 15, 0), end: new Date(2025, 11, 16, 16, 0), color: "var(--color-secondary)" },
-];
 
-function EventSidebar({ items }: { items: EventItem[] }) {
+
+function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boolean }) {
   return (
     <div className="h-full">
       <div className="bg-card rounded-xl p-4 h-full flex flex-col">
@@ -82,24 +67,36 @@ function EventSidebar({ items }: { items: EventItem[] }) {
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide">
-          {items.map((it) => (
-            <div key={it.id} className="bg-background rounded-md p-3 flex gap-3 items-start">
-              <div className="flex-shrink-0 mt-1">
-                {/* <div className="w-8 h-8 rounded bg-lemon flex items-center justify-center text-black">📅</div> */}
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground">{it.title}</h4>
-                    <p className="text-xs text-foreground/70">Location</p>
-                  </div>
-                  <div className="text-xs text-foreground bg-card px-2 py-1 rounded">12am to 2pm</div>
-                </div>
-
-               <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(it.start, "EEEE, MMM d, yyyy")}</p>
-              </div>
+          {isLoading ? (
+            <div className="text-center py-8 text-foreground/70">
+              Loading meetings...
             </div>
-          ))}
+          ) : items.length === 0 ? (
+            <div className="text-center py-8 text-foreground/70">
+              No meetings scheduled
+            </div>
+          ) : (
+            items.map((it) => (
+              <div key={it.id} className="bg-background rounded-md p-3 flex gap-3 items-start">
+                <div className="flex-shrink-0 mt-1">
+                  {/* <div className="w-8 h-8 rounded bg-lemon flex items-center justify-center text-black">📅</div> */}
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground">{it.title}</h4>
+                      <p className="text-xs text-foreground/70">Online Meeting</p>
+                    </div>
+                    <div className="text-xs text-foreground bg-card px-2 py-1 rounded">
+                      {format(it.start, "h:mm a")} - {format(it.end, "h:mm a")}
+                    </div>
+                  </div>
+
+                 <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(it.start, "EEEE, MMM d, yyyy")}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
@@ -146,6 +143,46 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
 }
 
 export default function SchedulingPage() {
+  const { meetings, isLoading, fetchMeetings } = useSchedulingStore();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState(Views.MONTH);
+
+  useEffect(() => {
+    fetchMeetings();
+  }, [fetchMeetings]);
+
+  const handleNavigate = useCallback((newDate: Date) => {
+    setCurrentDate(newDate);
+  }, []);
+
+  const handleViewChange = useCallback((view: any) => {
+    setCurrentView(view);
+  }, []);
+
+  const handleSelectEvent = useCallback((event: EventItem) => {
+    // Handle event click - could open a modal or navigate to details
+    console.log('Selected event:', event);
+  }, []);
+
+  const handleSelectSlot = useCallback((slotInfo: any) => {
+    // Handle clicking on empty calendar slot - could create new event
+    console.log('Selected slot:', slotInfo);
+  }, []);
+
+  // Convert meetings to calendar events
+  const events: EventItem[] = meetings.map(meeting => {
+    const startDate = new Date(meeting.requested_datetime);
+    const endDate = new Date(startDate.getTime() + meeting.duration_minutes * 60000);
+    
+    return {
+      id: meeting.id,
+      title: `${meeting.meeting_type.replace('_', ' ')} - ${meeting.agenda.substring(0, 30)}...`,
+      start: startDate,
+      end: endDate,
+      color: "var(--color-secondary)"
+    };
+  });
+
   // Inject custom styles
   React.useEffect(() => {
     const styleElement = document.createElement('style');
@@ -185,7 +222,7 @@ export default function SchedulingPage() {
 
         <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
           <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0">
-            <EventSidebar items={events} />
+            <EventSidebar items={events} isLoading={isLoading} />
           </aside>
 
           <main className="flex-1">
@@ -195,12 +232,20 @@ export default function SchedulingPage() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                defaultView={Views.MONTH}
+                date={currentDate}
+                view={currentView}
+                onNavigate={handleNavigate}
+                onView={handleViewChange}
+                onSelectEvent={handleSelectEvent}
+                onSelectSlot={handleSelectSlot}
+                selectable
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 style={{ height: '100%' }}
                 components={{ toolbar: CustomToolbar }}
                 eventPropGetter={(ev: any) => eventStyleGetter(ev as EventItem)}
                 popup
+                step={30}
+                showMultiDayTimes
               />
             </div>
           </main>

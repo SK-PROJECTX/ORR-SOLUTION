@@ -1,25 +1,30 @@
 "use client";
 
-import { Search, X } from "lucide-react";
-import React from "react";
-
-const alerts = [
-  { color: "bg-lemon", text: "A simple primary alert with an example link. Give it a click if you like." },
-  { color: "bg-secondary", text: "A simple secondary alert with an example link. Give it a click if you like." },
-  { color: "bg-primary", text: "A simple success alert with an example link. Give it a click if you like." },
-  { color: "bg-lemon/80", text: "A simple danger alert with an example link. Give it a click if you like." },
-  { color: "bg-secondary/80", text: "A simple warning alert with an example link. Give it a click if you like." },
-  { color: "bg-primary/80", text: "A simple info alert with an example link. Give it a click if you like." },
-  { color: "bg-card", text: "A simple light alert with an example link. Give it a click if you like." },
-  { color: "bg-background", text: "A simple dark alert with an example link. Give it a click if you like." },
-];
+import { Search, X, ChevronDown, ChevronUp } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useNotificationStore } from "@/store/notificationStore";
 
 export default function NotificationPage() {
+  const { notifications, isLoading, fetchNotifications, markAsRead } = useNotificationStore();
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const toggleExpanded = (id: number) => {
+    const newExpanded = new Set(expandedIds);
+    if (newExpanded.has(id)) {
+      newExpanded.delete(id);
+    } else {
+      newExpanded.add(id);
+      markAsRead(id);
+    }
+    setExpandedIds(newExpanded);
+  };
+
   return (
     <div className="min-h-screen w-full bg-background text-foreground font-poppins relative overflow-x-hidden">
-
-      {/* Background dots */}
-      <div className="absolute inset-0 bg-[url('/stars.png')] opacity-30 pointer-events-none"></div>
 
       {/* Search bar & header */}
       <div className="w-full flex flex-col items-center pt-10 relative z-10">
@@ -45,7 +50,7 @@ export default function NotificationPage() {
         rounded-[40px]
         border-[6px]
         border-secondary
-        bg-card/70
+        bg-card
         backdrop-blur-md
         p-10
         relative
@@ -57,17 +62,54 @@ export default function NotificationPage() {
         </h2>
 
         <div className="flex flex-col gap-4">
-          {alerts.map((alert, index) => (
-            <div
-              key={index}
-              className={`bg-lemon flex justify-between items-center px-5 py-3 rounded-lg shadow-[0_0_12px_theme(colors.lemon/25)] border border-secondary/30`}
-            >
-              <p className="text-[14px] text-foreground">
-                {alert.text}{" "}
-              </p>
-              <X className="cursor-pointer" size={18} />
+          {isLoading ? (
+            <div className="text-center py-8 text-foreground/70">
+              Loading notifications...
             </div>
-          ))}
+          ) : notifications.length === 0 ? (
+            <div className="text-center py-8 text-foreground/70">
+              No notifications found
+            </div>
+          ) : (
+            notifications.map((notification) => {
+              const isExpanded = expandedIds.has(notification.id);
+              return (
+                <div
+                  key={notification.id}
+                  className={`${notification.is_read ? 'bg-card/50' : 'bg-lemon'} flex flex-col px-5 py-3 rounded-lg shadow-[0_0_12px_theme(colors.lemon/25)] border border-secondary/30`}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1">
+                      <p className={`text-[14px] ${notification.is_read ? 'text-foreground/70' : 'text-foreground'} font-medium`}>
+                        {notification.title}
+                      </p>
+                      <p className="text-xs text-foreground/50 mt-1">
+                        {new Date(notification.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {!notification.is_read && (
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                      <button
+                        onClick={() => toggleExpanded(notification.id)}
+                        className="cursor-pointer hover:bg-foreground/10 p-1 rounded"
+                      >
+                        {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                  {isExpanded && (
+                    <div className="mt-3 pt-3 border-t border-foreground/20">
+                      <p className="text-[13px] text-foreground/80">
+                        {notification.message}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

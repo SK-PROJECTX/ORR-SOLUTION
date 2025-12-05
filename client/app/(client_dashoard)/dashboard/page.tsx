@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip } from 'recharts';
 
 // Stat type for components
 interface StatProps {
@@ -11,23 +11,33 @@ interface StatProps {
   small?: boolean;
 }
 
+const data = [
+  { name: "1", low: 300, high: 100 },
+  { name: "2", low: 290, high: 110 },
+  { name: "3", low: 210, high: 90 },
+  { name: "4", low: 260, high: 130 },
+  { name: "5", low: 240, high: 120 },
+  { name: "6", low: 150, high: 80 },
+  { name: "7", low: 280, high: 130 },
+  { name: "8", low: 210, high: 140 },
+  { name: "9", low: 190, high: 110 },
+  { name: "10", low: 170, high: 120 },
+];
+
 const StatBox: React.FC<StatProps> = ({ icon, title, value, small }) => {
   return (
     <div className="flex-1 bg-background rounded-xl p-5 shadow-lg">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
           {icon}
         </div>
-        <div>
-          <p className="text-xs text-primary">{title}</p>
-          <p
-            className={`font-extrabold ${
-              small ? "text-2xl" : "text-3xl"
-            } text-lemon`}
-          >
-            {value}
-          </p>
-        </div>
+        <p className="text-sm text-primary font-medium">{title}</p>
+      </div>
+      <p className={`font-extrabold ${small ? "text-3xl" : "text-4xl"} text-lemon mb-3 text-center`}>
+        {value}
+      </p>
+      <div className="w-full h-1 bg-secondary rounded-full">
+        <div className="h-full w-3/4 bg-lemon rounded-full"></div>
       </div>
     </div>
   );
@@ -86,20 +96,57 @@ export default function Dashboard() {
 
                 {/* Chart */}
                 <div className="flex-1 bg-gradient-primary rounded-lg p-5">
-                  <ResponsiveContainer width="100%" height={144}>
-                    <BarChart data={[
-                      { name: 'Jan', value: 65 },
-                      { name: 'Feb', value: 85 },
-                      { name: 'Mar', value: 45 },
-                      { name: 'Apr', value: 95 },
-                      { name: 'May', value: 75 },
-                      { name: 'Jun', value: 55 },
-                      { name: 'Jul', value: 90 },
-                      { name: 'Aug', value: 70 }
-                    ]}>
-                      <Bar dataKey="value" fill="#ffffff" opacity={0.9} radius={4} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                        <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data}>
+          <defs>
+            <linearGradient id="lowBar" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#ffffff" />
+            </linearGradient>
+
+            <linearGradient id="highBar" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0A2342" />
+              <stop offset="100%" stopColor="#0A2342" />
+            </linearGradient>
+          </defs>
+
+          <CartesianGrid
+            vertical={false}
+            stroke="#ffffff55"
+            strokeDasharray="4 4"
+          />
+
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            ticks={[100, 200, 300]}
+            tick={{ fill: "white", fontSize: 16 }}
+          />
+
+          <XAxis hide />
+          {/* <Tooltip cursor={false} /> */}
+
+          {/* White bottom bar */}
+          <Bar
+            dataKey="low"
+            stackId="stack"
+            fill="url(#lowBar)"
+            barSize={6}
+            radius={[0, 0, 20, 20]}
+          />
+
+          {/* Dark top bar */}
+          <Bar
+            dataKey="high"
+            stackId="stack"
+            fill="url(#highBar)"
+            barSize={6}
+            radius={[20, 20, 0, 0]}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+
+
                 </div>
               </div>
 
@@ -193,12 +240,37 @@ export default function Dashboard() {
             </div>
 
             <div className="bg-card rounded-xl p-4">
-              <h6 className="text-[#6ff3ab] font-semibold">Impression</h6>
+              <h6 className="text-[#6ff3ab] font-semibold mb-4">Impression Trends</h6>
 
-              <div className="mt-4 flex items-end gap-4 bg-[#082935] p-3 rounded-lg h-28">
-                <div className="w-10 bg-[#1ae18f] h-[70%] rounded-t-md" />
-                <div className="w-8 bg-[#4ef8c0] h-[30%] rounded-t-md" />
-                <div className="w-8 bg-[#39f0b2] h-[45%] rounded-t-md" />
+              <div className="h-40">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={[
+                    { day: 'Mon', impressions: 120 },
+                    { day: 'Tue', impressions: 180 },
+                    { day: 'Wed', impressions: 90 },
+                    { day: 'Thu', impressions: 200 },
+                    { day: 'Fri', impressions: 150 },
+                    { day: 'Sat', impressions: 170 },
+                    { day: 'Sun', impressions: 140 }
+                  ]}>
+                    <XAxis 
+                      dataKey="day" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: 'var(--color-primary)', fontSize: 10 }}
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: 'var(--color-primary)', fontSize: 10 }}
+                    />
+                    <Bar 
+                      dataKey="impressions" 
+                      fill="var(--color-lemon)" 
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </aside>

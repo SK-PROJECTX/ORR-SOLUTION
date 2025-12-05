@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image"
 
 export default function PricingPage() {
@@ -10,33 +9,29 @@ export default function PricingPage() {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="flex justify-between ">
+        <div className="flex justify-between items-center mb-10">
+          {/* Header */}
+          <h1 className="text-3xl font-semibold text-[#22C55E]">Pricing page</h1>
 
-        {/* Header */}
-        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">Pricing page</h1>
-
-        {/* Search Bar */}
-        <div className="w-full max-w-md mx-auto mb-14">
-          <div className="relative">
-            <input
-              placeholder="Search anything here..."
-              className="w-full rounded-full py-3 pl-5 pr-12 bg-card border border-[#2b3538] text-sm focus:outline-none"
-            />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#22C55E] text-lg">🔍</span>
+          {/* Search Bar */}
+          <div className="w-full max-w-md">
+            <div className="relative">
+              <input
+                placeholder="Search anything here..."
+                className="w-full rounded-full py-3 pl-5 pr-12 bg-card border border-[#2b3538] text-sm focus:outline-none"
+              />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#22C55E] text-lg">🔍</span>
+            </div>
           </div>
         </div>
-        </div>
-
 
         {/* Pricing Container */}
-        <div className="absolute inset-0 star opacity-20" />
-              
-              <div className="relative z-10 max-w-6xl mx-auto">
-                <div className="bg-[#33FF99]/50 backdrop-blur-xl ml-10 rounded-[60px] pt-2 pr-0 pb-1 pl-0 transform -rotate-2 -translate-x-8 -translate-y-4">
-                  <div className="bg-[#2c4a63] rounded-[55px] px-12 py-16 transform rotate-2 translate-x-8  translate-y-4 scale-95">
+        <div className="flex justify-center items-center min-h-[600px]">
+          <div className="bg-[#33FF99]/50 backdrop-blur-xl rounded-[60px] pt-2 pr-0 pb-1 pl-0 transform -rotate-2">
+            <div className="bg-[#2c4a63] rounded-[55px] px-12 py-16 transform rotate-2">
                   
                     
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">             
+                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl">             
         
                       <div className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
                         <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
@@ -73,8 +68,6 @@ export default function PricingPage() {
                   </div>
                 </div>
               </div>
-
-
         </div>
       </div>
   
