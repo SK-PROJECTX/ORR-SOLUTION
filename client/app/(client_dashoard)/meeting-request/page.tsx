@@ -160,14 +160,14 @@ export default function MeetingRequestPage() {
         </p>
 
         {/* MEETING TYPE STEPS */}
-        <div className="flex items-center gap-4 mt-6 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-4 mt-6 flex-wrap">
 
           {meetingTypes.map((type, idx) => (
             <div key={idx} className="flex items-center gap-4">
 
               <button
                 onClick={() => setSelectedType(type)}
-                className={`px-6 py-2 rounded-full text-sm font-semibold transition-all
+                className={`px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all
                   ${
                     selectedType === type
                       ? "bg-lemon text-background"
@@ -191,14 +191,14 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* DATE + TIME SECTION */}
-        <p className="text-center text-lg font-semibold mt-10 mb-6">
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-6">
           Choose Preferred Date And Time
         </p>
 
         <div className="w-full bg-background p-8 rounded-3xl flex flex-col md:flex-row gap-8 justify-center border border-secondary">
 
           {/* CALENDAR */}
-          <div className="w-full md:w-1/2">
+          <div className="w-full lg:w-1/2">
             <div className="flex justify-between items-center mb-4">
               <button 
                 onClick={() => navigateMonth('prev')}
@@ -255,12 +255,12 @@ export default function MeetingRequestPage() {
           <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-secondary">
             <h3 className="text-lg font-semibold mb-6">{formatSelectedDate(selectedDate)}</h3>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
               {times.map((time) => (
                 <button
                   key={time}
                   onClick={() => setSelectedTime(time)}
-                  className={`px-6 py-3 rounded-lg text-center text-sm font-semibold transition-all
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all
                     ${
                       selectedTime === time
                         ? "bg-lemon text-background"
@@ -276,7 +276,7 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* MEETING AGENDA */}
-        <p className="text-center text-lg font-semibold mt-10 mb-3">Meeting Agenda</p>
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">Meeting Agenda</p>
 
         <textarea
           value={agenda}
