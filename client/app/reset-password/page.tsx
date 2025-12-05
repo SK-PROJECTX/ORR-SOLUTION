@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuthStore } from "@/store/authStore";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [formData, setFormData] = useState({
     newPassword: "",
     confirmPassword: ""
@@ -153,5 +153,13 @@ export default function ResetPasswordPage() {
       </div>    
 
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div></div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

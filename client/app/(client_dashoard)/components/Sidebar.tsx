@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight, LayoutGrid, Menu, X } from "lucide-react";
+import { ChevronDown, ChevronRight, LayoutGrid, Menu, X, LogOut, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
 
 type OpenState = {
   home: boolean;
@@ -15,6 +16,7 @@ type OpenState = {
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { user, logout } = useAuthStore();
   const [open, setOpen] = useState<OpenState>({
     home: true,
     pages: true,
@@ -89,7 +91,7 @@ export default function Sidebar() {
                 href: "/account",
                 subItems: [
                   { label: "Settings", href: "/account/settings" },
-                  { label: "Billing", href: "/account/billing" },
+                  // { label: "Billing", href: "/account/billing" },
                   // { label: "Invoice", href: "/account/invoice" },
                   // { label: "Security", href: "/account/security" }
                 ]
@@ -105,11 +107,13 @@ export default function Sidebar() {
                 ]
               },
               // { label: "Charts", href: "/charts" },
-              { label: "Support History", href: "/support-history" },
+              { label: "Document Vault", href: "/document" },
+              // { label: "Request Support", href: "/support" },
+              // { label: "Support History", href: "/support-history" },
               { label: "Meeting Request System", href: "/meeting-request" },
               { label: "Favorite /Saved Items", href: "/favourite" },
               { label: "Quick Action scheduling", href: "/scheduling" },
-              { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
+              // { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
               { label: "Feedback Mechanisms", href: "/feedback" },
               { label: "Resources", href: "/resources" },
               { label: "Notifications", href: "/notifications" },
@@ -120,6 +124,21 @@ export default function Sidebar() {
           />
 
           <SidebarGroup
+            label="Support"
+            open={open.applications}
+            onClick={() => toggle("applications")}
+            items={[
+              { label: "Request Support", href: "/support" },
+              { label: "Support History", href: "/support-history" },
+              // { label: "Wizard", href: "/wizard" },
+              // { label: "Data Tables", href: "/data-tables" },
+              // { label: "Calendar", href: "/calendar" }
+            ]}
+            pathname={pathname}
+            subOpen={subOpen}
+            toggleSub={toggleSub}
+          />
+          {/* <SidebarGroup
             label="Applications"
             open={open.applications}
             onClick={() => toggle("applications")}
@@ -132,16 +151,27 @@ export default function Sidebar() {
             pathname={pathname}
             subOpen={subOpen}
             toggleSub={toggleSub}
-          />
+          /> */}
         </nav>
       </div>
 
-      <div className="bg-primary text-background rounded-xl p-3 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold">AC</div>
-        <div className="leading-tight text-sm font-medium">
-          Anita Cruz
-          <div className="text-xs opacity-80">anita@commerce.com</div>
+      <div className="bg-primary text-background rounded-xl p-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold">
+            {user?.first_name?.[0] || 'U'}{user?.last_name?.[0] || ''}
+          </div>
+          <div className="leading-tight text-sm font-medium">
+            {user?.first_name} {user?.last_name}
+            <div className="text-xs opacity-80 truncate max-w-[120px]">{user?.email}</div>
+          </div>
         </div>
+        <button 
+          onClick={logout}
+          className="p-2 hover:bg-background/20 rounded-lg transition-colors"
+          title="Logout"
+        >
+          <LogOut size={16} />
+        </button>
       </div>
     </aside>
     </>

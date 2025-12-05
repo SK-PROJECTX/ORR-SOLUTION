@@ -3,15 +3,13 @@ import api from '@/lib/axios';
 import { useToastStore } from './toastStore';
 
 interface PreMeetingData {
-  basic_context: string;
-  goals: string;
-  pain_points: string;
+  [key: string]: any; // Flexible structure for form data
 }
 
 interface PreMeetingState {
   isLoading: boolean;
   error: string | null;
-  submitPreMeeting: (id: string, data: PreMeetingData) => Promise<void>;
+  submitPreMeetingForm: (meetingId: number, data: PreMeetingData) => Promise<void>;
   clearError: () => void;
 }
 
@@ -19,14 +17,14 @@ export const usePreMeetingStore = create<PreMeetingState>()((set) => ({
   isLoading: false,
   error: null,
 
-  submitPreMeeting: async (id: string, data: PreMeetingData) => {
+  submitPreMeetingForm: async (meetingId: number, data: PreMeetingData) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post(`/meeting-preform/${id}`, data);
+      await api.patch(`/meeting-preform/${meetingId}`, data);
       useToastStore.getState().addToast('Pre-meeting form submitted successfully!', 'success');
       set({ isLoading: false });
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Pre-meeting submission failed';
+      const errorMessage = error.response?.data?.message || 'Failed to submit pre-meeting form';
       set({ error: errorMessage, isLoading: false });
       useToastStore.getState().addToast(errorMessage, 'error');
     }

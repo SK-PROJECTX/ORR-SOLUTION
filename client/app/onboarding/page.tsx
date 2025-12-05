@@ -77,7 +77,7 @@ const questionnaire = {
       {
         question: "11. Briefly describe your project or business:",
         type: "text",
-        placeholder: "Type your message here..."
+        placeholder: "Type your message here..." as const
       }
     ]
   },
@@ -112,7 +112,7 @@ const questionnaire = {
       {
         question: "17. Any additional context you'd like the system to know?",
         type: "text",
-        placeholder: "Type your message here..."
+        placeholder: "Type your message here..." as const
       }
     ]
   }
@@ -237,7 +237,7 @@ export default function OnboardingPage() {
                 <textarea
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
-                  placeholder={currentStepData.placeholder}
+                  placeholder={(currentStepData as any).placeholder || "Type your message here..."}
                   className="w-full bg-[#10253F] border border-[#1A3B56] rounded-xl p-6 text-foreground min-h-[200px] focus:border-[#00D683] focus:outline-none"
                 />
               </div>

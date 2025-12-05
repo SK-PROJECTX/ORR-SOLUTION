@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { usePreMeetingStore } from "@/store/preMeetingStore";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function FirstMeetingPrepPage() {
   const [formData, setFormData] = useState({
@@ -9,16 +9,18 @@ export default function FirstMeetingPrepPage() {
     goals: '',
     pain_points: ''
   });
-  const { submitPreMeeting, isLoading } = usePreMeetingStore();
+  const { submitPreMeetingForm, isLoading } = usePreMeetingStore();
   const searchParams = useSearchParams();
-  const meetingId = searchParams.get('id') || '1';
+  const router = useRouter();
+  const meetingId = parseInt(searchParams.get('meetingId') || '1');
 
   const handleSubmit = async () => {
     if (!formData.basic_context.trim() || !formData.goals.trim() || !formData.pain_points.trim()) {
       alert('Please fill all fields');
       return;
     }
-    await submitPreMeeting(meetingId, formData);
+    await submitPreMeetingForm(meetingId, formData);
+    router.push('/meeting-request');
   };
 
   return (

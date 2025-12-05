@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Calendar,
   dateFnsLocalizer,
@@ -57,7 +57,7 @@ type EventItem = {
 
 
 
-function EventSidebar({ items }: { items: EventItem[] }) {
+function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boolean }) {
   return (
     <div className="h-full">
       <div className="bg-card rounded-xl p-4 h-full flex flex-col">
@@ -144,10 +144,30 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
 
 export default function SchedulingPage() {
   const { meetings, isLoading, fetchMeetings } = useSchedulingStore();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState(Views.MONTH);
 
   useEffect(() => {
     fetchMeetings();
   }, [fetchMeetings]);
+
+  const handleNavigate = useCallback((newDate: Date) => {
+    setCurrentDate(newDate);
+  }, []);
+
+  const handleViewChange = useCallback((view: any) => {
+    setCurrentView(view);
+  }, []);
+
+  const handleSelectEvent = useCallback((event: EventItem) => {
+    // Handle event click - could open a modal or navigate to details
+    console.log('Selected event:', event);
+  }, []);
+
+  const handleSelectSlot = useCallback((slotInfo: any) => {
+    // Handle clicking on empty calendar slot - could create new event
+    console.log('Selected slot:', slotInfo);
+  }, []);
 
   // Convert meetings to calendar events
   const events: EventItem[] = meetings.map(meeting => {
@@ -202,7 +222,7 @@ export default function SchedulingPage() {
 
         <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
           <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0">
-            <EventSidebar items={events} />
+            <EventSidebar items={events} isLoading={isLoading} />
           </aside>
 
           <main className="flex-1">
@@ -212,12 +232,20 @@ export default function SchedulingPage() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                defaultView={Views.MONTH}
+                date={currentDate}
+                view={currentView}
+                onNavigate={handleNavigate}
+                onView={handleViewChange}
+                onSelectEvent={handleSelectEvent}
+                onSelectSlot={handleSelectSlot}
+                selectable
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 style={{ height: '100%' }}
                 components={{ toolbar: CustomToolbar }}
                 eventPropGetter={(ev: any) => eventStyleGetter(ev as EventItem)}
                 popup
+                step={30}
+                showMultiDayTimes
               />
             </div>
           </main>

@@ -17,6 +17,7 @@ interface ProfileState {
   isLoading: boolean;
   isEditing: boolean;
   error: string | null;
+  fetchProfile: () => Promise<void>;
   updateProfile: (data: ProfileData) => Promise<void>;
   setEditing: (editing: boolean) => void;
   setProfile: (profile: Partial<ProfileData>) => void;
@@ -36,6 +37,19 @@ export const useProfileStore = create<ProfileState>()((set, get) => ({
   isLoading: false,
   isEditing: false,
   error: null,
+
+  fetchProfile: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.get('/profile/');
+      const profileData = response.data?.data || response.data || {};
+      set({ profile: profileData, isLoading: false });
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Failed to fetch profile';
+      set({ error: errorMessage, isLoading: false });
+      useToastStore.getState().addToast(errorMessage, 'error');
+    }
+  },
 
   updateProfile: async (data: ProfileData) => {
     set({ isLoading: true, error: null });

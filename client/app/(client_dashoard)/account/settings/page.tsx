@@ -1,10 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useProfileStore } from "@/store/profileStore";
 
 export default function AccountSettingsPage() {
-  const { profile, isLoading, isEditing, updateProfile, setEditing, setProfile } = useProfileStore();
+  const { profile, isLoading, isEditing, updateProfile, setEditing, fetchProfile } = useProfileStore();
   const [formData, setFormData] = useState(profile);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  useEffect(() => {
+    setFormData(profile);
+  }, [profile]);
 
   const handleSave = async () => {
     await updateProfile(formData);

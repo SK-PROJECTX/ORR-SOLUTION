@@ -42,7 +42,7 @@ export const useNotificationStore = create<NotificationState>()((set, get) => ({
       const notification = get().notifications.find(n => n.id === id);
       if (!notification) return;
 
-      await api.put(`/notifications/${id}`, {
+      await api.put(`/notifications/${id}/`, {
         title: notification.title,
         message: notification.message,
         is_read: true,
