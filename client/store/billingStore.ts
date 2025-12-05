@@ -28,10 +28,11 @@ export const useBillingStore = create<BillingState>()((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.get('/billing-history');
-      set({ billingHistory: response.data, isLoading: false });
+      const billingData = response.data?.data || response.data || [];
+      set({ billingHistory: Array.isArray(billingData) ? billingData : [], isLoading: false });
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Failed to fetch billing history';
-      set({ error: errorMessage, isLoading: false });
+      set({ error: errorMessage, isLoading: false, billingHistory: [] });
       useToastStore.getState().addToast(errorMessage, 'error');
     }
   },

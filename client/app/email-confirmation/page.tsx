@@ -17,7 +17,7 @@ function EmailConfirmationContent() {
       <div className="absolute inset-0 pointer-events-none bg-[url('/stars.png')] opacity-60"></div>
 
       {/* Main Card */}
-      <div className="relative bg-lemon w-full max-w-5xl rounded-xl p-12 text-center text-black shadow-xl">
+      <div className="relative bg-lemon w-full max-w-5xl rounded-xl p-12 text-center text-white shadow-xl">
 
         {/* Close Button */}
         <button

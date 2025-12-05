@@ -3,37 +3,35 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuthStore } from "@/store/authStore";
-export default function Page() {
-  
+
+export default function ResetPasswordPage() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    newPassword: "",
     confirmPassword: ""
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
-  const { forgotPassword, isLoading, error } = useAuthStore();
+  const { resetPassword, isLoading, error } = useAuthStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const uid = searchParams.get('uid') || '';
+  const token = searchParams.get('token') || '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await forgotPassword(formData.email);
+    if (formData.newPassword !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    await resetPassword(uid, token, formData.newPassword);
   };
-
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Image + Text */}
-
-    
-     
-
-        {/* Right side - Form */}
+      {/* Right side - Form */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
@@ -44,22 +42,19 @@ export default function Page() {
                 className="w-16 h-16 mb-4"
               />
             </div>
-         
 
           <div className="flex justify-between items-center mb-6">
                    <div className="mt-0">
                          <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
-                         Forgot Your Password
+                         Reset Your Password
                        </h2>
                    </div>
                   
-         
                    <div className="mb-8">
                      <ThemeToggle />
                    </div>
                    
                    </div>
-
 
           {error && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
@@ -68,24 +63,52 @@ export default function Page() {
           )}
 
           <form className="space-y-7" onSubmit={handleSubmit}>
-           
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={formData.newPassword}
+                onChange={(e) => setFormData({...formData, newPassword: e.target.value})}
+                className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition"
+              >
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+              </button>
+            </div>
+            
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm New Password"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition"
+              >
+                {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+              </button>
+            </div>
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
-              required
-            />
+            {formData.newPassword !== formData.confirmPassword && formData.confirmPassword && (
+              <p className="text-red-400 text-sm mt-2">Passwords do not match</p>
+            )}
 
-          
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-[#13BE77]  py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
+              disabled={isLoading || formData.newPassword !== formData.confirmPassword}
+              className="w-full bg-[#13BE77] py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {isLoading ? "Recovering Password..." : "Forgot Password"}
+              {isLoading ? "Resetting Password..." : "Reset Password"}
             </button>
 
                 <div className="hidden md:flex items-end  justify-end mt-4 ">
@@ -93,14 +116,12 @@ export default function Page() {
                   href="/login"
                   className="px-6 font-extrabold text-md text-[#FFFFFF] "
                 >
-                  Already have an account <span className="text-[#61FD51] underline">Login</span>
+                  Remember your password? <span className="text-[#61FD51] underline">Login</span>
                 </Link>
               </div>
           </form>
         
         </div>
-
-        
       </div>
 
        <div
@@ -109,21 +130,6 @@ export default function Page() {
           backgroundImage: "url('https://res.cloudinary.com/depeqzb6z/image/upload/v1764168892/side-image_1_jwpnup.png')",
         }}
       >
-        {/* <div className="absolute inset-0 bg-black/80"></div> */}
-        {/* <div className="relative text-center px-6 flex  justify-center h-full py-12">
-          <div className="flex justify-center">
-            <img
-              src="/images/logo.svg"
-              alt="ORR Solutions"
-              className="mx-auto mb-6 w-28 h-auto"
-            />
-          <p className="text-3xl font-extrabold md:text-xl  mx-auto mt-auto">
-          ORR Solutions - Listen. 
-          Solve. Optimise.
-          </p>
-          </div>
-          
-        </div> */}
         <div className='justify-between flex flex-row w-full'>
           <div className="justify-start flex items-start">
             <img 
@@ -137,7 +143,6 @@ export default function Page() {
               <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
           </div>
         </div>
-
 
         <div className="absolute bottom-10 w-full px-6 text-start">
           <p className="text-[48px] font-poppins font-extrabold text-[32px] md:text-[48px] lg:text-[48px] xl:text-[40px] ml-5 mx-auto">

@@ -28,10 +28,11 @@ export const useNotificationStore = create<NotificationState>()((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.get('/notifications');
-      set({ notifications: response.data, isLoading: false });
+      const notificationsData = response.data?.data || response.data || [];
+      set({ notifications: Array.isArray(notificationsData) ? notificationsData : [], isLoading: false });
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Failed to fetch notifications';
-      set({ error: errorMessage, isLoading: false });
+      set({ error: errorMessage, isLoading: false, notifications: [] });
       useToastStore.getState().addToast(errorMessage, 'error');
     }
   },

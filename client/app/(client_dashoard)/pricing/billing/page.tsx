@@ -108,7 +108,7 @@ export default function PlansBillingPage() {
                     </td>
                   </tr>
                 ) : (
-                  billingHistory.map((bill) => (
+                  (Array.isArray(billingHistory) ? billingHistory : []).map((bill) => (
                     <tr key={bill.id} className="border-b border-[#1E3A4B] text-gray-200">
                       <td className="py-4 flex items-center gap-3">
                         <div className="w-4 h-4 border border-[#22C55E] bg-[#22C55E] rounded-sm"></div>

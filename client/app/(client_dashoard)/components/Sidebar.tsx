@@ -108,6 +108,7 @@ export default function Sidebar() {
               { label: "Support History", href: "/support-history" },
               { label: "Meeting Request System", href: "/meeting-request" },
               { label: "Favorite /Saved Items", href: "/favourite" },
+              { label: "Quick Action scheduling", href: "/scheduling" },
               { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
               { label: "Feedback Mechanisms", href: "/feedback" },
               { label: "Resources", href: "/resources" },

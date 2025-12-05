@@ -40,11 +40,18 @@ export const useProfileStore = create<ProfileState>()((set, get) => ({
   updateProfile: async (data: ProfileData) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/profile/create', data);
+      const response = await api.post('/profile/create/', data);
       set({ profile: data, isLoading: false, isEditing: false });
       useToastStore.getState().addToast('Profile updated successfully!', 'success');
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Profile update failed';
+      let errorMessage = 'Profile update failed';
+      
+      if (error.response?.status === 401) {
+        errorMessage = 'Authentication required. Please login again.';
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      
       set({ error: errorMessage, isLoading: false });
       useToastStore.getState().addToast(errorMessage, 'error');
     }

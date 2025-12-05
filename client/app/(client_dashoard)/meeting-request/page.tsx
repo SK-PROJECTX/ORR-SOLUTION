@@ -18,10 +18,11 @@ export default function MeetingRequestPage() {
   const [selectedDate, setSelectedDate] = useState<number | null>(14);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [agenda, setAgenda] = useState("");
+  const [schedulingUrl, setSchedulingUrl] = useState("");
   const { createMeeting, isLoading } = useMeetingStore();
 
   const handleSubmit = async () => {
-    if (!selectedDate || !selectedTime || !agenda.trim()) {
+    if (!selectedDate || !selectedTime || !agenda.trim() || !schedulingUrl.trim()) {
       alert('Please fill all fields');
       return;
     }
@@ -31,6 +32,7 @@ export default function MeetingRequestPage() {
       meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
       requested_datetime: datetime.toISOString(),
       agenda: agenda.trim(),
+      scheduling_url: schedulingUrl.trim(),
     };
 
     await createMeeting(meetingData);
@@ -191,6 +193,17 @@ export default function MeetingRequestPage() {
           onChange={(e) => setAgenda(e.target.value)}
           placeholder="Input text"
           className="w-full h-40 bg-[#0F334F] rounded-xl p-4 outline-none text-sm text-white"
+        />
+
+        {/* SCHEDULING URL */}
+        <p className="text-center text-lg font-semibold mt-8 mb-3">Scheduling URL</p>
+
+        <input
+          type="url"
+          value={schedulingUrl}
+          onChange={(e) => setSchedulingUrl(e.target.value)}
+          placeholder="https://calendly.com/your-link or similar scheduling URL"
+          className="w-full bg-[#0F334F] rounded-xl p-4 outline-none text-sm text-white"
         />
 
         {/* SUBMIT BUTTON */}

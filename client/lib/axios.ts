@@ -5,7 +5,6 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'X-CSRFToken': 'iqyFKg5sIleZH1GGlYvV2WoQ1Sa3xsmOjPUPKnZfQALgcpW0hIk9StV5j0T0XigX',
   },
   withCredentials: true,
 });
@@ -24,13 +23,18 @@ const getCSRFToken = (): string | null => {
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Always check localStorage for accessToken
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     
+    // Add CSRF token for state-changing requests
     if (['post', 'put', 'patch', 'delete'].includes(config.method?.toLowerCase() || '')) {
-      config.headers['X-CSRFToken'] = 'iqyFKg5sIleZH1GGlYvV2WoQ1Sa3xsmOjPUPKnZfQALgcpW0hIk9StV5j0T0XigX';
+      const csrfToken = getCSRFToken();
+      if (csrfToken) {
+        config.headers['X-CSRFToken'] = csrfToken;
+      }
     }
     
     return config;
@@ -47,8 +51,22 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      const errorData = error.response?.data;
+      // Check if it's a token validation error
+      if (errorData?.data?.code === 'token_not_valid') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+      
+      // Only logout for authentication endpoints for other 401 errors
+      const url = error.config?.url || '';
+      if (url.includes('/login') || url.includes('/register')) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

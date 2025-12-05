@@ -6,6 +6,7 @@ interface MeetingData {
   meeting_type: 'discovery' | 'first_meeting' | 'follow_up' | 'report_review';
   requested_datetime: string;
   agenda: string;
+  scheduling_url: string;
 }
 
 interface MeetingState {
@@ -22,7 +23,7 @@ export const useMeetingStore = create<MeetingState>()((set) => ({
   createMeeting: async (data: MeetingData) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.post('/create-meeting', data);
+      const response = await api.post('/create-meeting/', data);
       useToastStore.getState().addToast('Meeting request submitted successfully!', 'success');
       set({ isLoading: false });
     } catch (error: any) {
