@@ -1,3 +1,6 @@
+"use client";
+import { useState } from 'react';
+import { useToastStore } from '@/store/toastStore';
 
 const categories = [
     "Technology",
@@ -7,7 +10,30 @@ const categories = [
     "Business",
     "Entertainment",
 ];
+
 function page() {
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: '',
+    tags: '',
+  });
+  const { addToast } = useToastStore();
+
+  const handleSubmit = (e: React.FormEvent, isDraft = false) => {
+    e.preventDefault();
+    
+    if (!formData.title || !formData.content) {
+      addToast('Please fill in all required fields', 'error');
+      return;
+    }
+
+    const action = isDraft ? 'saved as draft' : 'published';
+    addToast(`Post ${action} successfully!`, 'success');
+    
+    // Reset form
+    setFormData({ title: '', content: '', category: '', tags: '' });
+  };
   return (
     <div>
       <div className="min-h-screen text-white relative overflow-hidden star">
@@ -16,11 +42,31 @@ function page() {
         <div className="relative z-10 p-8">
           <div className="bg-card backdrop-blur-sm rounded-2xl p-6 flex flex-col gap-8">
             <h1 className="text-4xl font-bold text-white">Add New Post</h1>
-            <form action="" className="flex flex-col gap-6">
-                <input type="text" className="bg-card-light p-3 rounded-lg w-fit" placeholder="Enter Post Title" />
-                <textarea className="bg-card-light p-3 rounded-lg" placeholder="Enter Post Content" />
+            <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-6">
+                <input 
+                  type="text" 
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  className="bg-card p-3 rounded-lg text-foreground" 
+                  placeholder="Enter Post Title" 
+                  required
+                />
+                <textarea 
+                  value={formData.content}
+                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  className="bg-card p-3 rounded-lg text-foreground min-h-[200px]" 
+                  placeholder="Enter Post Content" 
+                  required
+                />
                 <h2 className="text-2xl font-semibold text-white">Categories</h2>
-                <select className="w-fit bg-card-light p-3 rounded-lg" name="categories" id="categories">
+                <select 
+                  value={formData.category}
+                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  className="w-fit bg-card p-3 rounded-lg text-foreground" 
+                  name="categories" 
+                  id="categories"
+                >
+                    <option value="">Select Category</option>
                     {categories.map((category) => (
                         <option className="text-black" key={category} value={category}>
                             {category}
@@ -28,7 +74,13 @@ function page() {
                     ))}
                 </select>
                 <h2 className="text-2xl font-semibold text-white">Tags</h2>
-                <input type="text" className="bg-card-light p-3 rounded-lg w-fit" placeholder="Enter Tags" />
+                <input 
+                  type="text" 
+                  value={formData.tags}
+                  onChange={(e) => setFormData({...formData, tags: e.target.value})}
+                  className="bg-card p-3 rounded-lg text-foreground" 
+                  placeholder="Enter Tags (comma separated)" 
+                />
                 <h2 className="text-2xl font-semibold text-white">Featured Image</h2>
                 <div className="border-4 border-dashed border-primary p-8 rounded-lg flex items-center justify-center text-center min-h-[30vh]">
                     <div>
@@ -37,8 +89,19 @@ function page() {
                     </div>
                 </div>
                 <div className="flex justify-end gap-4">
-                    <button className="ml-4 bg-white/20 p-3 rounded-xl text-white">Save as Draft</button>
-                    <button className="bg-primary p-3 rounded-xl text-white">Publish Post</button>
+                    <button 
+                      type="button"
+                      onClick={(e) => handleSubmit(e, true)}
+                      className="ml-4 bg-secondary/20 p-3 rounded-xl text-foreground hover:bg-secondary/30 transition"
+                    >
+                      Save as Draft
+                    </button>
+                    <button 
+                      type="submit"
+                      className="bg-lemon p-3 rounded-xl text-black hover:bg-lemon/90 transition"
+                    >
+                      Publish Post
+                    </button>
                 </div>
             </form>
           </div>

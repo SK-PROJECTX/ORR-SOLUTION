@@ -38,7 +38,6 @@ export default function LivingSystemsPage() {
             icon: "M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L15 1L13.5 2.5L16.17 5.23L10.23 11.17C9.64 11.76 9 12 8 12S7.36 11.76 6.77 11.17L2 6.4L0.6 7.8L5.37 12.57C6.36 13.56 7.64 14 9 14S11.64 13.56 12.63 12.57L18.77 6.43L21.5 9.17L23 7.67L21 9Z"
           }
         ]}
-        cardStyle="simple"
         // layout="grid"
       />
       <HowWeWorkSection 

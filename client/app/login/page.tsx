@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Page() {
   
@@ -14,9 +15,13 @@ export default function Page() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { login, isLoading, error, clearError } = useAuthStore();
   const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await login(formData.email, formData.password);
+  };
 
 
   return (
@@ -98,7 +103,13 @@ export default function Page() {
           </div>
           
 
-          <form className="space-y-7">
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-7" onSubmit={handleSubmit}>
             <input
               type="email"
               placeholder="Email"
@@ -148,9 +159,10 @@ export default function Page() {
             </div>
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full bg-[#13BE77] py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {loading ? "Signing In..." : "Login"}
+              {isLoading ? "Signing In..." : "Login"}
             </button>
 
                 <div className="hidden md:flex items-end  justify-end mt-4 ">
