@@ -26,7 +26,10 @@ function ResetPasswordForm() {
       alert('Passwords do not match');
       return;
     }
-    await resetPassword(uid, token, formData.newPassword);
+    const success = await resetPassword(uid, token, formData.newPassword);
+    if (success) {
+      router.push('/login');
+    }
   };
 
   return (
