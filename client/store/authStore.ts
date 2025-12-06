@@ -24,10 +24,10 @@ interface AuthState {
   refreshToken: string | null;
   isLoading: boolean;
   error: string | null;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
-  resetPassword: (uid: string, token: string, newPassword: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<boolean>;
+  resetPassword: (uid: string, token: string, newPassword: string) => Promise<boolean>;
   validateToken: () => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
@@ -58,14 +58,12 @@ export const useAuthStore = create<AuthState>()(
           set({ user, accessToken, isLoading: false });
           
           useToastStore.getState().addToast('Registration successful! Please check your email for confirmation.', 'success');
-          
-          setTimeout(() => {
-            window.location.href = `/email-confirmation?email=${encodeURIComponent(email)}`;
-          }, 1500);
+          return true;
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || 'Registration failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
+          return false;
         }
       },
 
@@ -84,10 +82,7 @@ export const useAuthStore = create<AuthState>()(
             set({ user, accessToken, refreshToken, isLoading: false, error: null });
             
             useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
-            
-            setTimeout(() => {
-              window.location.href = '/dashboard';
-            }, 1000);
+            return true;
           } else {
             throw new Error('Login failed');
           }
@@ -95,6 +90,7 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || error.message || 'Login failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
+          return false;
         }
       },
 
@@ -104,10 +100,12 @@ export const useAuthStore = create<AuthState>()(
           await api.post('/forgetpassword/', { email });
           useToastStore.getState().addToast('Password reset email sent!', 'success');
           set({ isLoading: false });
+          return true;
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || 'Failed to send reset email';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
+          return false;
         }
       },
 
@@ -121,13 +119,12 @@ export const useAuthStore = create<AuthState>()(
           });
           useToastStore.getState().addToast('Password reset successful!', 'success');
           set({ isLoading: false });
-          setTimeout(() => {
-            window.location.href = '/login';
-          }, 1500);
+          return true;
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || 'Password reset failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
+          return false;
         }
       },
 

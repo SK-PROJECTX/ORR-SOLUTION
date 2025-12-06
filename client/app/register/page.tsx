@@ -36,7 +36,10 @@ export default function Page() {
       return;
     }
 
-    await register(formData.email, formData.password, formData.firstName, formData.lastName);
+    const success = await register(formData.email, formData.password, formData.firstName, formData.lastName);
+    if (success) {
+      router.push(`/email-confirmation?email=${encodeURIComponent(formData.email)}`);
+    }
   };
 
 
