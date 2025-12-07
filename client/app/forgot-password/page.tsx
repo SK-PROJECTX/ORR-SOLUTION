@@ -22,7 +22,10 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await forgotPassword(formData.email);
+    const success = await forgotPassword(formData.email);
+    if (success) {
+      router.push('/login');
+    }
   };
 
 
