@@ -261,7 +261,7 @@ export default function OnboardingPage() {
                       onClick={() => handleOptionSelect(option)}
                       className={`
                         relative cursor-pointer border rounded-xl px-6 py-8 text-center text-base 
-                        transition-all min-h-[120px] flex items-center justify-center
+                        transition-all min-h-[250px] w-[500px] flex items-center justify-center
                         ${isActive
                           ? "border-[#00D683] bg-[#10253F]"
                           : "border-[#1A3B56] bg-transparent"
