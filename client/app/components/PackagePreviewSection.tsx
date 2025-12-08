@@ -24,7 +24,7 @@ export default function PackagePreviewSection() {
                   <span className="text-gray-400 text-3xl">€</span>45<span className="text-3xl font-normal">/hrs</span>
                 </div>
                 <p className="text-black text-sm my-12 font-medium">pro-rata (short, focused and value-densed)</p>
-                <button className="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
+                <button className="w-full bg-[#0EC277] cursor-pointer text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
                   <span>🔥</span> Book Now
                 </button>
               </div>
@@ -40,7 +40,7 @@ export default function PackagePreviewSection() {
                   <span className="text-gray-400 text-3xl">€</span>220
                 </div>
                 <p className="text-black text-sm my-12 font-medium">fee depends on complexity</p>
-                <button className="w-full bg-primary text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
+                <button className="w-full bg-[#0EC277] cursor-pointer text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
                   <span>🔥</span> Book Now
                 </button>
               </div>
