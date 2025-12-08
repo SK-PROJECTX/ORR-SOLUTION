@@ -242,13 +242,7 @@ export default function OnboardingPage() {
                 />
               </div>
             ) : (
-              <div className={`grid gap-6 mb-16 ${
-                currentStepData.options && currentStepData.options.length > 6 
-                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
-                  : currentStepData.options && currentStepData.options.length > 3
-                  ? "grid-cols-1 md:grid-cols-2"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-              }`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-16">
                 {currentStepData.options?.map((option) => {
                   const currentAnswer = getCurrentAnswer();
                   const isActive = currentStepData.type === "multiple" 
@@ -260,8 +254,8 @@ export default function OnboardingPage() {
                       key={option}
                       onClick={() => handleOptionSelect(option)}
                       className={`
-                        relative cursor-pointer border rounded-xl px-6 py-8 text-center text-base 
-                        transition-all min-h-[250px] w-[500px] flex items-center justify-center
+                        relative cursor-pointer border rounded-xl px-4 py-6 md:px-6 md:py-8 text-center 
+                        transition-all min-h-[120px] md:min-h-[180px] flex items-center justify-center
                         ${isActive
                           ? "border-[#00D683] bg-[#10253F]"
                           : "border-[#1A3B56] bg-transparent"
@@ -284,7 +278,7 @@ export default function OnboardingPage() {
 
             <div className="border-b border-gray-600 my-16"></div>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-4">
               {currentSection > 1 || currentStep > 0 ? (
                 <button 
                   onClick={() => {
@@ -295,7 +289,7 @@ export default function OnboardingPage() {
                       setCurrentStep(questionnaire[(currentSection - 1) as keyof typeof questionnaire].steps.length - 1);
                     }
                   }}
-                  className="bg-gray-600 hover:bg-gray-500 text-white px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all"
+                  className="bg-gray-600 hover:bg-gray-500 text-white px-6 md:px-12 py-3 md:py-5 rounded-lg font-semibold text-base md:text-lg tracking-wide transition-all"
                 >
                   ← BACK
                 </button>
@@ -304,7 +298,7 @@ export default function OnboardingPage() {
               <button 
                 onClick={currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? handleComplete : handleNext}
                 disabled={isLoading}
-                className="bg-lemon hover:bg-lemon/90 text-black px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all disabled:opacity-50"
+                className="bg-lemon hover:bg-lemon/90 text-black px-6 md:px-12 py-3 md:py-5 rounded-lg font-semibold text-base md:text-lg tracking-wide transition-all disabled:opacity-50"
               >
                 {isLoading ? "SUBMITTING..." : currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? "COMPLETE" : "NEXT →"}
               </button>

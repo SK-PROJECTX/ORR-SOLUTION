@@ -17,6 +17,7 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const { forgotPassword, isLoading, error } = useAuthStore();
   const router = useRouter();
 
@@ -24,7 +25,7 @@ export default function Page() {
     e.preventDefault();
     const success = await forgotPassword(formData.email);
     if (success) {
-      router.push('/login');
+      setEmailSent(true);
     }
   };
 
@@ -67,6 +68,12 @@ export default function Page() {
           {error && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
               {error}
+            </div>
+          )}
+
+          {emailSent && (
+            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-sm">
+              Password reset email sent! Please check your email inbox and follow the instructions.
             </div>
           )}
 
