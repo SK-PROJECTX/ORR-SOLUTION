@@ -40,7 +40,7 @@ export default function FAQSection() {
         
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className={` rounded-2xl overflow-hidden border border-[#2a4a6b] ${openFAQ === index ? 'bg-primary' : 'bg-[#2a4a6b]'}`}>
+            <div key={index} className={` rounded-2xl overflow-hidden border border-[#2a4a6b] ${openFAQ === index ? 'bg-[#0EC277]' : 'bg-[#2a4a6b]'}`}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === index ? -1 : index)}
                 className="w-full p-6 text-left flex items-center justify-between hover:bg-[#2a4a6b] transition-colors"
