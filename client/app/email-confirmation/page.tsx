@@ -3,12 +3,38 @@
 import Image from "next/image";
 import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+import axios from "axios";
 
 function EmailConfirmationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || 'your email address';
+  const token = searchParams.get('token');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [resending, setResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
+
+  useEffect(() => {
+    if (email && token) {
+      axios.post('/verify-email/', { email, token })
+        .then(() => setStatus('success'))
+        .catch(() => setStatus('error'));
+    }
+  }, [email, token]);
+
+  const handleResend = async () => {
+    setResending(true);
+    setResendMessage('');
+    try {
+      await axios.post('/api/resend-confirmation', { email });
+      setResendMessage('Email sent successfully!');
+    } catch {
+      setResendMessage('Failed to send email. Please try again.');
+    } finally {
+      setResending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
@@ -54,10 +80,17 @@ function EmailConfirmationContent() {
         {/* Footer */}
         <p className="text-sm">
           If you have not got any mail{" "}
-          <button className="underline underline-offset-2 hover:opacity-90">
-            Resend confirmation mail
+          <button 
+            onClick={handleResend}
+            disabled={resending}
+            className="underline underline-offset-2 hover:opacity-90 disabled:opacity-50"
+          >
+            {resending ? 'Sending...' : 'Resend confirmation mail'}
           </button>
         </p>
+        {resendMessage && (
+          <p className="text-sm mt-2">{resendMessage}</p>
+        )}
       </div>
     </div>
   );

@@ -28,6 +28,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
   resetPassword: (uid: string, token: string, newPassword: string) => Promise<boolean>;
+  verifyEmail: (uid: string, token: string, email: string) => Promise<boolean>;
   validateToken: () => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
@@ -60,7 +61,17 @@ export const useAuthStore = create<AuthState>()(
           useToastStore.getState().addToast('Registration successful! Please check your email for confirmation.', 'success');
           return true;
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Registration failed';
+          const errorData = error.response?.data;
+          let errorMessage = 'Registration failed';
+          
+          if (errorData?.message) {
+            errorMessage = errorData.message;
+          } else if (errorData?.errors) {
+            errorMessage = Object.values(errorData.errors).flat().join(', ');
+          } else if (typeof errorData === 'string') {
+            errorMessage = errorData;
+          }
+          
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
           return false;
@@ -122,6 +133,21 @@ export const useAuthStore = create<AuthState>()(
           return true;
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || 'Password reset failed';
+          set({ error: errorMessage, isLoading: false });
+          useToastStore.getState().addToast(errorMessage, 'error');
+          return false;
+        }
+      },
+
+      verifyEmail: async (uid: string, token: string, email: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          await api.post('/verify-email/', { uid, token, email });
+          useToastStore.getState().addToast('Email verified successfully!', 'success');
+          set({ isLoading: false });
+          return true;
+        } catch (error: any) {
+          const errorMessage = error.response?.data?.message || 'Email verification failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
           return false;
