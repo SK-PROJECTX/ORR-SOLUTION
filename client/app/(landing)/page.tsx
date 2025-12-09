@@ -13,22 +13,25 @@ import PackagePreviewSection from "../components/PackagePreviewSection";
 import FAQSection from "../components/FAQSection";
 import ORRRoleSection from "../components/ORRRoleSection";
 import MidClientJourneySection from "../components/MidClientJourneySection";
+import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 export default function LandingPage() {
+  useScrollSplit();
+  
   return (
     <div>
       <HeroSection />
-      <Hero />
-      <ApproachCard />
-      <ServicePillar />
-      <GPMetaphorSection />
-      <ORRRoleSection />
-      <MiniClientJourney />
-      <FiveStagesSection />
-      <ORRReportSection />
-      <PackagePreviewSection />
-      <FAQSection />
-      <MidClientJourneySection />
+      <div className="scroll-section"><Hero /></div>
+      <div className="scroll-section"><ApproachCard /></div>
+      <div className="scroll-section"><ServicePillar /></div>
+      <div className="scroll-section"><GPMetaphorSection /></div>
+      <div className="scroll-section"><ORRRoleSection /></div>
+      <div className="scroll-section"><MiniClientJourney /></div>
+      <div className="scroll-section"><FiveStagesSection /></div>
+      <div className="scroll-section"><ORRReportSection /></div>
+      <div className="scroll-section"><PackagePreviewSection /></div>
+      <div className="scroll-section"><FAQSection /></div>
+      <div className="scroll-section"><MidClientJourneySection /></div>
     </div>
   );
 }
