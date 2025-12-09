@@ -8,65 +8,84 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ServicePillar() {
+  const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const cardRef = useRef(null);
+  const lineRef = useRef(null);
   const bulletsRef = useRef<(HTMLDivElement | null)[]>([]);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
+    const title = titleRef.current;
+    if (title) {
+      const spans = title.querySelectorAll('span');
+      gsap.fromTo(spans,
+        { opacity: 0, y: -30, rotateX: -90 },
+        { opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
+          scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none reverse" }
         }
       );
+    }
 
-      gsap.fromTo(subtitleRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, delay: 0.2, ease: "power3.out",
-          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%" }
+    gsap.fromTo(subtitleRef.current,
+      { opacity: 0, scale: 0.5 },
+      { opacity: 1, scale: 1, duration: 0.8, delay: 0.3, ease: "back.out(1.7)",
+        scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", toggleActions: "play none none reverse" }
+      }
+    );
+
+    gsap.fromTo(cardRef.current,
+      { opacity: 0, x: 150, rotateY: 30 },
+      { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
+        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none reverse" }
+      }
+    );
+
+    if (lineRef.current) {
+      gsap.fromTo(lineRef.current,
+        { scaleY: 0, transformOrigin: "top" },
+        { scaleY: 1, duration: 1.5, ease: "power2.inOut",
+          scrollTrigger: { trigger: lineRef.current, start: "top 80%", toggleActions: "play none none reverse" }
         }
       );
+    }
 
-      gsap.fromTo(cardRef.current,
-        { opacity: 0, x: 100 },
-        { opacity: 1, x: 0, duration: 1, ease: "power3.out",
-          scrollTrigger: { trigger: cardRef.current, start: "top 75%" }
-        }
-      );
-
-      bulletsRef.current.forEach((bullet, i) => {
-        if (bullet) {
-          gsap.fromTo(bullet,
-            { scale: 0, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 0.5, delay: 0.5 + i * 0.15, ease: "back.out(1.7)",
-              scrollTrigger: { trigger: cardRef.current, start: "top 70%" }
-            }
-          );
-        }
-      });
-
-      itemsRef.current.forEach((item, i) => {
-        if (item) {
-          gsap.fromTo(item,
-            { opacity: 0, x: -30 },
-            { opacity: 1, x: 0, duration: 0.8, delay: 0.6 + i * 0.2, ease: "power3.out",
-              scrollTrigger: { trigger: item, start: "top 85%" }
-            }
-          );
-        }
-      });
+    bulletsRef.current.forEach((bullet, i) => {
+      if (bullet) {
+        gsap.fromTo(bullet,
+          { scale: 0, opacity: 0, rotate: 360 },
+          { scale: 1, opacity: 1, rotate: 0, duration: 0.6, delay: 0.7 + i * 0.2, ease: "elastic.out(1, 0.5)",
+            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none reverse" }
+          }
+        );
+      }
     });
 
-    return () => ctx.revert();
+    itemsRef.current.forEach((item, i) => {
+      if (item) {
+        gsap.fromTo(item,
+          { opacity: 0, x: -50, rotateZ: -5 },
+          { opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8 + i * 0.25, ease: "power3.out",
+            scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none reverse" }
+          }
+        );
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: "bottom top",
+      onLeave: () => gsap.to(sectionRef.current, { opacity: 0.3, x: 30, duration: 0.5 }),
+      onEnterBack: () => gsap.to(sectionRef.current, { opacity: 1, x: 0, duration: 0.5 })
+    });
   }, []);
 
   return (
-    <section className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden" style={{ backgroundImage: "url('/path-to-your-stars-bg.png')" }}>
+    <section ref={sectionRef} className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden">
       <h2 ref={titleRef} className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold w-full">
-        Quick Service Snapshot - 
+        <span>Quick Service Snapshot - </span>
         <span className="text-[#3DFF7C] font-poppins font-extrAbold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
           3 Pillars
         </span>
@@ -78,7 +97,7 @@ export default function ServicePillar() {
         <div ref={cardRef} className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-0 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-6 md:gap-8">
             <div className="hidden md:flex relative flex-col items-center">
-              <div className="absolute top-[32px] bottom-[52px] w-[4px] mb-20 bg-[#05CC79]"></div>
+              <div ref={lineRef} className="absolute top-[32px] bottom-[52px] w-[4px] mb-20 bg-[#05CC79]"></div>
 
               <div ref={el => bulletsRef.current[0] = el} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mb-10 lg:mb-12">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
