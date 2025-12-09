@@ -167,9 +167,7 @@ export const ProcessSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {processCards.map((card, index) => (
           <div key={card.id} ref={(el) => { cardsRef.current[index] = el; }} className={`w-full ${index === processCards.length - 1 && processCards.length % 2 !== 0 ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
-        
-            
-            <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden h-full flex flex-col">
               <div className="h-80 md:h-96 relative">
                 <Image 
                   src={card.image} 
@@ -187,7 +185,7 @@ export const ProcessSection = () => {
                 </div>
               </div>
 
-              <div className="p-8 md:p-10">
+              <div className="p-8 md:p-10 flex-1 flex flex-col">
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">{card.title}</h2>
                 <h3 className="text-base md:text-lg font-semibold text-primary mb-4">{card.subtitle}</h3>
                 {card.description && <p className="text-sm md:text-base text-white mb-4">{card.description}</p>}
