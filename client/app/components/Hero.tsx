@@ -7,11 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
-  const containerRef = useRef(null);
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const descRef = useRef(null);
-  const buttonRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const title = titleRef.current;

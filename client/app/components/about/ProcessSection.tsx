@@ -166,7 +166,7 @@ export const ProcessSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {processCards.map((card, index) => (
-          <div key={card.id} ref={(el) => { cardsRef.current[index] = el; }} className={`w-full ${card.id === "07" ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
+          <div key={card.id} ref={(el) => { cardsRef.current[index] = el; }} className={`w-full ${index === processCards.length - 1 && processCards.length % 2 !== 0 ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
         
             
             <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden">
@@ -188,29 +188,40 @@ export const ProcessSection = () => {
               </div>
 
               <div className="p-8 md:p-10">
-                <h2 className="text-2xl md:text-2xl font-bold text-white mb-4">{card.title}</h2>
-                <h3 className="text-sm md:text-xl font-semibold text-primary mb-6">{card.subtitle}</h3>
-                <p className="text-[12px] md:text-lg font-regular text-white mb-8">{card.description}</p>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet1}</p>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet2}</p>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.wordbreak}</p>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet3}</p>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet4}</p>
-                 <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet5}</p>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet6}</p>
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description1}</p>
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description2}</p>
-                <p className="text-gray-300 text-lg leading-relaxed mb-8">{card.description3}</p>
-                <p className="text-gray-300 text-lg leading-relaxed mb-8">{card.description4}</p>
-                <div className="flex flex-col md:flex-row gap-4">
-                <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">{card.buttonText}</button>
-                </div>
-                 <div className="flex flex-col md:flex-row gap-4">
-                <button>{card.buttonText2}</button>
-                </div>
-                  <div className="flex flex-col md:flex-row gap-4">
-                <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">{card.buttonText3}</button>
-                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">{card.title}</h2>
+                <h3 className="text-base md:text-lg font-semibold text-primary mb-4">{card.subtitle}</h3>
+                {card.description && <p className="text-sm md:text-base text-white mb-4">{card.description}</p>}
+                {card.bullet1 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet1}</p>}
+                {card.bullet2 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet2}</p>}
+                {card.wordbreak && <p className="text-white text-base md:text-lg font-bold text-center my-4">{card.wordbreak}</p>}
+                {card.bullet3 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet3}</p>}
+                {card.bullet4 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet4}</p>}
+                {card.bullet5 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet5}</p>}
+                {card.bullet6 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet6}</p>}
+                {card.bullet7 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet7}</p>}
+                {card.bullet8 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet8}</p>}
+                {card.bullet9 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.bullet9}</p>}
+                {card.description1 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mt-4 mb-2">{card.description1}</p>}
+                {card.description2 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.description2}</p>}
+                {card.description3 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.description3}</p>}
+                {card.description4 && <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-2">{card.description4}</p>}
+                {card.buttonText && (
+                  <div className="flex flex-col gap-4">
+                    <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors w-full">
+                      {card.buttonText}
+                    </button>
+                    {card.buttonText2 && (
+                      <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors w-full">
+                        {card.buttonText2}
+                      </button>
+                    )}
+                    {card.buttonText3 && (
+                      <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors w-full">
+                        {card.buttonText3}
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

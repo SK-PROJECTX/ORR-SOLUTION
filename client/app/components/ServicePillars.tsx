@@ -8,11 +8,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ServicePillar() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const cardRef = useRef(null);
-  const lineRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
   const bulletsRef = useRef<(HTMLDivElement | null)[]>([]);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
