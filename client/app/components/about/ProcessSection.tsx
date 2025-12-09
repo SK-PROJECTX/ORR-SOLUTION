@@ -1,4 +1,10 @@
+"use client";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const processCards = [
   {
@@ -67,14 +73,37 @@ const processCards = [
 ];
 
 export const ProcessSection = () => {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.fromTo(card,
+          { opacity: 0, y: 80, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            delay: index * 0.1,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+            }
+          }
+        );
+      }
+    });
+  }, []);
+
   return (
     <section className="w-full text-white px-6 md:px-12 lg:px-24 py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
       
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {processCards.map((card) => (
-          <div key={card.id} className={`w-full ${card.id === "07" ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
+        {processCards.map((card, index) => (
+          <div key={card.id} ref={(el) => { cardsRef.current[index] = el; }} className={`w-full ${card.id === "07" ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">{card.title}</h2>
             
             <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden">

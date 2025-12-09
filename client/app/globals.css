@@ -95,4 +95,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* GSAP Scroll-Split Effect */
+.scroll-section {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .scroll-section {
+    margin-bottom: 6rem;
+  }
+}
+
 

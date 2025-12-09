@@ -1,19 +1,62 @@
+'use client';
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 export default function MiniClientJourney() {
+  const titleRef = useRef(null);
+  const cardRef = useRef(null);
+  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
+        }
+      );
+
+      gsap.fromTo(cardRef.current,
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 1, ease: "power3.out",
+          scrollTrigger: { trigger: cardRef.current, start: "top 80%" }
+        }
+      );
+
+      imagesRef.current.forEach((img, i) => {
+        if (img) {
+          gsap.fromTo(img,
+            { opacity: 0, scale: 0 },
+            { opacity: 1, scale: 1, duration: 0.6, delay: 0.5 + i * 0.1, ease: "back.out(1.7)",
+              scrollTrigger: { trigger: cardRef.current, start: "top 70%" }
+            }
+          );
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="w-full text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins">
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
+        <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
           Message <span className="text-[#33FF99]">Strip</span>
         </h2>
 
         <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-[#33FF99]/20 rounded-full blur-[100px] sm:blur-[150px]"></div>
 
-        <div className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-xl border border-white/20">
+        <div ref={cardRef} className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-xl border border-white/20">
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-left">"</div>
           <p className="text-[#ffffff] leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9">
-           Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your “business physiology” in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve
+           Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your "business physiology" in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve
           </p>
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mt-3 sm:mt-4 text-right">"</div>
         </div>
@@ -27,26 +70,32 @@ export default function MiniClientJourney() {
 
       <div className="hidden lg:block absolute inset-0 pointer-events-none">
         <img
+          ref={el => imagesRef.current[0] = el}
           src="/images/user-1.jpg"
           className="absolute left-4 xl:left-10 top-16 xl:top-20 w-20 xl:w-26 h-20 xl:h-26 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
+          ref={el => imagesRef.current[1] = el}
           src="/images/user-2.jpg"
           className="absolute left-2 xl:left-4 top-1/2 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
         />
         <img
+          ref={el => imagesRef.current[2] = el}
           src="/images/user-3.jpg"
           className="absolute left-24 xl:left-30 bottom-20 xl:bottom-24 w-24 xl:w-30 h-24 xl:h-30 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
+          ref={el => imagesRef.current[3] = el}
           src="/images/user-4.jpg"
           className="absolute right-4 xl:right-10 top-20 xl:top-24 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
+          ref={el => imagesRef.current[4] = el}
           src="/clients/c5.png"
           className="absolute right-20 xl:right-28 top-1/3 w-10 xl:w-12 h-10 xl:h-12 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
         />
         <img
+          ref={el => imagesRef.current[5] = el}
           src="/clients/c6.png"
           className="absolute right-2 xl:right-4 bottom-20 xl:bottom-24 w-20 xl:w-24 h-20 xl:h-24 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
