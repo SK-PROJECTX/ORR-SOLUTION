@@ -29,7 +29,7 @@ export function LandingHeader() {
         
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex space-x-6">
-          <Link href="/about-us" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/about-us' ? 'text-[#13BE77]' : 'text-gray-100'}`}>About Us</Link>
+          <Link href="/howweoperate" className={`hover:opacity-70 text-sm xl:text-base ${pathname.includes('/howweoperate') ? 'text-[#13BE77]' : 'text-gray-100'}`}>How We Operate</Link>
           <div className="relative">
             <div onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
               <Link href="/services" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/services') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
