@@ -19,7 +19,7 @@ export default function LandingPage() {
   useScrollSplit();
   
   return (
-    <div>
+    <div className="star fixed-background">
       <HeroSection />
       <div className="scroll-section"><Hero /></div>
       <div className="scroll-section"><ApproachCard /></div>

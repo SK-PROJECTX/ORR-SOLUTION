@@ -107,4 +107,18 @@ html {
   }
 }
 
+/* Fixed background for landing page */
+.fixed-background {
+  background-attachment: fixed;
+  background-size: 300px 300px, 400px 400px;
+  background-position: 0 0, 150px 150px;
+}
+
+@media (max-width: 640px) {
+  .fixed-background {
+    background-size: 200px 200px, 250px 250px;
+    background-position: 0 0, 100px 100px;
+  }
+}
+
 
