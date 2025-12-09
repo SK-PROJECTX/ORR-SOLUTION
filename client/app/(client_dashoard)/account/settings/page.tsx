@@ -2,13 +2,36 @@
 import React, { useState, useEffect } from "react";
 import { useProfileStore } from "@/store/profileStore";
 
+interface Country {
+  name: { common: string };
+  cca2: string;
+}
+
 export default function AccountSettingsPage() {
   const { profile, isLoading, isEditing, updateProfile, setEditing, fetchProfile } = useProfileStore();
   const [formData, setFormData] = useState(profile);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [loadingCountries, setLoadingCountries] = useState(true);
 
   useEffect(() => {
     fetchProfile();
+    fetchCountries();
   }, [fetchProfile]);
+
+  const fetchCountries = async () => {
+    try {
+      const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2');
+      const data = await response.json();
+      const sortedCountries = data.sort((a: Country, b: Country) => 
+        a.name.common.localeCompare(b.name.common)
+      );
+      setCountries(sortedCountries);
+    } catch (error) {
+      console.error('Failed to fetch countries:', error);
+    } finally {
+      setLoadingCountries(false);
+    }
+  };
 
   useEffect(() => {
     setFormData(profile);
@@ -136,13 +159,19 @@ export default function AccountSettingsPage() {
 
               <div>
                 <label className="block text-sm mb-2">Country</label>
-                <input
+                <select
                   value={formData.country}
                   onChange={(e) => setFormData({...formData, country: e.target.value})}
-                  disabled={!isEditing}
-                  className="w-full bg-[rgb(var(--bg-card)_/_0.8)] border border-[#22C55E] rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50"
-                  placeholder="Enter country"
-                />
+                  disabled={!isEditing || loadingCountries}
+                  className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
+                >
+                  <option value="">{loadingCountries ? 'Loading countries...' : 'Select a country'}</option>
+                  {countries.map((country) => (
+                    <option key={country.cca2} value={country.name.common}>
+                      {country.name.common}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
