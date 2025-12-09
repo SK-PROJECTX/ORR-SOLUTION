@@ -55,7 +55,7 @@ export default function PackagePreviewSection() {
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">             
-              <div ref={el => cardsRef.current[0] = el} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
+              <div ref={el => { cardsRef.current[0] = el; }} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
                 <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
                   Meetings
                 </div>
@@ -71,7 +71,7 @@ export default function PackagePreviewSection() {
                 </button>
               </div>
 
-              <div ref={el => cardsRef.current[1] = el} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
+              <div ref={el => { cardsRef.current[1] = el; }} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
                 <Image src="/best value.png" alt="Best value" width={120} height={40} className="absolute -top-8 left-[75%] -translate-x-1/2 w-48" />
                 <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
                   Report Fee

@@ -1,7 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ResourcesBlogs() {
   useScrollSplit();
@@ -15,33 +19,47 @@ export default function ResourcesBlogs() {
 }
 
 function HeroSection() {
+  const titleRef = useRef(null);
+  const p1Ref = useRef(null);
+  const p2Ref = useRef(null);
+  const p3Ref = useRef(null);
+  const buttonsRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(titleRef.current, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" });
+    gsap.fromTo(p1Ref.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, delay: 0.3, ease: "power2.out" });
+    gsap.fromTo(p2Ref.current, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.8, delay: 0.5, ease: "power2.out" });
+    gsap.fromTo(p3Ref.current, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, delay: 0.7, ease: "power2.out" });
+    gsap.fromTo(buttonsRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6, delay: 0.9, ease: "back.out(1.7)" });
+  }, []);
+
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
-      <h1 className="text-4xl md:text-6xl font-bold mb-6">
+      <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
         Resources
         <br />
         <span className="text-green-400">& Client Portal</span>
       </h1>
       
-      <p className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
+      <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
         Your digital HQ for business clarity, timelines, and real-time status.
         This isn't a traditional blog.
       </p>
       
-      <p className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
+      <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
         Our resources are organized around the ORR client portal — a dashboard where
         you can read FAQs, download material, request meetings, and chat with a live
         operator or consultant.
       </p>
       
-      <p className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
+      <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
         Instead of scattered articles, you get structured guidance that follows our live
         project — following blogs have insight, how-to — and real-time alerts.
         Everything is organized around live project management, AI marketing
         systems & implementation.
       </p>
       
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
           Request access to the client portal
         </button>
@@ -155,6 +173,27 @@ function ContentCard({ badge, title, content, image, buttons }: {
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+
+    gsap.fromTo(cardRef.current,
+      { opacity: 0, rotateY: -15, x: -50 },
+      {
+        opacity: 1,
+        rotateY: 0,
+        x: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: cardRef.current,
+          start: "top 85%",
+          end: "top 15%",
+          toggleActions: "play reverse play reverse"
+        }
+      }
+    );
+  }, []);
 
   const handleClick = () => {
     setIsExpanded(!isExpanded);

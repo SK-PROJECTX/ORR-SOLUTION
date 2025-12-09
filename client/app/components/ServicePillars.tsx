@@ -99,21 +99,21 @@ export default function ServicePillar() {
             <div className="hidden md:flex relative flex-col items-center">
               <div ref={lineRef} className="absolute top-[32px] bottom-[52px] w-[4px] mb-20 bg-[#05CC79]"></div>
 
-              <div ref={el => bulletsRef.current[0] = el} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mb-10 lg:mb-12">
+              <div ref={el => { bulletsRef.current[0] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mb-10 lg:mb-12">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
 
-              <div ref={el => bulletsRef.current[1] = el} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-42 lg:mb-12">
+              <div ref={el => { bulletsRef.current[1] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-42 lg:mb-12">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
 
-              <div ref={el => bulletsRef.current[2] = el} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-36">
+              <div ref={el => { bulletsRef.current[2] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-36">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
             </div>
 
             <div className="space-y-8 sm:space-y-10 lg:space-y-14">
-              <div ref={el => itemsRef.current[0] = el} className="relative">
+              <div ref={el => { itemsRef.current[0] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <Link href="/services/strategy-advisory-compliant" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
                   Strategic Advisory & Compliance
@@ -126,7 +126,7 @@ export default function ServicePillar() {
                 </Link>
               </div>
 
-              <div ref={el => itemsRef.current[1] = el} className="relative">
+              <div ref={el => { itemsRef.current[1] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
                  Digital Systems, Automation & AI
@@ -140,7 +140,7 @@ export default function ServicePillar() {
                 </Link>
               </div>
 
-              <div ref={el => itemsRef.current[2] = el} className="relative">
+              <div ref={el => { itemsRef.current[2] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
                  Living Systems & Regeneration

@@ -57,7 +57,7 @@ export default function ORRReportSection() {
         </p>
         
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          <div ref={el => cardsRef.current[0] = el} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
+          <div ref={el => { cardsRef.current[0] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
             <Image 
               src="/network-visualization.jpg" 
@@ -67,7 +67,7 @@ export default function ORRReportSection() {
             />
           </div>
           
-          <div ref={el => cardsRef.current[1] = el} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
+          <div ref={el => { cardsRef.current[1] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex items-start gap-4">
@@ -91,7 +91,7 @@ export default function ORRReportSection() {
         </div>
         
         <div className="grid lg:grid-cols-2 gap-8">
-          <div ref={el => cardsRef.current[2] = el} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
+          <div ref={el => { cardsRef.current[2] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex items-start gap-4">
@@ -113,7 +113,7 @@ export default function ORRReportSection() {
             </div>
           </div>
           
-          <div ref={el => cardsRef.current[3] = el} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
+          <div ref={el => { cardsRef.current[3] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
             <Image 
               src="/team-collaboration.jpg" 

@@ -82,7 +82,7 @@ export default function FiveStagesSection() {
           <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-[#33FF99]"></div>
           
           {stages.map((stage, index) => (
-            <div ref={el => stagesRef.current[index] = el} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0">
+            <div ref={el => { stagesRef.current[index] = el; }} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0">
               <div className="relative z-10 w-8 sm:w-12 h-8 sm:h-12 bg-[#33FF99] rounded-full flex items-center justify-center mr-6 sm:mr-8 flex-shrink-0">
                 <div className="w-3 sm:w-4 h-3 sm:h-4 bg-white rounded-full"></div>
               </div>

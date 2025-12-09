@@ -130,26 +130,9 @@ export default function GPMetaphorSection() {
         </p>
       </div>
 
-      {pairCards.map((pair, index) => (
-        <div key={index} className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
-          {pair.map((card, cardIndex) => (
-            <div 
-              ref={el => cardsRef.current[index * 2 + cardIndex] = el} 
-              key={cardIndex} 
-              className={`w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl ${card.position === 'left' ? 'lg:rounded-tr-[4rem] lg:rounded-br-[4rem]' : 'lg:rounded-tl-[4rem] lg:rounded-bl-[4rem]'} overflow-hidden shadow-lg`}
-            >
-              <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-                <Image src={card.image} alt={card.title} fill className="object-cover" />
-              </div>
-              <div className="card-title p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">{card.title}</div>
-              <p className="card-desc px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">{card.description}</p>
-            </div>
-          ))}
-        </div>
-      ))}
-
+    
       <div className="relative z-10 w-full flex justify-center">
-        <div ref={el => cardsRef.current[6] = el} className="w-full max-w-4xl lg:max-w-6xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
+        <div ref={el => { cardsRef.current[6] = el; }} className="w-full max-w-4xl lg:max-w-6xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
           <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
             <Image src={cardData[6].image} alt={cardData[6].title} fill className="object-cover" />
           </div>

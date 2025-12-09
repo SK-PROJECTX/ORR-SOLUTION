@@ -44,21 +44,21 @@ export default function MidClientJourneySection() {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div ref={el => cardsRef.current[0] = el} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
+          <div ref={el => { cardsRef.current[0] = el; }} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
             <h3 className="text-xl font-bold text-white mb-4">Step 1:</h3>
             <h4 className="text-lg font-semibold text-white mb-3">First Meeting</h4>
             <p className="text-white text-sm mb-4">You share your challenges; we listen, ask focused questions, and map your context and priorities.</p>
             <p className="text-white text-xs">Billed at €40/hour pro-rata</p>
           </div>
           
-          <div ref={el => cardsRef.current[1] = el} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
+          <div ref={el => { cardsRef.current[1] = el; }} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
             <h3 className="text-xl font-bold text-white mb-4">Step 2:</h3>
             <h4 className="text-lg font-semibold text-white mb-3">Report Delivery</h4>
             <p className="text-white text-sm mb-4">You receive your decision-ready ORR report with root causes, quick fixes, and longer-term recommendations tailored to your organisation.</p>
             <p className="text-white text-xs">Report fee based on complexity, capped at €220</p>
           </div>
           
-          <div ref={el => cardsRef.current[2] = el} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
+          <div ref={el => { cardsRef.current[2] = el; }} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
             <h3 className="text-xl font-bold text-white mb-4">Step 3:</h3>
             <h4 className="text-lg font-semibold text-white mb-3">Decision Point</h4>
             <p className="text-white text-sm">You decide how to use it:</p>
@@ -69,7 +69,7 @@ export default function MidClientJourneySection() {
             </ul>
           </div>
           
-          <div ref={el => cardsRef.current[3] = el} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
+          <div ref={el => { cardsRef.current[3] = el; }} className="bg-[#0EC277] rounded-3xl p-6 h-auto">
             <h3 className="text-xl font-bold text-white mb-4">Step 4:</h3>
             <h4 className="text-lg font-semibold text-white mb-3">Ongoing Partnership</h4>
             <p className="text-white text-sm">If you continue, we deploy solutions, monitor progress, and optimise as you grow — through a tailored retainer package aligned with your budget, pace, and customer needs.</p>
