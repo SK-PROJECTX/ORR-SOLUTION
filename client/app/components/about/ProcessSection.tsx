@@ -3,73 +3,136 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { describe } from "node:test";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const processCards = [
   {
     id: "01",
-    title: "THE FIRST MEETING", 
-    subtitle: "Listen",
-    description: "Our work always starts with a focused, customer-centered conversation.",
-    details: "In this first meeting, we listen carefully to your story: where the pressure is, what's breaking, and what you're trying to achieve",
-    buttonText: "Book your first meeting",
+    title: "The Beginning", 
+    bullet1: "A quiet conversation.",
+    bullet2: "One problem.",
+    bullet3: "One pressure point.",
+    bullet4: "One story that finally gets told.",
+    description1: "We listen. Properly.",
+    description2: "Not to diagnose too fast, not to impress —",
+    description3: "but to understand how your organisation actually breathes.",
+    description4: "As you scroll, the screen lights up with your world:the systems you built, the gaps you tolerate, the ideas you haven’t voiced yet.",
+    description5: "This is the moment everything starts.",
     image: "/first meeting.jpg"
   },
   {
     id: "02",
-    title: "The Working Report",
-    subtitle: "Think in Writing",
-    description: "We document everything we learn about your business and create a clear action plan.",
-    details: "This comprehensive report outlines the challenges, opportunities, and recommended solutions tailored to your specific needs",
-    buttonText: "View sample report", 
+    title: "The First Map", 
+    subtitle: "After the meeting, the noise clears.",
+    description: "We open a blank page and begin drawing the first map of your organisation: where things flow, where they clog, where hidden energy leaks.",
+    bullet1: "No polish.",
+    bullet2: "No sales pitch.",
+    bullet3: "Just thinking in writing — your case file begins here.",
+    description1: "This becomes the backbone of everything that follows.",
     image: "/working report.jpg"
   },
   {
     id: "03",
-    title: "Deepening the Analysis",
-    subtitle: "The right input for your case",
-    description: "We dive deeper into your specific challenges and requirements.",
-    details: "Our team conducts thorough analysis to understand the root causes and develop targeted solutions",
-    buttonText: "Learn more",
+     title: "The Deepening", 
+    subtitle: "The map sharpens.",
+    description: "We pull in the right forms of intelligence: domain insight, targeted research, regulatory skeletons, operational patterns, AI opportunities, risk shadows.",
+    bullet1: "Only what adds value.",
+    bullet2: "No sales pitch.",
+    bullet3: "Nothing that inflates the process.",
+    description1: "Your world becomes clearer, not bigger.",
     image: "/deepening analysis.jpg"
   },
   {
     id: "04",
-    title: "Think, Then Listen Again",
-    subtitle: "Think, Then Listen Again",
-    description: "We refine our understanding through continuous dialogue and feedback.",
-    details: "This iterative process ensures our solutions align perfectly with your evolving needs",
-    buttonText: "Schedule follow-up",
+    title: "The Second Conversation", 
+    subtitle: "Now the questions get sharper.",
+    bullet1: "We return to you — briefly, precisely.",
+    bullet2: "To test assumptions.",
+    bullet3: "To correct tone.",
+    bullet4: "To realign the map with the reality you inhabit.",
+    description1: "This is where the document stops being “analysis” and starts becoming a design for action.",
     image: "/think then listen.jpg"
   },
   {
     id: "05",
-    title: "The ORR Report",
-    subtitle: "From Insight to Incisive Operation",
-    description: "We deliver actionable insights and implementation strategies.",
-    details: "Our final report provides clear, executable recommendations with measurable outcomes",
-    buttonText: "Get your report",
+    title: "The ORR Report", 
+    subtitle: "You reach the decision point.",
+    description: "What you receive is not decoration — but a structured, decision-ready model:",
+    bullet1: "What is happening.",
+    bullet2: "Why it’s happening.",
+    bullet3: "What must change now.",
+    bullet4: "What can grow later.",
+    bullet5: "And a modus operandi that ties it all together.",
+    description1: "A blueprint that stands on its own. With us, or without us.",
     image: "/the orr report.jpg"
   },
   {
     id: "06",
-    title: "Transparent Pricing",
-    subtitle: "Pay for Clarity, not Fluff",
-    description: "Clear, upfront pricing with no hidden costs or surprises.",
-    details: "We believe in transparent pricing that reflects the value we deliver to your business",
-    buttonText: "View pricing",
+    title: "The Meeting Architecture", 
+    subtitle: "Behind the scenes, the rhythm is simple:",
+    description: "First Meeting → Discovery → Follow-Up → Report Review",
+    bullet1: "Each one short.",
+    bullet2: "Each one deliberate.",
+    bullet3: "Each one designed to move the case forward, never sideways.",
+    description1: "This cadence keeps the process light, while the thinking stays deep.",
     image: "/transparent pricing.jpg"
   },
-  {
+    {
     id: "07",
-    title: "Your Decision Point",
-    subtitle: "You choose what happens next",
-    description: "The final decision on implementation and next steps is entirely yours.",
-    details: "We provide recommendations, but you maintain full control over your business decisions",
-    buttonText: "Make your choice",
+    title: "The Choice", 
+    subtitle: "With the report in hand, you choose the path:",
+    bullet1: "Stop here.",
+    bullet2: "Use the blueprint internally.",
+    wordbreak: "OR",
+    bullet3: "Continue.",
+    bullet4: "Let ORR coordinate implementation,",
+    bullet5: "structure your systems,",
+    bullet6: "refine your operations,",
+    bullet7: "and support your growth through a sustained relationship.",
+    description1: "Either way:",
+    description2: "you walk away with clarity.",
     image: "/your decision point.jpg"
-  }
+  },
+   {
+    id: "08",
+    title: "The Portal", 
+    subtitle: "If you stay with us, the work shifts into a different gear.",
+    description: "The Client Portal unlocks:",
+    bullet1: "your meetings,",
+    bullet2: "your documents,",
+    bullet3: "your tasks,",
+    bullet4: "your insights,",
+    bullet5: "your Workspace.",
+    bullet6: "refine your operations,",
+    bullet7: "and support your growth through a sustained relationship.",
+    bullet8: "One interface.",
+    bullet9: "No scattered emails",
+    description2: "A single coordination layer for your ongoing transformation.",
+    image: "/your decision point.jpg"
+  },
+   {
+    id: "09",
+    title: "The Philosophy Underneath", 
+    subtitle: "At every step, the model holds:",
+    description: "Discover → Diagnose → Design → Deploy → Grow",
+    description1: "It is the Business GP method — the quiet, structured way to stabilise an organisation and then help it operate like a living system:",
+    description2: "coherent, adaptive, responsive.",
+    image: "/your decision point.jpg"
+  },
+   {
+    id: "10",
+    title: "The Invitation", 
+    subtitle: "If this approach feels different, it’s because it is.",
+    description1: "It is slower at the beginning, faster at the end,and clearer all the way through.",
+    description2: "Start with one meeting. The rest unfolds from there.",
+    image: "/your decision point.jpg",
+    buttonText: "Book Your First Meeting",
+    buttonText2: "Explore our services",
+    buttonText3: "Access the Client Portal"
+  },
+
 ];
 
 export const ProcessSection = () => {
@@ -104,7 +167,7 @@ export const ProcessSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {processCards.map((card, index) => (
           <div key={card.id} ref={(el) => { cardsRef.current[index] = el; }} className={`w-full ${card.id === "07" ? "md:col-span-2 md:max-w-2xl md:mx-auto" : ""}`}>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">{card.title}</h2>
+        
             
             <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-[2rem] overflow-hidden">
               <div className="h-80 md:h-96 relative">
@@ -125,13 +188,29 @@ export const ProcessSection = () => {
               </div>
 
               <div className="p-8 md:p-10">
-                <h3 className="text-emerald-400 text-3xl md:text-4xl font-bold mb-4">{card.subtitle}</h3>
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description}</p>
-                <p className="text-gray-400 text-base leading-relaxed mb-8">{card.details}</p>
-
-                <button className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-slate-900 font-bold py-4 px-8 rounded-2xl hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 text-lg">
-                  {card.buttonText}
-                </button>
+                <h2 className="text-2xl md:text-2xl font-bold text-white mb-4">{card.title}</h2>
+                <h3 className="text-sm md:text-xl font-semibold text-primary mb-6">{card.subtitle}</h3>
+                <p className="text-[12px] md:text-lg font-regular text-white mb-8">{card.description}</p>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet1}</p>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet2}</p>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.wordbreak}</p>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet3}</p>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet4}</p>
+                 <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet5}</p>
+                  <p className="text-gray-300 text-sm leading-relaxed mb-4">{card.bullet6}</p>
+                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description1}</p>
+                <p className="text-gray-300 text-lg leading-relaxed mb-4">{card.description2}</p>
+                <p className="text-gray-300 text-lg leading-relaxed mb-8">{card.description3}</p>
+                <p className="text-gray-300 text-lg leading-relaxed mb-8">{card.description4}</p>
+                <div className="flex flex-col md:flex-row gap-4">
+                <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">{card.buttonText}</button>
+                </div>
+                 <div className="flex flex-col md:flex-row gap-4">
+                <button>{card.buttonText2}</button>
+                </div>
+                  <div className="flex flex-col md:flex-row gap-4">
+                <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">{card.buttonText3}</button>
+                </div>
               </div>
             </div>
           </div>
