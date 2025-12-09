@@ -1,12 +1,15 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 export default function ResourcesBlogs() {
+  useScrollSplit();
+  
   return (
     <div className="min-h-screen text-white">
       <HeroSection />
-      <ContentSection />
+      <div className="scroll-section"><ContentSection /></div>
     </div>
   );
 }
