@@ -3,7 +3,7 @@ import Image from "next/image";
 const processCards = [
   {
     id: "01",
-    title: "The First Meeting", 
+    title: "THE FIRST MEETING", 
     subtitle: "Listen",
     description: "Our work always starts with a focused, customer-centered conversation.",
     details: "In this first meeting, we listen carefully to your story: where the pressure is, what's breaking, and what you're trying to achieve",

@@ -116,6 +116,7 @@ export default function Sidebar() {
               // { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
               { label: "Feedback Mechanisms", href: "/feedback" },
               { label: "Resources", href: "/resources" },
+              { label: "Frequently Asked Questions", href: "/faq" },
               { label: "Notifications", href: "/notifications" },
             ]}
             pathname={pathname}
@@ -155,14 +156,14 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      <div className="bg-primary text-background rounded-xl p-3 flex items-center justify-between">
+      <div className="bg-primary text-background rounded-xl p-3 mt-10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold">
+          <div className="w-12 h-12 rounded-full bg-secondary flex  items-center justify-center text-foreground font-bold">
             {user?.first_name?.[0] || 'U'}{user?.last_name?.[0] || ''}
           </div>
-          <div className="leading-tight text-sm font-medium">
+          <div className="leading-tight text-[12px] font-medium">
             {user?.first_name} {user?.last_name}
-            <div className="text-xs opacity-80 truncate max-w-[120px]">{user?.email}</div>
+            <div className="text-[10px] opacity-80 truncate max-w-[120px]">{user?.email}</div>
           </div>
         </div>
         <button 

@@ -3,15 +3,24 @@ import { PictureSection } from "../../components/about/PictureSection";
 import { ProcessSection } from "../../components/about/ProcessSection";
 import { CoreVisionSection } from "../../components/about/CoreVisionSection";
 
-export default function AboutUs() {
+export default function HowWeOperate() {
   return (
     <section className="relative w-full  py-30 pt-[10rem] text-white">
-      <div className="relative ">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12">
-          About <span className="text-white">Us</span>
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 space-y-20">
+        <h2 className="text-center text-emerald-400 text-6xl md:text-5xl font-bold mb-12">
+          How We <span className="text-white">Operate</span>
         </h2>
+         <p className="text-lg md:text-xl text-center text-gray-300 maThe Threex-w-3xl mx-auto leading-relaxed">
+            We treat your organisation as a whole system — digital, regulatory, and 
+            living. We listen first, then design the right mix of advisory, systems, 
+            AI, and on-the-ground projects so you can move better and grow 
+            smarter too.
+          </p>
+        </div>
+      
+      <CoreVisionSection />
 
-        <div className="relative flex justify-center items-center">
+        {/* <div className="relative flex justify-center items-center">
           <img
             src="/images/full_curl.svg"
             alt="glow"
@@ -62,11 +71,12 @@ export default function AboutUs() {
               </p>
             </div>
           </div>
-        </div>
-      </div>
-      <PictureSection />
+        </div> */}
+   
+  
+      {/* <PictureSection /> */}
       <ProcessSection />
-      <CoreVisionSection />
+     
       {/* <SpecialisedFocus /> */}
     </section>
   );
