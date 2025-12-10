@@ -27,14 +27,14 @@ export default function GPMetaphorSection() {
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: -30 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
+          scrollTrigger: { trigger: titleRef.current, start: "top 80%", end: "bottom 20%", toggleActions: "play none none reverse" }
         }
       );
 
       gsap.fromTo(subtitleRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.8, delay: 0.2, ease: "power3.out",
-          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%" }
+          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", end: "bottom 20%", toggleActions: "play none none reverse" }
         }
       );
 
@@ -44,7 +44,7 @@ export default function GPMetaphorSection() {
           gsap.fromTo(card,
             { opacity: 0, x: direction, scale: 0.9 },
             { opacity: 1, x: 0, scale: 1, duration: 1, ease: "power3.out",
-              scrollTrigger: { trigger: card, start: "top 85%" }
+              scrollTrigger: { trigger: card, start: "top 85%", end: "bottom 15%", toggleActions: "play none none reverse" }
             }
           );
         }
@@ -72,7 +72,7 @@ export default function GPMetaphorSection() {
         </p>
       </div>
 
-      {pairCards.map((pair, index) => (
+      {/* {pairCards.map((pair, index) => (
         <div key={index} className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
           {pair.map((card, cardIndex) => (
             <div ref={el => { if (el) cardsRef.current[index * 2 + cardIndex] = el; }} key={cardIndex} className={`w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl ${card.position === 'left' ? 'lg:rounded-tr-[4rem] lg:rounded-br-[4rem]' : 'lg:rounded-tl-[4rem] lg:rounded-bl-[4rem]'} overflow-hidden shadow-lg`}>
@@ -84,7 +84,7 @@ export default function GPMetaphorSection() {
             </div>
           ))}
         </div>
-      ))}
+      ))} */}
 
       <div className="relative z-10 w-full flex justify-center">
         <div ref={el => { if (el) cardsRef.current[6] = el; }} className="w-full max-w-4xl lg:max-w-6xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
