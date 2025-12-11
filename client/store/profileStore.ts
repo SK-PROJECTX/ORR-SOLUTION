@@ -3,13 +3,18 @@ import api from '@/lib/axios';
 import { useToastStore } from './toastStore';
 
 interface ProfileData {
-  full_name: string;
-  nickname: string;
-  gender: 'male' | 'female' | 'other';
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
   country: string;
-  language: string;
+  city: string;
+  zip_code: string;
+  bio_text: string;
+  bio_attachment: string;
   timezone: string;
-  bio?: string;
+  profile_pic: string;
+  phone_number: string;
 }
 
 interface ProfileState {
@@ -26,13 +31,18 @@ interface ProfileState {
 
 export const useProfileStore = create<ProfileState>()((set, get) => ({
   profile: {
-    full_name: '',
-    nickname: '',
-    gender: 'male',
+    first_name: '',
+    last_name: '',
+    username: '',
+    email: '',
     country: '',
-    language: '',
+    city: '',
+    zip_code: '',
+    bio_text: '',
+    bio_attachment: '',
     timezone: '',
-    bio: '',
+    profile_pic: '',
+    phone_number: '',
   },
   isLoading: false,
   isEditing: false,
