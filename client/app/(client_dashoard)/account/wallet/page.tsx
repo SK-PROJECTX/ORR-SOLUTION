@@ -5,7 +5,7 @@ export default function PlansBillingPage() {
     <div className="min-h-screen w-full text-white px-4 py-10 flex flex-col items-center">
       <div className="w-full max-w-6xl">
         {/* Page Title */}
-        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">Plans and billing</h1>
+        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">My Wallet</h1>
 
         {/* Search Bar */}
         <div className="w-full flex justify-center mb-10">

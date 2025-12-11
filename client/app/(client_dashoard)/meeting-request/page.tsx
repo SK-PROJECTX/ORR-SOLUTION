@@ -12,13 +12,33 @@ const meetingTypes = [
   "Report review",
 ];
 
+const meetingOverviews = {
+  "First meeting": {
+    overview: "Your introduction to ORR. This meeting focuses on understanding your organisation at a high level, clarifying your priorities, and determining whether our support is the right fit. No preparation is required — we listen first.",
+    agenda: "1. Welcome & quick orientation to ORR's GP model\n2. Client introduction and current context\n3. High-level challenges and priorities\n4. Clarifying questions from ORR\n5. Outline of next steps (Discovery Meeting + documentation)\n6. Q&A"
+  },
+  "Discovery": {
+    overview: "A structured diagnostic session where we map your organisation's systems, challenges, and desired outcomes. This is the foundation for ORR's Diagnose → Design → Deploy process. Expect targeted questions and a deeper review of how your organisation works.",
+    agenda: "1. Recap of objectives and scope\n2. Deep-dive into operational, regulatory, digital, and strategic areas\n3. Review of existing documents, processes, and systems\n4. Identification of pain points and constraints\n5. Mapping desired outcomes and early hypotheses\n6. Confirmation of what ORR will analyse and deliver next"
+  },
+  "Follow-up": {
+    overview: "A short, focused checkpoint to validate findings, close information gaps, and confirm assumptions before ORR moves into solution design. This meeting ensures accuracy and alignment.",
+    agenda: "1. Review of updates since last meeting\n2. Clarifications on data, documents, or processes\n3. Validation of early observations or assumptions\n4. Additional client input needed before design\n5. Alignment on what ORR will prepare for the next stage"
+  },
+  "Report review": {
+    overview: "A walkthrough of ORR's findings, recommendations, and the proposed roadmap. This meeting ensures full understanding before decisions are made and next steps begin.",
+    agenda: "1. Summary of the discovery & diagnostic process\n2. Presentation of key findings\n3. Walkthrough of recommended actions or solutions\n4. Discussion on timelines, priorities, and resource needs\n5. Agreement on next steps (Design, Deploy, or adjustments)\n6. Q&A and final clarifications"
+  }
+};
+
 const times = ["5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"];
 
 export default function MeetingRequestPage() {
   const [selectedType, setSelectedType] = useState("Discovery");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [agenda, setAgenda] = useState("");
+  const [agenda, setAgenda] = useState(meetingOverviews["Discovery"].agenda);
+  const [notes, setNotes] = useState("");
   const [schedulingUrl, setSchedulingUrl] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const { createMeeting, isLoading } = useMeetingStore();
@@ -75,7 +95,7 @@ export default function MeetingRequestPage() {
 
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime || !agenda.trim() || !schedulingUrl.trim()) {
-      alert('Please fill all fields');
+      alert('Please fill all required fields');
       return;
     }
 
@@ -97,6 +117,7 @@ export default function MeetingRequestPage() {
       meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
       requested_datetime: datetime.toISOString(),
       agenda: agenda.trim(),
+      notes: notes.trim(),
       scheduling_url: schedulingUrl.trim(),
     };
 
@@ -109,7 +130,8 @@ export default function MeetingRequestPage() {
         setSelectedType("Discovery");
         setSelectedDate(null);
         setSelectedTime(null);
-        setAgenda("");
+        setAgenda(meetingOverviews["Discovery"].agenda);
+        setNotes("");
         setSchedulingUrl("");
         // Navigate to pre-meeting page with meeting ID
         router.push(`/pre-meeting?meetingId=${meetingId}`);
@@ -166,7 +188,10 @@ export default function MeetingRequestPage() {
             <div key={idx} className="flex items-center gap-4">
 
               <button
-                onClick={() => setSelectedType(type)}
+                onClick={() => {
+                  setSelectedType(type);
+                  setAgenda(meetingOverviews[type as keyof typeof meetingOverviews].agenda);
+                }}
                 className={`px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all
                   ${
                     selectedType === type
@@ -188,6 +213,14 @@ export default function MeetingRequestPage() {
             </div>
           ))}
 
+        </div>
+
+        {/* MEETING OVERVIEW */}
+        <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-secondary">
+          <h3 className="text-lg font-semibold text-lemon mb-3">{selectedType} Overview</h3>
+          <p className="text-foreground opacity-80 leading-relaxed">
+            {meetingOverviews[selectedType as keyof typeof meetingOverviews].overview}
+          </p>
         </div>
 
         {/* DATE + TIME SECTION */}
@@ -276,13 +309,24 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* MEETING AGENDA */}
-        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">Meeting Agenda</p>
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">Standard Agenda</p>
+        <p className="text-center text-sm opacity-70 mb-4">This agenda is pre-filled based on your meeting type and can be customized</p>
 
         <textarea
           value={agenda}
           onChange={(e) => setAgenda(e.target.value)}
-          placeholder="Input text"
-          className="w-full h-40 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
+          placeholder="Meeting agenda will be pre-filled based on meeting type"
+          className="w-full h-40 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50 whitespace-pre-line"
+        />
+
+        {/* ADDITIONAL NOTES */}
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Additional Notes</p>
+
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Any additional notes or specific topics you'd like to discuss can be provided here..."
+          className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
         />
 
         {/* SCHEDULING URL */}

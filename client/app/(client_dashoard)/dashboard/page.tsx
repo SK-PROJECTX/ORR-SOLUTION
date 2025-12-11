@@ -2,278 +2,248 @@
 
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip } from 'recharts';
+import { Search, Bell, Calendar, Clock, Headphones, Wallet, TrendingUp, Users, MousePointer, DollarSign, Package } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-// Stat type for components
-interface StatProps {
+interface StatCardProps {
   icon: React.ReactNode;
   title: string;
   value: string;
-  small?: boolean;
+  change?: string;
+  trend?: 'up' | 'down';
 }
 
-const data = [
-  { name: "1", low: 300, high: 100 },
-  { name: "2", low: 290, high: 110 },
-  { name: "3", low: 210, high: 90 },
-  { name: "4", low: 260, high: 130 },
-  { name: "5", low: 240, high: 120 },
-  { name: "6", low: 150, high: 80 },
-  { name: "7", low: 280, high: 130 },
-  { name: "8", low: 210, high: 140 },
-  { name: "9", low: 190, high: 110 },
-  { name: "10", low: 170, high: 120 },
-];
-
-const StatBox: React.FC<StatProps> = ({ icon, title, value, small }) => {
+const StatCard: React.FC<StatCardProps> = ({ icon, title, value, change, trend }) => {
   return (
-    <div className="flex-1 bg-background rounded-xl p-5 shadow-lg">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+    <div className="bg-card border border-secondary rounded-xl p-6 hover:shadow-lg transition-shadow">
+      <div className="flex items-center justify-between mb-4">
+        <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center">
           {icon}
         </div>
-        <p className="text-sm text-primary font-medium">{title}</p>
+        {change && (
+          <span className={`text-xs px-2 py-1 rounded-full ${trend === 'up' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+            {change}
+          </span>
+        )}
       </div>
-      <p className={`font-extrabold ${small ? "text-3xl" : "text-4xl"} text-lemon mb-3 text-center`}>
-        {value}
-      </p>
-      <div className="w-full h-1 bg-secondary rounded-full">
-        <div className="h-full w-3/4 bg-lemon rounded-full"></div>
-      </div>
+      <h3 className="text-sm font-medium text-foreground opacity-70 mb-1">{title}</h3>
+      <p className="text-2xl font-bold text-foreground">{value}</p>
     </div>
   );
 };
 
 export default function Dashboard() {
-  return (
-    <main className="min-h-full p-6 bg-background text-foreground relative">
-      <div className=" mx-auto">
-        {/* Header */}
-        <header className="flex items-center justify-between gap-6 mb-6">
-          <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
+  const router = useRouter();
 
-          <div className="flex-1 max-w-lg">
+  return (
+    <main className="min-h-full p-6 bg-background">
+      <div className="mx-auto space-y-6">
+        {/* Header */}
+        <header className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+            <p className="text-foreground opacity-60 mt-1">Welcome back! Here's your overview</p>
+          </div>
+
+          <div className="flex items-center gap-4">
             <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
               <input
-                className="w-full rounded-full py-2 px-4 bg-card text-foreground placeholder:opacity-60 border border-[#13be77] outline-none"
-                placeholder="Search anything here..."
+                className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
+                placeholder="Search anything..."
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
-                🔍
-              </div>
             </div>
+            
+            <button 
+              onClick={() => router.push('/notifications')}
+              className="relative p-3 rounded-lg bg-card border border-secondary hover:bg-secondary transition-colors"
+            >
+              <Bell className="w-5 h-5 text-foreground" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"></span>
+            </button>
           </div>
         </header>
 
-        {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left side */}
-          <section className="lg:col-span-8 space-y-6">
-            {/* Overview card */}
-            <div className="bg-card border border-secondary rounded-xl p-6 shadow-xl">
-              <h2 className="text-primary font-semibold mb-4">
-                Overview of active services or projects
-              </h2>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard 
+            icon={<Users className="w-6 h-6 text-white" />}
+            title="Total Meetings"
+            value="24"
+            change="+12%"
+            trend="up"
+          />
+          <StatCard 
+            icon={<MousePointer className="w-6 h-6 text-white" />}
+            title="Engagement Rate"
+            value="89%"
+            change="+5%"
+            trend="up"
+          />
+          <StatCard 
+            icon={<DollarSign className="w-6 h-6 text-white" />}
+            title="Revenue"
+            value="$12,450"
+            change="+8%"
+            trend="up"
+          />
+          <StatCard 
+            icon={<Package className="w-6 h-6 text-white" />}
+            title="Active Projects"
+            value="12"
+            change="-2%"
+            trend="down"
+          />
+        </div>
 
-              <div className="flex flex-col lg:flex-row gap-6">
-                {/* Left counter */}
-                <div className="w-full lg:w-40">
-                  <div className="text-5xl font-extrabold text-lemon">
-                    300
-                  </div>
-                  <p className="text-xs text-foreground opacity-70 mt-2">
-                    Page views per minute
-                  </p>
-
-                  <div className="mt-6 border-l border-secondary pl-3">
-                    <div className="h-8 w-12 bg-secondary rounded-md mb-3 flex items-center justify-center">
-                      📄
-                    </div>
-                    <p className="text-xs text-foreground opacity-70">
-                      Upgrade your payout method in setting
-                    </p>
-                  </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Welcome Card */}
+            <div className="bg-card border border-secondary rounded-xl p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl">
+                  👋
                 </div>
-
-                {/* Chart */}
-                <div className="flex-1 bg-gradient-primary rounded-lg p-5">
-                        <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
-          <defs>
-            <linearGradient id="lowBar" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#ffffff" />
-            </linearGradient>
-
-            <linearGradient id="highBar" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0A2342" />
-              <stop offset="100%" stopColor="#0A2342" />
-            </linearGradient>
-          </defs>
-
-          <CartesianGrid
-            vertical={false}
-            stroke="#ffffff55"
-            strokeDasharray="4 4"
-          />
-
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            ticks={[100, 200, 300]}
-            tick={{ fill: "white", fontSize: 16 }}
-          />
-
-          <XAxis hide />
-          {/* <Tooltip cursor={false} /> */}
-
-          {/* White bottom bar */}
-          <Bar
-            dataKey="low"
-            stackId="stack"
-            fill="url(#lowBar)"
-            barSize={6}
-            radius={[0, 0, 20, 20]}
-          />
-
-          {/* Dark top bar */}
-          <Bar
-            dataKey="high"
-            stackId="stack"
-            fill="url(#highBar)"
-            barSize={6}
-            radius={[20, 20, 0, 0]}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-
-
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Good morning!</h2>
+                  <p className="text-foreground opacity-60">Ready to tackle today's goals?</p>
                 </div>
               </div>
 
-              {/* Four stat cards */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-4 gap-4">
-                <StatBox icon={"👥"} title="Users" value="35k" small />
-                <StatBox icon={"🖱️"} title="Clicks" value="1m" small />
-                <StatBox icon={"💸"} title="Sales" value="345$" small />
-                <StatBox icon={"📦"} title="Items" value="68" small />
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-secondary/30 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">12</div>
+                  <p className="text-sm text-foreground opacity-70">Active Projects</p>
+                </div>
+                <div className="text-center p-4 bg-secondary/30 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">8</div>
+                  <p className="text-sm text-foreground opacity-70">Completed This Month</p>
+                </div>
+                <div className="text-center p-4 bg-secondary/30 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">95%</div>
+                  <p className="text-sm text-foreground opacity-70">Success Rate</p>
+                </div>
               </div>
             </div>
 
-            {/* Sales by Age */}
-            <div className="bg-card rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-primary font-semibold">Sales by Age</h3>
-                <div className="text-xs text-primary">• Sales</div>
+            {/* Performance Chart */}
+            <div className="bg-card border border-secondary rounded-xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-foreground">Performance Overview</h3>
+                <div className="flex items-center gap-2 text-sm text-foreground opacity-60">
+                  <div className="w-3 h-3 bg-primary rounded-full"></div>
+                  <span>This Month</span>
+                </div>
               </div>
 
-              <div className="bg-secondary rounded-lg p-4 mt-2">
-                <ResponsiveContainer width="100%" height={240}>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={[
-                    { age: 10, sales: 120 },
-                    { age: 20, sales: 180 },
-                    { age: 30, sales: 90 },
-                    { age: 40, sales: 200 },
-                    { age: 50, sales: 150 },
-                    { age: 60, sales: 170 },
-                    { age: 70, sales: 110 },
-                    { age: 80, sales: 190 }
+                    { month: 'Jan', value: 120 },
+                    { month: 'Feb', value: 180 },
+                    { month: 'Mar', value: 90 },
+                    { month: 'Apr', value: 200 },
+                    { month: 'May', value: 150 },
+                    { month: 'Jun', value: 170 }
                   ]}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-secondary)" />
-                    <XAxis dataKey="age" stroke="var(--color-primary)" />
-                    <YAxis stroke="var(--color-primary)" />
+                    <XAxis dataKey="month" stroke="var(--color-foreground)" opacity={0.6} />
+                    <YAxis stroke="var(--color-foreground)" opacity={0.6} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'var(--color-card)', 
+                        border: '1px solid var(--color-secondary)',
+                        borderRadius: '8px'
+                      }}
+                    />
                     <Line 
                       type="monotone" 
-                      dataKey="sales" 
-                      stroke="var(--color-lemon)" 
+                      dataKey="value" 
+                      stroke="var(--color-primary)" 
                       strokeWidth={3}
-                      dot={{ fill: 'var(--color-lemon)', strokeWidth: 2, r: 4 }}
+                      dot={{ fill: 'var(--color-primary)', strokeWidth: 2, r: 4 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
-          </section>
+          </div>
 
-          {/* Right sidebar */}
-          <aside className="lg:col-span-4 space-y-6">
-            <div className="bg-card rounded-xl p-5">
-              <h4 className="text-[#6ff3ab] font-semibold">
-                Your earning this month
-              </h4>
-              <p className="mt-4 text-4xl font-extrabold text-[#62f39a]">
-                735.2$
-              </p>
-              <p className="text-xs text-[#88e8c6] mt-2">
-                Update your payout method in Setting
-              </p>
-              <button className="mt-4 w-full py-2 rounded-lg bg-[#042f2f] text-[#8df6c9] border border-[#0f6b5e]">
-                Withdraw All Earnings
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Wallet Card */}
+            <div className="bg-card border border-secondary rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center">
+                  <Wallet className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-semibold text-foreground">My Wallet</h4>
+              </div>
+              <p className="text-sm text-foreground opacity-60 mb-2">Current Balance</p>
+              <p className="text-3xl font-bold text-primary mb-4">$735.20</p>
+              <button 
+                onClick={() => router.push('/account/wallet')}
+                className="w-full py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition-colors"
+              >
+                View My Wallet
               </button>
             </div>
 
-            <div className="bg-card rounded-xl p-5">
-              <h5 className="text-[#6ff3ab] font-semibold mb-3">
-                Earnings by item
-              </h5>
-
+            {/* Quick Actions */}
+            <div className="bg-card border border-secondary rounded-xl p-6">
+              <h5 className="font-semibold text-foreground mb-4">Quick Actions</h5>
               <div className="space-y-3">
                 {[
-                  "Bento 3D Kit - Illustration",
-                  "Bento 3D Kit - Coded Template",
-                  "Bento 3D Kit - Illustration",
-                ].map((t, i) => (
-                  <div
+                  { icon: <Calendar className="w-5 h-5" />, title: "Schedule Meeting", desc: "Book consultation", path: "/meeting-request" },
+                  { icon: <Clock className="w-5 h-5" />, title: "View Schedule", desc: "Upcoming consultations", path: "/scheduling" },
+                  { icon: <Headphones className="w-5 h-5" />, title: "Get Support", desc: "Contact our team", path: "/support" },
+                ].map((action, i) => (
+                  <button
                     key={i}
-                    className="flex items-center gap-3 bg-[#082b2f] p-3 rounded-md"
+                    onClick={() => router.push(action.path)}
+                    className="w-full flex items-center gap-3 p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 border border-transparent hover:border-primary/30 transition-all group"
                   >
-                    <div className="w-10 h-10 rounded-md bg-gradient-to-br from-[#12b48f] to-[#22e6c6] flex items-center justify-center">
-                      📦
+                    <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                      {action.icon}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-[#bff6d9]">{t}</p>
-                      <p className="text-xs text-[#86f1b9]">Illustration</p>
+                    <div className="flex-1 text-left">
+                      <p className="text-sm font-medium text-foreground">{action.title}</p>
+                      <p className="text-xs text-foreground opacity-60">{action.desc}</p>
                     </div>
-                    <span className="text-[#7df09a]">›</span>
-                  </div>
+                    <div className="text-primary group-hover:translate-x-1 transition-transform">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </button>
                 ))}
               </div>
             </div>
 
-            <div className="bg-card rounded-xl p-4">
-              <h6 className="text-[#6ff3ab] font-semibold mb-4">Impression Trends</h6>
-
-              <div className="h-40">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={[
-                    { day: 'Mon', impressions: 120 },
-                    { day: 'Tue', impressions: 180 },
-                    { day: 'Wed', impressions: 90 },
-                    { day: 'Thu', impressions: 200 },
-                    { day: 'Fri', impressions: 150 },
-                    { day: 'Sat', impressions: 170 },
-                    { day: 'Sun', impressions: 140 }
-                  ]}>
-                    <XAxis 
-                      dataKey="day" 
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: 'var(--color-primary)', fontSize: 10 }}
-                    />
-                    <YAxis 
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: 'var(--color-primary)', fontSize: 10 }}
-                    />
-                    <Bar 
-                      dataKey="impressions" 
-                      fill="var(--color-lemon)" 
-                      radius={[4, 4, 0, 0]}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+            {/* Upcoming Meetings */}
+            <div className="bg-card border border-secondary rounded-xl p-6">
+              <h6 className="font-semibold text-foreground mb-4">Upcoming Meetings</h6>
+              <div className="space-y-3">
+                {[
+                  { date: "15", day: "Mon", type: "Strategy Consultation", time: "10:00 AM", client: "John Smith" },
+                  { date: "16", day: "Tue", type: "Project Review", time: "2:30 PM", client: "Tech Corp" },
+                  { date: "18", day: "Thu", type: "Initial Meeting", time: "11:00 AM", client: "StartupXYZ" }
+                ].map((meeting, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors">
+                    <div className="text-center min-w-[40px]">
+                      <div className="text-lg font-bold text-primary">{meeting.date}</div>
+                      <div className="text-xs text-foreground opacity-60">{meeting.day}</div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-foreground">{meeting.type}</p>
+                      <p className="text-xs text-foreground opacity-60">{meeting.time} • {meeting.client}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </aside>
+          </div>
         </div>
       </div>
     </main>
