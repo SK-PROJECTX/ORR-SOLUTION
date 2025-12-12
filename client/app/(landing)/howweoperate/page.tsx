@@ -165,7 +165,7 @@ export default function StickyScrollSplit() {
       </div>
 
       {/* Split Layout Section */}
-      <div ref={containerRef} className="relative  mt-90 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20 overflow-hidden">
+      <div ref={containerRef} className="relative  mt-90 lg:mt-0 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Left Side - Stacking Cards */}
           <div>
@@ -259,7 +259,7 @@ export default function StickyScrollSplit() {
 
           {/* Right Side - Fixed Image */}
           <div className="block static">
-            <div className="fixed top-48 left-1/2 transform -translate-x-1/2 lg:top-58 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[45vh] sm:h-[45vh] lg:h-[calc(75vh-3rem)]">
+            <div className="fixed top-52 left-1/2 transform -translate-x-1/2 lg:top-58 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[45vh] sm:h-[45vh] lg:h-[calc(75vh-3rem)]">
               <div className="w-full h-full flex items-center">
                 <div className="relative w-full h-full rounded-xl lg:rounded-3xl overflow-hidden shadow-2xl">
                   <img
