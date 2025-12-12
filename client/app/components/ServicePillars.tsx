@@ -23,7 +23,7 @@ export default function ServicePillar() {
       gsap.fromTo(spans,
         { opacity: 0, y: -30, rotateX: -90 },
         { opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
-          scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none reverse" }
+          scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none none" }
         }
       );
     }
@@ -31,14 +31,14 @@ export default function ServicePillar() {
     gsap.fromTo(subtitleRef.current,
       { opacity: 0, scale: 0.5 },
       { opacity: 1, scale: 1, duration: 0.8, delay: 0.3, ease: "back.out(1.7)",
-        scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", toggleActions: "play none none reverse" }
+        scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", toggleActions: "play none none none" }
       }
     );
 
     gsap.fromTo(cardRef.current,
       { opacity: 0, x: 150, rotateY: 30 },
       { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
-        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none reverse" }
+        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
       }
     );
 
@@ -46,7 +46,7 @@ export default function ServicePillar() {
       gsap.fromTo(lineRef.current,
         { scaleY: 0, transformOrigin: "top" },
         { scaleY: 1, duration: 1.5, ease: "power2.inOut",
-          scrollTrigger: { trigger: lineRef.current, start: "top 80%", toggleActions: "play none none reverse" }
+          scrollTrigger: { trigger: lineRef.current, start: "top 80%", toggleActions: "play none none none" }
         }
       );
     }
@@ -56,7 +56,7 @@ export default function ServicePillar() {
         gsap.fromTo(bullet,
           { scale: 0, opacity: 0, rotate: 360 },
           { scale: 1, opacity: 1, rotate: 0, duration: 0.6, delay: 0.7 + i * 0.2, ease: "elastic.out(1, 0.5)",
-            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none reverse" }
+            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
           }
         );
       }
@@ -67,19 +67,13 @@ export default function ServicePillar() {
         gsap.fromTo(item,
           { opacity: 0, x: -50, rotateZ: -5 },
           { opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8 + i * 0.25, ease: "power3.out",
-            scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none reverse" }
+            scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" }
           }
         );
       }
     });
 
-    ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom top",
-      onLeave: () => gsap.to(sectionRef.current, { opacity: 0.3, x: 30, duration: 0.5 }),
-      onEnterBack: () => gsap.to(sectionRef.current, { opacity: 1, x: 0, duration: 0.5 })
-    });
+
   }, []);
 
   return (

@@ -166,7 +166,7 @@ export default function StickyScrollSplit() {
 
       {/* Split Layout Section */}
       <div ref={containerRef} className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Side - Stacking Cards */}
           <div>
             {processCards.map((card, index) => (
@@ -176,22 +176,15 @@ export default function StickyScrollSplit() {
                 style={{
                   height: '100vh',
                   position: 'sticky',
-                  top: `${24 + index * 8}px`,
+                  top: `${24 + index * 4}px`,
                   zIndex: index + 1
                 }}
               >
                 <div
-                  className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
+                  className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-3xl p-8 md:p-10 w-full transition-all duration-300"
                   style={{
-                    transform: activeIndex === index 
-                      ? 'scale(1) rotateY(0deg)' 
-                      : activeIndex > index 
-                        ? `scale(${0.95 - (activeIndex - index) * 0.03}) rotateY(-2deg)` 
-                        : 'scale(0.98) rotateY(2deg)',
-                    opacity: 1,
-                    boxShadow: activeIndex === index 
-                      ? '0 25px 50px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(16, 185, 129, 0.1)' 
-                      : '0 10px 30px rgba(0, 0, 0, 0.3)'
+                    transform: activeIndex > index ? `scale(${0.95 - (activeIndex - index) * 0.03})` : 'scale(1)',
+                    opacity: activeIndex > index ? 0.8 : 1
                   }}
                 >
                   <div className="flex items-center justify-between mb-6">
@@ -203,50 +196,50 @@ export default function StickyScrollSplit() {
                     </div>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
                     {card.title}
                   </h2>
                   
                   {card.subtitle && (
-                    <h3 className="text-base sm:text-lg font-semibold text-emerald-400 mb-4">
+                    <h3 className="text-lg font-semibold text-emerald-400 mb-4">
                       {card.subtitle}
                     </h3>
                   )}
                   
                   {card.description && (
-                    <p className="text-sm sm:text-base text-white mb-4">{card.description}</p>
+                    <p className="text-base text-white mb-4">{card.description}</p>
                   )}
                   
                   <div className="space-y-2">
-                    {card.bullet1 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet1}</p>}
-                    {card.bullet2 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet2}</p>}
-                    {card.wordbreak && <p className="text-white text-base sm:text-lg font-bold text-center my-4">{card.wordbreak}</p>}
-                    {card.bullet3 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet3}</p>}
-                    {card.bullet4 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet4}</p>}
-                    {card.bullet5 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet5}</p>}
-                    {card.bullet6 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet6}</p>}
-                    {card.bullet7 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet7}</p>}
-                    {card.bullet8 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet8}</p>}
-                    {card.bullet9 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet9}</p>}
+                    {card.bullet1 && <p className="text-gray-300 text-base">{card.bullet1}</p>}
+                    {card.bullet2 && <p className="text-gray-300 text-base">{card.bullet2}</p>}
+                    {card.wordbreak && <p className="text-white text-lg font-bold text-center my-4">{card.wordbreak}</p>}
+                    {card.bullet3 && <p className="text-gray-300 text-base">{card.bullet3}</p>}
+                    {card.bullet4 && <p className="text-gray-300 text-base">{card.bullet4}</p>}
+                    {card.bullet5 && <p className="text-gray-300 text-base">{card.bullet5}</p>}
+                    {card.bullet6 && <p className="text-gray-300 text-base">{card.bullet6}</p>}
+                    {card.bullet7 && <p className="text-gray-300 text-base">{card.bullet7}</p>}
+                    {card.bullet8 && <p className="text-gray-300 text-base">{card.bullet8}</p>}
+                    {card.bullet9 && <p className="text-gray-300 text-base">{card.bullet9}</p>}
                   </div>
                   
-                  {card.description1 && <p className="text-gray-300 text-sm sm:text-base mt-4">{card.description1}</p>}
-                  {card.description2 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description2}</p>}
-                  {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description3}</p>}
-                  {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description4}</p>}
+                  {card.description1 && <p className="text-gray-300 text-base mt-4">{card.description1}</p>}
+                  {card.description2 && <p className="text-gray-300 text-base mt-2">{card.description2}</p>}
+                  {card.description3 && <p className="text-gray-300 text-base mt-2">{card.description3}</p>}
+                  {card.description4 && <p className="text-gray-300 text-base mt-2">{card.description4}</p>}
                   
                   {card.buttonText && (
                     <div className="flex flex-col gap-3 mt-6">
-                      <button className="bg-emerald-400 text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
+                      <button className="bg-emerald-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-emerald-300 transition-all hover:scale-105">
                         {card.buttonText}
                       </button>
                       {card.buttonText2 && (
-                        <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <button className="border border-emerald-400 text-emerald-400 px-8 py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105">
                           {card.buttonText2}
                         </button>
                       )}
                       {card.buttonText3 && (
-                        <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <button className="border border-emerald-400 text-emerald-400 px-8 py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105">
                           {card.buttonText3}
                         </button>
                       )}
@@ -258,26 +251,22 @@ export default function StickyScrollSplit() {
           </div>
 
           {/* Right Side - Fixed Image */}
-          <div className="block lg:relative">
-            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 lg:top-32 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[65%] sm:w-[60%] lg:w-[75%] max-w-[350px] sm:max-w-[450px] lg:max-w-[900px] h-[35vh] sm:h-[45vh] lg:h-[calc(85vh-3rem)]">
+          <div className="hidden lg:block">
+            <div className="fixed top-6 right-6 w-[45%] max-w-[600px] h-[calc(100vh-3rem)]">
               <div className="w-full h-full flex items-center">
-                <div className="relative w-full h-full rounded-xl lg:rounded-3xl overflow-hidden shadow-2xl">
+                <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
                   <img
                     key={activeIndex}
                     src={processCards[activeIndex].image}
                     alt={processCards[activeIndex].title}
-                    className="w-full h-full object-cover transition-all duration-1000 ease-out"
-                    style={{
-                      transform: 'scale(1.05)',
-                      animation: `imageAnim${activeIndex % 5} 1s ease-out`
-                    }}
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
-                  <div className="absolute bottom-2 lg:bottom-8 left-2 lg:left-8 right-2 lg:right-8">
-                    <div className="text-emerald-400 text-sm lg:text-xl font-bold mb-1 lg:mb-2">
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <div className="text-emerald-400 text-xl font-bold mb-2">
                       {processCards[activeIndex].id}
                     </div>
-                    <div className="text-white text-sm lg:text-2xl xl:text-3xl font-bold">
+                    <div className="text-white text-2xl md:text-3xl font-bold">
                       {processCards[activeIndex].title}
                     </div>
                   </div>
@@ -287,29 +276,6 @@ export default function StickyScrollSplit() {
           </div>
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes imageAnim0 {
-          0% { opacity: 0; transform: scale(1.2) translateX(30px); filter: blur(6px); }
-          100% { opacity: 1; transform: scale(1.05) translateX(0px); filter: blur(0px); }
-        }
-        @keyframes imageAnim1 {
-          0% { opacity: 0; transform: scale(0.8) translateY(-30px) rotate(5deg); filter: brightness(0.5); }
-          100% { opacity: 1; transform: scale(1.05) translateY(0px) rotate(0deg); filter: brightness(1); }
-        }
-        @keyframes imageAnim2 {
-          0% { opacity: 0; transform: scale(1.1) translateX(-40px) skewX(10deg); filter: saturate(0); }
-          100% { opacity: 1; transform: scale(1.05) translateX(0px) skewX(0deg); filter: saturate(1); }
-        }
-        @keyframes imageAnim3 {
-          0% { opacity: 0; transform: scale(0.9) translateY(40px) rotateX(20deg); filter: contrast(0.3); }
-          100% { opacity: 1; transform: scale(1.05) translateY(0px) rotateX(0deg); filter: contrast(1); }
-        }
-        @keyframes imageAnim4 {
-          0% { opacity: 0; transform: scale(1.3) translate(-20px, 20px) rotateZ(-3deg); filter: hue-rotate(180deg); }
-          100% { opacity: 1; transform: scale(1.05) translate(0px, 0px) rotateZ(0deg); filter: hue-rotate(0deg); }
-        }
-      `}</style>
     </div>
   );
 }

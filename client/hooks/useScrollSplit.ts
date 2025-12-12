@@ -27,7 +27,7 @@ export function useScrollSplit() {
             trigger: section,
             start: 'top 90%',
             end: 'top 10%',
-            toggleActions: 'play reverse play reverse',
+            toggleActions: 'play none none none',
           },
         }
       );

@@ -45,13 +45,7 @@ export default function Hero() {
       { opacity: 1, scale: 1, rotate: 0, duration: 0.8, delay: 1, ease: "elastic.out(1, 0.5)" }
     );
 
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: "bottom top",
-      onLeave: () => gsap.to(containerRef.current, { opacity: 0, y: -50, duration: 0.5 }),
-      onEnterBack: () => gsap.to(containerRef.current, { opacity: 1, y: 0, duration: 0.5 })
-    });
+
   }, []);
 
   return (
