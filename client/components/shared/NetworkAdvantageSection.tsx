@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef } from "react";
 import NetworkCard from "../strategy_advisory/NetworkCard";
 
 interface NetworkCard {
@@ -19,9 +21,50 @@ export default function NetworkAdvantageSection({
   networkCards, 
   layout = 'flex' 
 }: NetworkAdvantageSectionProps) {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-slide-in');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (headerRef.current) observer.observe(headerRef.current);
+    if (cardsRef.current) observer.observe(cardsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
-      <div className="text-center mb-16">
+      <style jsx>{`
+        .animate-slide-in {
+          animation: slideIn 0.7s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .slide-animate {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+      `}</style>
+      <div ref={headerRef} className="text-center mb-16 slide-animate">
         <h2 className="text-4xl font-bold text-white mb-4">
           {title}
         </h2>
@@ -30,7 +73,7 @@ export default function NetworkAdvantageSection({
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      <div ref={cardsRef} className="max-w-6xl mx-auto slide-animate">
         {layout === 'grid' ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
