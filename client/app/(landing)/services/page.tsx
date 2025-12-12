@@ -94,7 +94,7 @@ export default function Services() {
                 <li>• Regulatory, operational, data, and environmental risks</li>
                 <li>• Which questions actually matter</li>
               </ul>
-              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto">Sign up</button>
+              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">Sign up</button>
             </div>
 
             {/* Stage 2 - Diagnose */}
@@ -114,7 +114,7 @@ export default function Services() {
                 <li>• Data and living systems scan</li>
                 <li>• Prioritised list: urgent, high leverage, later</li>
               </ul>
-              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto">Learn More</button>
+              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">Learn More</button>
             </div>
 
             {/* Stage 3 - Design */}
@@ -136,8 +136,8 @@ export default function Services() {
                 <li>• Clean, structured data ready for reporting</li>
               </ul>
               <div className="flex flex-col gap-3 mt-auto">
-                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Sign up</button>
-                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Learn More on living systems & augmentation</button>
+                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">Sign up</button>
+                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">Learn More on living systems & augmentation</button>
               </div>
             </div>
 
@@ -159,7 +159,7 @@ export default function Services() {
                 <li>• Staff training in the tools you already use</li>
                 <li>• Connecting with external providers where needed</li>
               </ul>
-              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto">Contact Us</button>
+              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">Contact Us</button>
             </div>
           </div>
 
@@ -181,7 +181,7 @@ export default function Services() {
               <li>• Scenario and 'what if' thinking</li>
               <li>• Light, regular check-ins — your systems clinic</li>
             </ul>
-            <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors">Sign up</button>
+            <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">Sign up</button>
           </div>
         </div>
       </section>
@@ -202,21 +202,21 @@ export default function Services() {
             <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
               <h3 className="text-3xl font-bold mb-8 text-center">Digital Systems, Automation & AI</h3>
               <p className="text-gray-300 text-xl mb-8 text-center flex-grow">SOPs, workflows, portals, dashboards, and AI helpers that make work flow with less effort and fewer surprises.</p>
-              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">Learn More</button>
             </div>
 
             {/* Strategic Advisory Pillar */}
             <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
               <h3 className="text-3xl font-bold mb-8 text-center">Strategic Advisory & Compliance</h3>
               <p className="text-gray-300 text-xl mb-8 text-center flex-grow">Short, sharp clarity on rules, risk, and direction — from regulation and ESG to biotech and environmental questions.</p>
-              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">Learn More</button>
             </div>
 
             {/* Living Systems Pillar */}
             <div className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
               <h3 className="text-3xl font-bold mb-8 text-center">Living Systems & Regeneration</h3>
               <p className="text-gray-300 text-xl mb-8 text-center flex-grow">Support for land, water, species, and ecosystems — from production systems to restoration and incident response.</p>
-              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8">Learn More</button>
+              <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">Learn More</button>
             </div>
           </div>
         </div>
