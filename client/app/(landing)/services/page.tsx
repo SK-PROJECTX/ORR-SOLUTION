@@ -1,10 +1,57 @@
-﻿import Image from "next/image";
+"use client";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 export default function Services() {
+  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in-up');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen text-foreground">
+      <style jsx>{`
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        section {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+      `}</style>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center">
+      <section 
+        ref={el => sectionsRef.current[0] = el}
+        className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center"
+      >
         <div className="absolute inset-0 " />
         <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-30 pointer-events-none" />
         
@@ -25,7 +72,10 @@ export default function Services() {
       </section>
 
       {/* Process Stages */}
-      <section className="py-16 px-6">
+      <section 
+        ref={el => sectionsRef.current[1] = el}
+        className="py-16 px-6"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 md:grid-rows-2">
             {/* Stage 1 - Discover */}
@@ -137,7 +187,10 @@ export default function Services() {
       </section>
 
       {/* The Three Pillars */}
-      <section className="py-20 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800 min-h-[80vh] flex items-center">
+      <section 
+        ref={el => sectionsRef.current[2] = el}
+        className="py-20 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800 min-h-[80vh] flex items-center"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
@@ -170,7 +223,10 @@ export default function Services() {
       </section>
 
       {/* Business GP Section */}
-      <section className="py-20 px-6 bg-background star relative min-h-[80vh] flex items-center">
+      <section 
+        ref={el => sectionsRef.current[3] = el}
+        className="py-20 px-6 bg-background star relative min-h-[80vh] flex items-center"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -224,7 +280,10 @@ export default function Services() {
 </div> */}
 
  {/* Services Overview */}
-      <section className="py-16 px-6 relative">
+      <section 
+        ref={el => sectionsRef.current[4] = el}
+        className="py-16 px-6 relative"
+      >
         {/* <div
 					className="absolute inset-x-0 -top-12 md:-top-[600px] opacity-80 pointer-events-none -z-10"
 					aria-hidden>
@@ -310,7 +369,10 @@ export default function Services() {
       </section>
 
       {/* Data Intelligence & Concierge Solutions */}
-      <section className="py-16 px-6">
+      <section 
+        ref={el => sectionsRef.current[5] = el}
+        className="py-16 px-6"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="bg-card rounded-lg p-8">
             <h2 className="text-3xl font-bold mb-6 text-gray-300">

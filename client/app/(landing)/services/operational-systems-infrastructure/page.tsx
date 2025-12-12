@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef } from "react";
 import HeroSection from "@/components/operational_systems/HeroSection";
 import WhatWeOfferSection from "@/components/shared/WhatWeOfferSection";
 import HowWeWorkSection from "@/components/shared/HowWeWorkSection";
@@ -7,10 +9,55 @@ import CaseExampleSection from "@/components/shared/CaseExampleSection";
 import FinalCTASection from "@/components/operational_systems/FinalCTASection";
 
 export default function OperationalSystemsPage() {
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-slide-in');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen py-12 relative overflow-hidden">
-      <HeroSection />
-      <WhatWeOfferSection 
+      <style jsx>{`
+        .animate-slide-in {
+          animation: slideIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .section-animate {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      `}</style>
+      <div ref={el => sectionsRef.current[0] = el} className="section-animate">
+        <HeroSection />
+      </div>
+      <div ref={el => sectionsRef.current[1] = el} className="section-animate">
+        <WhatWeOfferSection 
         offers={[
           {
             title: "Standard Operating Procedures (SOPs)",
@@ -64,8 +111,10 @@ export default function OperationalSystemsPage() {
             ]
           }
         ]}
-      />
-      <HowWeWorkSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[2] = el} className="section-animate">
+        <HowWeWorkSection 
         subtitle="Listen . Solve . Optimize"
         description="Just like your Business GP, we follow a systematic diagnostic and treatment approach to restore operational health."
         sections={[
@@ -88,8 +137,10 @@ export default function OperationalSystemsPage() {
             ]
           }
         ]}
-      />
-      <NetworkAdvantageSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[3] = el} className="section-animate">
+        <NetworkAdvantageSection 
         description="When your needs extend beyond pure operations consulting, we activate our global network of trusted specialists:"
         networkCards={[
           {
@@ -114,8 +165,10 @@ export default function OperationalSystemsPage() {
           }
         ]}
         layout="grid"
-      />
-      <DigitalSolutionsSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[4] = el} className="section-animate">
+        <DigitalSolutionsSection 
         title="Digital Solutions"
         subtitle="We implement"
         description="We don't just recommend off-the-shelf tools — we build and integrate customized software solutions tailored to your unique workflows:"
@@ -136,16 +189,21 @@ export default function OperationalSystemsPage() {
           "AI-powered solutions for process automation, data analysis, and intelligent decision support",
           "Custom reporting and analytics dashboards"
         ]}
-      />
-      <CaseExampleSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[5] = el} className="section-animate">
+        <CaseExampleSection 
         caseExample={{
           challenge: "A mid-sized manufacturing company was experiencing significant operational inefficiencies, with production delays, quality issues, and rising costs. Manual processes dominated their workflow, leading to errors and inconsistent output. The management team recognized the need for systematic improvement but lacked the expertise to identify root causes and implement effective solutions across their complex operations.",
           solution: "ORR conducted a comprehensive operational assessment, mapping all processes and identifying critical bottlenecks. We delivered a detailed optimization report that outlined workflow redesign, quality control improvements, and automation opportunities. The report included specific recommendations for process standardization, performance metrics implementation, and a phased approach to digital transformation that would maximize ROI while minimizing operational disruption.",
           result: "Following ORR's recommendations, the company implemented standardized processes and automated key workflows, resulting in a 35% reduction in production time and 50% fewer quality defects. The new performance monitoring system provided real-time visibility into operations, enabling proactive issue resolution. Overall operational costs decreased by 25% while customer satisfaction improved significantly due to consistent delivery times and product quality."
         }}
         imageAlt="Manufacturing floor with optimized processes and digital monitoring"
-      />
-      <FinalCTASection />
+        />
+      </div>
+      <div ref={el => sectionsRef.current[6] = el} className="section-animate">
+        <FinalCTASection />
+      </div>
     </div>
   )
 }
