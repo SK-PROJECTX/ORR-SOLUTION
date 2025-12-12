@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef } from "react";
 import HeroSection from "@/components/living_systems/HeroSection";
 import WhatWeOfferSection from "@/components/shared/WhatWeOfferSection";
 import HowWeWorkSection from "@/components/shared/HowWeWorkSection";
@@ -7,10 +9,55 @@ import CaseExampleSection from "@/components/shared/CaseExampleSection";
 import FinalCTASection from "@/components/living_systems/FinalCTASection";
 
 export default function LivingSystemsPage() {
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-slide-in');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen py-12 relative overflow-hidden">
-      <HeroSection />
-      <WhatWeOfferSection 
+      <style jsx>{`
+        .animate-slide-in {
+          animation: slideIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .section-animate {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      `}</style>
+      <div ref={el => sectionsRef.current[0] = el} className="section-animate">
+        <HeroSection />
+      </div>
+      <div ref={el => sectionsRef.current[1] = el} className="section-animate">
+        <WhatWeOfferSection 
         offers={[
           {
             title: "Regenerative Agriculture & Bio Systems",
@@ -39,8 +86,10 @@ export default function LivingSystemsPage() {
           }
         ]}
         // layout="grid"
-      />
-      <HowWeWorkSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[2] = el} className="section-animate">
+        <HowWeWorkSection 
         subtitle="Observe . Design . Regenerate"
         description="At the heart of our work, we take a systems approach to understanding and regenerating living systems. We observe the current state, design regenerative solutions, and implement systems that restore ecological health while creating economic value."
         sections={[
@@ -75,8 +124,10 @@ export default function LivingSystemsPage() {
           }
         ]}
         layout="grid"
-      />
-      <NetworkAdvantageSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[3] = el} className="section-animate">
+        <NetworkAdvantageSection 
         description="Complex ecological challenges require diverse expertise. We activate our global network of specialists to deliver comprehensive regenerative solutions that restore ecosystems and create lasting positive impact."
         networkCards={[
           {
@@ -105,8 +156,10 @@ export default function LivingSystemsPage() {
             icon: "M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L15 1L13.5 2.5L16.17 5.23L10.23 11.17C9.64 11.76 9 12 8 12S7.36 11.76 6.77 11.17L2 6.4L0.6 7.8L5.37 12.57C6.36 13.56 7.64 14 9 14S11.64 13.56 12.63 12.57L18.77 6.43L21.5 9.17L23 7.67L21 9Z"
           }
         ]}
-      />
-      <DigitalSolutionsSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[4] = el} className="section-animate">
+        <DigitalSolutionsSection 
         title="Tools & Structures We"
         subtitle="Help Put In Place"
         description="We work with living systems — landscapes, forests, oceans, and ecosystems — to design regenerative solutions that bring life back to degraded environments."
@@ -129,16 +182,21 @@ export default function LivingSystemsPage() {
           "Natural capital accounting and valuation systems",
           "Regenerative impact reporting and certification workflows"
         ]}
-      />
-      <CaseExampleSection 
+        />
+      </div>
+      <div ref={el => sectionsRef.current[5] = el} className="section-animate">
+        <CaseExampleSection 
         caseExample={{
           challenge: "A large agricultural cooperative was facing declining soil health, reduced biodiversity, and increasing input costs from conventional farming practices. Climate change was creating additional stress on their operations, with unpredictable weather patterns affecting yields.",
           solution: "ORR conducted a comprehensive ecological assessment of the cooperative's land and operations. We delivered a detailed regeneration report that outlined soil restoration strategies, biodiversity enhancement plans, and carbon sequestration opportunities.",
           result: "Following ORR's regenerative agriculture plan, the cooperative implemented soil-building practices that increased organic matter by 40% within two years. Input costs decreased by 30% as soil health improved and natural pest management systems developed."
         }}
         imageAlt="Regenerative farm with diverse crops and healthy soil"
-      />
-      <FinalCTASection />
+        />
+      </div>
+      <div ref={el => sectionsRef.current[6] = el} className="section-animate">
+        <FinalCTASection />
+      </div>
     </div>
   )
 }
