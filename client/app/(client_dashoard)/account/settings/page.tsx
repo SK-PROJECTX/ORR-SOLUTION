@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useProfileStore } from "@/store/profileStore";
+import { useAuthStore } from "@/store/authStore";
 
 interface Country {
   name: { common: string };
@@ -9,10 +10,12 @@ interface Country {
 
 export default function AccountSettingsPage() {
   const { profile, isLoading, isEditing, updateProfile, setEditing, fetchProfile } = useProfileStore();
+  const { user } = useAuthStore();
   const [formData, setFormData] = useState(profile);
   const [countries, setCountries] = useState<Country[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [profilePicFile, setProfilePicFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchProfile();
@@ -35,11 +38,11 @@ export default function AccountSettingsPage() {
   };
 
   useEffect(() => {
-    setFormData(profile);
-  }, [profile]);
+    setFormData({...profile, email: user?.email || ''});
+  }, [profile, user?.email]);
 
   const handleSave = async () => {
-    await updateProfile(formData);
+    await updateProfile(formData, profilePicFile || undefined);
   };
 
   const handleCancel = () => {
@@ -51,8 +54,9 @@ export default function AccountSettingsPage() {
     setEditing(true);
   };
 
-  const handleImageUpload = async (file: File) => {
-    setUploadingImage(true);
+  const handleImageUpload = (file: File) => {
+    // Store file for backend upload
+    setProfilePicFile(file);
     
     // Show immediate preview
     const reader = new FileReader();
@@ -61,37 +65,6 @@ export default function AccountSettingsPage() {
       setFormData({...formData, profile_pic: preview});
     };
     reader.readAsDataURL(file);
-    
-    try {
-      const formDataUpload = new FormData();
-      formDataUpload.append('file', file);
-      formDataUpload.append('upload_preset', 'ml_default');
-      
-      const response = await fetch(
-        'https://api.cloudinary.com/v1_1/djoahpirg/image/upload',
-        {
-          method: 'POST',
-          body: formDataUpload
-        }
-      );
-      
-      const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error.message);
-      }
-      
-      if (data.secure_url) {
-        setFormData({...formData, profile_pic: data.secure_url});
-      } else {
-        throw new Error('Upload failed - no URL returned');
-      }
-    } catch (error) {
-      console.error('Image upload failed:', error);
-      alert(`Image upload failed: ${error}`);
-    } finally {
-      setUploadingImage(false);
-    }
   };
 
   return (
@@ -167,11 +140,10 @@ export default function AccountSettingsPage() {
               <div>
                 <label className="block text-sm mb-2">Email</label>
                 <input
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  disabled={!isEditing}
-                  className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter email"
+                  value={user?.email || ''}
+                  disabled={true}
+                  className="w-full bg-card border border-secondary rounded-md px-4 py-3 text-sm focus:outline-none opacity-50 text-foreground cursor-not-allowed"
+                  placeholder="Email address"
                 />
               </div>
               <div>

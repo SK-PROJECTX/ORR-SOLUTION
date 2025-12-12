@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMeetingStore } from "@/store/meetingStore";
 import { useRouter } from "next/navigation";
+import axios from "@/lib/axios";
 
 const meetingTypes = [
   "First meeting",
@@ -31,18 +32,95 @@ const meetingOverviews = {
   }
 };
 
-const times = ["5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"];
+interface EventType {
+  name: string;
+  uri: string;
+}
+
+interface TimeSlot {
+  invitees_remaining: number;
+  scheduling_url: string;
+  start_time: string;
+  status: string;
+}
+
+interface MeetingSlots {
+  collection: TimeSlot[];
+}
 
 export default function MeetingRequestPage() {
   const [selectedType, setSelectedType] = useState("Discovery");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
   const [agenda, setAgenda] = useState(meetingOverviews["Discovery"].agenda);
   const [notes, setNotes] = useState("");
-  const [schedulingUrl, setSchedulingUrl] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+  const [meetingSlots, setMeetingSlots] = useState<TimeSlot[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const { createMeeting, isLoading } = useMeetingStore();
   const router = useRouter();
+
+  useEffect(() => {
+    fetchEventTypes();
+  }, []);
+
+  useEffect(() => {
+    if (eventTypes.length > 0) {
+      fetchMeetingSlots();
+    }
+  }, [eventTypes]);
+
+  const fetchEventTypes = async () => {
+    try {
+      const response = await axios.get('/event-type/');
+      setEventTypes(response.data?.data || []);
+    } catch (error) {
+      console.error('Failed to fetch event types:', error);
+    }
+  };
+
+  const fetchMeetingSlots = async () => {
+    if (eventTypes.length === 0) return;
+    
+    setLoadingSlots(true);
+    try {
+      const eventTypeUri = encodeURIComponent(eventTypes[0].uri);
+      const response = await axios.get(`/meeting-slots/?event_type_uri=${eventTypeUri}`);
+      setMeetingSlots(response.data?.data?.collection || []);
+    } catch (error) {
+      console.error('Failed to fetch meeting slots:', error);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
+  const getAvailableDates = () => {
+    const dates = new Set<string>();
+    meetingSlots.forEach(slot => {
+      if (slot.status === 'available') {
+        const date = new Date(slot.start_time).toDateString();
+        dates.add(date);
+      }
+    });
+    return Array.from(dates);
+  };
+
+  const getTimeSlotsForDate = (date: Date) => {
+    const dateString = date.toDateString();
+    return meetingSlots.filter(slot => {
+      const slotDate = new Date(slot.start_time).toDateString();
+      return slotDate === dateString && slot.status === 'available';
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -94,52 +172,48 @@ export default function MeetingRequestPage() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedDate || !selectedTime || !agenda.trim() || !schedulingUrl.trim()) {
-      alert('Please fill all required fields');
+    if (!selectedTimeSlot || !agenda.trim()) {
+      alert('Please select a time slot and provide an agenda');
       return;
     }
 
-    if (!selectedDate) {
-      alert('Please select a date');
-      return;
-    }
-
-    const [hours, minutes] = selectedTime.includes('PM') && !selectedTime.startsWith('12') 
-      ? [parseInt(selectedTime.split(':')[0]) + 12, parseInt(selectedTime.split(':')[1])]
-      : selectedTime.startsWith('12') && selectedTime.includes('AM')
-      ? [0, parseInt(selectedTime.split(':')[1])]
-      : [parseInt(selectedTime.split(':')[0]), parseInt(selectedTime.split(':')[1])];
-    
-    const datetime = new Date(selectedDate);
-    datetime.setHours(hours, minutes, 0, 0);
-    
     const meetingData = {
       meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
-      requested_datetime: datetime.toISOString(),
+      requested_datetime: selectedTimeSlot.start_time,
       agenda: agenda.trim(),
-      notes: notes.trim(),
-      scheduling_url: schedulingUrl.trim(),
+      scheduling_url: selectedTimeSlot.scheduling_url,
     };
 
     try {
-      const meetingId = await createMeeting(meetingData);
-      console.log('Meeting ID returned:', meetingId);
+      const response = await axios.post('/create-meeting/', meetingData);
+      console.log('Meeting creation response:', response.data);
       
-      if (meetingId) {
-        // Clear form fields after successful submission
-        setSelectedType("Discovery");
-        setSelectedDate(null);
-        setSelectedTime(null);
-        setAgenda(meetingOverviews["Discovery"].agenda);
-        setNotes("");
-        setSchedulingUrl("");
-        // Navigate to pre-meeting page with meeting ID
-        router.push(`/pre-meeting?meetingId=${meetingId}`);
+      if (response.data?.success) {
+        const meetingId = response.data?.data?.meeting_id;
+        console.log('Meeting ID:', meetingId);
+        
+        if (meetingId) {
+          // Clear form fields after successful submission
+          setSelectedType("Discovery");
+          setSelectedDate(null);
+          setSelectedTimeSlot(null);
+          setAgenda(meetingOverviews["Discovery"].agenda);
+          setNotes("");
+          // Navigate to pre-meeting form with meeting ID
+          console.log('Navigating to pre-meeting with ID:', meetingId);
+          router.push(`/pre-meeting?meetingId=${meetingId}`);
+        } else {
+          console.error('No meeting ID found in response');
+          alert('Meeting created but no ID returned. Please check your meetings.');
+          router.push('/consultations/upcoming-consultations');
+        }
       } else {
-        console.log('No meeting ID returned, submission may have failed');
+        console.error('Meeting creation failed:', response.data);
+        alert('Failed to create meeting. Please try again.');
       }
     } catch (error) {
       console.error('Error creating meeting:', error);
+      alert('Failed to create meeting. Please try again.');
     }
   };
 
@@ -263,24 +337,29 @@ export default function MeetingRequestPage() {
 
             {/* Dates */}
             <div className="grid grid-cols-7 gap-2 text-center text-sm">
-              {getDaysInMonth(currentMonth).map((date, index) => (
-                <button
-                  key={index}
-                  onClick={() => date && setSelectedDate(date)}
-                  disabled={!date}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
-                    ${
-                      !date
-                        ? "invisible"
-                        : isDateSelected(date)
-                        ? "bg-lemon text-background font-semibold"
-                        : "bg-secondary text-foreground hover:bg-lemon/20"
-                    }
-                  `}
-                >
-                  {date?.getDate()}
-                </button>
-              ))}
+              {getDaysInMonth(currentMonth).map((date, index) => {
+                const hasSlots = date && getAvailableDates().includes(date.toDateString());
+                return (
+                  <button
+                    key={index}
+                    onClick={() => date && hasSlots && setSelectedDate(date)}
+                    disabled={!date || !hasSlots}
+                    className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+                      ${
+                        !date
+                          ? "invisible"
+                          : !hasSlots
+                          ? "bg-secondary/30 text-foreground/30 cursor-not-allowed"
+                          : isDateSelected(date)
+                          ? "bg-lemon text-background font-semibold"
+                          : "bg-secondary text-foreground hover:bg-lemon/20"
+                      }
+                    `}
+                  >
+                    {date?.getDate()}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -288,23 +367,34 @@ export default function MeetingRequestPage() {
           <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-secondary">
             <h3 className="text-lg font-semibold mb-6">{formatSelectedDate(selectedDate)}</h3>
 
-            <div className="flex flex-col gap-3 sm:gap-4">
-              {times.map((time) => (
-                <button
-                  key={time}
-                  onClick={() => setSelectedTime(time)}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all
-                    ${
-                      selectedTime === time
-                        ? "bg-lemon text-background"
-                        : "bg-lemon/30 text-foreground"
-                    }
-                  `}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
+            {loadingSlots ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-lemon"></div>
+              </div>
+            ) : selectedDate ? (
+              <div className="flex flex-col gap-3 sm:gap-4 max-h-80 overflow-y-auto pr-2">
+                {getTimeSlotsForDate(selectedDate).map((slot) => (
+                  <button
+                    key={slot.start_time}
+                    onClick={() => setSelectedTimeSlot(slot)}
+                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all flex-shrink-0
+                      ${
+                        selectedTimeSlot?.start_time === slot.start_time
+                          ? "bg-lemon text-background"
+                          : "bg-lemon/30 text-foreground hover:bg-lemon/50"
+                      }
+                    `}
+                  >
+                    {formatTime(slot.start_time)}
+                  </button>
+                ))}
+                {getTimeSlotsForDate(selectedDate).length === 0 && (
+                  <p className="text-center text-foreground/60 py-4">No available slots for this date</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-center text-foreground/60 py-4">Select a date to see available times</p>
+            )}
           </div>
         </div>
 
@@ -329,22 +419,11 @@ export default function MeetingRequestPage() {
           className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
         />
 
-        {/* SCHEDULING URL */}
-        <p className="text-center text-lg font-semibold mt-8 mb-3">Scheduling URL</p>
-
-        <input
-          type="url"
-          value={schedulingUrl}
-          onChange={(e) => setSchedulingUrl(e.target.value)}
-          placeholder="https://calendly.com/your-link or similar scheduling URL"
-          className="w-full bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
-        />
-
         {/* SUBMIT BUTTON */}
         <div className="flex justify-center mt-8">
           <button 
             onClick={handleSubmit}
-            disabled={isLoading}
+            disabled={isLoading || !selectedTimeSlot}
             className="px-10 py-2 bg-lemon text-background rounded-full font-semibold text-sm disabled:opacity-50"
           >
             {isLoading ? 'Submitting...' : 'Submit'}
