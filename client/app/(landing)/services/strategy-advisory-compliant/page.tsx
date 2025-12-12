@@ -53,10 +53,10 @@ export default function StrategyAdvisoryPage() {
           transform: translateY(20px);
         }
       `}</style>
-      <div ref={el => sectionsRef.current[0] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[0] = el; }} className="section-animate">
         <HeroSection />
       </div>
-      <div ref={el => sectionsRef.current[1] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[1] = el; }} className="section-animate">
         <WhatWeOfferSection 
         offers={[
           {
@@ -87,7 +87,7 @@ export default function StrategyAdvisoryPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[2] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection 
         subtitle="Listen . Solve . Optimize"
         description="Like your Business GP, we diagnose compliance challenges and prescribe strategic solutions tailored to your organization's unique context."
@@ -120,7 +120,7 @@ export default function StrategyAdvisoryPage() {
         layout="single"
         />
       </div>
-      <div ref={el => sectionsRef.current[3] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection 
         description="Complex compliance challenges require diverse expertise. We activate our global network of specialists to deliver comprehensive solutions."
         networkCards={[
@@ -152,7 +152,7 @@ export default function StrategyAdvisoryPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[4] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">
         <DigitalSolutionsSection 
         title="Digital Solutions for"
         subtitle="Compliance Management"
@@ -178,7 +178,7 @@ export default function StrategyAdvisoryPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[5] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[5] = el; }} className="section-animate">
         <CaseExampleSection 
         caseExample={{
           challenge: "A cooperative operating in a niche market faced decreased profits and pressure from stakeholders to reverse the trend. The board understood the severity of the issue and recognized that scientific studies were essential to inform their strategic decisions. However, lacking scientific expertise internally, the cooperative was spending hundreds of thousands of euros on external scientific study reports with limited guidance on how to action the findings.",
@@ -188,7 +188,7 @@ export default function StrategyAdvisoryPage() {
         imageAlt="Business documents and reports on a desk"
         />
       </div>
-      <div ref={el => sectionsRef.current[6] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[6] = el; }} className="section-animate">
         <FinalCTASection />
       </div>
     </div>
