@@ -157,7 +157,7 @@ export default function StickyScrollSplit() {
     <div className="min-h-screen bg-slate-900">
       {/* Hero Section */}
       <div className="relative w-full py-20 pt-32 text-white">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 sticky">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
           <h1 className="text-center text-emerald-400 text-5xl md:text-6xl font-bold mb-12">
             How We <span className="text-white">Operate</span>
           </h1>
@@ -165,7 +165,7 @@ export default function StickyScrollSplit() {
       </div>
 
       {/* Split Layout Section */}
-      <div ref={containerRef} className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20">
+      <div ref={containerRef} className="relative  mt-90 lg:mt-0 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Left Side - Stacking Cards */}
           <div>
@@ -176,7 +176,7 @@ export default function StickyScrollSplit() {
                 style={{
                   height: '100vh',
                   position: 'sticky',
-                  top: `${24 + index * 8}px`,
+                  top: `${24 + index * 2}px`,
                   zIndex: index + 1
                 }}
               >
@@ -258,8 +258,8 @@ export default function StickyScrollSplit() {
           </div>
 
           {/* Right Side - Fixed Image */}
-          <div className="block lg:relative">
-            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 lg:top-32 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[35vh] sm:h-[45vh] lg:h-[calc(85vh-3rem)]">
+          <div className="block static">
+            <div className="fixed top-52 left-1/2 transform -translate-x-1/2 lg:top-58 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[45vh] sm:h-[45vh] lg:h-[calc(75vh-3rem)]">
               <div className="w-full h-full flex items-center">
                 <div className="relative w-full h-full rounded-xl lg:rounded-3xl overflow-hidden shadow-2xl">
                   <img

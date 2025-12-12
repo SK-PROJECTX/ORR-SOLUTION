@@ -7,95 +7,207 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const cardData = [
-  { title: "Organ", description: "Your departments and teams", image: "/images/organ.png", position: "left" },
-  { title: "Nervous System", description: "Your communication channels", image: "/images/nervous-system.png", position: "right" },
-  { title: "Circulatory System", description: "Your cashflow and resources", image: "/images/circulatory-system.png", position: "left" },
-  { title: "Immune System", description: "Your risk management and compliance", image: "/images/immune-system.png", position: "right" },
-  { title: "DNA", description: "Your values, SOPs and Cultures", image: "/images/dna.png", position: "left" },
-  { title: "Metabolism", description: "Your day-to-day operations", image: "/images/metabolism.png", position: "right" },
-  { title: "Senses", description: "Your awareness and feedback loops", image: "/images/senses.png", position: "center" }
-];
+const systems = {
+  organs: {
+    label: "Organs",
+    text: "Where your teams breathe and work. We help them move as one."
+  },
+  nervous: {
+    label: "Nervous System",
+    text: "Your signals seeking clarity. We quiet the noise and guide their path."
+  },
+  circulatory: {
+    label: "Circulatory System",
+    text: "Your lifeblood in motion. We restore balance to the flow."
+  },
+  immune: {
+    label: "Immune System",
+    text: "Your unseen shields. We strengthen them before pressure arrives."
+  },
+  dna: {
+    label: "DNA",
+    text: "The pattern beneath everything. We help you rewrite it with intention."
+  },
+  metabolism: {
+    label: "Metabolism",
+    text: "The hum of everyday work. We make its rhythm lighter and stronger."
+  },
+  senses: {
+    label: "Senses",
+    text: "Your way of listening to the world. We sharpen perception into insight."
+  }
+};
+
+const systemsArray = Object.values(systems);
 
 export default function GPMetaphorSection() {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Title animation
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%", end: "bottom 20%", toggleActions: "play none none none" }
+        { opacity: 0, y: -50, rotationX: -15 },
+        { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out",
+          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
         }
       );
 
+      // Subtitle animation
       gsap.fromTo(subtitleRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, delay: 0.2, ease: "power3.out",
-          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", end: "bottom 20%", toggleActions: "play none none none" }
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 1, delay: 0.3, ease: "back.out(1.7)",
+          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%" }
         }
       );
 
+      // Cards animation with sophisticated effects
       cardsRef.current.forEach((card, i) => {
         if (card) {
-          const direction = i % 2 === 0 ? -80 : 80;
-          gsap.fromTo(card,
-            { opacity: 0, x: direction, scale: 0.9 },
-            { opacity: 1, x: 0, scale: 1, duration: 1, ease: "power3.out",
-              scrollTrigger: { trigger: card, start: "top 85%", end: "bottom 15%", toggleActions: "play none none none" }
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              end: "bottom 10%",
+              toggleActions: "play none none reverse"
             }
-          );
+          });
+
+          // Initial state
+          gsap.set(card, {
+            opacity: 0,
+            y: 100,
+            rotationY: i % 2 === 0 ? -15 : 15,
+            scale: 0.8
+          });
+
+          // Entrance animation
+          tl.to(card, {
+            opacity: 1,
+            y: 0,
+            rotationY: 0,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: i * 0.15
+          });
+
+          // Floating animation
+          gsap.to(card, {
+            y: "-=10",
+            duration: 2 + (i * 0.3),
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: i * 0.2
+          });
+
+          // Hover effects
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              scale: 1.05,
+              rotationY: 5,
+              z: 50,
+              duration: 0.4,
+              ease: "power2.out"
+            });
+          });
+
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              scale: 1,
+              rotationY: 0,
+              z: 0,
+              duration: 0.4,
+              ease: "power2.out"
+            });
+          });
         }
       });
     });
 
     return () => ctx.revert();
   }, []);
-
-  const pairCards = [];
-  for (let i = 0; i < cardData.length - 1; i += 2) {
-    pairCards.push([cardData[i], cardData[i + 1]]);
-  }
   
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/body.jpeg')] bg-cover bg-center opacity-20 pointer-events-none" />
+    <section ref={containerRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden bg-slate-900">
+      {/* Animated background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+      </div>
 
-      <div className="relative z-10 text-center mb-16 sm:mb-20 lg:mb-36 " >
+      <div className="relative z-10 text-center mb-16 sm:mb-20 lg:mb-24">
         <h2 ref={titleRef} className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug">
-          Businesses as a <span className="text-[#3DFF7C]">Living System </span>
+          Business as a <span className="text-[#3DFF7C]">Living System</span>
         </h2>
-        <p ref={subtitleRef} className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-2">
-          Think of your organisation like a body
+        <p ref={subtitleRef} className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4">
+          Every part connected, every function vital
         </p>
       </div>
 
-  {/* {pairCards.map((pair, index) => (
-        <div key={index} className="relative z-10 w-full max-w-none mx-auto flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start mb-8 sm:mb-16 lg:mb-28 gap-6 lg:gap-4 lg:w-screen lg:left-1/2 lg:-translate-x-1/2 lg:px-0">
-          {pair.map((card, cardIndex) => (
-            <div ref={el => { if (el) cardsRef.current[index * 2 + cardIndex] = el; }} key={cardIndex} className={`w-full max-w-xl lg:max-w-4xl bg-card rounded-2xl ${card.position === 'left' ? 'lg:rounded-tr-[4rem] lg:rounded-br-[4rem]' : 'lg:rounded-tl-[4rem] lg:rounded-bl-[4rem]'} overflow-hidden shadow-lg`}>
-              <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-                <Image src={card.image} alt={card.title} fill className="object-cover" />
+      {/* Systems Grid */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {systemsArray.map((system, index) => (
+          <div
+            key={index}
+            ref={el => { if (el) cardsRef.current[index] = el; }}
+            className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-emerald-400/50 transition-all duration-500 cursor-pointer"
+            style={{
+              transformStyle: 'preserve-3d',
+              perspective: '1000px'
+            }}
+          >
+            {/* Glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+            
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="flex items-center mb-6">
+                <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3 animate-pulse" />
+                <h3 className="text-emerald-400 text-xl font-bold font-poppins">
+                  {system.label}
+                </h3>
               </div>
-              <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">{card.title}</div>
-              <p className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">{card.description}</p>
+              
+              <p className="text-white/90 font-poppins font-light text-base leading-relaxed">
+                {system.text}
+              </p>
+              
+              {/* Decorative element */}
+              <div className="absolute top-4 right-4 w-8 h-8 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full" />
+              </div>
             </div>
-          ))}
-        </div>
-      ))} */}
-
-      {/* <div className="relative z-10 w-full flex justify-center">
-        <div ref={el => { if (el) cardsRef.current[6] = el; }} className="w-full max-w-4xl lg:max-w-6xl bg-card rounded-2xl lg:rounded-[4rem] overflow-hidden shadow-lg">
-          <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[450px]">
-            <Image src={cardData[6].image} alt={cardData[6].title} fill className="object-cover" />
+            
+            {/* Morphing background pattern */}
+            <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+              <svg className="w-full h-full" viewBox="0 0 100 100">
+                <defs>
+                  <pattern id={`pattern-${index}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <circle cx="10" cy="10" r="2" fill="currentColor" className="text-emerald-400" />
+                  </pattern>
+                </defs>
+                <rect width="100" height="100" fill={`url(#pattern-${index})`} />
+              </svg>
+            </div>
           </div>
-          <div className="p-4 sm:p-6 lg:p-5 text-[#8EFFD0] text-[30px] font-poppins font-semibold sm:text-base lg:text-3xl tracking-wide">{cardData[6].title}</div>
-          <div className="px-4 sm:px-6 lg:px-5 pb-4 sm:pb-6 lg:pb-5 text-white text-sm font-poppins font-light sm:text-base lg:text-sm">{cardData[6].description}</div>
-        </div>
-      </div> */}
-
+        ))}
+      </div>
+      
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        .group:hover {
+          animation: float 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }
