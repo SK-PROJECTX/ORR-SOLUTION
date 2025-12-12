@@ -18,14 +18,14 @@ export default function ApproachSection() {
     gsap.fromTo(titleRef.current,
       { opacity: 0, y: -50, scale: 0.8 },
       { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)",
-        scrollTrigger: { trigger: titleRef.current, start: "top 80%", toggleActions: "play none none reverse" }
+        scrollTrigger: { trigger: titleRef.current, start: "top 80%", toggleActions: "play none none none" }
       }
     );
 
     gsap.fromTo(cardRef.current,
       { opacity: 0, x: -150, rotateY: -30 },
       { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
-        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none reverse" }
+        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
       }
     );
 
@@ -34,7 +34,7 @@ export default function ApproachSection() {
         gsap.fromTo(node,
           { scale: 0, opacity: 0, rotate: -180 },
           { scale: 1, opacity: 1, rotate: 0, duration: 0.8, delay: 0.5 + i * 0.2, ease: "elastic.out(1, 0.6)",
-            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none reverse" }
+            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
           }
         );
       }
@@ -51,7 +51,7 @@ export default function ApproachSection() {
           duration: 0.5,
           stagger: 0.03,
           ease: "power2.out",
-          scrollTrigger: { trigger: p, start: "top 85%", toggleActions: "play none none reverse" }
+          scrollTrigger: { trigger: p, start: "top 85%", toggleActions: "play none none none" }
         });
       }
     });
@@ -61,19 +61,13 @@ export default function ApproachSection() {
         gsap.fromTo(line,
           { scaleX: 0 },
           { scaleX: 1, duration: 1, delay: 0.5 + i * 0.3, ease: "power3.inOut",
-            scrollTrigger: { trigger: line, start: "top 85%", toggleActions: "play none none reverse" }
+            scrollTrigger: { trigger: line, start: "top 85%", toggleActions: "play none none none" }
           }
         );
       }
     });
 
-    ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom top",
-      onLeave: () => gsap.to(sectionRef.current, { opacity: 0.3, scale: 0.95, duration: 0.5 }),
-      onEnterBack: () => gsap.to(sectionRef.current, { opacity: 1, scale: 1, duration: 0.5 })
-    });
+
   }, []);
 
   return (
