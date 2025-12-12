@@ -14,7 +14,7 @@ import { getDay } from "date-fns/getDay";
 import {enUS} from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
-import { useSchedulingStore } from "@/store/schedulingStore";
+import { useMeetingStore } from "@/store/meetingStore";
 
 // Custom calendar styles
 const calendarStyles = `
@@ -143,13 +143,15 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
 }
 
 export default function SchedulingPage() {
-  const { meetings, isLoading, fetchMeetings } = useSchedulingStore();
+  const { meetings, isLoading, fetchMyMeetings, getUpcomingMeetings } = useMeetingStore();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState(Views.MONTH);
 
   useEffect(() => {
-    fetchMeetings();
-  }, [fetchMeetings]);
+    fetchMyMeetings();
+  }, [fetchMyMeetings]);
+
+  const upcomingMeetings = getUpcomingMeetings();
 
   const handleNavigate = useCallback((newDate: Date) => {
     setCurrentDate(newDate);
@@ -170,13 +172,13 @@ export default function SchedulingPage() {
   }, []);
 
   // Convert meetings to calendar events
-  const events: EventItem[] = meetings.map(meeting => {
+  const events: EventItem[] = upcomingMeetings.map(meeting => {
     const startDate = new Date(meeting.requested_datetime);
-    const endDate = new Date(startDate.getTime() + meeting.duration_minutes * 60000);
+    const endDate = new Date(startDate.getTime() + 60 * 60000); // Default 1 hour duration
     
     return {
       id: meeting.id,
-      title: `${meeting.meeting_type.replace('_', ' ')} - ${meeting.agenda.substring(0, 30)}...`,
+      title: `${meeting.meeting_type.replace('_', ' ')} - ${meeting.agenda?.substring(0, 30) || 'Meeting'}...`,
       start: startDate,
       end: endDate,
       color: "var(--color-secondary)"

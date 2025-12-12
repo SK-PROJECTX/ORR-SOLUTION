@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMeetingStore } from "@/store/meetingStore";
 import { useRouter } from "next/navigation";
+import axios from "@/lib/axios";
 
 const meetingTypes = [
   "First meeting",
@@ -41,8 +42,26 @@ export default function MeetingRequestPage() {
   const [notes, setNotes] = useState("");
   const [schedulingUrl, setSchedulingUrl] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [loadingEventType, setLoadingEventType] = useState(true);
   const { createMeeting, isLoading } = useMeetingStore();
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchEventType = async () => {
+      try {
+        const response = await axios.get('/event-type/');
+        if (response.data?.url) {
+          setSchedulingUrl(response.data.url);
+        }
+      } catch (error) {
+        console.error('Failed to fetch event type:', error);
+      } finally {
+        setLoadingEventType(false);
+      }
+    };
+
+    fetchEventType();
+  }, []);
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -94,7 +113,7 @@ export default function MeetingRequestPage() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedDate || !selectedTime || !agenda.trim() || !schedulingUrl.trim()) {
+    if (!selectedDate || !selectedTime || !agenda.trim()) {
       alert('Please fill all required fields');
       return;
     }
@@ -132,7 +151,6 @@ export default function MeetingRequestPage() {
         setSelectedTime(null);
         setAgenda(meetingOverviews["Discovery"].agenda);
         setNotes("");
-        setSchedulingUrl("");
         // Navigate to pre-meeting page with meeting ID
         router.push(`/pre-meeting?meetingId=${meetingId}`);
       } else {
@@ -329,16 +347,7 @@ export default function MeetingRequestPage() {
           className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
         />
 
-        {/* SCHEDULING URL */}
-        <p className="text-center text-lg font-semibold mt-8 mb-3">Scheduling URL</p>
 
-        <input
-          type="url"
-          value={schedulingUrl}
-          onChange={(e) => setSchedulingUrl(e.target.value)}
-          placeholder="https://calendly.com/your-link or similar scheduling URL"
-          className="w-full bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
-        />
 
         {/* SUBMIT BUTTON */}
         <div className="flex justify-center mt-8">
