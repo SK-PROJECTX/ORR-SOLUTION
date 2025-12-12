@@ -63,7 +63,7 @@ export default function Sidebar() {
             open={open.home}
             onClick={() => toggle("home")}
             items={[
-              { label: "Dashboard", href: "/dashboard" },
+              { label: "Home/Dashboard", href: "/dashboard" },
               { label: "Analytics", href: "/analytics" }
             ]}
             pathname={pathname}
@@ -87,44 +87,77 @@ export default function Sidebar() {
               // },
               // { label: "Users", href: "/users" },
               {
-                label: "Account",
+                label: "My Profile",
                 href: "/account",
                 subItems: [
-                  { label: "Settings", href: "/account/settings" },
-                  // { label: "Billing", href: "/account/billing" },
-                  // { label: "Invoice", href: "/account/invoice" },
-                  // { label: "Security", href: "/account/security" }
+                  { label: "Personal Info", href: "/account/settings" },
+                  {label: "Personalization", href: "/account/personalization" },
+                  { label: "Business Info", href: "/account/business-info" },
+                  { label: "My Wallet", href: "/account/wallet" },
+                ]
+              },
+              {
+                label: "Consultations", 
+                href: "/consultations",
+                subItems: [
+                  { label: "Book a Meeting", href: "/consultations/book" },
+                  { label: "Upcoming Consultations", href: "/consultations/upcoming-consultations" },
+                  { label: "Past Consultations", href: "/consultations/past-consultations" },
                 ]
               },
               // { label: "Projects", href: "/projects" },
-               {
-                label: "Pricing Page",
-                href: "/pricing",
+              //  {
+              //   label: "Pricing Page",
+              //   href: "/pricing",
+              //   subItems: [
+              //     { label: "Pricing", href: "/pricing" },
+              //     { label: "Payment Details", href: "/pricing/payment" },
+              //     { label: "Billing History", href: "/pricing/billing" },
+              //   ]
+              // },
+              // { label: "Charts", href: "/charts" },
+              { label: "Document Vault", 
+                href: "/document",
                 subItems: [
-                  { label: "Pricing", href: "/pricing" },
-                  { label: "Payment Details", href: "/pricing/payment" },
-                  { label: "Billing History", href: "/pricing/billing" },
+                    { label: " Report & Summaries", href: "/document/reports" },
+                    { label: "Uploaded Documents", href: '/document/uploads' },
+                    { label: "Generated Reports", href: "/document/generated-reports " },
+                    { label: "ORR's Templates", href: "/document/templates" },
+                    { label: "Contracts", href:"/document/contracts" },
+                    { label: "Service Catalogue", href: "/document/catalogue"}
                 ]
               },
-              // { label: "Charts", href: "/charts" },
-              { label: "Document Vault", href: "/document" },
+
+              { label: "Messages & Notification", href: '/messages'},
+
+              { label: "Updates & Announcement", href: "/updates"},
+
+              { label: "Support", 
+                href: "/support",
+                subItems: [
+                  {label: "FAQs", href: "/faq"},
+                  { label: "Request Support", href: "/support" },
+                  { label: "Support History", href: "/support-history" },
+                ]
+              }
+
               // { label: "Request Support", href: "/support" },
               // { label: "Support History", href: "/support-history" },
-              { label: "Meeting Request System", href: "/meeting-request" },
-              { label: "Favorite /Saved Items", href: "/favourite" },
-              { label: "Quick Action scheduling", href: "/scheduling" },
-              // { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
-              { label: "Feedback Mechanisms", href: "/feedback" },
-              { label: "Resources", href: "/resources" },
-              { label: "Frequently Asked Questions", href: "/faq" },
-              { label: "Notifications", href: "/notifications" },
+              // { label: "Meeting Request System", href: "/meeting-request" },
+              // { label: "Favorite /Saved Items", href: "/favourite" },
+              // { label: "Quick Action scheduling", href: "/scheduling" },
+              // // { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
+              // { label: "Feedback Mechanisms", href: "/feedback" },
+              // { label: "Resources", href: "/resources" },
+              // { label: "Frequently Asked Questions", href: "/faq" },
+              // { label: "Notifications", href: "/notifications" },
             ]}
             pathname={pathname}
             subOpen={subOpen}
             toggleSub={toggleSub}
           />
 
-          <SidebarGroup
+          {/* <SidebarGroup
             label="Support"
             open={open.applications}
             onClick={() => toggle("applications")}
@@ -138,7 +171,7 @@ export default function Sidebar() {
             pathname={pathname}
             subOpen={subOpen}
             toggleSub={toggleSub}
-          />
+          /> */}
           {/* <SidebarGroup
             label="Applications"
             open={open.applications}

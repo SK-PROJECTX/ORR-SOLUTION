@@ -67,9 +67,6 @@ export default function FrequentlyAskQuestionsPage() {
               <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
       
       <div className="relative z-10 max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">
-          Frequently <span className="text-[#33FF99]">Asked Questions</span>
-        </h2>
 
             <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">
           Frequently <span className="text-[#33FF99]">Asked Questions</span>
