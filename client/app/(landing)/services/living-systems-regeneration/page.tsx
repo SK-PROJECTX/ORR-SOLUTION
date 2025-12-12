@@ -53,10 +53,10 @@ export default function LivingSystemsPage() {
           transform: translateY(20px);
         }
       `}</style>
-      <div ref={el => sectionsRef.current[0] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[0] = el; }} className="section-animate">
         <HeroSection />
       </div>
-      <div ref={el => sectionsRef.current[1] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[1] = el; }} className="section-animate">
         <WhatWeOfferSection 
         offers={[
           {
@@ -88,7 +88,7 @@ export default function LivingSystemsPage() {
         // layout="grid"
         />
       </div>
-      <div ref={el => sectionsRef.current[2] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection 
         subtitle="Observe . Design . Regenerate"
         description="At the heart of our work, we take a systems approach to understanding and regenerating living systems. We observe the current state, design regenerative solutions, and implement systems that restore ecological health while creating economic value."
@@ -126,7 +126,7 @@ export default function LivingSystemsPage() {
         layout="grid"
         />
       </div>
-      <div ref={el => sectionsRef.current[3] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection 
         description="Complex ecological challenges require diverse expertise. We activate our global network of specialists to deliver comprehensive regenerative solutions that restore ecosystems and create lasting positive impact."
         networkCards={[
@@ -158,7 +158,7 @@ export default function LivingSystemsPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[4] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">
         <DigitalSolutionsSection 
         title="Tools & Structures We"
         subtitle="Help Put In Place"
@@ -184,7 +184,7 @@ export default function LivingSystemsPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[5] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[5] = el; }} className="section-animate">
         <CaseExampleSection 
         caseExample={{
           challenge: "A large agricultural cooperative was facing declining soil health, reduced biodiversity, and increasing input costs from conventional farming practices. Climate change was creating additional stress on their operations, with unpredictable weather patterns affecting yields.",
@@ -194,7 +194,7 @@ export default function LivingSystemsPage() {
         imageAlt="Regenerative farm with diverse crops and healthy soil"
         />
       </div>
-      <div ref={el => sectionsRef.current[6] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[6] = el; }} className="section-animate">
         <FinalCTASection />
       </div>
     </div>

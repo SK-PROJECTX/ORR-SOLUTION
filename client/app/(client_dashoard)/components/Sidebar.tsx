@@ -292,15 +292,15 @@ function SidebarGroup({
                             key={subItem.href}
                             className="relative"
                           >
-                            <div className={`group flex items-center justify-between px-2 py-1 text-xs rounded cursor-not-allowed opacity-60 ${
-                              pathname === subItem.href ? "text-lemon" : "text-foreground opacity-70"
+                            <div className={`group flex items-center justify-between px-2 py-1 text-xs rounded cursor-not-allowed  ${
+                              pathname === subItem.href ? "text-lemon" : "text-foreground "
                             }`}>
                               <span className="flex items-center gap-2">
                                 {subItem.label}
                                 <Lock className="w-3 h-3" />
                               </span>
-                              <div className="absolute left-0 top-full mt-1 bg-card border border-secondary rounded-lg p-3 text-xs text-foreground opacity-0 group-hover:opacity-100 transition-opacity z-50 w-48 shadow-lg">
-                                <p className="font-medium mb-1">Premium Feature</p>
+                              <div className="absolute left-[-10] mr-2 top-0 bg-card border border-primary/50 rounded-lg p-3 text-xs text-foreground invisible group-hover:visible transition-all z-50 w-48 shadow-xl">
+                                <p className="font-medium mb-1 text-primary">Premium Feature</p>
                                 <p>Pay €45 upfront to unlock ORR's exclusive templates and resources.</p>
                               </div>
                             </div>
