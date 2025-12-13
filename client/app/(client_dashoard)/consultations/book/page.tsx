@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMeetingStore } from "@/store/meetingStore";
+import { useToastStore } from "@/store/toastStore";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 
@@ -59,6 +60,7 @@ export default function MeetingRequestPage() {
   const [meetingSlots, setMeetingSlots] = useState<TimeSlot[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const { createMeeting, isLoading } = useMeetingStore();
+  const { addToast } = useToastStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -173,7 +175,7 @@ export default function MeetingRequestPage() {
 
   const handleSubmit = async () => {
     if (!selectedTimeSlot || !agenda.trim()) {
-      alert('Please select a time slot and provide an agenda');
+      addToast('Please select a time slot and provide an agenda', 'error');
       return;
     }
 
@@ -204,16 +206,16 @@ export default function MeetingRequestPage() {
           router.push(`/pre-meeting?meetingId=${meetingId}`);
         } else {
           console.error('No meeting ID found in response');
-          alert('Meeting created but no ID returned. Please check your meetings.');
+          addToast('Meeting created but no ID returned. Please check your meetings.', 'warning');
           router.push('/consultations/upcoming-consultations');
         }
       } else {
         console.error('Meeting creation failed:', response.data);
-        alert('Failed to create meeting. Please try again.');
+        addToast('Failed to create meeting. Please try again.', 'error');
       }
     } catch (error) {
       console.error('Error creating meeting:', error);
-      alert('Failed to create meeting. Please try again.');
+      addToast('Failed to create meeting. Please try again.', 'error');
     }
   };
 

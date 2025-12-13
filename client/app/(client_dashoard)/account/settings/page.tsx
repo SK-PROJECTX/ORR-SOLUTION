@@ -68,45 +68,48 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-background text-white px-12 py-8 flex flex-col items-center">
-      <div className="w-full">
-        <div className="flex justify-between max-w-6xl">
-          <h1 className="text-3xl font-semibold text-primary mb-6">Account/Setting</h1>
-          <div className="w-full flex justify-center mb-10">
-            <div className="w-full max-w-xl relative">
+    <div className="min-h-screen w-full bg-background text-white px-4 sm:px-6 lg:px-12 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 mb-6">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-primary">Account Settings</h1>
+          <div className="w-full lg:w-auto lg:max-w-xl">
+            <div className="relative">
               <input
                 type="text"
                 placeholder="Search anything here..."
-                className="w-full bg-card border border-secondary rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none"
+                className="w-full bg-card border border-secondary rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none text-foreground"
               />
               <button className="absolute right-4 top-1/2 -translate-y-1/2 text-primary">🔍</button>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between">
+        {/* Title and Actions */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-8">
           <div>
-            <h2 className="text-2xl font-semibold mb-2">Setting Details</h2>
-            <p className="text-sm text-gray-300 mb-8">Update your photo and personal details here.</p>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-2">Setting Details</h2>
+            <p className="text-sm text-gray-300">Update your photo and personal details here.</p>
           </div>
-          <div className="gap-4">
+          <div className="flex gap-3">
             {isEditing ? (
               <>
-                <button onClick={handleCancel} className="px-6 py-2 border border-gray-400 rounded-md mr-4">Cancel</button>
-                <button onClick={handleSave} disabled={isLoading} className="px-6 py-2 bg-primary text-black rounded-md font-semibold disabled:opacity-50">
+                <button onClick={handleCancel} className="px-4 sm:px-6 py-2 border border-gray-400 rounded-md text-sm sm:text-base">Cancel</button>
+                <button onClick={handleSave} disabled={isLoading} className="px-4 sm:px-6 py-2 bg-primary text-black rounded-md font-semibold disabled:opacity-50 text-sm sm:text-base">
                   {isLoading ? 'Saving...' : 'Save'}
                 </button>
               </>
             ) : (
-              <button onClick={handleEdit} className="px-6 py-2 bg-primary text-black rounded-md font-semibold">Edit</button>
+              <button onClick={handleEdit} className="px-4 sm:px-6 py-2 bg-primary text-black rounded-md font-semibold text-sm sm:text-base">Edit</button>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row w-full gap-8">
-          <div className="bg-card p-6 rounded-xl border border-secondary flex-1">
+        {/* Main Content */}
+        <div className="flex flex-col xl:flex-row w-full gap-6 lg:gap-8">
+          <div className="bg-card p-4 sm:p-6 rounded-xl border border-secondary flex-1">
             <h3 className="text-lg font-semibold mb-6">Personal information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm mb-2">First Name</label>
                 <input
@@ -221,11 +224,12 @@ export default function AccountSettingsPage() {
             </div>
           </div>
 
-          <div className="w-full lg:w-80">
-            <div className="bg-card p-6 rounded-xl border border-secondary">
+          {/* Photo Upload Section */}
+          <div className="w-full xl:w-80 xl:flex-shrink-0">
+            <div className="bg-card p-4 sm:p-6 rounded-xl border border-secondary">
               <h3 className="text-lg font-semibold mb-4">Your Photo</h3>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-400">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gray-400 flex-shrink-0">
                   {formData.profile_pic ? (
                     <img src={formData.profile_pic} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
@@ -234,13 +238,13 @@ export default function AccountSettingsPage() {
                     </div>
                   )}
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-sm">Edit your photo</p>
                   {formData.profile_pic && (
                     <button 
                       onClick={() => setFormData({...formData, profile_pic: ''})}
                       disabled={!isEditing}
-                      className="text-red-400 text-xs hover:text-red-300 disabled:opacity-50"
+                      className="text-red-400 text-xs hover:text-red-300 disabled:opacity-50 mt-1"
                     >
                       Delete
                     </button>
@@ -248,7 +252,7 @@ export default function AccountSettingsPage() {
                 </div>
               </div>
 
-              <div className="border border-primary border-dashed rounded-xl h-40 flex flex-col justify-center items-center text-center px-4 relative">
+              <div className="border border-primary border-dashed rounded-xl h-32 sm:h-40 flex flex-col justify-center items-center text-center px-4 relative">
                 <input
                   type="file"
                   accept="image/*"
@@ -263,11 +267,11 @@ export default function AccountSettingsPage() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 ) : (
                   <>
-                    <span className="text-primary text-3xl mb-2">⬆</span>
-                    <p className="text-sm text-gray-300">
+                    <span className="text-primary text-2xl sm:text-3xl mb-2">⬆</span>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Click to upload or drag and drop<br />
                       SVG, PNG, JPG or GIF<br />
-                      (max, 800×400px)
+                      <span className="hidden sm:inline">(max, 800×400px)</span>
                     </p>
                   </>
                 )}

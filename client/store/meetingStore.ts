@@ -74,6 +74,9 @@ export const useMeetingStore = create<MeetingState>()((set, get) => ({
   getUpcomingMeetings: () => {
     const { meetings } = get();
     const now = new Date();
+    if (!Array.isArray(meetings)) {
+      return [];
+    }
     return meetings.filter(meeting => {
       const meetingDate = new Date(meeting.requested_datetime);
       return meetingDate > now && meeting.status !== 'cancelled';

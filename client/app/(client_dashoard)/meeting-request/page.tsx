@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMeetingStore } from "@/store/meetingStore";
 import { useRouter } from "next/navigation";
+import { useToastStore } from "@/store/toastStore";
 import axios from "@/lib/axios";
 
 const meetingTypes = [
@@ -44,6 +45,7 @@ export default function MeetingRequestPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [loadingEventType, setLoadingEventType] = useState(true);
   const { createMeeting, isLoading } = useMeetingStore();
+  const { addToast } = useToastStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -114,12 +116,12 @@ export default function MeetingRequestPage() {
 
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime || !agenda.trim()) {
-      alert('Please fill all required fields');
+      addToast('Please fill all required fields', 'error');
       return;
     }
 
     if (!selectedDate) {
-      alert('Please select a date');
+      addToast('Please select a date', 'error');
       return;
     }
 
