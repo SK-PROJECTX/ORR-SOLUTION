@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import api from '@/lib/axios';
 import { useToastStore } from './toastStore';
+import { useOnboardingStore } from './onboardingStore';
 
 interface User {
   id: number;
@@ -93,6 +94,19 @@ export const useAuthStore = create<AuthState>()(
             set({ user, accessToken, refreshToken, isLoading: false, error: null });
             
             useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
+            
+            // Check onboarding status after successful login
+            setTimeout(async () => {
+              try {
+                const isCompleted = await useOnboardingStore.getState().checkOnboardingStatus();
+                if (!isCompleted) {
+                  window.location.href = '/onboarding';
+                }
+              } catch (error) {
+                console.error('Failed to check onboarding status:', error);
+              }
+            }, 1000);
+            
             return true;
           } else {
             throw new Error('Login failed');
