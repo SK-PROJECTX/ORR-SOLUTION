@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight, LayoutGrid, Menu, X, LogOut, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronRight, LayoutGrid, Menu, X, LogOut, Loader2, Lock } from "lucide-react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
+import { useProfileStore } from "@/store/profileStore";
 
 type OpenState = {
   home: boolean;
@@ -17,6 +18,7 @@ type OpenState = {
 export default function Sidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
+  const { profile, fetchProfile } = useProfileStore();
   const [open, setOpen] = useState<OpenState>({
     home: true,
     pages: true,
@@ -26,6 +28,10 @@ export default function Sidebar() {
   });
   const [subOpen, setSubOpen] = useState<{[key: string]: boolean}>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const toggle = (key: keyof OpenState) => setOpen({ ...open, [key]: !open[key] });
   const toggleSub = (key: string) => setSubOpen({ ...subOpen, [key]: !subOpen[key] });
@@ -105,7 +111,7 @@ export default function Sidebar() {
                   { label: "Past Consultations", href: "/consultations/past-consultations" },
                 ]
               },
-              // { label: "Projects", href: "/projects" },
+              // { label: "Projects"// { label: "Projects"              // { label: "Projects", href: "/projects" },
               //  {
               //   label: "Pricing Page",
               //   href: "/pricing",
@@ -121,23 +127,23 @@ export default function Sidebar() {
                 subItems: [
                     { label: " Report & Summaries", href: "/document/reports" },
                     { label: "Uploaded Documents", href: '/document/uploads' },
-                    { label: "Generated Reports", href: "/document/generated-reports " },
+                    { label: "Generated Reports", href: "/document/reports " },
                     { label: "ORR's Templates", href: "/document/templates" },
-                    { label: "Contracts", href:"/document/contracts" },
-                    { label: "Service Catalogue", href: "/document/catalogue"}
+                    { label: "Contracts", href: "/document/contracts" },
+                    { label: "Service Catalogue", href: "/document/catalogue" }
                 ]
               },
 
-              { label: "Messages & Notification", href: '/messages'},
+              { label: "Messages & Notification", href: '/messages' },
 
-              { label: "Updates & Announcement", href: "/updates"},
+              { label: "Updates & Announcement", href: "/updates" },
 
               { label: "Support", 
                 href: "/support",
                 subItems: [
-                  {label: "FAQs", href: "/faq"},
+                  { label: "FAQs", href: "/faq" },
                   { label: "Request Support", href: "/support" },
-                  { label: "Support History", href: "/support-history" },
+                  { label: "Support History", href: "/support-history" }
                 ]
               }
 
@@ -191,8 +197,16 @@ export default function Sidebar() {
 
       <div className="bg-primary text-background rounded-xl p-3 mt-10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-secondary flex  items-center justify-center text-foreground font-bold">
-            {user?.first_name?.[0] || 'U'}{user?.last_name?.[0] || ''}
+          <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold overflow-hidden">
+            {profile?.profile_pic ? (
+              <img 
+                src={profile.profile_pic} 
+                alt="Profile" 
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span>{user?.first_name?.[0] || 'U'}{user?.last_name?.[0] || ''}</span>
+            )}
           </div>
           <div className="leading-tight text-[12px] font-medium">
             {user?.first_name} {user?.last_name}
@@ -273,15 +287,35 @@ function SidebarGroup({
                   {subOpen[item.href] && (
                     <div className="ml-4 mt-1 space-y-1">
                       {item.subItems.map((subItem) => (
-                        <Link
-                          key={subItem.href}
-                          href={subItem.href}
-                          className={`block px-2 py-1 text-xs rounded cursor-pointer hover:bg-primary hover:bg-opacity-10 ${
-                            pathname === subItem.href ? "text-lemon" : "text-foreground opacity-70"
-                          }`}
-                        >
-                          {subItem.label}
-                        </Link>
+                        subItem.label === "ORR's Templates" ? (
+                          <div
+                            key={subItem.href}
+                            className="relative"
+                          >
+                            <div className={`group flex items-center justify-between px-2 py-1 text-xs rounded cursor-not-allowed  ${
+                              pathname === subItem.href ? "text-lemon" : "text-foreground "
+                            }`}>
+                              <span className="flex items-center gap-2">
+                                {subItem.label}
+                                <Lock className="w-3 h-3" />
+                              </span>
+                              <div className="absolute left-[-10] mr-2 top-0 bg-card border border-primary/50 rounded-lg p-3 text-xs text-foreground invisible group-hover:visible transition-all z-50 w-48 shadow-xl">
+                                <p className="font-medium mb-1 text-primary">Premium Feature</p>
+                                <p>Pay €45 upfront to unlock ORR's exclusive templates and resources.</p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Link
+                            key={subItem.href}
+                            href={subItem.href}
+                            className={`block px-2 py-1 text-xs rounded cursor-pointer hover:bg-primary hover:bg-opacity-10 ${
+                              pathname === subItem.href ? "text-lemon" : "text-foreground opacity-70"
+                            }`}
+                          >
+                            {subItem.label}
+                          </Link>
+                        )
                       ))}
                     </div>
                   )}

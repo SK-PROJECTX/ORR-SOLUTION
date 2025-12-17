@@ -53,10 +53,10 @@ export default function OperationalSystemsPage() {
           transform: translateY(20px);
         }
       `}</style>
-      <div ref={el => sectionsRef.current[0] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[0] = el; }} className="section-animate">
         <HeroSection />
       </div>
-      <div ref={el => sectionsRef.current[1] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[1] = el; }} className="section-animate">
         <WhatWeOfferSection 
         offers={[
           {
@@ -113,7 +113,7 @@ export default function OperationalSystemsPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[2] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection 
         subtitle="Listen . Solve . Optimize"
         description="Just like your Business GP, we follow a systematic diagnostic and treatment approach to restore operational health."
@@ -139,7 +139,7 @@ export default function OperationalSystemsPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[3] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection 
         description="When your needs extend beyond pure operations consulting, we activate our global network of trusted specialists:"
         networkCards={[
@@ -167,7 +167,7 @@ export default function OperationalSystemsPage() {
         layout="grid"
         />
       </div>
-      <div ref={el => sectionsRef.current[4] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">
         <DigitalSolutionsSection 
         title="Digital Solutions"
         subtitle="We implement"
@@ -191,7 +191,7 @@ export default function OperationalSystemsPage() {
         ]}
         />
       </div>
-      <div ref={el => sectionsRef.current[5] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[5] = el; }} className="section-animate">
         <CaseExampleSection 
         caseExample={{
           challenge: "A mid-sized manufacturing company was experiencing significant operational inefficiencies, with production delays, quality issues, and rising costs. Manual processes dominated their workflow, leading to errors and inconsistent output. The management team recognized the need for systematic improvement but lacked the expertise to identify root causes and implement effective solutions across their complex operations.",
@@ -201,7 +201,7 @@ export default function OperationalSystemsPage() {
         imageAlt="Manufacturing floor with optimized processes and digital monitoring"
         />
       </div>
-      <div ref={el => sectionsRef.current[6] = el} className="section-animate">
+      <div ref={el => { sectionsRef.current[6] = el; }} className="section-animate">
         <FinalCTASection />
       </div>
     </div>

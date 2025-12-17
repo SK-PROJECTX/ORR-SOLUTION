@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useOnboardingStore } from "@/store/onboardingStore";
+import { useToastStore } from "@/store/toastStore";
 
 const steps = [1, 2, 3, 4, 5, 6];
 
@@ -178,6 +179,7 @@ export default function OnboardingPage() {
   };
 
   const { submitOnboarding, isLoading } = useOnboardingStore();
+  const { addToast } = useToastStore();
 
   const handleComplete = async () => {
     let finalAnswers = { ...answers };
@@ -186,29 +188,37 @@ export default function OnboardingPage() {
       finalAnswers = { ...finalAnswers, [key]: textInput };
     }
 
+    // Validate service agreement acceptance
+    if (finalAnswers['2-0'] !== 'Yes, I accept') {
+      addToast('Please go back to Section 2 and accept the Service Agreement to continue.', 'error');
+      setCurrentSection(2);
+      setCurrentStep(0);
+      return;
+    }
+
     const onboardingData = {
-      jurisdiction: finalAnswers['1-0']?.toLowerCase() || 'malta',
-      jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other' : undefined,
-      language: finalAnswers['1-1']?.toLowerCase().substring(0, 2) || 'en',
-      language_other: finalAnswers['1-1'] === 'Others' ? 'other' : undefined,
-      keyboard_layout: finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
-      keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other' : undefined,
+      jurisdiction: finalAnswers['1-0'] === 'Others' ? 'other' : finalAnswers['1-0']?.toLowerCase() || 'malta',
+      jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other jurisdiction' : undefined,
+      language: finalAnswers['1-1'] === 'Others' ? 'other' : finalAnswers['1-1']?.toLowerCase().substring(0, 2) || 'en',
+      language_other: finalAnswers['1-1'] === 'Others' ? 'other language' : undefined,
+      keyboard_layout: finalAnswers['1-2'] === 'Others' ? 'other' : finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
+      keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other layout' : undefined,
       date_format: finalAnswers['1-3']?.includes('DD/MM') ? 'dd_mm_yyyy' : 'mm_dd_yyyy',
       time_format_24h: finalAnswers['1-3']?.includes('24-hour') || false,
-      accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept',
+      accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept' || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
-      portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other' : undefined,
-      user_type: finalAnswers['4-0']?.toLowerCase().replace(/[^a-z]/g, '_') || 'founder',
-      user_type_other: finalAnswers['4-0'] === 'Others' ? 'other' : undefined,
+      portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,
+      user_type: finalAnswers['4-0'] === 'Others' ? 'other' : finalAnswers['4-0']?.toLowerCase().replace(/[^a-z]/g, '_') || 'founder',
+      user_type_other: finalAnswers['4-0'] === 'Others' ? 'other user type' : undefined,
       project_stage: finalAnswers['4-1']?.toLowerCase().replace(/[^a-z]/g, '_') || 'exploration',
       orr_pillars: finalAnswers['4-2'] || '',
       has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
       project_description: finalAnswers['4-4'] || '',
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
-      communication_tone: finalAnswers['5-1']?.toLowerCase().split(' ')[0] || 'concise',
-      notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : 'portal',
+      communication_tone: finalAnswers['5-1'] === 'No preference' ? 'concise' : finalAnswers['5-1']?.toLowerCase().split(' ')[0] || 'concise',
+      notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
       ai_specialist_domains: Array.isArray(finalAnswers['6-0']) ? finalAnswers['6-0'].join(', ') : finalAnswers['6-0'] || '',
-      ai_specialist_other: finalAnswers['6-0']?.includes('Others') ? 'other' : undefined,
+      ai_specialist_other: finalAnswers['6-0']?.includes('Others') ? 'other domains' : undefined,
       additional_context: finalAnswers['6-1'] || '',
     };
 

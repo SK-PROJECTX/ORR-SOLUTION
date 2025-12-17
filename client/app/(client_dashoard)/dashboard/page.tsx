@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip } from 'recharts';
 import { Search, Bell, Calendar, Clock, Headphones, Wallet, TrendingUp, Users, MousePointer, DollarSign, Package } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useMeetingStore } from '@/store/meetingStore';
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -34,6 +35,26 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, change, trend }
 
 export default function Dashboard() {
   const router = useRouter();
+  const { fetchMyMeetings, getUpcomingMeetings, isLoading } = useMeetingStore();
+
+  useEffect(() => {
+    fetchMyMeetings();
+  }, [fetchMyMeetings]);
+
+  const upcomingMeetings = getUpcomingMeetings();
+
+  const formatMeetingDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      date: date.getDate().toString(),
+      day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+      time: date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+    };
+  };
+
+  const formatMeetingType = (type: string) => {
+    return type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+  };
 
   return (
     <main className="min-h-full p-6 bg-background">
@@ -46,13 +67,13 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
-              <input
-                className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
-                placeholder="Search anything..."
-              />
-            </div>
+              {/* <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
+                <input
+                  className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
+                  placeholder="Search anything..."
+                />
+              </div> */}
             
             <button 
               onClick={() => router.push('/notifications')}
@@ -221,26 +242,54 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Upcoming Meetings */}
+            {/* Upcoming Consultations */}
             <div className="bg-card border border-secondary rounded-xl p-6">
-              <h6 className="font-semibold text-foreground mb-4">Upcoming Meetings</h6>
-              <div className="space-y-3">
-                {[
-                  { date: "15", day: "Mon", type: "Strategy Consultation", time: "10:00 AM", client: "John Smith" },
-                  { date: "16", day: "Tue", type: "Project Review", time: "2:30 PM", client: "Tech Corp" },
-                  { date: "18", day: "Thu", type: "Initial Meeting", time: "11:00 AM", client: "StartupXYZ" }
-                ].map((meeting, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors">
-                    <div className="text-center min-w-[40px]">
-                      <div className="text-lg font-bold text-primary">{meeting.date}</div>
-                      <div className="text-xs text-foreground opacity-60">{meeting.day}</div>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-foreground">{meeting.type}</p>
-                      <p className="text-xs text-foreground opacity-60">{meeting.time} • {meeting.client}</p>
-                    </div>
+              <div className="flex items-center justify-between mb-4">
+                <h6 className="font-semibold text-foreground">Upcoming Consultations</h6>
+                {upcomingMeetings.length > 0 && (
+                  <button 
+                    onClick={() => router.push('/consultations/upcoming-consultations')}
+                    className="text-xs text-primary hover:text-primary/80 transition-colors"
+                  >
+                    View All
+                  </button>
+                )}
+              </div>
+              <div className="space-y-3 max-h-80 overflow-y-auto">
+                {isLoading ? (
+                  <div className="flex justify-center py-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                   </div>
-                ))}
+                ) : upcomingMeetings.length > 0 ? (
+                  upcomingMeetings.map((meeting) => {
+                    const { date, day, time } = formatMeetingDate(meeting.requested_datetime);
+                    return (
+                      <div key={meeting.id} className="flex items-start gap-3 p-3 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors cursor-pointer"
+                           onClick={() => router.push('/consultations/upcoming-consultations')}>
+                        <div className="text-center min-w-[45px] flex-shrink-0">
+                          <div className="text-lg font-bold text-primary">{date}</div>
+                          <div className="text-xs text-foreground opacity-60">{day}</div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">{formatMeetingType(meeting.meeting_type)}</p>
+                          <p className="text-xs text-foreground opacity-60">{time}</p>
+                          <p className="text-xs text-primary capitalize">{meeting.status}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-8">
+                    <Calendar className="w-12 h-12 text-foreground opacity-30 mx-auto mb-3" />
+                    <p className="text-foreground opacity-60 text-sm">No upcoming consultations</p>
+                    <button 
+                      onClick={() => router.push('/meeting-request')}
+                      className="text-xs text-primary hover:text-primary/80 transition-colors mt-2"
+                    >
+                      Schedule your first meeting
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

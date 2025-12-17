@@ -9,15 +9,27 @@ interface MeetingData {
   scheduling_url: string;
 }
 
+interface Meeting {
+  id: number;
+  meeting_type: string;
+  requested_datetime: string;
+  status: string;
+  agenda?: string;
+}
+
 interface MeetingState {
   isLoading: boolean;
+  meetings: Meeting[];
   error: string | null;
   createMeeting: (data: MeetingData) => Promise<number | null>;
+  fetchMyMeetings: () => Promise<void>;
+  getUpcomingMeetings: () => Meeting[];
   clearError: () => void;
 }
 
-export const useMeetingStore = create<MeetingState>()((set) => ({
+export const useMeetingStore = create<MeetingState>()((set, get) => ({
   isLoading: false,
+  meetings: [],
   error: null,
 
   createMeeting: async (data: MeetingData): Promise<number | null> => {
@@ -45,6 +57,30 @@ export const useMeetingStore = create<MeetingState>()((set) => ({
       useToastStore.getState().addToast(errorMessage, 'error');
       return null;
     }
+  },
+
+  fetchMyMeetings: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.get('/mymeetings');
+      const meetings = response.data?.data || [];
+      set({ meetings, isLoading: false });
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Failed to fetch meetings';
+      set({ error: errorMessage, isLoading: false });
+    }
+  },
+
+  getUpcomingMeetings: () => {
+    const { meetings } = get();
+    const now = new Date();
+    if (!Array.isArray(meetings)) {
+      return [];
+    }
+    return meetings.filter(meeting => {
+      const meetingDate = new Date(meeting.requested_datetime);
+      return meetingDate > now && meeting.status !== 'cancelled';
+    }).sort((a, b) => new Date(a.requested_datetime).getTime() - new Date(b.requested_datetime).getTime());
   },
 
   clearError: () => {
