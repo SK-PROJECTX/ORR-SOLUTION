@@ -52,7 +52,7 @@ export default function GPMetaphorSection() {
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: -50, rotationX: -15 },
         { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
+          scrollTrigger: { trigger: titleRef.current, start: "top 20%" }
         }
       );
 
@@ -133,7 +133,18 @@ export default function GPMetaphorSection() {
   }, []);
   
   return (
-    <section ref={containerRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden bg-slate-900">
+    <section ref={containerRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/Body.jpeg"
+          alt="Body background"
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+        <div className="absolute inset-0 bg-slate-900/80" />
+      </div>
       {/* Animated background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse" />
