@@ -133,7 +133,7 @@ export default function GPMetaphorSection() {
   }, []);
   
   return (
-    <section ref={containerRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden bg-slate-900">
+    <section ref={containerRef} className="relative w-full px-4 h-250 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden bg-slate-900">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse" />
