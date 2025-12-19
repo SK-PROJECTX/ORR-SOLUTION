@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,9 +67,9 @@ export default function Hero() {
           </p>
 
           <div ref={buttonRef} className="pt-2">
-            <button className="inline-block bg-gradient-primary text-[#0C294D] font-semibold px-4 sm:px-6 md:px-7 py-3 sm:py-4 rounded-lg shadow-md hover:brightness-105 transition text-sm sm:text-base md:text-lg">
+            <Link href="/login" className="inline-block bg-gradient-primary text-[#0C294D] font-semibold px-4 sm:px-6 md:px-7 py-3 sm:py-4 rounded-lg shadow-md hover:brightness-105 transition text-sm sm:text-base md:text-lg">
               Book your free initial consultation
-            </button>
+            </Link>
           </div>
         </div>
 

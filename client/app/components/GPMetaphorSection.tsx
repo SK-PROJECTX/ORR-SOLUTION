@@ -137,10 +137,10 @@ export default function GPMetaphorSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/Body.jpeg"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108164/Body_gfyom3.jpg"
           alt="Body background"
           fill
-          className="object-cover opacity-20"
+          className="object-cover opacity-30"
           priority
         />
         <div className="absolute inset-0 bg-slate-900/80" />
@@ -151,7 +151,7 @@ export default function GPMetaphorSection() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
       </div>
 
-      <div className="relative z-10 text-center mb-16 sm:mb-20 lg:mb-24">
+      <div className="relative z-10 text-center mb-5 sm:mb-15 lg:mb-10">
         <h2 ref={titleRef} className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug">
           Business as a <span className="text-[#3DFF7C]">Living System</span>
         </h2>

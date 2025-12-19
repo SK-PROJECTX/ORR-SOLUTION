@@ -24,7 +24,7 @@ export function LandingHeader() {
     <header className='fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-4 transition-all duration-300 backdrop-blur-xl bg-transparent'>
       <div className="max-w-[1400] mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <img src="/images/logo.svg" alt="ORR Solutions" className="h-10 sm:h-10 lg:h-25 w-auto" />
+          <img src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395173/logo_qqpk6j.svg" alt="ORR Solutions" className="h-10 sm:h-10 lg:h-25 w-auto" />
         </Link>
         
         {/* Desktop Navigation */}
@@ -54,12 +54,13 @@ export function LandingHeader() {
             </div>
           </div>
           <Link href="/resources-blogs" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Resources & Blogs</Link>
-          <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Legacy & Policy</Link>
+          <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Legal & Policy</Link>
           <Link href="/contact" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Contact</Link>
         </nav>
 
         <div className="hidden lg:flex items-center space-x-4">
           <Link href="/login" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Sign in</Link>
+          <Link href="/register" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Register</Link>
           <ThemeToggle />
         </div>
 
@@ -128,8 +129,7 @@ export function LandingHeader() {
             <Link href="/contact" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-6 border-t border-white/10 flex items-center justify-between">
               <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign in</Link>
-              <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Register</Link>
-              <ThemeToggle />
+            <ThemeToggle />
             </div>
           </nav>
         </div>

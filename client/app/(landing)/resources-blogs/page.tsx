@@ -89,7 +89,7 @@ function ContentSection() {
             "Everything you need to know about how we work and the projects we deliver is in one place.",
             "Project workflow is dynamic."
           ]}
-          image="/images/image.png"
+          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559589/21743692_6495306_uay57y.jpg"
         />
         
         {/* Right Column */}
@@ -110,7 +110,7 @@ function ContentSection() {
             "• Resources — templates, checklists, and tools",
             "• Updates — real-time project status, new features, and announcements"
           ]}
-          image="/images/image.png"
+          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559588/11235559_10793_z44m6j.jpg"
         />
       </div>
       
@@ -133,7 +133,7 @@ function ContentSection() {
             "Access resources on key development, project management, and business growth topics.",
             "Access resources on key development, project management, and business growth topics."
           ]}
-          image="/images/image.png"
+          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559588/12146019_Wavy_Gen-02_Single-01_xkhifo.jpg"
         />
         
         {/* Bottom Right */}
@@ -153,7 +153,7 @@ function ContentSection() {
             "Request your first project:",
             "Submit your first project request directly through the portal and begin our 4-stage process."
           ]}
-          image="/images/image.png"
+          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559586/133742375_10241279_mghczg.jpg"
           buttons={[
             "Request access to the client portal",
             "Learn how we operate"
