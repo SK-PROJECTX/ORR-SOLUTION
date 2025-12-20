@@ -52,7 +52,7 @@ export default function GPMetaphorSection() {
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: -50, rotationX: -15 },
         { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 20%" }
+          scrollTrigger: { trigger: titleRef.current, start: "top 10%" }
         }
       );
 
@@ -71,7 +71,7 @@ export default function GPMetaphorSection() {
             scrollTrigger: {
               trigger: card,
               start: "top 90%",
-              end: "bottom 10%",
+              end: "bottom 2%",
               toggleActions: "play none none reverse"
             }
           });
@@ -80,8 +80,8 @@ export default function GPMetaphorSection() {
           gsap.set(card, {
             opacity: 0,
             y: 100,
-            rotationY: i % 2 === 0 ? -15 : 15,
-            scale: 0.8
+            rotationY: i % 2 === 0 ? -10 : 10,
+            scale: 0.9
           });
 
           // Entrance animation
@@ -90,28 +90,28 @@ export default function GPMetaphorSection() {
             y: 0,
             rotationY: 0,
             scale: 1,
-            duration: 1.2,
+            duration: 1,
             ease: "power3.out",
-            delay: i * 0.15
+            delay: i * 0.1
           });
 
           // Floating animation
           gsap.to(card, {
-            y: "-=10",
-            duration: 2 + (i * 0.3),
+            y: "-=0.5",
+            duration: 6,
             ease: "sine.inOut",
             yoyo: true,
             repeat: -1,
-            delay: i * 0.2
+            delay: 0
           });
 
           // Hover effects
           card.addEventListener('mouseenter', () => {
             gsap.to(card, {
-              scale: 1.05,
-              rotationY: 5,
-              z: 50,
-              duration: 0.4,
+              scale: 1.02,
+              rotationY: 2,
+              z: 20,
+              duration: 0.3,
               ease: "power2.out"
             });
           });
@@ -121,7 +121,7 @@ export default function GPMetaphorSection() {
               scale: 1,
               rotationY: 0,
               z: 0,
-              duration: 0.4,
+              duration: 0.3,
               ease: "power2.out"
             });
           });
@@ -161,7 +161,7 @@ export default function GPMetaphorSection() {
       </div>
 
       {/* Systems Grid */}
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
         {systemsArray.map((system, index) => (
           <div
             key={index}
@@ -212,7 +212,7 @@ export default function GPMetaphorSection() {
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(2deg); }
+          50% { transform: translateY(0px) rotate(0.5deg); }
         }
         
         .group:hover {
