@@ -1,192 +1,151 @@
 'use client';
-import React from "react";
-import EditableText from "../../components/EditableText";
-import EditableImage from "../../components/EditableImage";
 
-interface ServicePillarProps {
-  content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
-}
+import Link from "next/link";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ServicePillar({ content, onContentUpdate }: ServicePillarProps) {
-  const homepageData = content || {};
+gsap.registerPlugin(ScrollTrigger);
 
-  const handleTitleSave = async (newTitle: string) => {
-    await onContentUpdate?.({ services_title: newTitle });
-  };
+export default function ServicePillar() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const bulletsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleSubtitleSave = async (newSubtitle: string) => {
-    await onContentUpdate?.({ services_subtitle: newSubtitle });
-  };
+  useEffect(() => {
+    const title = titleRef.current;
+    if (title) {
+      const spans = title.querySelectorAll('span');
+      gsap.fromTo(spans,
+        { opacity: 0, y: -30, rotateX: -90 },
+        { opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
+          scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none none" }
+        }
+      );
+    }
+
+    gsap.fromTo(subtitleRef.current,
+      { opacity: 0, scale: 0.5 },
+      { opacity: 1, scale: 1, duration: 0.8, delay: 0.3, ease: "back.out(1.7)",
+        scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", toggleActions: "play none none none" }
+      }
+    );
+
+    gsap.fromTo(cardRef.current,
+      { opacity: 0, x: 150, rotateY: 30 },
+      { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
+        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
+      }
+    );
+
+    if (lineRef.current) {
+      gsap.fromTo(lineRef.current,
+        { scaleY: 0, transformOrigin: "top" },
+        { scaleY: 1, duration: 1.5, ease: "power2.inOut",
+          scrollTrigger: { trigger: lineRef.current, start: "top 80%", toggleActions: "play none none none" }
+        }
+      );
+    }
+
+    bulletsRef.current.forEach((bullet, i) => {
+      if (bullet) {
+        gsap.fromTo(bullet,
+          { scale: 0, opacity: 0, rotate: 360 },
+          { scale: 1, opacity: 1, rotate: 0, duration: 0.6, delay: 0.7 + i * 0.2, ease: "elastic.out(1, 0.5)",
+            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
+          }
+        );
+      }
+    });
+
+    itemsRef.current.forEach((item, i) => {
+      if (item) {
+        gsap.fromTo(item,
+          { opacity: 0, x: -50, rotateZ: -5 },
+          { opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8 + i * 0.25, ease: "power3.out",
+            scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" }
+          }
+        );
+      }
+    });
+
+
+  }, []);
+
   return (
-    <section className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden">
-      {/* Title */}
-      <EditableText
-        content={homepageData.services_title}
-        onSave={handleTitleSave}
-        tag="h2"
-        className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold w-full"
-        placeholder="Enter services title..."
-      />
+    <section ref={sectionRef} className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden">
+      <h2 ref={titleRef} className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold w-full">
+        <span>Quick Service Snapshot - </span>
+        <span className="text-[#3DFF7C] font-poppins font-extrAbold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+          3 Pillars
+        </span>
+      </h2>
 
-      <EditableText
-        content={homepageData.services_subtitle}
-        onSave={handleSubtitleSave}
-        tag="p"
-        className="text-center text-white font-poppins font-light mb-12 sm:mb-16 lg:mb-20 w-full"
-        placeholder="Enter services subtitle..."
-        multiline
-      />
+      <p ref={subtitleRef} className="text-center text-white font-poppins font-light mb-12 sm:mb-16 lg:mb-20 w-full">All three pillars are shaped around your context - no generic playbooks</p>
 
       <div className="relative w-full max-w-7xl mr-0">
-        {/* Glow Image - Hidden on mobile */}
-        <div className="hidden lg:block absolute -top-32 xl:-top-45 -left-8 xl:-left-12 w-[35rem] xl:w-[45rem] opacity-90 pointer-events-none select-none z-[-5]">
-          <EditableImage
-            src={homepageData.services_glow_image}
-            alt="glow"
-            onSave={async (newImageUrl) => {
-              await onContentUpdate?.({ services_glow_image: newImageUrl });
-            }}
-            className="w-full h-auto"
-            width={560}
-            height={400}
-          />
-        </div>
-
-        {/* CARD */}
-        <div className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-0 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
-          {/* CONTENT LAYOUT: RESPONSIVE GRID */}
+        <div ref={cardRef} className="relative w-full bg-card backdrop-blur-md border border-[#40B25B] lg:border-t-[0.5rem] lg:border-l-[0.5rem] lg:border-b-[0.5rem] lg:border-r-0 rounded-2xl lg:rounded-tl-[91.25px] lg:rounded-bl-[91.25px] lg:rounded-tr-none lg:rounded-br-none ml-0 p-10 sm:p-8 md:p-10 lg:p-12 xl:p-16 shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-6 md:gap-8">
-
-            {/* LEFT COLUMN — BULLETS + VERTICAL LINE (Hidden on mobile) */}
             <div className="hidden md:flex relative flex-col items-center">
-              {/* Vertical line connecting bullet 1 → bullet 3 */}
-              <div className="absolute top-[32px] bottom-[52px] w-[4px] mb-20 bg-[#05CC79]"></div>
+              <div ref={lineRef} className="absolute top-[32px] bottom-[52px] w-[4px] mb-20 bg-[#05CC79]"></div>
 
-              {/* Bullet 1 */}
-              <div className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mb-10 lg:mb-12">
+              <div ref={el => { bulletsRef.current[0] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mb-10 lg:mb-12">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
 
-              {/* Bullet 2 */}
-              <div className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-42 lg:mb-12">
+              <div ref={el => { bulletsRef.current[1] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-42 lg:mb-12">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
 
-              {/* Bullet 3 */}
-              <div className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-36">
+              <div ref={el => { bulletsRef.current[2] = el; }} className="relative z-10 w-8 lg:w-10 h-8 lg:h-10 bg-[#1F6F75] rounded-full flex items-center justify-center shadow-[0_0_20px_#3DFF7C] mt-36">
                 <div className="w-5 lg:w-6 h-5 lg:h-6 bg-[#05CC79] rounded-full"></div>
               </div>
             </div>
 
-            {/* RIGHT COLUMN — TEXT CONTENT */}
             <div className="space-y-8 sm:space-y-10 lg:space-y-14">
-              {/* Item 1 */}
-              <div className="relative">
-                {/* Mobile bullet */}
+              <div ref={el => { itemsRef.current[0] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
-                <EditableText
-                  content={homepageData.service_1_title}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_1_title: text }); 
-                  }}
-                  tag="h3"
-                  className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins"
-                  placeholder="Enter service title..."
-                />
-                <EditableText
-                  content={homepageData.service_1_description}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_1_description: text }); 
-                  }}
-                  tag="p"
-                  className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins"
-                  placeholder="Enter service description..."
-                  multiline
-                />
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">
-                  <EditableText
-                    content={homepageData.service_1_button}
-                    onSave={async (text) => { 
-                      await onContentUpdate?.({ service_1_button: text }); 
-                    }}
-                    tag="span"
-                    className=""
-                    placeholder="Enter button text..."
-                  />
-                </button>
+                <Link href="/services/strategy-advisory-compliant" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
+                  Strategic Advisory & Compliance
+                </Link>                
+                <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
+                 Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation.
+                </p>
+                <Link href="/services/strategy-advisory-compliant">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold  rounded-lg cursor-pointer">Explore Strategic Advisory & Compliance</button>
+                </Link>
               </div>
 
-              {/* Item 2 */}
-              <div className="relative">
-                {/* Mobile bullet */}
+              <div ref={el => { itemsRef.current[1] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
-                <EditableText
-                  content={homepageData.service_2_title}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_2_title: text }); 
-                  }}
-                  tag="h3"
-                  className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins"
-                  placeholder="Enter service title..."
-                />
-                <EditableText
-                  content={homepageData.service_2_description}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_2_description: text }); 
-                  }}
-                  tag="p"
-                  className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins"
-                  placeholder="Enter service description..."
-                  multiline
-                />
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">
-                  <EditableText
-                    content={homepageData.service_2_button}
-                    onSave={async (text) => { 
-                      await onContentUpdate?.({ service_2_button: text }); 
-                    }}
-                    tag="span"
-                    className=""
-                    placeholder="Enter button text..."
-                  />
-                </button>
+                <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
+                 Digital Systems, Automation & AI
+                </h3>
+                <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
+                 SOPs, workflows, portals, dashboards, and AI-assisted tools designed 
+                around your team's habits, constraints and growth plans
+                </p>
+                <Link href="/services/operational-systems-infrastructure">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Digital Systems, Automation & AI</button>
+                </Link>
               </div>
 
-              {/* Item 3 */}
-              <div className="relative">
-                {/* Mobile bullet */}
+              <div ref={el => { itemsRef.current[2] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
-                <EditableText
-                  content={homepageData.service_3_title}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_3_title: text }); 
-                  }}
-                  tag="h3"
-                  className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins"
-                  placeholder="Enter service title..."
-                />
-                <EditableText
-                  content={homepageData.service_3_description}
-                  onSave={async (text) => { 
-                    await onContentUpdate?.({ service_3_description: text }); 
-                  }}
-                  tag="p"
-                  className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins"
-                  placeholder="Enter service description..."
-                  multiline
-                />
-                <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">
-                  <EditableText
-                    content={homepageData.service_3_button}
-                    onSave={async (text) => { 
-                      await onContentUpdate?.({ service_3_button: text }); 
-                    }}
-                    tag="span"
-                    className=""
-                    placeholder="Enter button text..."
-                  />
-                </button>
+                <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
+                 Living Systems & Regeneration
+                </h3>
+                <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
+                 Support for land, water, species, and ecosystems - tailored to your sites 
+                your risks, and your opportunities
+                </p>
+                <Link href="/services/living-systems-regeneration">
+                  <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Living Systems & Regeneration</button>
+                </Link>
               </div>
             </div>
           </div>

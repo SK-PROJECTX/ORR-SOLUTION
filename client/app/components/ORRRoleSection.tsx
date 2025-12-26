@@ -1,44 +1,48 @@
 'use client';
-import EditableText from "../../components/EditableText";
 
-interface ORRRoleSectionProps {
-  content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
-}
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ORRRoleSection({ content, onContentUpdate }: ORRRoleSectionProps) {
-  const title = content?.title || "ORR's Role";
-  const description = content?.description || "We act like specialist doctors for your business physiology - but we start from your symptoms and your priorities.";
+gsap.registerPlugin(ScrollTrigger);
 
-  const handleTitleSave = async (newTitle: string) => {
-    await onContentUpdate?.({ title: newTitle });
-  };
+export default function ORRRoleSection() {
+  const titleRef = useRef(null);
+  const textRef = useRef(null);
 
-  const handleDescriptionSave = async (newDescription: string) => {
-    await onContentUpdate?.({ description: newDescription });
-  };
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)",
+          scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
+        }
+      );
+
+      gsap.fromTo(textRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power3.out",
+          scrollTrigger: { trigger: textRef.current, start: "top 80%" }
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section className="w-full h-[60vh] flex justify-center items-center text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
       
       <div className="relative z-10 max-w-7xl mx-auto">
-        <EditableText
-          content={title}
-          onSave={handleTitleSave}
-          tag="h2"
-          className="text-3xl md:text-4xl font-bold mb-12 text-center"
-          placeholder="Enter section title..."
-        />
-        <EditableText
-          content={description}
-          onSave={handleDescriptionSave}
-          tag="p"
-          className="text-gray-300 text-center text-2xl mb-16 max-w-4xl mx-auto"
-          placeholder="Enter section description..."
-          multiline
-        />
-      </div> 
+        <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-12 text-center">
+          ORR's<span className="text-[#33FF99]"> Role</span>
+        </h2>
+        <p ref={textRef} className="text-gray-300 text-center text-2xl mb-16 max-w-4xl mx-auto">
+          We act like specialist doctors for your business physiology - but we start <br /> from your symptoms and your priorities. We check the health of <br />
+        your system, diagnosis issues, and co-design solutions that your people  <br /> can actually use, keeping everything working together over time.
+        </p>
+    </div> 
     </section>
   );
 }

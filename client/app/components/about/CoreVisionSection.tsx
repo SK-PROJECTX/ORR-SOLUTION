@@ -1,40 +1,31 @@
 export function CoreVisionSection() {
   return (
     <section className="w-full  text-white px-6 md:px-12 lg:px-24 py-20 relative overflow-hidden font-poppins">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto text-2xl">
-        <h2 className="text-center text-3xl md:text-4xl font-semibold mb-10">
+    <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-20 pointer-events-none" />
+
+    <div className="rounded-[4rem] p-5 bg-white/20 backdrop-blur-xl">
+        <div className=" w-full max-w-7xl bg  border-white/10 backdrop-blur-md bg-card z-1 rounded-[4rem]   shadow-lg space-y-7 ">
+        <div className="relative z-10 max-w-6xl mx-auto p-10 text-2xl">
+        <h2 className="text-center text-3xl md:text-4xl font-semibold mb-5 mt-4">
           Core Vision <span className="text-[#33FF99]">& Philosophy</span>
         </h2>
 
         <p className="text-[#D4D8E3] leading-relaxed mb-6">
-          At ORR, we approach professionals and businesses as living systems —
-          each with its own structure, energy, and unique challenges.
+          At ORR, we approach professionals and businesses as living systems — each with its own structure, energy, and unique challenges.
         </p>
 
-        <p className="text-[#D4D8E3] leading-relaxed mb-6">
-          We listen first, to understand the underlying causes of operational
-          and administrative 'ailments', and then act with precision to restore
-          clarity, structure, and efficiency.
-        </p>
-
-        <p className="text-[#D4D8E3] leading-relaxed mb-10">
-          Whether you're a self-employed professional, a freelancer, or an
-          established company, ORR helps you:
-        </p>
-
-
+        
         <p className="text-[#D4D8E3] leading-relaxed mb-10">
          We see your organisation as a connected whole:
         </p>
 
         <ul className="space-y-4 mb-10">
           {[
-            "Identify and resolve administrative bottlenecks",
-            "Outsource and automate routine work",
-            "Implement structured operational systems (SOPs, workflows, dashboards)",
-            "Optimise data and client information to generate new value streams",
+            "digital systems",
+            "people and processes",
+            "compliance and risk",
+            "and, where relevant, the landscapes and projects you manage",
           ].map((item, index) => (
             <li
               key={index}
@@ -49,18 +40,18 @@ export function CoreVisionSection() {
         </ul>
 
         <p className="text-[#D4D8E3] leading-relaxed mb-6">
-         We believe every client relationship generates data — and within that data lies opportunity. By capturing and analysing these patterns, ORR transforms information into insight, helping businesses evolve intelligently.
+         Our job is to listen first, then coordinate the right mix of thinking, tools, and practical steps — without forcing you into someone else’s template.
         </p>
 
         <p className="text-[#D4D8E3] leading-relaxed">
-          Our team and network of trusted subcontractors provide tailored
-          solutions spanning multiple industries, with specialised focus in:
+       ORR itself is a faceless coordination layer: one calm point of contact, backed by domain-specific insight, targeted research, and a distributed network we can lean on when it adds value.
         </p>
-
-        <p className="text-[#D4D8E3] leading-relaxed">
-          In essence — 'You can manage everything yourself. ORR can make it work better        
-          </p>
       </div>
+      </div>
+ 
+    </div>
+    
+
     </section>
   );
 }

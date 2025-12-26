@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import ApproachCard from "../components/ApproachCard";
 import GPMetaphorSection from "../components/GPMetaphorSection";
 import Hero from "../components/Hero";
@@ -15,11 +17,15 @@ import LoginModal from "../../components/LoginModal";
 import ContentEditorPanel from "../../components/ContentEditorPanel";
 import AuthStatus from "../../components/AuthStatus";
 import { useHomepageContent } from "../../hooks/useHomepageContent";
+import MidClientJourneySection from "../components/MidClientJourneySection";
+import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 export default function LandingPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { content, loading, error, updateHomepage, updateApproachSection, updateBusinessSystemSection, updateORRRoleSection, updateMessageStrip, updateProcessSection, updateORRReportSection, updateFAQ } = useHomepageContent();
+  
+  useScrollSplit();
 
   const auth = AuthService.getInstance();
 
@@ -54,35 +60,37 @@ export default function LandingPage() {
   }
 
   return (
-    <div>
-
-      <div id="hero-section">
-        <HeroSection />
+    <div className="star fixed-background">
+      <HeroSection />
+      <div className="scroll-section" id="hero-section">
         <Hero content={content?.homepage} onContentUpdate={updateHomepage} />
       </div>
-      <div id="approach-section">
+      <div className="scroll-section" id="approach-section">
         <ApproachCard content={content?.approachSection} onContentUpdate={updateApproachSection} />
       </div>
-      <div id="services-section">
+      <div className="scroll-section" id="services-section">
         <ServicePillar content={content?.homepage} onContentUpdate={updateHomepage} />
       </div>
-      <div id="business-system-section">
+      <div className="scroll-section" id="business-system-section">
         <GPMetaphorSection content={content?.businessSystemSection} onContentUpdate={updateBusinessSystemSection} />
       </div>
-      <div id="orr-role-section">
+      <div className="scroll-section" id="orr-role-section">
         <ORRRoleSection content={content?.orrRoleSection} onContentUpdate={updateORRRoleSection} />
       </div>
-      <div id="message-section">
+      <div className="scroll-section" id="message-section">
         <MiniClientJourney content={content?.messageStrip} onContentUpdate={updateMessageStrip} />
       </div>
-      <div id="process-section">
+      <div className="scroll-section" id="process-section">
         <FiveStagesSection content={content?.processSection} onContentUpdate={updateProcessSection} />
       </div>
-      <div id="report-section">
+      <div className="scroll-section" id="report-section">
         <ORRReportSection content={content?.orrReportSection} onContentUpdate={updateORRReportSection} />
       </div>
-      <div id="faq-section">
+      <div className="scroll-section" id="faq-section">
         <FAQSection content={content?.faqs} onContentUpdate={updateFAQ} />
+      </div>
+      <div className="scroll-section">
+        <MidClientJourneySection />
       </div>
 
       <LoginModal

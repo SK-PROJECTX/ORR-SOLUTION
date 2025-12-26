@@ -1,14 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Page() {
   
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: ""
@@ -16,19 +19,33 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { register, isLoading, error, clearError } = useAuthStore();
   const router = useRouter();
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => clearError(), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, clearError]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      return;
+    }
+
+    const success = await register(formData.email, formData.password, formData.firstName, formData.lastName);
+    if (success) {
+      router.push(`/email-confirmation?email=${encodeURIComponent(formData.email)}`);
+    }
+  };
 
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Image + Text */}
-
-    
-     
-
-        {/* Right side - Form */}
+      {/* Right side - Form */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
@@ -40,20 +57,44 @@ export default function Page() {
               />
             </div>
          
+          <div className="flex justify-between items-center mb-6">
+          <div className="mt-0">
+                <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
+                Welcome 
+              </h2>
+              <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
+                Create a new account
+              </p>
+          </div>
+         
 
-          <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-            Welcome 
-          </h2>
-          <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-            Create a new account
-          </p>
+          <div className="mb-8">
+            <ThemeToggle />
+          </div>
+          
+          </div>
 
-          <form className="space-y-7">
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-7" onSubmit={handleSubmit}>
              <input
-              type="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+              className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
@@ -105,17 +146,22 @@ export default function Page() {
           
             <button
               type="submit"
+              disabled={isLoading || formData.password !== formData.confirmPassword}
               className="w-full bg-[#13BE77] text-white py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {loading ? "Signing In..." : "Login"}
+              {isLoading ? "Registering..." : "Register"}
             </button>
+
+            {formData.password !== formData.confirmPassword && formData.confirmPassword && (
+              <p className="text-red-400 text-sm mt-2">Passwords do not match</p>
+            )}
 
                 <div className="hidden md:flex items-end  justify-end mt-4 ">
                 <Link
                   href="/login"
                   className="px-6 font-extrabold text-md text-[#FFFFFF] "
                 >
-                  Already have an account <span className="text-[#61FD51] underline">Login</span>
+                  Already have an account? <span className="text-[#61FD51] underline">Login</span>
                 </Link>
               </div>
           </form>
