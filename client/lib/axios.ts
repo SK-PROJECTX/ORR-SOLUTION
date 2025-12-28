@@ -62,7 +62,7 @@ api.interceptors.response.use(
       
       // Only logout for authentication endpoints for other 401 errors
       const url = error.config?.url || '';
-      if (url.includes('/login') || url.includes('/register')) {
+      if (url.includes('/register')) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         window.location.href = '/login';

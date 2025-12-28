@@ -38,7 +38,6 @@ export const useMeetingStore = create<MeetingState>()((set, get) => ({
       const response = await api.post('/create-meeting/', data);
       console.log('API Response:', response.data);
       
-      // Try different possible response structures
       const meetingId = response.data?.data?.meeting_id || 
                        response.data?.meeting_id ||
                        response.data?.data?.id || 
@@ -52,7 +51,10 @@ export const useMeetingStore = create<MeetingState>()((set, get) => ({
       return meetingId;
     } catch (error: any) {
       console.error('Meeting creation error:', error);
-      const errorMessage = error.response?.data?.message || 'Meeting request failed';
+      
+      const errorMessage = error.response?.data?.message || 'Failed to create meeting. Please try again.';
+      
+      console.log('error message: ', errorMessage)
       set({ error: errorMessage, isLoading: false });
       useToastStore.getState().addToast(errorMessage, 'error');
       return null;
