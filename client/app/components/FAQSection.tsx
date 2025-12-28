@@ -76,7 +76,7 @@ export default function FAQSection() {
                 className="w-full p-6 text-left flex items-center justify-between hover:bg-[#2a4a6b] transition-colors"
               >
                 <span className="text-lg font-medium">{faq.question}</span>
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <div className="w-8 h-8 px-1.5 rounded-full bg-white flex items-center justify-center">
                   {openFAQ === index ? (
                     <X className="w-5 h-5 text-red-500" />
                   ) : (

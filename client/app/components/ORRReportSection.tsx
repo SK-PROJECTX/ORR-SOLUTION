@@ -60,7 +60,7 @@ export default function ORRReportSection() {
           <div ref={el => { cardsRef.current[0] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
             <Image 
-              src="/network-visualization.jpg" 
+              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108970/network-visualization_wxqzds.jpg" 
               alt="Network Visualization" 
               fill
               className="object-cover"
@@ -116,7 +116,7 @@ export default function ORRReportSection() {
           <div ref={el => { cardsRef.current[3] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
             <Image 
-              src="/team-collaboration.jpg" 
+              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766109007/team-collaboration_x6q3ia.jpg" 
               alt="Team Collaboration" 
               fill
               className="object-cover"

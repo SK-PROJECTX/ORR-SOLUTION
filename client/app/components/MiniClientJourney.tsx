@@ -71,32 +71,32 @@ export default function MiniClientJourney() {
       <div className="hidden lg:block absolute inset-0 pointer-events-none">
         <img
           ref={el => { imagesRef.current[0] = el; }}
-          src="/images/user-1.jpg"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395185/user-1_ey1yc5.jpg"
           className="absolute left-4 xl:left-10 top-16 xl:top-20 w-20 xl:w-26 h-20 xl:h-26 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
           ref={el => { imagesRef.current[1] = el; }}
-          src="/images/user-2.jpg"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395182/user-2_ha7lqr.jpg"
           className="absolute left-2 xl:left-4 top-1/2 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
         />
         <img
           ref={el => { imagesRef.current[2] = el; }}
-          src="/images/user-3.jpg"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395180/user-3_uccvr9.jpg"
           className="absolute left-24 xl:left-30 bottom-20 xl:bottom-24 w-24 xl:w-30 h-24 xl:h-30 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
           ref={el => { imagesRef.current[3] = el; }}
-          src="/images/user-4.jpg"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395178/user-4_eysdru.jpg"
           className="absolute right-4 xl:right-10 top-20 xl:top-24 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
         <img
           ref={el => { imagesRef.current[4] = el; }}
-          src="/clients/c5.png"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108876/15527_mlemnz.jpg"
           className="absolute right-20 xl:right-28 top-1/3 w-10 xl:w-12 h-10 xl:h-12 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
         />
         <img
           ref={el => { imagesRef.current[5] = el; }}
-          src="/clients/c6.png"
+          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108876/28382_ctckph.jpg"
           className="absolute right-2 xl:right-4 bottom-20 xl:bottom-24 w-20 xl:w-24 h-20 xl:h-24 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
         />
       </div>

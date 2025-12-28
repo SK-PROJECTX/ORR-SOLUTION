@@ -1,7 +1,14 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
 export default function AnimatedBackground() {
+  const pathname = usePathname();
+  const starCount = pathname === '/' ? 400 : 200;
+
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {[...Array(500)].map((_, i) => (
+      {[...Array(starCount)].map((_, i) => (
         <div
           key={i}
           className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
