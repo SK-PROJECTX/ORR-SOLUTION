@@ -98,7 +98,7 @@ export function LandingHeader() {
             </button>
           </div>
           <nav className="flex flex-col space-y-6">
-            <Link href="/about-us" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/about-us' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+            <Link href="/about-us" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/about-us' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>How We Operate</Link>
             <div>
               <button 
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}

@@ -133,7 +133,7 @@ export default function GPMetaphorSection() {
   }, []);
   
   return (
-    <section ref={containerRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <section ref={containerRef} className="relative w-full min-h-[100dvh] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
