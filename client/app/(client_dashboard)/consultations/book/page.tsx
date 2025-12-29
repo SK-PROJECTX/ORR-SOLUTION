@@ -54,7 +54,9 @@ export default function MeetingRequestPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
   const [agenda, setAgenda] = useState(meetingOverviews["Discovery"].agenda);
-  const [notes, setNotes] = useState("");
+  const [basicContext, setBasicContext] = useState("");
+  const [goals, setGoals] = useState("");
+  const [painPoints, setPainPoints] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
   const [meetingSlots, setMeetingSlots] = useState<TimeSlot[]>([]);
@@ -174,8 +176,8 @@ export default function MeetingRequestPage() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedTimeSlot || !agenda.trim()) {
-      addToast('Please select a time slot and provide an agenda', 'error');
+    if (!selectedTimeSlot || !agenda.trim() || !basicContext.trim() || !goals.trim() || !painPoints.trim()) {
+      addToast('Please fill all required fields and select a time slot', 'error');
       return;
     }
 
@@ -183,39 +185,39 @@ export default function MeetingRequestPage() {
       meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
       requested_datetime: selectedTimeSlot.start_time,
       agenda: agenda.trim(),
-      scheduling_url: selectedTimeSlot.scheduling_url,
+      basic_context: basicContext.trim(),
+      goals: goals.trim(),
+      pain_points: painPoints.trim(),
+      scheduling_url: eventTypes[0]?.uri || selectedTimeSlot.scheduling_url,
     };
 
     try {
       const response = await axios.post('/create-meeting/', meetingData);
-      console.log('Meeting creation response:', response.data);
       
-      if (response.data?.success) {
-        const meetingId = response.data?.data?.meeting_id;
-        console.log('Meeting ID:', meetingId);
+      if (response.data?.success || response.status === 200 || response.status === 201) {
+        addToast('Meeting created successfully! Redirecting to Calendly...', 'success');
         
-        if (meetingId) {
-          // Clear form fields after successful submission
-          setSelectedType("Discovery");
-          setSelectedDate(null);
-          setSelectedTimeSlot(null);
-          setAgenda(meetingOverviews["Discovery"].agenda);
-          setNotes("");
-          // Navigate to pre-meeting form with meeting ID
-          console.log('Navigating to pre-meeting with ID:', meetingId);
-          router.push(`/pre-meeting?meetingId=${meetingId}`);
-        } else {
-          console.error('No meeting ID found in response');
-          addToast('Meeting created but no ID returned. Please check your meetings.', 'warning');
-          router.push('/consultations/upcoming-consultations');
-        }
+        // Clear form fields
+        setSelectedType("Discovery");
+        setSelectedDate(null);
+        setSelectedTimeSlot(null);
+        setAgenda(meetingOverviews["Discovery"].agenda);
+        setBasicContext("");
+        setGoals("");
+        setPainPoints("");
+        
+        // Open Calendly in new tab
+        setTimeout(() => {
+          window.open(selectedTimeSlot.scheduling_url, '_blank');
+        }, 1500);
       } else {
-        console.error('Meeting creation failed:', response.data);
-        addToast('Failed to create meeting. Please try again.', 'error');
+        const errorMessage = response.data?.message || 'Failed to create meeting. Please try again.';
+        addToast(errorMessage, 'error');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating meeting:', error);
-      addToast('Failed to create meeting. Please try again.', 'error');
+      const errorMessage = error.response?.data?.message || 'Failed to create meeting. Please try again.';
+      addToast(errorMessage, 'error');
     }
   };
 
@@ -411,13 +413,36 @@ export default function MeetingRequestPage() {
           className="w-full h-40 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50 whitespace-pre-line"
         />
 
-        {/* ADDITIONAL NOTES */}
-        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Additional Notes</p>
+        {/* BASIC CONTEXT */}
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Basic Context *</p>
+        <p className="text-center text-sm opacity-70 mb-4">Provide some background about your organization or project</p>
 
         <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Any additional notes or specific topics you'd like to discuss can be provided here..."
+          value={basicContext}
+          onChange={(e) => setBasicContext(e.target.value)}
+          placeholder="Describe your organization, current situation, or project context..."
+          className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
+        />
+
+        {/* GOALS */}
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Goals *</p>
+        <p className="text-center text-sm opacity-70 mb-4">What do you hope to achieve from this meeting?</p>
+
+        <textarea
+          value={goals}
+          onChange={(e) => setGoals(e.target.value)}
+          placeholder="Describe your objectives and what you want to accomplish..."
+          className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
+        />
+
+        {/* PAIN POINTS */}
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Pain Points *</p>
+        <p className="text-center text-sm opacity-70 mb-4">What challenges or issues are you currently facing?</p>
+
+        <textarea
+          value={painPoints}
+          onChange={(e) => setPainPoints(e.target.value)}
+          placeholder="Describe the main challenges, bottlenecks, or problems you're experiencing..."
           className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
         />
 

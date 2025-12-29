@@ -41,99 +41,8 @@ const systems = {
 const systemsArray = Object.values(systems);
 
 export default function GPMetaphorSection() {
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title animation
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, y: -50, rotationX: -15 },
-        { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: titleRef.current, start: "top 10%" }
-        }
-      );
-
-      // Subtitle animation
-      gsap.fromTo(subtitleRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 1, delay: 0.3, ease: "back.out(1.7)",
-          scrollTrigger: { trigger: subtitleRef.current, start: "top 80%" }
-        }
-      );
-
-      // Cards animation with sophisticated effects
-      cardsRef.current.forEach((card, i) => {
-        if (card) {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-              end: "bottom 2%",
-              toggleActions: "play none none reverse"
-            }
-          });
-
-          // Initial state
-          gsap.set(card, {
-            opacity: 0,
-            y: 100,
-            rotationY: i % 2 === 0 ? -10 : 10,
-            scale: 0.9
-          });
-
-          // Entrance animation
-          tl.to(card, {
-            opacity: 1,
-            y: 0,
-            rotationY: 0,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-            delay: i * 0.1
-          });
-
-          // Floating animation
-          gsap.to(card, {
-            y: "-=0.5",
-            duration: 6,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            delay: 0
-          });
-
-          // Hover effects
-          card.addEventListener('mouseenter', () => {
-            gsap.to(card, {
-              scale: 1.02,
-              rotationY: 2,
-              z: 20,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-
-          card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-              scale: 1,
-              rotationY: 0,
-              z: 0,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-        }
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-  
   return (
-    <section ref={containerRef} className="relative w-full min-h-[100dvh] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
@@ -152,10 +61,10 @@ export default function GPMetaphorSection() {
       </div>
 
       <div className="relative z-10 text-center mb-5 sm:mb-15 lg:mb-10">
-        <h2 ref={titleRef} className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug">
+        <h2 className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug">
           Business as a <span className="text-[#3DFF7C]">Living System</span>
         </h2>
-        <p ref={subtitleRef} className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4">
+        <p className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4">
           Every part connected, every function vital
         </p>
       </div>
@@ -165,12 +74,7 @@ export default function GPMetaphorSection() {
         {systemsArray.map((system, index) => (
           <div
             key={index}
-            ref={el => { if (el) cardsRef.current[index] = el; }}
-            className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-emerald-400/50 transition-all duration-500 cursor-pointer"
-            style={{
-              transformStyle: 'preserve-3d',
-              perspective: '1000px'
-            }}
+            className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-emerald-400/50 hover:scale-105 hover:rotate-1 transition-all duration-500 cursor-pointer"
           >
             {/* Glow effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
@@ -208,17 +112,6 @@ export default function GPMetaphorSection() {
           </div>
         ))}
       </div>
-      
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(0px) rotate(0.5deg); }
-        }
-        
-        .group:hover {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }
