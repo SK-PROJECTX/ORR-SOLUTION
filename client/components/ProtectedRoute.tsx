@@ -1,52 +1,44 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { accessToken, validateToken } = useAuthStore();
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const router = useRouter();
+  const { user, accessToken, validateToken, logout } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const storedToken = localStorage.getItem('accessToken');
-      
-      if (!storedToken && !accessToken) {
-        setIsAuthenticated(false);
-        window.location.href = '/login';
+      // Check if user has token
+      if (!accessToken && !localStorage.getItem('accessToken')) {
+        router.push('/login');
         return;
       }
-      
+
+      // Validate token
       const isValid = await validateToken();
-      if (isValid) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-        window.location.href = '/login';
+      if (!isValid) {
+        logout();
+        router.push('/login');
         return;
       }
-      
+
       setIsLoading(false);
     };
 
-    // Small delay to allow Zustand to hydrate
-    const timer = setTimeout(checkAuth, 100);
-    return () => clearTimeout(timer);
-  }, [accessToken, validateToken]);
+    checkAuth();
+  }, [accessToken, validateToken, logout, router]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground">Redirecting to login...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22C55E]"></div>
       </div>
     );
   }

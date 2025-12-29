@@ -20,9 +20,15 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await login(formData.email, formData.password);
-    if (success) {
-      router.push('/dashboard');
+    clearError(); 
+    
+    try {
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
     }
   };
 
@@ -69,7 +75,7 @@ export default function Page() {
 
 
         <div className="absolute bottom-10 w-full px-6 text-start">
-          <p className="text-[48px] font-poppins font-extrabold text-[32px] md:text-[48px] lg:text-[48px] xl:text-[40px] ml-5 mx-auto">
+          <p className="font-poppins font-extrabold text-[32px] md:text-[48px] lg:text-[48px] xl:text-[40px] ml-5 mx-auto">
             <span className="text-[#86FF22] ">ORR Solutions</span>  <br />
             Listen.  Solve. Optimise.
           </p>
@@ -118,7 +124,7 @@ export default function Page() {
               placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
+              className="w-full border-b border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
           <div className="relative">
@@ -127,7 +133,7 @@ export default function Page() {
                 placeholder="Password"
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
+                className="w-full border-b border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
                 required
               />
               <button

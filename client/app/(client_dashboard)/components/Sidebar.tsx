@@ -209,7 +209,7 @@ export default function Sidebar() {
             )}
           </div>
           <div className="leading-tight text-[12px] font-medium">
-            {user?.first_name} {user?.last_name}
+            <div className="font-semibold">{user?.first_name} {user?.last_name}</div>
             <div className="text-[10px] opacity-80 truncate max-w-[120px]">{user?.email}</div>
           </div>
         </div>

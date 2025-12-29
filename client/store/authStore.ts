@@ -83,7 +83,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await api.post('/login/', {
-            identifier: email,
+            email,
             password,
           });
           
@@ -94,18 +94,6 @@ export const useAuthStore = create<AuthState>()(
             set({ user, accessToken, refreshToken, isLoading: false, error: null });
             
             useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
-            
-            // Check onboarding status after successful login
-            setTimeout(async () => {
-              try {
-                const isCompleted = await useOnboardingStore.getState().checkOnboardingStatus();
-                if (!isCompleted) {
-                  window.location.href = '/onboarding';
-                }
-              } catch (error) {
-                console.error('Failed to check onboarding status:', error);
-              }
-            }, 1000);
             
             return true;
           } else {
