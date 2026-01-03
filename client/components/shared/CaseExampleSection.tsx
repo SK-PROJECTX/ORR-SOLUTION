@@ -37,7 +37,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
   }, []);
 
   return (
-    <section className="relative z-10 py-16 bg-gradient-to-br from-slate-700 to-slate-900">
+    <section className="relative z-30 py-16 bg-gradient-to-br from-slate-700 to-slate-900">
       <style jsx>{`
         .animate-fade-in {
           animation: fadeIn 0.8s ease-out forwards;
@@ -55,19 +55,19 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
         }
         
         .fade-animate {
-          opacity: 0;
-          transform: translateY(30px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .animate-card-title {
           animation: cardTitle 0.8s ease-out forwards;
-          opacity: 0;
-          transform: translateY(-10px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .animate-card-text {
           animation: cardText 1s ease-out forwards;
-          opacity: 0;
+          opacity: 1;
         }
         
         @keyframes cardTitle {

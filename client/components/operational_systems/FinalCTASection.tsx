@@ -1,12 +1,18 @@
 import FinalCTASection from "../shared/FinalCTASection";
 
-export default function OperationalFinalCTASection() {
+interface OperationalFinalCTASectionProps {
+  title?: string;
+  description?: string;
+  buttonText?: string;
+}
+
+export default function OperationalFinalCTASection({ title, description, buttonText }: OperationalFinalCTASectionProps) {
   return (
     <FinalCTASection
-      title="Ready to Build"
+      title={title || "Ready to Build"}
       highlightedTitle="Better Systems?"
-      description="Let's Diagnose what's slowing you down and design systems that work."
-      buttonText="Book a free operational assessment"
+      description={description || "Let's Diagnose what's slowing you down and design systems that work."}
+      buttonText={buttonText || "Book a free operational assessment"}
     />
   )
 }

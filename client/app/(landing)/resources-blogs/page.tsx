@@ -4,21 +4,93 @@ import { useRef, useState, useEffect } from "react";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import axios from "axios";
 
 gsap.registerPlugin(ScrollTrigger);
 
+interface ContentCard {
+  id: number;
+  badge: string;
+  title: string;
+  content: string[];
+  image_url: string;
+  button1_text?: string;
+  button2_text?: string;
+  order: number;
+  is_active: boolean;
+}
+
+interface ResourcesPageData {
+  id: number;
+  hero_title: string;
+  hero_description1: string;
+  hero_description2: string;
+  hero_description3: string;
+  hero_button1_text: string;
+  hero_button2_text: string;
+  meta_title?: string;
+  meta_description?: string;
+  is_active: boolean;
+}
+
+interface ResourcesData {
+  page: ResourcesPageData;
+  cards: ContentCard[];
+}
+
 export default function ResourcesBlogs() {
   useScrollSplit();
+  const [data, setData] = useState<ResourcesData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('🔄 Fetching Resources data from backend...');
+        const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/resources-content/');
+        console.log('✅ Resources API Response:', response.data);
+        if (response.data.success) {
+          console.log('📊 Resources Data Structure:', {
+            page: response.data.data.page,
+            cards: response.data.data.cards.length + ' cards'
+          });
+          setData(response.data.data);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching Resources data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen text-white flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen text-white flex items-center justify-center">
+        <div className="text-white text-xl">Error loading content</div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen text-white">
-      <HeroSection />
-      <div className="scroll-section"><ContentSection /></div>
+      <HeroSection data={data.page} />
+      <div className="scroll-section"><ContentSection cards={data.cards} /></div>
     </div>
   );
 }
 
-function HeroSection() {
+function HeroSection({ data }: { data: ResourcesPageData }) {
   const titleRef = useRef(null);
   const p1Ref = useRef(null);
   const p2Ref = useRef(null);
@@ -36,141 +108,51 @@ function HeroSection() {
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
-        Resources
-        <br />
-        <span className="text-green-400">& Client Portal</span>
+        {data.hero_title?.split('&').map((part, index) => (
+          <span key={index}>
+            {index === 0 ? part : <span className="text-green-400">& {part}</span>}
+            {index === 0 && <br />}
+          </span>
+        )) || 'Resources & Client Portal'}
       </h1>
       
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
-        Your digital HQ for business clarity, timelines, and real-time status.
-        This isn't a traditional blog.
+        {data.hero_description1 || 'Loading content...'}
       </p>
       
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        Our resources are organized around the ORR client portal — a dashboard where
-        you can read FAQs, download material, request meetings, and chat with a live
-        operator or consultant.
+        {data.hero_description2 || 'Loading content...'}
       </p>
       
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        Instead of scattered articles, you get structured guidance that follows our live
-        project — following blogs have insight, how-to — and real-time alerts.
-        Everything is organized around live project management, AI marketing
-        systems & implementation.
+        {data.hero_description3 || 'Loading content...'}
       </p>
       
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
-          Request access to the client portal
+          {data.hero_button1_text || 'Request Access'}
         </button>
         <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
-          Learn how we operate
+          {data.hero_button2_text || 'Learn More'}
         </button>
       </div>
     </section>
   );
 }
 
-function ContentSection() {
+function ContentSection({ cards }: { cards: ContentCard[] }) {
   return (
     <section className="px-6 md:px-16 pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-        {/* Left Column */}
-        <ContentCard
-          badge="Blog"
-          title="WHY A PORTAL, NOT JUST A BLOG?"
-          content={[
-            "Designed for people who want to act, not just read.",
-            "Everything you need is one location.",
-            "Live ORR client portal connects resources, FAQs, chat, and project management in one place.",
-            "Questions or decisions can be live chat with consultants.",
-            "Sharing links, documents, and project updates happens in real-time.",
-            "Sharing FAQs",
-            "Everything you need to know about how we work and the projects we deliver is in one place.",
-            "Project workflow is dynamic."
-          ]}
-          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559589/21743692_6495306_uay57y.jpg"
-        />
-        
-        {/* Right Column */}
-        <ContentCard
-          badge="Guide"
-          title="HOW CONTENT IS ORGANISED"
-          content={[
-            "Resources that follow the way we work.",
-            "Everything here is project-focused live resources — not standalone articles or random tips.",
-            "By Stage:",
-            "• Discovery — understand, feedback, and next steps",
-            "• Define — deliverables, timelines, and expectations",
-            "• Deploy — live development, testing, and launch",
-            "• Deliver — handover, training, and ongoing support",
-            "By Type:",
-            "• FAQs — quick answers to common questions",
-            "• Guides — step-by-step processes for clients, stakeholders, and change management",
-            "• Resources — templates, checklists, and tools",
-            "• Updates — real-time project status, new features, and announcements"
-          ]}
-          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559588/11235559_10793_z44m6j.jpg"
-        />
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto mt-8">
-        {/* Bottom Left */}
-        <ContentCard
-          badge="Guide"
-          title="WHAT YOU CAN DO TODAY"
-          content={[
-            "Before, during, and after working with ORR.",
-            "Whether you're just starting or already — or just thinking about it:",
-            "Read our FAQ and request a call with us.",
-            "Before you engage:",
-            "Read how our live meeting and client work happens — so you know what to expect when we start working together.",
-            "During engagement:",
-            "Access live project status in real-time — see progress, ask questions, and get immediate answers from our team.",
-            "After project is complete:",
-            "Download resources from completed work, get ongoing support, and access to our alumni network.",
-            "Download resources from completed work, get ongoing support, and access to our alumni network.",
-            "Access resources on key development, project management, and business growth topics.",
-            "Access resources on key development, project management, and business growth topics."
-          ]}
-          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559588/12146019_Wavy_Gen-02_Single-01_xkhifo.jpg"
-        />
-        
-        {/* Bottom Right */}
-        <ContentCard
-          badge="Access"
-          title="HOW ACCESS WORKS"
-          content={[
-            "Simple. Immediate access.",
-            "Request access:",
-            "Click above button and we'll send you an email with your login details.",
-            "Receive your login:",
-            "Check your email for credentials and the link to your client portal.",
-            "Start exploring:",
-            "Log in and start exploring resources, FAQs, and project tools.",
-            "Book your first chat:",
-            "Use our in-app calendar to book a 15-minute call with our team to discuss your project and next steps.",
-            "Request your first project:",
-            "Submit your first project request directly through the portal and begin our 4-stage process."
-          ]}
-          image="https://res.cloudinary.com/depeqzb6z/image/upload/v1765559586/133742375_10241279_mghczg.jpg"
-          buttons={[
-            "Request access to the client portal",
-            "Learn how we operate"
-          ]}
-        />
+        {cards.map((card, index) => (
+          <ContentCardComponent key={card.id} card={card} />
+        ))}
       </div>
     </section>
   );
 }
 
-function ContentCard({ badge, title, content, image, buttons }: {
-  badge: string;
-  title: string;
-  content: string[];
-  image: string;
-  buttons?: string[];
-}) {
+function ContentCardComponent({ card }: { card: ContentCard }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -214,49 +196,43 @@ function ContentCard({ badge, title, content, image, buttons }: {
     >
       <div className="mb-6">
         <img
-          src={image}
-          alt={title}
+          src={card.image_url}
+          alt={card.title}
           className="w-full h-48 object-cover rounded-2xl"
         />
       </div>
       
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
-          {badge}
+          {card.badge}
         </span>
       </div>
       
-      <h3 className="text-xl font-bold mb-6">{title}</h3>
+      <h3 className="text-xl font-bold mb-6">{card.title}</h3>
       
       <div className="text-gray-300 text-sm leading-relaxed">
         {!isExpanded ? (
           <div>
-            <p className="line-clamp-3">{content.slice(0, 2).join(' ')}</p>
+            <p className="line-clamp-3">{card.content.slice(0, 2).join(' ')}</p>
             <p className="text-gray-400 mt-2">...</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {content.map((item, index) => (
+            {card.content.map((item, index) => (
               <p key={index}>{item}</p>
             ))}
           </div>
         )}
       </div>
       
-      {buttons && isExpanded && (
+      {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
-          {buttons.map((button, index) => (
-            <button
-              key={index}
-              className={`px-6 py-3 rounded-full font-semibold transition-colors ${
-                index === 0
-                  ? 'bg-green-400 text-black hover:bg-green-300'
-                  : 'border border-green-400 text-green-400 hover:bg-green-400 hover:text-black'
-              }`}
-            >
-              {button}
-            </button>
-          ))}
+          <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">
+            {card.button1_text}
+          </button>
+          <button className="border border-green-400 text-green-400 hover:bg-green-400 hover:text-black px-6 py-3 rounded-full font-semibold transition-colors">
+            {card.button2_text}
+          </button>
         </div>
       )}
     </div>

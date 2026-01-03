@@ -1,6 +1,6 @@
 import { AuthService } from './auth';
 
-const API_BASE_URL = 'https://orr-backend-web-latest.onrender.com';
+const API_BASE_URL = 'https://orr-backend-web-latest.onrender.com/';
 
 export class CMSService {
   private auth = AuthService.getInstance();
@@ -239,4 +239,106 @@ export class CMSService {
       throw new Error(`Failed to update FAQ: ${response.status}`);
     }
   }
+
+  // Service Pillar Pages
+  async getStrategicAdvisoryContent(): Promise<any> {
+    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`);
+    const response = await fetch(
+      `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`
+    );
+
+    console.log('📊 Strategic Advisory Response Status:', response.status);
+    console.log('📊 Strategic Advisory Response OK:', response.ok);
+
+    if (!response.ok) {
+      console.error('❌ Strategic Advisory API Error:', response.status, response.statusText);
+      throw new Error('Failed to fetch Strategic Advisory content');
+    }
+
+    const result = await response.json();
+    console.log('📊 Strategic Advisory Raw Result:', result);
+    return result;
+  }
+
+  async updateStrategicAdvisoryContent(data: Partial<any>): Promise<void> {
+    const response = await this.auth.makeAuthenticatedRequest(
+      `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to update Strategic Advisory content');
+    }
+  }
+
+  async getOperationalSystemsContent(): Promise<any> {
+    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`);
+    const response = await fetch(
+      `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`
+    );
+
+    console.log('📊 Operational Systems Response Status:', response.status);
+    console.log('📊 Operational Systems Response OK:', response.ok);
+
+    if (!response.ok) {
+      console.error('❌ Operational Systems API Error:', response.status, response.statusText);
+      throw new Error('Failed to fetch Operational Systems content');
+    }
+
+    const result = await response.json();
+    console.log('📊 Operational Systems Raw Result:', result);
+    return result;
+  }
+
+  async updateOperationalSystemsContent(data: Partial<any>): Promise<void> {
+    const response = await this.auth.makeAuthenticatedRequest(
+      `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to update Operational Systems content');
+    }
+  }
+
+  async getLivingSystemsContent(): Promise<any> {
+    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`);
+    const response = await fetch(
+      `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`
+    );
+
+    console.log('📊 Living Systems Response Status:', response.status);
+    console.log('📊 Living Systems Response OK:', response.ok);
+
+    if (!response.ok) {
+      console.error('❌ Living Systems API Error:', response.status, response.statusText);
+      throw new Error('Failed to fetch Living Systems content');
+    }
+
+    const result = await response.json();
+    console.log('📊 Living Systems Raw Result:', result);
+    return result;
+  }
+
+  async updateLivingSystemsContent(data: Partial<any>): Promise<void> {
+    const response = await this.auth.makeAuthenticatedRequest(
+      `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to update Living Systems content');
+    }
+  }
 }
+
+export const cmsApi = new CMSService();

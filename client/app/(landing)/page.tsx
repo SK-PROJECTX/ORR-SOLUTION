@@ -18,6 +18,7 @@ import ContentEditorPanel from "../../components/ContentEditorPanel";
 import AuthStatus from "../../components/AuthStatus";
 import { useHomepageContent } from "../../hooks/useHomepageContent";
 import MidClientJourneySection from "../components/MidClientJourneySection";
+import PackagePreviewSection from "../components/PackagePreviewSection";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 export default function LandingPage() {
@@ -85,6 +86,9 @@ export default function LandingPage() {
       </div>
       <div className="scroll-section" id="report-section">
         <ORRReportSection content={content?.orrReportSection} onContentUpdate={updateORRReportSection} />
+      </div>
+      <div className="scroll-section">
+        <PackagePreviewSection />
       </div>
       <div className="scroll-section" id="faq-section">
         <FAQSection content={content?.faqs} onContentUpdate={updateFAQ} />

@@ -12,7 +12,7 @@ export default function LandingLayout({
       <LandingHeader />
       <AnimatedBackground />
       
-      <main className="flex-1 star relative z-10">
+      <main className="flex-1 star relative z-20">
         {children}
       </main>
       <LandingFooter />

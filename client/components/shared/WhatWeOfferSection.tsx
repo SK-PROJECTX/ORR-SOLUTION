@@ -75,7 +75,7 @@ export default function WhatWeOfferSection({ offers, layout = 'flex' }: WhatWeOf
   }, []);
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
+    <section className="relative z-30 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
       <style jsx>{`
         .animate-title-in {
           animation: titleIn 0.8s ease-out forwards;
@@ -108,30 +108,30 @@ export default function WhatWeOfferSection({ offers, layout = 'flex' }: WhatWeOf
         }
         
         .card-animate {
-          opacity: 0;
-          transform: translateY(30px) scale(0.95);
+          opacity: 1;
+          transform: translateY(0) scale(1);
         }
         
         h2 {
-          opacity: 0;
-          transform: translateY(-20px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .animate-text-slide {
           animation: textSlide 0.8s ease-out 0.3s forwards;
-          opacity: 0;
-          transform: translateX(-20px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .animate-text-fade {
           animation: textFade 1s ease-out 0.5s forwards;
-          opacity: 0;
+          opacity: 1;
         }
         
         .animate-text-pop {
           animation: textPop 0.6s ease-out forwards;
-          opacity: 0;
-          transform: scale(0.8);
+          opacity: 1;
+          transform: scale(1);
         }
         
         @keyframes textSlide {

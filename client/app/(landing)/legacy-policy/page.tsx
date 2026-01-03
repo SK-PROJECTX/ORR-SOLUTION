@@ -1,19 +1,69 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import axios from "axios";
 
 gsap.registerPlugin(ScrollTrigger);
+
+interface PolicyItem {
+	id: number;
+	number: string;
+	description: string;
+	order: number;
+	is_active: boolean;
+}
+
+interface LegalPolicyPageData {
+	id: number;
+	hero_title: string;
+	hero_description: string;
+	meta_title?: string;
+	meta_description?: string;
+	is_active: boolean;
+}
+
+interface LegalPolicyData {
+	page: LegalPolicyPageData;
+	items: PolicyItem[];
+}
 
 export default function LegacyPolicy() {
 	const titleRef = useRef<HTMLHeadingElement>(null);
 	const descRef = useRef(null);
 	const cardRef = useRef(null);
 	const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+	const [data, setData] = useState<LegalPolicyData | null>(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				console.log('🔄 Fetching Legal Policy data from backend...');
+				const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/legal-policy-content/');
+				console.log('✅ Legal Policy API Response:', response.data);
+				if (response.data.success) {
+					console.log('📊 Legal Policy Data Structure:', {
+						page: response.data.data.page,
+						items: response.data.data.items.length + ' policy items'
+					});
+					setData(response.data.data);
+				}
+			} catch (error) {
+				console.error('❌ Error fetching Legal Policy data:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		if (!data) return;
+
 		const title = titleRef.current;
 		if (title) {
 			const text = title.textContent;
@@ -70,22 +120,33 @@ export default function LegacyPolicy() {
 				}
 			}
 		});
-	}, []);
+	}, [data]);
+
+	if (loading) {
+		return (
+			<div className="min-h-screen text-foreground star flex items-center justify-center">
+				<div className="text-white text-xl">Loading...</div>
+			</div>
+		);
+	}
+
+	if (!data) {
+		return (
+			<div className="min-h-screen text-foreground star flex items-center justify-center">
+				<div className="text-white text-xl">Error loading content</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen text-foreground star">
 			<section className="pt-32 pb-16 px-6">
 				<div className="max-w-4xl mx-auto text-center">
 					<h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
-						Legacy & Policy
+						{data.page.hero_title || 'Legacy & Policy'}
 					</h1>
 					<p ref={descRef} className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-						Lorem ipsm jgdu mplexity. From regulatory and sustainability
-						frameworks to biotechnology and compliance consulting, our experts
-						guide clients through evolving legal, scientific, and operational
-						standards. Our approach combines deep technical insight with
-						strategic foresight — ensuring every initiative is compliant,
-						sustainable, and built for growth.
+						{data.page.hero_description || 'Loading policy information...'}
 					</p>
 				</div>
 			</section>
@@ -102,53 +163,18 @@ export default function LegacyPolicy() {
 						/>
 						
 						<div className="bg-card rounded-2xl p-4 relative">
-							<div ref={el => { itemsRef.current[0] = el; }} className="flex gap-6 mb-12 ">
-								<div className="policy-number text-6xl font-bold text-primary shrink-0">
-									01
+							{data.items.map((item, index) => (
+								<div key={item.id} ref={el => { itemsRef.current[index] = el; }} className={`flex gap-6 ${index < data.items.length - 1 ? 'mb-12' : 'pb-8'}`}>
+									<div className="policy-number text-6xl font-bold text-primary shrink-0">
+										{item.number}
+									</div>
+									<div className="flex-1 min-w-0">
+										<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
+											{item.description}
+										</p>
+									</div>
 								</div>
-								<div className="flex-1 min-w-0">
-									<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability
-										frameworks to biotechnology and compliance consulting, our
-										experts guide clients through evolving legal, scientific,
-										and operational standards. Our approach combines deep
-										technical insight with strategic foresight — ensuring every
-										initiative is compliant, sustainable, and built for growth.
-									</p>
-								</div>
-							</div>
-
-							<div ref={el => { itemsRef.current[1] = el; }} className="flex gap-6 mb-12">
-								<div className="policy-number text-6xl font-bold text-primary shrink-0">
-									02
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability
-										frameworks to biotechnology and compliance consulting, our
-										experts guide clients through evolving legal, scientific,
-										and operational standards. Our approach combines deep
-										technical insight with strategic foresight — ensuring every
-										initiative is compliant, sustainable, and built for growth.
-									</p>
-								</div>
-							</div>
-
-							<div ref={el => { itemsRef.current[2] = el; }} className="flex gap-6 pb-8">
-								<div className="policy-number text-6xl font-bold text-primary shrink-0">
-									03
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
-										Lorem ipsm jgdu mplexity. From regulatory and sustainability
-										frameworks to biotechnology and compliance consulting, our
-										experts guide clients through evolving legal, scientific,
-										and operational standards. Our approach combines deep
-										technical insight with strategic foresight — ensuring every
-										initiative is compliant, sustainable, and built for growth.
-									</p>
-								</div>
-							</div>
+							))}
 						</div>
 					</div>
 				</div>
