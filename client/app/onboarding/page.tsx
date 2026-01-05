@@ -125,9 +125,8 @@ function CustomStepper({ activeStep }: { activeStep: number }) {
       {steps.map((step, index) => (
         <div key={step} className="flex flex-col items-center">
           <div
-            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${
-              index === activeStep ? "bg-lemon" : "bg-gray-600"
-            }`}
+          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${index === activeStep ? "bg-lemon" : "bg-gray-600"
+              }`}
           >
             {step}
           </div>
@@ -151,10 +150,10 @@ export default function OnboardingPage() {
 
   const handleOptionSelect = (value: string) => {
     const key = `${currentSection}-${currentStep}`;
-    
+
     if (currentStepData.type === "multiple") {
       const current = answers[key] || [];
-      const updated = current.includes(value) 
+      const updated = current.includes(value)
         ? current.filter((item: string) => item !== value)
         : [...current, value];
       setAnswers({ ...answers, [key]: updated });
@@ -252,16 +251,15 @@ export default function OnboardingPage() {
                 />
               </div>
             ) : (
-              <div className={`grid gap-6 mb-16 ${
-                currentStepData.options && currentStepData.options.length > 6 
-                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
+              <div className={`grid gap-6 mb-16 ${currentStepData.options && currentStepData.options.length > 6
+                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
                   : currentStepData.options && currentStepData.options.length > 3
-                  ? "grid-cols-1 md:grid-cols-2"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-              }`}>
+                    ? "grid-cols-1 md:grid-cols-2"
+                    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                }`}>
                 {currentStepData.options?.map((option) => {
                   const currentAnswer = getCurrentAnswer();
-                  const isActive = currentStepData.type === "multiple" 
+                  const isActive = currentStepData.type === "multiple"
                     ? currentAnswer.includes(option)
                     : currentAnswer === option;
 
@@ -271,7 +269,7 @@ export default function OnboardingPage() {
                       onClick={() => handleOptionSelect(option)}
                       className={`
                         relative cursor-pointer border rounded-xl px-6 py-8 text-center text-base 
-                        transition-all min-h-[250px] w-[500px] flex items-center justify-center
+                        transition-all flex items-center justify-center w-full
                         ${isActive
                           ? "border-[#00D683] bg-[#10253F]"
                           : "border-[#1A3B56] bg-transparent"
@@ -296,7 +294,7 @@ export default function OnboardingPage() {
 
             <div className="flex justify-between">
               {currentSection > 1 || currentStep > 0 ? (
-                <button 
+                <button
                   onClick={() => {
                     if (currentStep > 0) {
                       setCurrentStep(currentStep - 1);
@@ -311,7 +309,7 @@ export default function OnboardingPage() {
                 </button>
               ) : <div></div>}
 
-              <button 
+              <button
                 onClick={currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? handleComplete : handleNext}
                 disabled={isLoading}
                 className="bg-lemon hover:bg-lemon/90 text-black px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all disabled:opacity-50"

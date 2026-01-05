@@ -95,6 +95,9 @@ export const useAuthStore = create<AuthState>()(
             
             useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
             
+            // Check onboarding status
+            await useOnboardingStore.getState().checkOnboardingStatus();
+            
             return true;
           } else {
             throw new Error('Login failed');
