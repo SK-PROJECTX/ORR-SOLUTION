@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuthStore } from "@/store/authStore";
 export default function Page() {
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,9 +23,13 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await forgotPassword(formData.email);
-    if (success) {
-      setEmailSent(true);
+    try {
+      const success = await forgotPassword(formData.email);
+      if (success) {
+        setEmailSent(true);
+      }
+    } catch (error) {
+      console.error('Password recovery failed', error);
     }
   };
 
@@ -34,35 +38,35 @@ export default function Page() {
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left side - Image + Text */}
 
-    
-     
 
-        {/* Right side - Form */}
+
+
+      {/* Right side - Form */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
-           <div className="flex md:hidden flex-col items-center justify-center mb-8">
-              <img
-                src="/images/logo.svg"
-                alt="ORR solutions"
-                className="w-16 h-16 mb-4"
-              />
-            </div>
-         
+          <div className="flex md:hidden flex-col items-center justify-center mb-8">
+            <img
+              src="/images/logo.svg"
+              alt="ORR solutions"
+              className="w-16 h-16 mb-4"
+            />
+          </div>
+
 
           <div className="flex justify-between items-center mb-6">
-                   <div className="mt-0">
-                         <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
-                         Forgot Your Password
-                       </h2>
-                   </div>
-                  
-         
-                   <div className="mb-8">
-                     <ThemeToggle />
-                   </div>
-                   
-                   </div>
+            <div className="mt-0">
+              <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
+                Forgot Your Password
+              </h2>
+            </div>
+
+
+            <div className="mb-8">
+              <ThemeToggle />
+            </div>
+
+          </div>
 
 
           {error && (
@@ -78,18 +82,18 @@ export default function Page() {
           )}
 
           <form className="space-y-7" onSubmit={handleSubmit}>
-           
+
 
             <input
               type="email"
               placeholder="Email"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
 
-          
+
             <button
               type="submit"
               disabled={isLoading}
@@ -98,22 +102,22 @@ export default function Page() {
               {isLoading ? "Recovering Password..." : "Forgot Password"}
             </button>
 
-                <div className="hidden md:flex items-end  justify-end mt-4 ">
-                <Link
-                  href="/login"
-                  className="px-6 font-extrabold text-md text-[#FFFFFF] "
-                >
-                  Already have an account <span className="text-[#61FD51] underline">Login</span>
-                </Link>
-              </div>
+            <div className="hidden md:flex items-end  justify-end mt-4 ">
+              <Link
+                href="/login"
+                className="px-6 font-extrabold text-md text-[#FFFFFF] "
+              >
+                Already have an account <span className="text-[#61FD51] underline">Login</span>
+              </Link>
+            </div>
           </form>
-        
+
         </div>
 
-        
+
       </div>
 
-       <div
+      <div
         className="hidden md:flex flex-1 bg-cover m-3 rounded-lg bg-center relative text-white"
         style={{
           backgroundImage: "url('https://res.cloudinary.com/depeqzb6z/image/upload/v1764168892/side-image_1_jwpnup.png')",
@@ -136,15 +140,15 @@ export default function Page() {
         </div> */}
         <div className='justify-between flex flex-row w-full'>
           <div className="justify-start flex items-start">
-            <img 
+            <img
               src="/images/logo.svg"
               alt="ORR Solutions"
               className="w-32 h-32 mt-5 ml-10" />
           </div>
 
-          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center"> 
-              <ChevronLeft className="my-0" /> 
-              <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
+          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
+            <ChevronLeft className="my-0" />
+            <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
           </div>
         </div>
 
@@ -155,7 +159,7 @@ export default function Page() {
             Solve. Optimise.
           </p>
         </div>
-      </div>    
+      </div>
 
     </div>
   );
