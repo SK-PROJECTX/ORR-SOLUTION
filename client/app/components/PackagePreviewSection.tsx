@@ -50,19 +50,19 @@ export default function PackagePreviewSection() {
       <div className="absolute inset-0 star opacity-20" />
       
       <div className="relative z-10 max-w-6xl mx-auto">
-        <div ref={containerRef} className="bg-[#33FF99]/50 backdrop-blur-xl rounded-[60px] pt-2 pr-0 pb-1 pl-0 transform -rotate-2 -translate-x-8 -translate-y-4">
-          <div className="bg-[#2c4a63] rounded-[55px] px-12 py-16 transform rotate-2 translate-x-8  translate-y-4 scale-95">
-            <h2 ref={titleRef} className="text-5xl font-bold text-center mb-16 text-white">
+        <div ref={containerRef} className="md:bg-[#33FF99]/50 backdrop-blur-xl rounded-[60px] md:pt-2 md:pr-0 md:pb-1 md:pl-0 transform -rotate-2 -translate-x-8 -translate-y-4">
+          <div className="bg-[#2c4a63] rounded-[55px] px-6 md:px-12 py-8 md:py-16 transform rotate-2 translate-x-8  translate-y-4 scale-95">
+            <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold text-center mb-16 text-white">
               Package <span className="text-[#33FF99]">Preview</span>
             </h2>
             
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">             
+            <div className="grid md:grid-cols-2 gap-16 md:gap-8 max-w-4xl mx-auto">             
               <div ref={el => { cardsRef.current[0] = el; }} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
                 <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
                   Meetings
                 </div>
                 <div className="flex items-center justify-end mb-6 absolute top-4 right-4">
-                  <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-64 h-64"/>
+                  <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-48 h-48"/>
                 </div>
                 <div className="text-6xl font-bold mt-18 mb-8 text-black">
                   <span className="text-gray-400 text-3xl">€</span>45<span className="text-3xl font-normal">/hrs</span>
@@ -74,12 +74,12 @@ export default function PackagePreviewSection() {
               </div>
 
               <div ref={el => { cardsRef.current[1] = el; }} className="bg-white rounded-3xl p-8 relative border-4 border-[#0ec277]">
-                <Image src="/best value.png" alt="Best value" width={120} height={40} className="absolute -top-8 left-[75%] -translate-x-1/2 w-48" />
+                <Image src="/best value.png" alt="Best value" width={120} height={40} className="absolute -top-8 left-[65%] md:left-[70%] -translate-x-1/2 w-48" />
                 <div className="bg-[#d4f8e8] text-[#00a86b] px-4 py-2 rounded-xl text-sm font-medium inline-block mb-6">
                   Report Fee
                 </div>
                 <div className="flex items-center justify-end mb-6 absolute top-4 right-4">
-                  <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-64 h-64"/>
+                  <Image src="/flower.svg" alt="Flower diagram" width={48} height={48}  className="w-48 h-48"/>
                 </div>
                 <div className="text-6xl font-bold mt-18 mb-8 text-black">
                   <span className="text-gray-400 text-3xl">€</span>220
