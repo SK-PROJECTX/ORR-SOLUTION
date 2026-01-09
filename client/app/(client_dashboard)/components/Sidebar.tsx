@@ -205,11 +205,11 @@ export default function Sidebar() {
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span>{user?.first_name?.[0] || 'U'}{user?.last_name?.[0] || ''}</span>
+              <span>{profile?.first_name?.[0] || 'U'}{profile?.last_name?.[0] || ''}</span>
             )}
           </div>
           <div className="leading-tight text-[12px] font-medium">
-            {user?.first_name} {user?.last_name}
+            <div className="font-semibold">{profile?.first_name} {profile?.last_name}</div>
             <div className="text-[10px] opacity-80 truncate max-w-[120px]">{user?.email}</div>
           </div>
         </div>

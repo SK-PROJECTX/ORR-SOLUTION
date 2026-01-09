@@ -54,33 +54,35 @@ export default function SupportHistory() {
               ) : (
                 tickets.map((ticket, i) => (
                   <div
-                    key={ticket.id}
+                    key={ticket.ticket_id}
                     className="w-full bg-lemon rounded-xl p-6 pr-12 relative cursor-pointer transition-all text-background"
                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <p className="text-sm font-medium">{ticket.name} - {ticket.email}</p>
-                      <span className={`text-xs px-2 py-1 rounded ${ticket.is_read ? 'bg-background/20' : 'bg-background/40'}`}>
-                        {ticket.is_read ? 'Read' : 'Unread'}
+                      <p className="text-sm font-bold">ID: {ticket.ticket_id.slice(0, 8)}...</p>
+                      <span className="text-xs px-2 py-1 rounded bg-background/20 font-semibold uppercase">
+                        {ticket.status}
                       </span>
                     </div>
-                    <p className="text-sm mb-2">Website: {ticket.website}</p>
-                    <p className="text-sm opacity-80">Date: {new Date(ticket.created_at).toLocaleDateString()}</p>
+                    <h3 className="text-lg font-semibold mb-2">{ticket.subject || 'No Subject'}</h3>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm opacity-90 mb-2">
+                      <p><span className="font-medium">Priority:</span> {ticket.priority}</p>
+                      <p><span className="font-medium">Source:</span> {ticket.source}</p>
+                      <p><span className="font-medium">Date:</span> {new Date(ticket.created_at).toLocaleDateString()}</p>
+                    </div>
 
                     {/* Dropdown Icon */}
                     <div className="absolute right-6 top-1/2 -translate-y-1/2">
                       <ChevronDown
-                        className={`text-background text-xl transition-all ${
-                          openIndex === i ? "rotate-180" : ""
-                        }`}
+                        className={`text-background text-xl transition-all ${openIndex === i ? "rotate-180" : ""
+                          }`}
                       />
                     </div>
 
                     {/* Expanded Section */}
                     {openIndex === i && (
                       <div className="mt-4 text-sm text-background/90 border-t border-background/20 pt-4">
-                        <strong>Message:</strong><br/>
-                        {ticket.message}
+                        <p>This ticket was created via <strong>{ticket.source}</strong> with a <strong>{ticket.priority}</strong> priority level.</p>
                       </div>
                     )}
                   </div>

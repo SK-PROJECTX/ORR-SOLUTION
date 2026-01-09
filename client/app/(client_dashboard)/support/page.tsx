@@ -7,19 +7,23 @@ import { useSupportStore } from "@/store/supportStore";
 export default function ContactPage() {
   const { createTicket, isSubmitting } = useSupportStore();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    website: '',
-    message: ''
+    contact_name: '',
+    contact_email: '',
+    contact_website: '',
+    description: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.website || !formData.message) {
+    if (!formData.contact_name || !formData.contact_email || !formData.contact_website || !formData.description) {
       return;
     }
-    await createTicket(formData);
-    setFormData({ name: '', email: '', website: '', message: '' });
+    try {
+      await createTicket(formData);
+      setFormData({ contact_name: '', contact_email: '', contact_website: '', description: '' });
+    } catch (error) {
+      console.error('Failed to create ticket', error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -71,9 +75,9 @@ export default function ContactPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <input
             type="text"
-            name="name"
+            name="contact_name"
             placeholder="Name"
-            value={formData.name}
+            value={formData.contact_name}
             onChange={handleChange}
             required
             className="w-full p-4 rounded-md bg-card text-foreground placeholder-foreground/50 outline-none border border-secondary focus:border-lemon transition-colors"
@@ -81,9 +85,9 @@ export default function ContactPage() {
 
           <input
             type="email"
-            name="email"
+            name="contact_email"
             placeholder="Email"
-            value={formData.email}
+            value={formData.contact_email}
             onChange={handleChange}
             required
             className="w-full p-4 rounded-md bg-card text-foreground placeholder-foreground/50 outline-none border border-secondary focus:border-lemon transition-colors"
@@ -91,19 +95,19 @@ export default function ContactPage() {
 
           <input
             type="text"
-            name="website"
+            name="contact_website"
             placeholder="Website *"
-            value={formData.website}
+            value={formData.contact_website}
             onChange={handleChange}
             required
             className="w-full p-4 rounded-md bg-card text-foreground placeholder-foreground/50 outline-none border border-secondary focus:border-lemon transition-colors"
           />
 
           <textarea
-            name="message"
+            name="description"
             placeholder="Message"
             rows={5}
-            value={formData.message}
+            value={formData.description}
             onChange={handleChange}
             required
             className="w-full p-4 rounded-md bg-card text-foreground placeholder-foreground/50 outline-none border border-secondary focus:border-lemon transition-colors"

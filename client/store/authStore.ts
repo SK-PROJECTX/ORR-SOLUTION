@@ -75,7 +75,7 @@ export const useAuthStore = create<AuthState>()(
           
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
-          return false;
+          throw error;
         }
       },
 
@@ -83,7 +83,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await api.post('/login/', {
-            identifier: email,
+            email,
             password,
           });
           
@@ -95,17 +95,8 @@ export const useAuthStore = create<AuthState>()(
             
             useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
             
-            // Check onboarding status after successful login
-            setTimeout(async () => {
-              try {
-                const isCompleted = await useOnboardingStore.getState().checkOnboardingStatus();
-                if (!isCompleted) {
-                  window.location.href = '/onboarding';
-                }
-              } catch (error) {
-                console.error('Failed to check onboarding status:', error);
-              }
-            }, 1000);
+            // Check onboarding status
+            await useOnboardingStore.getState().checkOnboardingStatus();
             
             return true;
           } else {
@@ -115,7 +106,7 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || error.message || 'Login failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
-          return false;
+          throw error;
         }
       },
 
@@ -130,7 +121,7 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || 'Failed to send reset email';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
-          return false;
+          throw error;
         }
       },
 
@@ -149,7 +140,7 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || 'Password reset failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
-          return false;
+          throw error;
         }
       },
 
@@ -164,7 +155,7 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || 'Email verification failed';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, 'error');
-          return false;
+          throw error;
         }
       },
 
