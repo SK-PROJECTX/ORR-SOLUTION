@@ -4,7 +4,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 
 export function LandingFooter() {
   return (
-    <footer className="w-full py-12 px-6 bg-card">
+    <footer className="w-full py-12 px-6 bg-card z-10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
 
         {/* Logo Section */}
@@ -12,7 +12,7 @@ export function LandingFooter() {
           <img 
             src="/images/logo.svg"
             alt="ORR Solutions Logo"
-            className="w-[15rem] h-auto"
+            className="w-60 h-auto"
           />
           {/* <div className="flex flex-col leading-tight">
             <h2 className="text-foreground text-3xl font-semibold">ORR</h2>
@@ -38,14 +38,14 @@ export function LandingFooter() {
         </div>
 
         {/* Newsletter */}
-        <div className="w-full max-w-xs">
+        <div className="flex w-full max-w-xs">
           <input
             type="email"
             placeholder="Email"
-            className="px-4 py-3 w-full rounded-t-lg outline-none text-sm bg-secondary text-gray-100 placeholder-gray-400 mb-1"
+            className="px-4 py-3 flex-1 rounded-l-2xl outline-none text-sm bg-secondary text-white placeholder-white/70"
           />
-          <button className="px-4 py-3 w-full rounded-b-lg font-medium bg-primary text-background hover:opacity-90 transition-opacity text-sm">
-            Subscribe
+          <button className="px-4 py-3 rounded-r-2xl font-medium bg-primary text-black hover:bg-green-400 transition-colors text-sm whitespace-nowrap">
+            Sign up
           </button>
         </div>
 

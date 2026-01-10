@@ -1,85 +1,38 @@
+"use client";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import ApproachCard from "../components/ApproachCard";
 import GPMetaphorSection from "../components/GPMetaphorSection";
 import Hero from "../components/Hero";
 import ServicePillar from "../components/ServicePillars";
 import { HeroSection } from "./components/HeroSection";
+import MiniClientJourney from "../components/MiniClientJourney";
+import FiveStagesSection from "../components/FiveStagesSection";
+import ORRReportSection from "../components/ORRReportSection";
+import PackagePreviewSection from "../components/PackagePreviewSection";
+import FAQSection from "../components/FAQSection";
+import ORRRoleSection from "../components/ORRRoleSection";
+import MidClientJourneySection from "../components/MidClientJourneySection";
+import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 export default function LandingPage() {
+  useScrollSplit();
+  
   return (
-    <div>
+    <div className="star fixed-background">
       <HeroSection />
-      <Hero />
-      <ApproachCard />
-      <ServicePillar />
-      <GPMetaphorSection />
-      <MiniClientJourney />
+      <div className="scroll-section"><Hero /></div>
+      <div className="scroll-section"><ApproachCard /></div>
+      <div className="scroll-section"><ServicePillar /></div>
+      <div className="scroll-section"><GPMetaphorSection /></div>
+      <div className="scroll-section"><ORRRoleSection /></div>
+      <div className="scroll-section"><MiniClientJourney /></div>
+      <div className="scroll-section"><FiveStagesSection /></div>
+      <div className="scroll-section"><ORRReportSection /></div>
+      <div className="scroll-section"><PackagePreviewSection /></div>
+      <div className="scroll-section"><FAQSection /></div>
+      <div className="scroll-section"><MidClientJourneySection /></div>
     </div>
   );
 }
 
-function MiniClientJourney() {
-  return (
-    <section className="w-full text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col items-center text-center">
-        {/* Title */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
-          Mini Client <span className="text-[#33FF99]">Journey</span>
-        </h2>
-
-        {/* Glowing Center Highlight */}
-        <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-[#33FF99]/20 rounded-full blur-[100px] sm:blur-[150px]"></div>
-
-        {/* Quote Box */}
-        <div className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-xl border border-white/20">
-          <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-left">“</div>
-          <p className="text-foreground leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9">
-            as they requested. In the end, the client found a 50% increase in
-            traffic within days since its launch.
-          </p>
-          <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mt-3 sm:mt-4 text-right">”</div>
-        </div>
-
-        {/* Dots */}
-        <div className="flex gap-2 mt-4 sm:mt-6">
-          <span className="w-2 h-2 rounded-full bg-[#33FF99]"></span>
-          <span className="w-2 h-2 rounded-full bg-[#33FF99]/40"></span>
-          <span className="w-2 h-2 rounded-full bg-[#33FF99]/40"></span>
-        </div>
-      </div>
-
-      {/* Floating Client Images - Hidden on mobile to prevent overflow */}
-      <div className="hidden lg:block absolute inset-0 pointer-events-none">
-        {/* LEFT SIDE IMAGES */}
-        <img
-          src="/images/user-1.jpg"
-          className="absolute left-4 xl:left-10 top-16 xl:top-20 w-20 xl:w-26 h-20 xl:h-26 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
-        />
-        <img
-          src="/images/user-2.jpg"
-          className="absolute left-2 xl:left-4 top-1/2 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
-        />
-        <img
-          src="/images/user-3.jpg"
-          className="absolute left-24 xl:left-30 bottom-20 xl:bottom-24 w-24 xl:w-30 h-24 xl:h-30 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
-        />
-
-        {/* RIGHT SIDE IMAGES */}
-        <img
-          src="/images/user-4.jpg"
-          className="absolute right-4 xl:right-10 top-20 xl:top-24 w-16 xl:w-20 h-16 xl:h-20 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
-        />
-        <img
-          src="/clients/c5.png"
-          className="absolute right-20 xl:right-28 top-1/3 w-10 xl:w-12 h-10 xl:h-12 rounded-full border-2 border-[#33FF99] shadow-[0_0_20px_#33FF99] object-cover"
-        />
-        <img
-          src="/clients/c6.png"
-          className="absolute right-2 xl:right-4 bottom-20 xl:bottom-24 w-20 xl:w-24 h-20 xl:h-24 rounded-full border-2 xl:border-4 border-[#33FF99] shadow-[0_0_20px_#33FF99] xl:shadow-[0_0_25px_#33FF99] object-cover"
-        />
-      </div>
-    </section>
-  );
-}

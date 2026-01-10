@@ -2,12 +2,13 @@
 
 :root {
   --color-background: #0d223c;
-  --color-foreground: hsl(0, 0%, 7%);
-  --color-primary: #0ec277;
-  --color-secondary: #1d5e65;
-  --color-lemon: #5ef558;
+  --color-foreground: #ffffff;
+  --color-primary: #0EC277;
+  --color-secondary: #35536b;
+  --color-lemon: #13be77;
   --color-green: #0ec277;
   --color-card: #204460;
+  --color-card-light: #2D597D;
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
 }
 
@@ -15,8 +16,8 @@
   --color-background: #191919;
   --color-foreground: #ffffff;
   --color-primary: #0ec277;
-  --color-secondary: #1d5e65;
-  --color-lemon: #5ef558;
+  --color-secondary: #393939;
+  --color-lemon: #13be77;
   --color-green: #0ec277;
   --color-card: #2c2c2c;
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
@@ -25,7 +26,6 @@
 
 body {
   background-color: var(--color-background);
- 
   color: var(--color-foreground);
   transition: background-color 0.3s ease;
 }
@@ -48,10 +48,13 @@ body {
 
 .bg-background { background-color: var(--color-background); }
 .bg-card { background-color: var(--color-card); }
+.bg-card-light { background-color: var(--color-card-light); }
 .bg-primary { background-color: var(--color-primary); }
+.border-primary { border-color: var(--color-primary); }
 .bg-secondary { background-color: var(--color-secondary); }
 .bg-lemon { background-color: var(--color-lemon); }
-
+.border-lemon { border: var(--color-lemon); }
+.border-secondary { border: var(--color-secondary); }
 .text-foreground { color: var(--color-foreground); }
 .text-primary { color: var(--color-primary); }
 .text-secondary { color: var(--color-secondary); }
@@ -90,6 +93,32 @@ html, body {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* GSAP Scroll-Split Effect */
+.scroll-section {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .scroll-section {
+    margin-bottom: 6rem;
+  }
+}
+
+/* Fixed background for landing page */
+.fixed-background {
+  background-attachment: fixed;
+  background-size: 300px 300px, 400px 400px;
+  background-position: 0 0, 150px 150px;
+}
+
+@media (max-width: 640px) {
+  .fixed-background {
+    background-size: 200px 200px, 250px 250px;
+    background-position: 0 0, 100px 100px;
+  }
 }
 
 
