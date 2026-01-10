@@ -7,14 +7,14 @@ import {
   Views,
   Navigate,
 } from "react-big-calendar";
-import {format} from "date-fns/format";
-import { parse } from "date-fns/parse";
-import { startOfWeek }from "date-fns/startOfWeek";
-import { getDay } from "date-fns/getDay";
-import {enUS} from "date-fns/locale/en-US";
+import {format, startOfWeek, getDay} from "date-fns";
+import {enUS} from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSchedulingStore } from "@/store/schedulingStore";
+
+// Simple parse function to replace date-fns parse
+const simpleParse = (dateString: string) => new Date(dateString);
 
 // Custom calendar styles
 const calendarStyles = `
@@ -45,7 +45,7 @@ const calendarStyles = `
 // You should also include the react-big-calendar css in your global CSS if using Next.js.
 
 const locales = { "en-US": enUS };
-const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
+const localizer = dateFnsLocalizer({ format, parse: simpleParse, startOfWeek, getDay, locales });
 type EventItem = {
   id: number;
   title: string;
