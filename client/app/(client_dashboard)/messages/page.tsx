@@ -98,6 +98,18 @@ export default function MessagesPage() {
           ticketsArray = data.results;
         } else if (data && Array.isArray(data.tickets)) {
           ticketsArray = data.tickets;
+        } else if (data && data.data && typeof data.data === 'object') {
+          // Handle case where data.data is an object with tickets property
+          if (Array.isArray(data.data.tickets)) {
+            ticketsArray = data.data.tickets;
+          } else if (Array.isArray(data.data.results)) {
+            ticketsArray = data.data.results;
+          } else {
+            // Convert single object to array or handle pagination
+            ticketsArray = Object.values(data.data).filter(item => 
+              item && typeof item === 'object' && item.id
+            );
+          }
         } else {
           console.error('Unexpected response format:', data);
           setLoading(false);
@@ -105,16 +117,21 @@ export default function MessagesPage() {
         }
         
         // Convert tickets to chat format
-        const ticketChats: Chat[] = ticketsArray.map(ticket => ({
-          id: ticket.id,
-          name: `Support - ${ticket.ticket_id}`,
-          lastMessage: ticket.subject || 'No subject',
-          timestamp: new Date(ticket.created_at).toLocaleDateString(),
-          unread: 0,
-          avatar: "🎧",
-          online: ticket.status !== 'resolved',
-          ticket
-        }));
+        const ticketChats: Chat[] = ticketsArray.map((ticket) => {
+          console.log('Processing ticket:', ticket);
+          console.log('Ticket ID:', ticket.id);
+          
+          return {
+            id: ticket.id, // Use the actual numeric ID from the API
+            name: `Support - ${ticket.ticket_id}`,
+            lastMessage: ticket.subject || 'No subject',
+            timestamp: new Date(ticket.created_at).toLocaleDateString(),
+            unread: 0,
+            avatar: "🎧",
+            online: ticket.status !== 'resolved',
+            ticket
+          };
+        });
         
         setChats(ticketChats);
         if (ticketChats.length > 0 && !selectedChat) {
@@ -138,6 +155,13 @@ export default function MessagesPage() {
 
   const fetchMessages = async (ticketId: number) => {
     try {
+      console.log('Fetching messages for ticket ID:', ticketId);
+      
+      if (!ticketId || ticketId === undefined) {
+        console.error('Invalid ticket ID:', ticketId);
+        return;
+      }
+      
       const token = localStorage.getItem('accessToken');
       
       if (!token) {
@@ -145,6 +169,7 @@ export default function MessagesPage() {
         return;
       }
       
+      // Use the correct endpoint format with numeric ID
       const response = await fetch(`https://orr-backend-web-latest.onrender.com/admin-portal/v1/tickets/${ticketId}/messages/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -157,6 +182,22 @@ export default function MessagesPage() {
         setMessages(result.data || []);
       } else {
         console.error('Failed to fetch messages:', response.status, response.statusText);
+        // If admin portal fails, try the client endpoint
+        if (response.status === 404) {
+          const clientResponse = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${ticketId}/messages/`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (clientResponse.ok) {
+            const clientResult = await clientResponse.json();
+            setMessages(clientResult.data || []);
+          } else {
+            console.error('Failed to fetch messages from client endpoint:', clientResponse.status);
+          }
+        }
       }
     } catch (error) {
       console.error('Failed to fetch messages:', error);
