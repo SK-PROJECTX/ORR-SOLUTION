@@ -245,8 +245,6 @@ export default function OnboardingPage() {
 
   const getCurrentAnswer = () => {
     const key = `${currentSection}-${currentStep}`;
-    console.log("hi there");
-    
     return answers[key] || (currentStepData.type === "multiple" ? [] : "");
   };
 

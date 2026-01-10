@@ -1,46 +1,112 @@
-import React from "react";
+'use client';
+
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ApproachSection() {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const cardRef = useRef(null);
+  const nodesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
+  const linesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    gsap.fromTo(titleRef.current,
+      { opacity: 0, y: -50, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)",
+        scrollTrigger: { trigger: titleRef.current, start: "top 80%", toggleActions: "play none none none" }
+      }
+    );
+
+    gsap.fromTo(cardRef.current,
+      { opacity: 0, x: -150, rotateY: -30 },
+      { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
+        scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
+      }
+    );
+
+    nodesRef.current.forEach((node, i) => {
+      if (node) {
+        gsap.fromTo(node,
+          { scale: 0, opacity: 0, rotate: -180 },
+          { scale: 1, opacity: 1, rotate: 0, duration: 0.8, delay: 0.5 + i * 0.2, ease: "elastic.out(1, 0.6)",
+            scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
+          }
+        );
+      }
+    });
+
+    paragraphsRef.current.forEach((p, i) => {
+      if (p) {
+        const words = p.textContent!.split(' ');
+        p.innerHTML = words.map(word => `<span style="display:inline;opacity:0">${word} </span>`).join('');
+        
+        gsap.to(p.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.03,
+          ease: "power2.out",
+          scrollTrigger: { trigger: p, start: "top 85%", toggleActions: "play none none none" }
+        });
+      }
+    });
+
+    linesRef.current.forEach((line, i) => {
+      if (line) {
+        gsap.fromTo(line,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 1, delay: 0.5 + i * 0.3, ease: "power3.inOut",
+            scrollTrigger: { trigger: line, start: "top 85%", toggleActions: "play none none none" }
+          }
+        );
+      }
+    });
+
+
+  }, []);
+
   return (
-    <section className="relative w-full flex flex-col items-start pr-4 py-20   bg-cover bg-center" style={{ backgroundImage: "url('/path-to-your-stars-bg.png')" }}>
-      {/* Title */}
-      <h2 className="text-white text-3xl md:text-5xl font-semibold text-center mb-10 font-poppins w-full flex justify-center py-7">
-        Our <span className="text-[#3DFF7C] pl-5">Approach</span>
+    <section ref={sectionRef} className="relative w-full flex flex-col items-start pr-4 py-20 bg-cover bg-center">
+      <h2 ref={titleRef} className="text-white text-3xl md:text-5xl font-semibold text-center mb-10 font-poppins w-full flex justify-center py-7">
+        Supporting <span className="text-[#3DFF7C] pl-5">Copy</span>
       </h2>
 
-      {/* Card */}
       <div className="relative">
-
-        {/* Glow Image Under */}
         <img
           src="/images/curl.svg"
           alt="glow"
-          className="absolute -bottom-120 -right-30 w-[40rem] opacity-90 pointer-events-none select-none z-[-5]"
+          className="absolute -bottom-50 sm:-bottom-120 -right-30 w-[40rem] opacity-90 pointer-events-none select-none z-[-5]"
         />
       
-      <div className=" w-full max-w-7xl ml-0 bg border-t-[0.5rem] border-r-[0.5rem] border-b-[0.5rem] border-l-0 border-white/20 backdrop-blur-md bg-card z-1 rounded-tr-[32px] rounded-br-[32px] p-10 md:p-14 shadow-lg space-y-7 ">
+        <div ref={cardRef} className="w-full max-w-7xl ml-0 bg border-t-[0.5rem] border-r-[0.5rem] border-b-[0.5rem] border-l-0 border-white/20 backdrop-blur-md bg-card z-1 rounded-tr-[91.25px] rounded-br-[91.25px] p-10 md:p-14 shadow-lg space-y-7 overflow-hidden">
+          <div ref={el => { nodesRef.current[0] = el; }} className="absolute right-[-28px] top-[20%] w-14 h-14 bg-[#0B2E4E] rounded-full flex items-center justify-center shadow-[0_0_25px_#3DFF7C]">
+            <div className="w-9 h-9 bg-[#3DFF7C] rounded-full" />
+          </div>
+          <div ref={el => { nodesRef.current[1] = el; }} className="absolute right-[-28px] bottom-[20%] w-14 h-14 bg-[#0B2E4E] rounded-full flex items-center justify-center shadow-[0_0_25px_#3DFF7C]">
+            <div className="w-9 h-9 bg-[#3DFF7C] rounded-full" />
+          </div>
 
-        {/* Side nodes */}
-        <div className="absolute right-[-28px] top-[20%] w-14 h-14 bg-[#0B2E4E] rounded-full flex items-center justify-center shadow-[0_0_25px_#3DFF7C]">
-          <div className="w-9 h-9 bg-[#3DFF7C] rounded-full" />
+          <p ref={el => { paragraphsRef.current[0] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins mb-10 break-words">
+            Just like a skilled general practitioner, we start from your story not our framework. We take time to understand how your business really works before prescribing anything.
+          </p>
+
+          <div ref={el => { linesRef.current[0] = el; }} className="w-full h-[2px] bg-[#3DFF7C] mb-10" />
+
+          <p ref={el => { paragraphsRef.current[1] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins mb-10 break-words">
+            We're not a lone consultant — we're a central coordination layer with a distributed network behind it. When needed, we draw on specialists across continents, but you always deal with one point of contact: ORR, focused on what's best for you.
+          </p>
+
+          <div ref={el => { linesRef.current[1] = el; }} className="w-full h-[2px] bg-[#3DFF7C] mb-10" />
+
+          <p ref={el => { paragraphsRef.current[2] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins break-words">
+            We fix what's slowing you down, strengthen systems around how your people actually work, and when deeper input is needed, we bring it in at the right moment — always in service of your goals.
+          </p>
         </div>
-        <div className="absolute right-[-28px] bottom-[20%] w-14 h-14 bg-[#0B2E4E] rounded-full flex items-center justify-center shadow-[0_0_25px_#3DFF7C]">
-          <div className="w-9 h-9 bg-[#3DFF7C] rounded-full" />
-        </div>
-
-        {/* Text Content */}
-        <p className="text-white/90 leading-relaxed text-[25px] font-poppins mb-10">
-          Just like a skilled general practitioner, we take time to understand your whole
-          business before prescribing solutions.
-        </p>
-
-        <div className="w-full h-[2px] bg-[#3DFF7C] mb-10" />
-
-        <p className="text-white/90 leading-relaxed text-[25px] font-poppins">
-          We fix what's slowing you down, strengthen your systems, and when you need specialised
-          expertise, we tap into our global network of partners to get you the right results — fast.
-        </p>
-      </div>
       </div>
     </section>
   );
