@@ -42,7 +42,7 @@ export default function NetworkAdvantageSection({
   }, []);
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
+    <section className="relative z-30 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
       <style jsx>{`
         .animate-slide-in {
           animation: slideIn 0.7s ease-out forwards;
@@ -60,8 +60,8 @@ export default function NetworkAdvantageSection({
         }
         
         .slide-animate {
-          opacity: 0;
-          transform: translateY(30px);
+          opacity: 1;
+          transform: translateY(0);
         }
       `}</style>
       <div ref={headerRef} className="text-center mb-16 slide-animate">

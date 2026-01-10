@@ -1,133 +1,76 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
-const processCards = [
-  {
-    id: "01",
-    title: "The Beginning", 
-    bullet1: "A quiet conversation.",
-    bullet2: "One problem.",
-    bullet3: "One pressure point.",
-    bullet4: "One story that finally gets told.",
-    description1: "We listen. Properly.",
-    description2: "Not to diagnose too fast, not to impress —",
-    description3: "but to understand how your organisation actually breathes.",
-    description4: "As you scroll, the screen lights up with your world: the systems you built, the gaps you tolerate, the ideas you haven't voiced yet.",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop"
-  },
-  {
-    id: "02",
-    title: "The First Map", 
-    subtitle: "After the meeting, the noise clears.",
-    description: "We open a blank page and begin drawing the first map of your organisation: where things flow, where they clog, where hidden energy leaks.",
-    bullet1: "No polish.",
-    bullet2: "No sales pitch.",
-    bullet3: "Just thinking in writing — your case file begins here.",
-    description1: "This becomes the backbone of everything that follows.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop"
-  },
-  {
-    id: "03",
-    title: "The Deepening", 
-    subtitle: "The map sharpens.",
-    description: "We pull in the right forms of intelligence: domain insight, targeted research, regulatory skeletons, operational patterns, AI opportunities, risk shadows.",
-    bullet1: "Only what adds value.",
-    bullet2: "No sales pitch.",
-    bullet3: "Nothing that inflates the process.",
-    description1: "Your world becomes clearer, not bigger.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop"
-  },
-  {
-    id: "04",
-    title: "The Second Conversation", 
-    subtitle: "Now the questions get sharper.",
-    bullet1: "We return to you — briefly, precisely.",
-    bullet2: "To test assumptions.",
-    bullet3: "To correct tone.",
-    bullet4: "To realign the map with the reality you inhabit.",
-    description1: "This is where the document stops being analysis and starts becoming a design for action.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop"
-  },
-  {
-    id: "05",
-    title: "The ORR Report", 
-    subtitle: "You reach the decision point.",
-    description: "What you receive is not decoration — but a structured, decision-ready model:",
-    bullet1: "What is happening.",
-    bullet2: "Why it's happening.",
-    bullet3: "What must change now.",
-    bullet4: "What can grow later.",
-    bullet5: "And a modus operandi that ties it all together.",
-    description1: "A blueprint that stands on its own. With us, or without us.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
-  },
-  {
-    id: "06",
-    title: "The Meeting Architecture", 
-    subtitle: "Behind the scenes, the rhythm is simple:",
-    description: "First Meeting → Discovery → Follow-Up → Report Review",
-    bullet1: "Each one short.",
-    bullet2: "Each one deliberate.",
-    bullet3: "Each one designed to move the case forward, never sideways.",
-    description1: "This cadence keeps the process light, while the thinking stays deep.",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=600&fit=crop"
-  },
-  {
-    id: "07",
-    title: "The Choice", 
-    subtitle: "With the report in hand, you choose the path:",
-    bullet1: "Stop here.",
-    bullet2: "Use the blueprint internally.",
-    wordbreak: "OR",
-    bullet3: "Continue.",
-    bullet4: "Let ORR coordinate implementation,",
-    bullet5: "structure your systems,",
-    bullet6: "refine your operations,",
-    bullet7: "and support your growth through a sustained relationship.",
-    description1: "Either way:",
-    description2: "you walk away with clarity.",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=600&fit=crop"
-  },
-  {
-    id: "08",
-    title: "The Portal", 
-    subtitle: "If you stay with us, the work shifts into a different gear.",
-    description: "The Client Portal unlocks:",
-    bullet1: "your meetings,",
-    bullet2: "your documents,",
-    bullet3: "your tasks,",
-    bullet4: "your insights,",
-    bullet5: "your Workspace.",
-    bullet8: "One interface.",
-    bullet9: "No scattered emails",
-    description2: "A single coordination layer for your ongoing transformation.",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop"
-  },
-  {
-    id: "09",
-    title: "The Philosophy Underneath", 
-    subtitle: "At every step, the model holds:",
-    description: "Discover → Diagnose → Design → Deploy → Grow",
-    description1: "It is the Business GP method — the quiet, structured way to stabilise an organisation and then help it operate like a living system:",
-    description2: "coherent, adaptive, responsive.",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&h=600&fit=crop"
-  },
-  {
-    id: "10",
-    title: "The Invitation", 
-    subtitle: "If this approach feels different, it's because it is.",
-    description1: "It is slower at the beginning, faster at the end, and clearer all the way through.",
-    description2: "Start with one meeting. The rest unfolds from there.",
-    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=600&fit=crop",
-    buttonText: "Book Your First Meeting",
-    buttonText2: "Explore our services",
-    buttonText3: "Access the Client Portal"
-  },
-];
+interface ProcessStep {
+  id: number;
+  step_number: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  bullet1?: string;
+  bullet2?: string;
+  bullet3?: string;
+  bullet4?: string;
+  bullet5?: string;
+  bullet6?: string;
+  bullet7?: string;
+  bullet8?: string;
+  bullet9?: string;
+  wordbreak?: string;
+  description1?: string;
+  description2?: string;
+  description3?: string;
+  description4?: string;
+  image_url: string;
+  button_text?: string;
+  button_text2?: string;
+  button_text3?: string;
+  order: number;
+  is_active: boolean;
+}
+
+interface PageData {
+  id: number;
+  hero_title: string;
+  meta_title?: string;
+  meta_description?: string;
+  is_active: boolean;
+}
+
+interface HowWeOperateData {
+  page: PageData;
+  steps: ProcessStep[];
+}
 
 export default function StickyScrollSplit() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [data, setData] = useState<HowWeOperateData | null>(null);
+  const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('🔄 Fetching How We Operate data from backend...');
+        const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/how-we-operate/');
+        console.log('✅ How We Operate API Response:', response.data);
+        if (response.data.success) {
+          console.log('📊 How We Operate Data Structure:', {
+            page: response.data.data.page,
+            steps: response.data.data.steps.length + ' steps'
+          });
+          setData(response.data.data);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching How We Operate data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,7 +94,23 @@ export default function StickyScrollSplit() {
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [data]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl">Error loading content</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -159,17 +118,21 @@ export default function StickyScrollSplit() {
       <div className="relative w-full py-20 pt-32 text-white">
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
           <h1 className="text-center text-emerald-400 text-5xl md:text-6xl font-bold mb-12">
-            How We <span className="text-white">Operate</span>
+            {data.page.hero_title?.split(' ').map((word, index) => (
+              <span key={index} className={index === 0 ? 'text-emerald-400' : 'text-white'}>
+                {word}{' '}
+              </span>
+            )) || 'How We Operate'}
           </h1>
         </div>
       </div>
 
       {/* Split Layout Section */}
-      <div ref={containerRef} className="relative  mt-90 lg:mt-0 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20 overflow-hidden">
+      <div ref={containerRef} className="relative mt-90 lg:mt-0 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 pb-20 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Left Side - Stacking Cards */}
           <div>
-            {processCards.map((card, index) => (
+            {data.steps.map((card, index) => (
               <div
                 key={card.id}
                 className="card-section"
@@ -196,7 +159,7 @@ export default function StickyScrollSplit() {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div className="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      {card.id}
+                      {card.step_number}
                     </div>
                     <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-2xl">+</span>
@@ -235,19 +198,19 @@ export default function StickyScrollSplit() {
                   {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description3}</p>}
                   {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description4}</p>}
                   
-                  {card.buttonText && (
+                  {card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
                       <button className="bg-emerald-400 text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
-                        {card.buttonText}
+                        {card.button_text}
                       </button>
-                      {card.buttonText2 && (
+                      {card.button_text2 && (
                         <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          {card.buttonText2}
+                          {card.button_text2}
                         </button>
                       )}
-                      {card.buttonText3 && (
+                      {card.button_text3 && (
                         <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          {card.buttonText3}
+                          {card.button_text3}
                         </button>
                       )}
                     </div>
@@ -264,8 +227,8 @@ export default function StickyScrollSplit() {
                 <div className="relative w-full h-full rounded-xl lg:rounded-3xl overflow-hidden shadow-2xl">
                   <img
                     key={activeIndex}
-                    src={processCards[activeIndex].image}
-                    alt={processCards[activeIndex].title}
+                    src={data.steps[activeIndex]?.image_url}
+                    alt={data.steps[activeIndex]?.title}
                     className="w-full h-full object-cover transition-all duration-1000 ease-out"
                     style={{
                       transform: 'scale(1.05)',
@@ -275,10 +238,10 @@ export default function StickyScrollSplit() {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                   <div className="absolute bottom-2 lg:bottom-8 left-2 lg:left-8 right-2 lg:right-8">
                     <div className="text-emerald-400 text-sm lg:text-xl font-bold mb-1 lg:mb-2">
-                      {processCards[activeIndex].id}
+                      {data.steps[activeIndex]?.step_number}
                     </div>
                     <div className="text-white text-sm lg:text-2xl xl:text-3xl font-bold">
-                      {processCards[activeIndex].title}
+                      {data.steps[activeIndex]?.title}
                     </div>
                   </div>
                 </div>

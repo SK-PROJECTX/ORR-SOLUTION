@@ -34,7 +34,7 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-[#0A1B2E] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
+    <section className="relative min-h-screen bg-[#0A1B2E] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16 z-30">
       <style jsx>{`
         .animate-fade-up {
           animation: fadeUp 0.8s ease-out forwards;
@@ -52,25 +52,25 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
         }
         
         .fade-animate {
-          opacity: 0;
-          transform: translateY(40px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .animate-title-glow {
           animation: titleGlow 1s ease-out 0.5s forwards;
-          opacity: 0;
+          opacity: 1;
         }
         
         .animate-subtitle-slide {
           animation: subtitleSlide 0.8s ease-out 0.7s forwards;
-          opacity: 0;
-          transform: translateX(-30px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .animate-paragraph-fade {
           animation: paragraphFade 0.8s ease-out forwards;
-          opacity: 0;
-          transform: translateY(20px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         @keyframes titleGlow {

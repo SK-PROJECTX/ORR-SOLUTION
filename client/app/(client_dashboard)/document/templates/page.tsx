@@ -14,6 +14,7 @@ interface Template {
   lastUpdated: string;
   tags: string[];
   preview?: string;
+  filePath?: string;
 }
 
 const templates: Template[] = [
@@ -40,7 +41,30 @@ const templates: Template[] = [
     lastUpdated: '2024-01-12',
     tags: ['consultation', 'client', 'form']
   },
-
+  {
+    id: '3',
+    title: 'ORR Cookies Policy V1.4',
+    description: 'Official ORR cookies policy document outlining data collection and usage practices',
+    category: 'Legal',
+    type: 'document',
+    downloads: 245,
+    rating: 4.9,
+    lastUpdated: '2026-01-05',
+    tags: ['legal', 'cookies', 'policy', 'privacy'],
+    filePath: '20260105_ORR_Cookiespolicy_V1.4.docx'
+  },
+  {
+    id: '4',
+    title: 'ORR Privacy Policy V1.5',
+    description: 'Comprehensive privacy policy document detailing data protection and user rights',
+    category: 'Legal',
+    type: 'document',
+    downloads: 312,
+    rating: 4.9,
+    lastUpdated: '2026-01-05',
+    tags: ['legal', 'privacy', 'policy', 'data-protection'],
+    filePath: '20260105_ORR_Privacypolicy_V1.5.docx'
+  }
 ];
 
 const categories = ['All', 'Strategy', 'Consultation', 'Proposals', 'Risk Management', 'Reports', 'Analysis'];
@@ -62,6 +86,17 @@ export default function TemplatesPage() {
     
     return matchesSearch && matchesCategory && matchesType;
   });
+
+  const handleDownload = (template: Template) => {
+    if (template.filePath) {
+      const link = document.createElement('a');
+      link.href = `/document/templates/${template.filePath}`;
+      link.download = template.filePath;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -110,7 +145,10 @@ export default function TemplatesPage() {
       </div>
        */}
       <div className="flex gap-2">
-        <button className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
+        <button 
+          onClick={() => handleDownload(template)}
+          className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
+        >
           <Download className="w-4 h-4" />
           Download
         </button>
@@ -147,7 +185,10 @@ export default function TemplatesPage() {
         </div>
         
         <div className="flex gap-2 flex-shrink-0">
-          <button className="flex items-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
+          <button 
+            onClick={() => handleDownload(template)}
+            className="flex items-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
             <Download className="w-4 h-4" />
             Download
           </button>

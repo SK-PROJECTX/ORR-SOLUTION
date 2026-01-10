@@ -7,7 +7,7 @@ interface FinalCTASectionProps {
 
 export default function FinalCTASection({ title, highlightedTitle, description, buttonText }: FinalCTASectionProps) {
   return (
-    <section className="relative z-10 py-24 text-center">
+    <section className="relative z-30 py-24 text-center">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
           {title}

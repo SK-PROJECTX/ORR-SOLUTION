@@ -40,7 +40,7 @@ export default function DigitalSolutionsSection({
   }, []);
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
+    <section className="relative z-30 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16">
       <style jsx>{`
         .animate-slide-in {
           animation: slideIn 0.8s ease-out forwards;
@@ -58,47 +58,47 @@ export default function DigitalSolutionsSection({
         }
         
         .slide-left {
-          opacity: 0;
-          transform: translateX(-30px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .slide-right {
-          opacity: 0;
-          transform: translateX(30px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .animate-title-bounce {
           animation: titleBounce 1s ease-out 0.3s forwards;
-          opacity: 0;
-          transform: translateY(-20px);
+          opacity: 1;
+          transform: translateY(0);
         }
         
         .animate-subtitle-glow {
           animation: subtitleGlow 1s ease-out 0.5s forwards;
-          opacity: 0;
+          opacity: 1;
         }
         
         .animate-description-fade {
           animation: descriptionFade 1s ease-out 0.7s forwards;
-          opacity: 0;
+          opacity: 1;
         }
         
         .animate-section-title {
           animation: sectionTitle 0.8s ease-out 0.4s forwards;
-          opacity: 0;
-          transform: translateX(-20px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .animate-list-item {
           animation: listItem 0.6s ease-out forwards;
-          opacity: 0;
-          transform: translateX(-15px);
+          opacity: 1;
+          transform: translateX(0);
         }
         
         .animate-feature-pop {
           animation: featurePop 0.5s ease-out forwards;
-          opacity: 0;
-          transform: scale(0.9);
+          opacity: 1;
+          transform: scale(1);
         }
         
         @keyframes titleBounce {
