@@ -40,50 +40,7 @@ const templates: Template[] = [
     lastUpdated: '2024-01-12',
     tags: ['consultation', 'client', 'form']
   },
-  {
-    id: '3',
-    title: 'Project Proposal Template',
-    description: 'Professional template for creating detailed project proposals',
-    category: 'Proposals',
-    type: 'document',
-    downloads: 2100,
-    rating: 4.9,
-    lastUpdated: '2024-01-18',
-    tags: ['proposal', 'project', 'professional']
-  },
-  {
-    id: '4',
-    title: 'Risk Assessment Framework',
-    description: 'Comprehensive framework for identifying and assessing business risks',
-    category: 'Risk Management',
-    type: 'document',
-    downloads: 675,
-    rating: 4.7,
-    lastUpdated: '2024-01-10',
-    tags: ['risk', 'assessment', 'framework']
-  },
-  {
-    id: '5',
-    title: 'Monthly Progress Report',
-    description: 'Template for tracking and reporting monthly project progress',
-    category: 'Reports',
-    type: 'report',
-    downloads: 1450,
-    rating: 4.5,
-    lastUpdated: '2024-01-20',
-    tags: ['progress', 'monthly', 'tracking']
-  },
-  {
-    id: '6',
-    title: 'Stakeholder Analysis Template',
-    description: 'Identify and analyze key stakeholders for your projects',
-    category: 'Analysis',
-    type: 'document',
-    downloads: 820,
-    rating: 4.6,
-    lastUpdated: '2024-01-14',
-    tags: ['stakeholder', 'analysis', 'project']
-  }
+
 ];
 
 const categories = ['All', 'Strategy', 'Consultation', 'Proposals', 'Risk Management', 'Reports', 'Analysis'];
@@ -147,11 +104,11 @@ export default function TemplatesPage() {
         ))}
       </div>
       
-      <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
+      {/* <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
         <span>{template.downloads} downloads</span>
         <span>Updated {new Date(template.lastUpdated).toLocaleDateString()}</span>
       </div>
-      
+       */}
       <div className="flex gap-2">
         <button className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
           <Download className="w-4 h-4" />
