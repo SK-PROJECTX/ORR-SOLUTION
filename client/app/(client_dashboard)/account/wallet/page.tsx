@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
@@ -12,18 +12,18 @@ export default function PlansBillingPage() {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isPlanDropdownOpen, setIsPlanDropdownOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const { 
-    pricingPlans, 
-    paymentMethods, 
+  const {
+    pricingPlans,
+    paymentMethods,
     billingHistory,
-    selectedPlan, 
+    selectedPlan,
     subscriptionStatus,
     isLoading,
-    fetchPricingPlans, 
-    fetchPaymentMethods, 
+    fetchPricingPlans,
+    fetchPaymentMethods,
     fetchBillingHistory,
     fetchSubscriptionStatus,
-    setSelectedPlan 
+    setSelectedPlan
   } = useWalletStore();
   const { addToast } = useToastStore();
 
@@ -69,11 +69,11 @@ export default function PlansBillingPage() {
 
             <div className="flex items-end justify-between">
               <p className="text-3xl font-bold text-[#22C55E]">
-                ${selectedPlan?.amount || 20} 
+                ${selectedPlan?.amount || 20}
                 <span className="text-sm text-gray-300">per {selectedPlan?.billing_type === 'monthly' ? 'month' : selectedPlan?.billing_type || 'month'}</span>
               </p>
               <div className="relative">
-                <button 
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsPlanDropdownOpen(!isPlanDropdownOpen);
@@ -82,7 +82,7 @@ export default function PlansBillingPage() {
                 >
                   Change plan <ChevronDown className="w-4 h-4" />
                 </button>
-                
+
                 {isPlanDropdownOpen && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-[#071626] border border-[#1E3A4B] rounded-lg shadow-lg z-10">
                     {pricingPlans.map((plan) => (
@@ -96,9 +96,8 @@ export default function PlansBillingPage() {
                           }
                         }}
                         disabled={plan.amount === 220 && subscriptionStatus?.is_subscribed}
-                        className={`w-full text-left p-3 hover:bg-[#1E3A4B] first:rounded-t-lg last:rounded-b-lg ${
-                          plan.amount === 220 && subscriptionStatus?.is_subscribed ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
+                        className={`w-full text-left p-3 hover:bg-[#1E3A4B] first:rounded-t-lg last:rounded-b-lg ${plan.amount === 220 && subscriptionStatus?.is_subscribed ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
                       >
                         <div className="flex justify-between items-center">
                           <div>
@@ -116,12 +115,12 @@ export default function PlansBillingPage() {
                 )}
               </div>
             </div>
-            
+
             <div className="mt-6">
-              <button 
+              <button
                 onClick={() => {
                   if (!selectedPlan) return;
-                  const isReportPlan = selectedPlan.amount === 220;
+                  const isReportPlan = (selectedPlan.name?.toLowerCase().includes('report')) || (selectedPlan.amount === 220);
                   if (isReportPlan && subscriptionStatus?.is_subscribed) {
                     addToast('You are already subscribed to the report plan', 'info');
                     return;
@@ -132,17 +131,16 @@ export default function PlansBillingPage() {
                   }
                   setIsCardModalOpen(true);
                 }}
-                disabled={(selectedPlan?.amount === 220 && subscriptionStatus?.is_subscribed) || checkoutLoading}
-                className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                  selectedPlan?.amount === 220 && subscriptionStatus?.is_subscribed 
-                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-                    : 'bg-[#22C55E] text-black hover:bg-[#22C55E]/90'
-                }`}
+                disabled={(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed) || checkoutLoading}
+                className={`w-full py-3 rounded-lg font-semibold transition-colors ${(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed)
+                  ? 'bg-[#1E3A4B] text-gray-500 cursor-not-allowed border border-gray-700 opacity-60'
+                  : 'bg-[#22C55E] text-black hover:bg-[#22C55E]/90'
+                  }`}
               >
-                {selectedPlan?.amount === 220 && subscriptionStatus?.is_subscribed 
-                  ? 'Subscribed' 
-                  : checkoutLoading 
-                    ? 'Processing...' 
+                {(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed)
+                  ? 'Subscribed'
+                  : checkoutLoading
+                    ? 'Processing...'
                     : `Checkout - $${selectedPlan?.amount || 20}`
                 }
               </button>
@@ -157,7 +155,7 @@ export default function PlansBillingPage() {
                 <p className="text-sm text-gray-300">Change how you pay for your plan.</p>
               </div>
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={async () => {
                     try {
                       await fetchPaymentMethods();
@@ -170,7 +168,7 @@ export default function PlansBillingPage() {
                 >
                   🔄 Refresh
                 </button>
-                <button 
+                <button
                   onClick={() => setIsModalOpen(true)}
                   className="text-[#22C55E] text-sm hover:text-[#22C55E]/80"
                 >
@@ -191,7 +189,7 @@ export default function PlansBillingPage() {
                       default: return '💳';
                     }
                   };
-                  
+
                   const getCardColor = (brand: string) => {
                     switch (brand.toLowerCase()) {
                       case 'visa': return 'text-blue-600';
@@ -201,7 +199,7 @@ export default function PlansBillingPage() {
                       default: return 'text-gray-600';
                     }
                   };
-                  
+
                   return (
                     <div key={method.id} className="bg-white text-black rounded-lg p-4 flex items-center justify-between shadow">
                       <div className="flex items-center gap-4">
@@ -214,7 +212,7 @@ export default function PlansBillingPage() {
                           <span className="text-xs text-gray-500">Expiry {method.exp_month.toString().padStart(2, '0')}/{method.exp_year}</span>
                         </div>
                       </div>
-                      <button 
+                      <button
                         onClick={() => setIsModalOpen(true)}
                         className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm hover:bg-[#22C55E]/90"
                       >
@@ -227,7 +225,7 @@ export default function PlansBillingPage() {
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-400 mb-4">No payment methods added</p>
-                <button 
+                <button
                   onClick={() => setIsModalOpen(true)}
                   className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm hover:bg-[#22C55E]/90"
                 >
@@ -264,13 +262,12 @@ export default function PlansBillingPage() {
               <tbody>
                 {billingHistory.length > 0 ? (
                   billingHistory.map((bill) => (
-                    <tr key={bill.id} className="border-b border-[#1E3A4B] text-gray-200">
+                    <tr key={bill.id} className="border-b border-[#1E3A4B] text-gray-200 text-nowrap">
                       <td className="py-4 flex items-center gap-3">
-                        <div className={`w-4 h-4 border rounded-sm ${
-                          bill.status.toLowerCase() === 'paid' 
-                            ? 'border-[#22C55E] bg-[#22C55E]' 
-                            : 'border-yellow-500 bg-yellow-500'
-                        }`}></div>
+                        <div className={`w-4 h-4 border rounded-sm ${bill.status.toLowerCase() === 'paid'
+                          ? 'border-[#22C55E] bg-[#22C55E]'
+                          : 'border-yellow-500 bg-yellow-500'
+                          }`}></div>
                         <span className="text-[#22C55E]">{bill.billing_title}</span>
                         <span className="text-gray-400">{bill.status}</span>
                       </td>
@@ -280,7 +277,7 @@ export default function PlansBillingPage() {
                       <td>{bill.users} Users</td>
                       <td>
                         {bill.hosted_invoice_url && (
-                          <a 
+                          <a
                             href={bill.hosted_invoice_url}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -304,16 +301,16 @@ export default function PlansBillingPage() {
           </div>
         </div>
       </div>
-      
-      <PaymentMethodModal 
-        isOpen={isModalOpen} 
+
+      <PaymentMethodModal
+        isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
           fetchPaymentMethods();
-        }} 
-        mode="add" 
+        }}
+        mode="add"
       />
-      
+
       <PaymentCardModal
         isOpen={isCardModalOpen}
         onClose={() => setIsCardModalOpen(false)}
@@ -321,31 +318,23 @@ export default function PlansBillingPage() {
         isLoading={checkoutLoading}
         onSelectCard={async (paymentMethodId) => {
           if (!selectedPlan) return;
-          
+
           setCheckoutLoading(true);
           try {
-            const response = await fetch('https://orr-backend-web-latest.onrender.com/payments/create-checkout/', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-              },
-              body: JSON.stringify({
-                price_id: selectedPlan.stripe_price_id,
-                payment_method_id: paymentMethodId
-              })
-            });
-            
-            const checkoutData = await response.json();
-            
-            if (response.ok && checkoutData.data?.checkout_url) {
-              addToast('Redirecting to checkout...', 'success');
-              window.location.href = checkoutData.data.checkout_url;
+            const { createCheckoutSession } = useWalletStore.getState();
+            const checkoutUrl = await createCheckoutSession(
+              selectedPlan.stripe_price_id,
+              paymentMethodId
+            );
+
+            if (checkoutUrl) {
+              window.location.href = checkoutUrl;
             } else {
-              addToast(checkoutData.message || 'Checkout failed', 'error');
+              // Refresh status if it was a direct subscription (no redirect)
+              await fetchSubscriptionStatus();
             }
           } catch (error) {
-            addToast('Failed to create checkout session', 'error');
+            console.error('Checkout error:', error);
           } finally {
             setCheckoutLoading(false);
             setIsCardModalOpen(false);
