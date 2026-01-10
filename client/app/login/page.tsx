@@ -27,8 +27,9 @@ export default function Page() {
     try {
       const success = await login(formData.email, formData.password);
       if (success) {
-        const isCompleted = useOnboardingStore.getState().onboardingStatus?.is_completed;
-        if (isCompleted) {
+        const onboardingStatus = useOnboardingStore.getState().onboardingStatus;
+
+        if (onboardingStatus && onboardingStatus.is_completed) {
           router.push('/dashboard');
         } else {
           router.push('/onboarding');
