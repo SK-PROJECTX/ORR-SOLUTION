@@ -195,6 +195,15 @@ export default function OnboardingPage() {
       return;
     }
 
+    // Validate project description length
+    const projectDescription = finalAnswers['4-4'] || '';
+    if (projectDescription.trim().length < 10) {
+      addToast('Project description must be at least 10 characters long.', 'error');
+      setCurrentSection(4);
+      setCurrentStep(4);
+      return;
+    }
+
     const onboardingData = {
       jurisdiction: finalAnswers['1-0'] === 'Others' ? 'other' : finalAnswers['1-0']?.toLowerCase() || 'malta',
       jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other jurisdiction' : undefined,
@@ -207,9 +216,19 @@ export default function OnboardingPage() {
       accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept' || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
       portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,
-      user_type: finalAnswers['4-0'] === 'Others' ? 'other' : finalAnswers['4-0']?.toLowerCase().replace(/[^a-z]/g, '_') || 'founder',
+      user_type: finalAnswers['4-0'] === 'Others' ? 'other' : 
+        finalAnswers['4-0'] === 'Small business owner' ? 'small_business' :
+        finalAnswers['4-0'] === 'Founder/Entrepreneur' ? 'founder' :
+        finalAnswers['4-0'] === 'Corporate representative' ? 'corporate' :
+        finalAnswers['4-0'] === 'Public sector/NGO' ? 'public_ngo' :
+        finalAnswers['4-0'] === 'Researcher/Academic' ? 'academic' :
+        finalAnswers['4-0'] === 'Individual professional' ? 'professional' : 'founder',
       user_type_other: finalAnswers['4-0'] === 'Others' ? 'other user type' : undefined,
-      project_stage: finalAnswers['4-1']?.toLowerCase().replace(/[^a-z]/g, '_') || 'exploration',
+      project_stage: finalAnswers['4-1'] === 'Early Exploration' ? 'exploration' :
+        finalAnswers['4-1'] === 'Pre-Startup/Planning' ? 'pre_startup' :
+        finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
+        finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
+        finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
       orr_pillars: finalAnswers['4-2'] || '',
       has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
       project_description: finalAnswers['4-4'] || '',

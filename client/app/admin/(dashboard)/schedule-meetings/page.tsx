@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { enUS } from "date-fns/locale/en-US";
+import { format, startOfWeek, getDay } from "date-fns";
+import { enUS } from "date-fns/locale";
 import { MoreVertical } from "lucide-react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./calendar.css";
 import { Calendar as CalendarIcon } from "lucide-react";
+
+// Simple parse function to replace date-fns parse
+const parse = (dateString: string, formatString: string, referenceDate: Date) => {
+  return new Date(dateString);
+};
 
 interface Event {
   id: number;
