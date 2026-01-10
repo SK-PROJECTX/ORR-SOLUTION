@@ -10,6 +10,8 @@ export function LandingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const [isLegalOpen, setIsLegalOpen] = useState(false);
+  const [isMobileLegalOpen, setIsMobileLegalOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,7 +56,24 @@ export function LandingHeader() {
             </div>
           </div>
           <Link href="/resources-blogs" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Resources & Blogs</Link>
-          <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Legal & Policy</Link>
+          <div className="relative" onMouseEnter={() => setIsLegalOpen(true)} onMouseLeave={() => setIsLegalOpen(false)}>
+            <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
+              Legal & Policy
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </Link>
+            {isLegalOpen && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2">
+                <Link href="/cookie-policy" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
+                  Cookie Policy
+                </Link>
+                <Link href="/privacy-policy" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/privacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
+                  Privacy Policy
+                </Link>
+              </div>
+            )}
+          </div>
           <Link href="/contact" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Contact</Link>
         </nav>
 
@@ -125,7 +144,30 @@ export function LandingHeader() {
             </div>
             <Link href="/resources-blogs" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Resources & Blogs
             </Link>
-            <Link href="/legacy-policy" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Legacy & Policy</Link>
+            <div>
+              <button 
+                onClick={() => setIsMobileLegalOpen(!isMobileLegalOpen)}
+                className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}
+              >
+                Legal & Policy
+                <svg className={`w-4 h-4 transition-transform ${isMobileLegalOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isMobileLegalOpen && (
+                <div className="ml-4 mt-2 space-y-2">
+                  <Link href="/legacy-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Legal & Policy
+                  </Link>
+                  <Link href="/cookie-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Cookie Policy
+                  </Link>
+                  <Link href="/privacy-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/privacy-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    Privacy Policy
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link href="/contact" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-6 border-t border-white/10 flex items-center justify-between">
               <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign in</Link>

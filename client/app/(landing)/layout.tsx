@@ -1,6 +1,7 @@
 import { LandingHeader } from "../components/LandingHeader"; 
 import { LandingFooter } from "../components/LandingFooter";
 import AnimatedBackground from "../../components/AnimatedBackground";
+import { CookieConsent } from "../components/CookieConsent";
 
 export default function LandingLayout({
   children,
@@ -16,6 +17,7 @@ export default function LandingLayout({
         {children}
       </main>
       <LandingFooter />
+      <CookieConsent />
     </div>
   );
 }
