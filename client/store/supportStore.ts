@@ -3,6 +3,7 @@ import api from '@/lib/axios';
 import { useToastStore } from './toastStore';
 
 interface SupportTicket {
+  id: number;
   ticket_id: string;
   subject: string;
   status: 'new' | 'open' | 'pending' | 'resolved' | 'closed';

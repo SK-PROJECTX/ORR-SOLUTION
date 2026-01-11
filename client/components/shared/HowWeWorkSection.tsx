@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 
 interface HowWeWorkSectionProps {
+  title?: string;
   subtitle: string;
   description: string;
   sections: {
@@ -12,7 +13,7 @@ interface HowWeWorkSectionProps {
   layout?: 'grid' | 'single';
 }
 
-export default function HowWeWorkSection({ subtitle, description, sections, layout = 'grid' }: HowWeWorkSectionProps) {
+export default function HowWeWorkSection({ title, subtitle, description, sections, layout = 'grid' }: HowWeWorkSectionProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -96,11 +97,11 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
       `}</style>
       {/* Background stars */}
       <div className="absolute inset-0 bg-[url('/stars.png')] bg-cover opacity-20 pointer-events-none" />
-      
+
       <div className="relative z-10">
         <div ref={headerRef} className="text-center mb-16 fade-animate">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            How we work:
+            {title || "How we work:"}
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold text-[#47ff4c]">
             {subtitle}
@@ -126,11 +127,11 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
                   )}
                   <div className="space-y-4 text-gray-300 leading-relaxed">
                     {sections[0]?.content.map((paragraph, pIndex) => (
-                      <p key={pIndex} className="animate-paragraph-fade" style={{animationDelay: `${pIndex * 0.2}s`}}>{paragraph}</p>
+                      <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>{paragraph}</p>
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Decide section - top right */}
                 {sections[1] && (
                   <div className="bg-[#1E3A5F]/60 rounded-2xl p-8">
@@ -144,12 +145,12 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
                     )}
                     <div className="space-y-4 text-gray-300 leading-relaxed">
                       {sections[1].content.map((paragraph, pIndex) => (
-                        <p key={pIndex} className="animate-paragraph-fade" style={{animationDelay: `${pIndex * 0.2}s`}}>{paragraph}</p>
+                        <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>{paragraph}</p>
                       ))}
                     </div>
                   </div>
                 )}
-                
+
                 {/* Optimize section - bottom right */}
                 {sections[2] && (
                   <div className="bg-[#1E3A5F]/60 rounded-2xl p-8 ">
@@ -163,7 +164,7 @@ export default function HowWeWorkSection({ subtitle, description, sections, layo
                     )}
                     <div className="space-y-4 text-gray-300 leading-relaxed">
                       {sections[2].content.map((paragraph, pIndex) => (
-                        <p key={pIndex} className="animate-paragraph-fade" style={{animationDelay: `${pIndex * 0.2}s`}}>{paragraph}</p>
+                        <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>{paragraph}</p>
                       ))}
                     </div>
                   </div>
