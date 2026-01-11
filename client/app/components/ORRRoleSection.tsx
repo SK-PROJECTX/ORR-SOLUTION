@@ -42,7 +42,7 @@ export default function ORRRoleSection({ content, onContentUpdate }: ORRRoleSect
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-12 text-center">
+        <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mt-40 mb-12 text-center">
           ORR's<span className="text-[#33FF99]"> Role</span>
         </h2>
         <p ref={textRef} className="text-gray-300 text-center text-2xl mb-16 max-w-4xl mx-auto">
