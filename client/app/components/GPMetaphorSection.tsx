@@ -40,7 +40,12 @@ const systems = {
 
 const systemsArray = Object.values(systems);
 
-export default function GPMetaphorSection() {
+interface GPMetaphorSectionProps {
+  content?: any;
+  onContentUpdate?: (data: any) => Promise<void>;
+}
+
+export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaphorSectionProps) {
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image */}
@@ -57,7 +62,7 @@ export default function GPMetaphorSection() {
       {/* Animated background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
       <div className="relative z-10 text-center mb-5 sm:mb-15 lg:mb-10">
@@ -78,7 +83,7 @@ export default function GPMetaphorSection() {
           >
             {/* Glow effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-            
+
             {/* Content */}
             <div className="relative z-10">
               <div className="flex items-center mb-6">
@@ -87,17 +92,17 @@ export default function GPMetaphorSection() {
                   {system.label}
                 </h3>
               </div>
-              
+
               <p className="text-white/90 font-poppins font-light text-base leading-relaxed">
                 {system.text}
               </p>
-              
+
               {/* Decorative element */}
               <div className="absolute top-4 right-4 w-8 h-8 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full" />
               </div>
             </div>
-            
+
             {/* Morphing background pattern */}
             <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
               <svg className="w-full h-full" viewBox="0 0 100 100">
