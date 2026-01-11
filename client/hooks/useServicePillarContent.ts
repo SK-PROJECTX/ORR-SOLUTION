@@ -14,14 +14,41 @@ interface StrategicAdvisoryContent {
   service_2_description: string;
   service_3_title: string;
   service_3_description: string;
+  process_description?: string;
   process_title: string;
-  process_step_1: string;
-  process_step_2: string;
-  process_step_3: string;
-  process_step_4: string;
+  process_subtitle?: string;
+  process_step_1?: string;
+  process_step_1_title?: string;
+  process_step_1_subtitle?: string;
+  process_step_2?: string;
+  process_step_2_title?: string;
+  process_step_3?: string;
+  process_step_3_title?: string;
+  case_challenge?: string;
+  case_solution?: string;
+  case_result?: string;
+  case_image_alt?: string;
   cta_title: string;
   cta_description: string;
   cta_button_text: string;
+  
+  // Network Advantage Section
+  network_title?: string;
+  network_description?: string;
+  network_cards?: Array<{
+    title: string;
+    description: string;
+    icon: string;
+  }>;
+
+  // Digital Solutions Section
+  digital_title?: string;
+  digital_subtitle?: string;
+  digital_description?: string;
+  digital_image_alt?: string;
+  digital_who_is_this_for?: string[];
+  digital_features?: string[];
+
   meta_title: string;
   meta_description: string;
 }

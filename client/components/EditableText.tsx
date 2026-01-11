@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import { AuthService } from '../lib/auth';
 
 interface EditableTextProps {
@@ -11,14 +11,14 @@ interface EditableTextProps {
   multiline?: boolean;
 }
 
-export default function EditableText({
+const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
   content,
   onSave,
   className = '',
   tag = 'p',
   placeholder = 'Click to edit...',
   multiline = false
-}: EditableTextProps) {
+}, ref) => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(content || '');
   const [isSaving, setIsSaving] = useState(false);
@@ -31,12 +31,12 @@ export default function EditableText({
     const updateCanEdit = () => {
       setCanEdit(auth.canEdit());
     };
-    
+
     updateCanEdit();
-    
+
     // Update canEdit status every 2 seconds to catch auth changes
     const interval = setInterval(updateCanEdit, 2000);
-    
+
     return () => clearInterval(interval);
   }, [auth]);
 
@@ -100,6 +100,17 @@ export default function EditableText({
   };
 
   if (isEditing) {
+    const inputProps = {
+      ref: inputRef as any,
+      value,
+      onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(e.target.value),
+      onBlur: handleSave,
+      onKeyDown: handleKeyDown,
+      className: `${className} bg-white text-black p-2 rounded border-2 border-blue-500 focus:outline-none !text-black`,
+      placeholder,
+      disabled: isSaving,
+    };
+
     if (multiline) {
       return (
         <div className="relative">
@@ -145,9 +156,10 @@ export default function EditableText({
     }
   }
 
-  const Tag = tag;
+  // Cast Tag to any to avoid "Type 'ForwardedRef<HTMLElement>' is not assignable to type 'LegacyRef<any>'"
+  const Tag = tag as any;
   return (
-    <Tag {...editableProps}>
+    <Tag {...editableProps} ref={ref}>
       {content || placeholder}
       {canEdit && (
         <span className="ml-2 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity text-sm">
@@ -156,4 +168,8 @@ export default function EditableText({
       )}
     </Tag>
   );
-}
+});
+
+EditableText.displayName = 'EditableText';
+
+export default EditableText;

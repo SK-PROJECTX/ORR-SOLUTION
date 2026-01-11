@@ -64,30 +64,30 @@ export default function MessagesPage() {
   const fetchTickets = async () => {
     try {
       setLoading(true);
-      
+
       const token = localStorage.getItem('accessToken');
-      
+
       if (!token) {
         console.error('No authentication token found');
         setLoading(false);
         return;
       }
-      
+
       console.log('Using token:', token ? 'Token exists' : 'No token');
-      
+
       const response = await fetch('https://orr-backend-web-latest.onrender.com/tickets/', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
-      
+
       console.log('Response status:', response.status);
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log('Messages API Response:', data);
-        
+
         // Handle different response formats
         let ticketsArray = [];
         if (Array.isArray(data)) {
@@ -106,8 +106,8 @@ export default function MessagesPage() {
             ticketsArray = data.data.results;
           } else {
             // Convert single object to array or handle pagination
-            ticketsArray = Object.values(data.data).filter(item => 
-              item && typeof item === 'object' && (item as any).id
+            ticketsArray = Object.values(data.data).filter((item: any) =>
+              item && typeof item === 'object' && item.id
             );
           }
         } else {
@@ -115,12 +115,12 @@ export default function MessagesPage() {
           setLoading(false);
           return;
         }
-        
+
         // Convert tickets to chat format
         const ticketChats: Chat[] = ticketsArray.map((ticket: any) => {
           console.log('Processing ticket:', ticket);
           console.log('Ticket ID:', ticket.id);
-          
+
           return {
             id: ticket.id, // Use the actual numeric ID from the API
             name: `Support - ${ticket.ticket_id}`,
@@ -132,7 +132,7 @@ export default function MessagesPage() {
             ticket
           };
         });
-        
+
         setChats(ticketChats);
         if (ticketChats.length > 0 && !selectedChat) {
           setSelectedChat(ticketChats[0]);
@@ -156,19 +156,19 @@ export default function MessagesPage() {
   const fetchMessages = async (ticketId: number) => {
     try {
       console.log('Fetching messages for ticket ID:', ticketId);
-      
+
       if (!ticketId || ticketId === undefined) {
         console.error('Invalid ticket ID:', ticketId);
         return;
       }
-      
+
       const token = localStorage.getItem('accessToken');
-      
+
       if (!token) {
         console.error('No authentication token found for messages');
         return;
       }
-      
+
       // Use the correct endpoint format with numeric ID
       const response = await fetch(`https://orr-backend-web-latest.onrender.com/admin-portal/v1/tickets/${ticketId}/messages/`, {
         headers: {
@@ -176,7 +176,7 @@ export default function MessagesPage() {
           'Content-Type': 'application/json'
         }
       });
-      
+
       if (response.ok) {
         const result = await response.json();
         setMessages(result.data || []);
@@ -190,7 +190,7 @@ export default function MessagesPage() {
               'Content-Type': 'application/json'
             }
           });
-          
+
           if (clientResponse.ok) {
             const clientResult = await clientResponse.json();
             setMessages(clientResult.data || []);
@@ -208,12 +208,12 @@ export default function MessagesPage() {
     if (newMessage.trim() && selectedChat) {
       try {
         const token = localStorage.getItem('accessToken');
-        
+
         if (!token) {
           console.error('No authentication token found for sending message');
           return;
         }
-        
+
         const response = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${selectedChat.id}/send-message/`, {
           method: 'POST',
           headers: {
@@ -222,7 +222,7 @@ export default function MessagesPage() {
           },
           body: JSON.stringify({ message: newMessage })
         });
-        
+
         if (response.ok) {
           setNewMessage('');
           // Refresh messages
@@ -237,10 +237,10 @@ export default function MessagesPage() {
   };
 
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return new Date(dateString).toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   };
 
@@ -291,9 +291,8 @@ export default function MessagesPage() {
                   setSelectedChat(chat);
                   fetchMessages(chat.id);
                 }}
-                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${
-                  selectedChat?.id === chat.id ? 'bg-secondary/30 border-l-4 border-l-primary' : ''
-                }`}
+                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${selectedChat?.id === chat.id ? 'bg-secondary/30 border-l-4 border-l-primary' : ''
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -312,11 +311,10 @@ export default function MessagesPage() {
                     <div className="flex items-center justify-between">
                       <p className="text-sm text-foreground opacity-70 truncate">{chat.lastMessage}</p>
                       {chat.ticket?.status && (
-                        <span className={`text-xs px-2 py-1 rounded ${
-                          chat.ticket.status === 'resolved' ? 'bg-green-500/20 text-green-300' :
+                        <span className={`text-xs px-2 py-1 rounded ${chat.ticket.status === 'resolved' ? 'bg-green-500/20 text-green-300' :
                           chat.ticket.status === 'new' ? 'bg-blue-500/20 text-blue-300' :
-                          'bg-yellow-500/20 text-yellow-300'
-                        }`}>
+                            'bg-yellow-500/20 text-yellow-300'
+                          }`}>
                           {chat.ticket.status}
                         </span>
                       )}
@@ -359,7 +357,7 @@ export default function MessagesPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <button className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
                   <Phone className="w-5 h-5 text-foreground" />
@@ -378,20 +376,19 @@ export default function MessagesPage() {
               {messages.map((message) => {
                 const isSystemMessage = message.sender_type === 'system' || message.sender_name.includes('Auto Reply');
                 const isUserMessage = message.sender_type === 'client';
-                
+
                 return (
                   <div
                     key={message.id}
                     className={`flex ${isUserMessage ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        isUserMessage
-                          ? 'bg-primary text-black'
-                          : isSystemMessage
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${isUserMessage
+                        ? 'bg-primary text-black'
+                        : isSystemMessage
                           ? 'bg-green-500/20 text-green-300 border border-green-500/30'
                           : 'bg-secondary text-foreground'
-                      }`}
+                        }`}
                     >
                       {isSystemMessage && (
                         <div className="flex items-center gap-2 mb-1">
@@ -399,9 +396,8 @@ export default function MessagesPage() {
                         </div>
                       )}
                       <p className="text-sm">{message.message}</p>
-                      <p className={`text-xs mt-1 ${
-                        isUserMessage ? 'text-black/70' : 'text-foreground/60'
-                      }`}>
+                      <p className={`text-xs mt-1 ${isUserMessage ? 'text-black/70' : 'text-foreground/60'
+                        }`}>
                         {formatTime(message.created_at)}
                       </p>
                     </div>
@@ -417,7 +413,7 @@ export default function MessagesPage() {
                 <button className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors">
                   <Paperclip className="w-5 h-5 text-foreground" />
                 </button>
-                
+
                 <div className="flex-1 relative">
                   <input
                     type="text"
@@ -431,7 +427,7 @@ export default function MessagesPage() {
                     <Smile className="w-5 h-5 text-foreground opacity-60" />
                   </button>
                 </div>
-                
+
                 <button
                   onClick={handleSendMessage}
                   disabled={!newMessage.trim()}

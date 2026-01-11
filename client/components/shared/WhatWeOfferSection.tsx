@@ -8,54 +8,34 @@ interface OfferCard {
   features?: string[];
 }
 
-interface WhatWeOfferSectionProps {
-  offers: OfferCard[];
-  layout?: 'grid' | 'flex';
-}
-
-function OfferCard({ title, description, icon, features }: OfferCard) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-card-in');
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (cardRef.current) observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+function OfferCard({ title, description, icon }: OfferCard) {
   return (
-    <div 
-      ref={cardRef}
-      className="bg-card dark:bg-transparent rounded-lg p-6 dark:border dark:border-primary relative pt-20 flex-1 min-w-0 basis-full md:basis-[calc(50%-1.5rem)] xl:basis-[calc(33.333%-2rem)] max-w-md card-animate hover:scale-105 transition-transform duration-300"
-    >
-      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-32 h-24 bg-card dark:bg-black flex items-center justify-center shadow-2xl border border-slate-600 dark:border-[#0ec277]" style={{clipPath: 'polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%)'}}>
-        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d={icon}/>
-        </svg>
+    <div className="relative group w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] max-w-sm card-animate hover:-translate-y-2 transition-transform duration-300">
+      <div className="absolute inset-0 bg-secondary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="relative h-full bg-[#112240] border border-slate-700/50 p-8 rounded-2xl hover:border-secondary/50 transition-colors duration-300 flex flex-col items-center text-center">
+        <div className="w-16 h-16 mb-6 rounded-full bg-[#0a192f] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-slate-700 group-hover:border-secondary/50">
+          <svg className="w-8 h-8 text-secondary" viewBox="0 0 24 24" fill="currentColor">
+            <path d={icon} />
+          </svg>
+        </div>
+        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-secondary transition-colors duration-300 animate-text-pop">
+          {title}
+        </h3>
+        <p className="text-slate-300 leading-relaxed text-sm animate-text-fade">
+          {description}
+        </p>
       </div>
-      <h3 className="text-xl font-semibold text-white mb-3 animate-text-slide">{title}</h3>
-      <p className="text-slate-300 text-sm mb-4 animate-text-fade">{description}</p>
-      {features && (
-        <ul className="text-slate-300 text-sm space-y-1">
-          {features.map((feature, index) => (
-            <li key={index} className="animate-text-pop" style={{animationDelay: `${index * 0.1}s`}}>• {feature}</li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }
 
-export default function WhatWeOfferSection({ offers, layout = 'flex' }: WhatWeOfferSectionProps) {
+interface WhatWeOfferSectionProps {
+  offers: OfferCard[];
+  layout?: 'grid' | 'flex';
+  title?: string;
+}
+// ... (lines 16-57 skipped)
+export default function WhatWeOfferSection({ offers, layout = 'flex', title }: WhatWeOfferSectionProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -154,13 +134,13 @@ export default function WhatWeOfferSection({ offers, layout = 'flex' }: WhatWeOf
           }
         }
       `}</style>
-      <h2 
+      <h2
         ref={titleRef}
         className="text-4xl font-bold text-white text-center mb-16"
       >
-        What <span className="text-[#47ff4c]">We Offer</span>
+        {title ? title : <>What <span className="text-[#47ff4c]">We Offer</span></>}
       </h2>
-      
+
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-wrap justify-center gap-x-12 gap-y-32 mb-24">
           {offers.map((offer, index) => (
