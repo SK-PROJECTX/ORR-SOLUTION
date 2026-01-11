@@ -6,7 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ApproachSection() {
+interface ApproachSectionProps {
+  content?: any;
+  onContentUpdate?: (data: any) => Promise<void>;
+}
+
+export default function ApproachSection({ content, onContentUpdate }: ApproachSectionProps) {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const cardRef = useRef(null);
@@ -17,14 +22,16 @@ export default function ApproachSection() {
   useEffect(() => {
     gsap.fromTo(titleRef.current,
       { opacity: 0, y: -50, scale: 0.8 },
-      { opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)",
+      {
+        opacity: 1, y: 0, scale: 1, duration: 1, ease: "back.out(1.7)",
         scrollTrigger: { trigger: titleRef.current, start: "top 80%", toggleActions: "play none none none" }
       }
     );
 
     gsap.fromTo(cardRef.current,
       { opacity: 0, x: -150, rotateY: -30 },
-      { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
+      {
+        opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
         scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
       }
     );
@@ -33,7 +40,8 @@ export default function ApproachSection() {
       if (node) {
         gsap.fromTo(node,
           { scale: 0, opacity: 0, rotate: -180 },
-          { scale: 1, opacity: 1, rotate: 0, duration: 0.8, delay: 0.5 + i * 0.2, ease: "elastic.out(1, 0.6)",
+          {
+            scale: 1, opacity: 1, rotate: 0, duration: 0.8, delay: 0.5 + i * 0.2, ease: "elastic.out(1, 0.6)",
             scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
           }
         );
@@ -44,7 +52,7 @@ export default function ApproachSection() {
       if (p) {
         const words = p.textContent!.split(' ');
         p.innerHTML = words.map(word => `<span style="display:inline;opacity:0">${word} </span>`).join('');
-        
+
         gsap.to(p.children, {
           opacity: 1,
           y: 0,
@@ -60,7 +68,8 @@ export default function ApproachSection() {
       if (line) {
         gsap.fromTo(line,
           { scaleX: 0 },
-          { scaleX: 1, duration: 1, delay: 0.5 + i * 0.3, ease: "power3.inOut",
+          {
+            scaleX: 1, duration: 1, delay: 0.5 + i * 0.3, ease: "power3.inOut",
             scrollTrigger: { trigger: line, start: "top 85%", toggleActions: "play none none none" }
           }
         );
@@ -82,7 +91,7 @@ export default function ApproachSection() {
           alt="glow"
           className="absolute -bottom-50 sm:-bottom-120 -right-30 w-[40rem] opacity-90 pointer-events-none select-none z-[-5]"
         />
-      
+
         <div ref={cardRef} className="w-full max-w-7xl ml-0 bg border-t-[0.5rem] border-r-[0.5rem] border-b-[0.5rem] border-l-0 border-white/20 backdrop-blur-md bg-card z-1 rounded-tr-[91.25px] rounded-br-[91.25px] p-10 md:p-14 shadow-lg space-y-7 overflow-hidden">
           <div ref={el => { nodesRef.current[0] = el; }} className="absolute right-[-28px] top-[20%] w-14 h-14 bg-[#0B2E4E] rounded-full flex items-center justify-center shadow-[0_0_25px_#3DFF7C]">
             <div className="w-9 h-9 bg-[#3DFF7C] rounded-full" />

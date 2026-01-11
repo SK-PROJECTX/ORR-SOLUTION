@@ -2,20 +2,12 @@
 import { useState, useEffect } from 'react';
 import { AuthService } from '../lib/auth';
 
-interface AuthInfo {
-  isAuthenticated: boolean;
-  canEdit: boolean;
-  user: any;
-  token: string;
-}
-
 interface TestResults {
-  login?: string;
-  api?: string;
+  [key: string]: string;
 }
 
 export default function AuthDebugger() {
-  const [authInfo, setAuthInfo] = useState<AuthInfo | null>(null);
+  const [authInfo, setAuthInfo] = useState<any>(null);
   const [testResults, setTestResults] = useState<TestResults>({});
   const auth = AuthService.getInstance();
 
@@ -48,7 +40,7 @@ export default function AuthDebugger() {
         'http://localhost:8000/admin-portal/v1/cms/business-system-section/',
         { method: 'GET' }
       );
-      
+
       if (response.ok) {
         setTestResults((prev: TestResults) => ({ ...prev, api: 'Success' }));
       } else {
@@ -72,7 +64,7 @@ export default function AuthDebugger() {
   return (
     <div className="fixed bottom-4 right-4 bg-black/90 text-white p-4 rounded-lg text-xs max-w-sm z-50">
       <h3 className="font-bold mb-2">Auth Debugger</h3>
-      
+
       <div className="mb-2">
         <strong>Status:</strong>
         <div>Authenticated: {authInfo?.isAuthenticated ? '✅' : '❌'}</div>
@@ -89,25 +81,25 @@ export default function AuthDebugger() {
       </div>
 
       <div className="flex gap-1 flex-wrap">
-        <button 
+        <button
           onClick={testLogin}
           className="bg-blue-600 px-2 py-1 rounded text-xs"
         >
           Test Login
         </button>
-        <button 
+        <button
           onClick={testApiCall}
           className="bg-green-600 px-2 py-1 rounded text-xs"
         >
           Test API
         </button>
-        <button 
+        <button
           onClick={logout}
           className="bg-red-600 px-2 py-1 rounded text-xs"
         >
           Logout
         </button>
-        <button 
+        <button
           onClick={updateAuthInfo}
           className="bg-gray-600 px-2 py-1 rounded text-xs"
         >

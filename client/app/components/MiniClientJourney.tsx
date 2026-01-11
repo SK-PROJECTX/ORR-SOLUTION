@@ -3,26 +3,40 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import EditableText from "../../components/EditableText";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function MiniClientJourney() {
+interface MiniClientJourneyProps {
+  content?: any;
+  onContentUpdate?: (data: any) => Promise<void>;
+}
+
+export default function MiniClientJourney({ content, onContentUpdate }: MiniClientJourneyProps) {
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+
+  const message = content?.message || 'Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your "business physiology" in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve';
+
+  const handleMessageSave = async (newMessage: string) => {
+    await onContentUpdate?.({ message: newMessage });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+        {
+          opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
           scrollTrigger: { trigger: titleRef.current, start: "top 80%" }
         }
       );
 
       gsap.fromTo(cardRef.current,
         { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 1, ease: "power3.out",
+        {
+          opacity: 1, scale: 1, duration: 1, ease: "power3.out",
           scrollTrigger: { trigger: cardRef.current, start: "top 80%" }
         }
       );
@@ -31,7 +45,8 @@ export default function MiniClientJourney() {
         if (img) {
           gsap.fromTo(img,
             { opacity: 0, scale: 0 },
-            { opacity: 1, scale: 1, duration: 0.6, delay: 0.5 + i * 0.1, ease: "back.out(1.7)",
+            {
+              opacity: 1, scale: 1, duration: 0.6, delay: 0.5 + i * 0.1, ease: "back.out(1.7)",
               scrollTrigger: { trigger: cardRef.current, start: "top 70%" }
             }
           );
@@ -55,9 +70,14 @@ export default function MiniClientJourney() {
 
         <div ref={cardRef} className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-xl border border-white/20">
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-left">"</div>
-          <p className="text-[#ffffff] leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9">
-           Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your "business physiology" in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve
-          </p>
+          <EditableText
+            content={message}
+            onSave={handleMessageSave}
+            tag="p"
+            className="text-[#ffffff] leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl px-2 sm:px-4 md:px-9"
+            placeholder="Enter message..."
+            multiline
+          />
           <div className="text-[#33FF99] text-2xl sm:text-3xl md:text-4xl mt-3 sm:mt-4 text-right">"</div>
         </div>
 
