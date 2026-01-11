@@ -104,21 +104,20 @@ export default function LivingSystemsPage() {
       </div>
       <div ref={el => { sectionsRef.current[1] = el; }} className="section-animate">
         <WhatWeOfferSection 
-        title={content?.services_title}
         offers={[
           {
-            title: content?.service_1_title,
-            description: content?.service_1_description,
+            title: content?.service_1_title || "Service 1",
+            description: content?.service_1_description || "Description for service 1",
             icon: "M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7.5 13.5 12.5 13.5 15.5 13.5C15.5 13.5 16 13.75 16 14.25C16 14.75 15.5 15 15.5 15C12.5 15 7.5 15 3.75 18.75C3.75 18.75 5.25 20.5 8 20.5C11.5 20.5 17 16 17 8Z"
           },
           {
-            title: content?.service_2_title,
-            description: content?.service_2_description,
+            title: content?.service_2_title || "Service 2",
+            description: content?.service_2_description || "Description for service 2",
             icon: "M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
           },
           {
-            title: content?.service_3_title,
-            description: content?.service_3_description,
+            title: content?.service_3_title || "Service 3",
+            description: content?.service_3_description || "Description for service 3",
             icon: "M6.05 8.05C6.05 6.05 7.86 4.05 10.92 4.05S15.8 6.05 15.95 8.05C16.05 8.05 16.05 8.05 16.05 8.05C18.05 8.05 19.95 9.76 19.95 12.05S18.05 16.05 16.05 16.05H6.05C3.76 16.05 2.05 14.05 2.05 12.05S3.76 8.05 6.05 8.05M14.95 11.05L11.95 8.05L8.95 11.05H11.05V14.05H12.95V11.05H14.95Z"
           }
         ]}
@@ -126,9 +125,8 @@ export default function LivingSystemsPage() {
       </div>
       <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection 
-        title={content?.process_title}
         subtitle="Observe . Design . Regenerate"
-        description={content?.process_description || "At the heart of our work, we take a systems approach to understanding and regenerating living systems. We observe the current state, design regenerative solutions, and implement systems that restore ecological health while creating economic value."}
+        description="At the heart of our work, we take a systems approach to understanding and regenerating living systems."
         sections={[
           {
             title: "Listen & Report (Site & System Discovery)",
@@ -165,7 +163,7 @@ export default function LivingSystemsPage() {
       </div>
       <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection 
-        description="Complex ecological challenges require diverse expertise. We activate our global network of specialists to deliver comprehensive regenerative solutions that restore ecosystems and create lasting positive impact."
+        description="Complex ecological challenges require diverse expertise. We activate our global network of specialists to deliver comprehensive regenerative solutions."
         networkCards={[
           {
             title: "Ecological Scientists",
@@ -197,9 +195,8 @@ export default function LivingSystemsPage() {
       </div>
       <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">
         <DigitalSolutionsSection 
-        title="Tools & Structures We"
-        subtitle="Help Put In Place"
-        description="We work with living systems — landscapes, forests, oceans, and ecosystems — to design regenerative solutions that bring life back to degraded environments."
+        title="Tools & Structures"
+        description="We work with living systems to design regenerative solutions."
         imageAlt="Tools and structures for regenerative systems"
         whoIsThisFor={[
           "Agricultural businesses transitioning to regenerative and sustainable farming practices",
@@ -224,19 +221,15 @@ export default function LivingSystemsPage() {
       <div ref={el => { sectionsRef.current[5] = el; }} className="section-animate">
         <CaseExampleSection 
         caseExample={{
-          challenge: content?.case_challenge || "A large agricultural cooperative was facing declining soil health, reduced biodiversity, and increasing input costs from conventional farming practices. Climate change was creating additional stress on their operations, with unpredictable weather patterns affecting yields.",
-          solution: content?.case_solution || "ORR conducted a comprehensive ecological assessment of the cooperative's land and operations. We delivered a detailed regeneration report that outlined soil restoration strategies, biodiversity enhancement plans, and carbon sequestration opportunities.",
-          result: content?.case_result || "Following ORR's regenerative agriculture plan, the cooperative implemented soil-building practices that increased organic matter by 40% within two years. Input costs decreased by 30% as soil health improved and natural pest management systems developed."
+          challenge: (content as any)?.case_challenge || "A large agricultural cooperative was facing declining soil health, reduced biodiversity, and increasing input costs from conventional farming practices. Climate change was creating additional stress on their operations, with unpredictable weather patterns affecting yields.",
+          solution: (content as any)?.case_solution || "ORR conducted a comprehensive ecological assessment of the cooperative's land and operations. We delivered a detailed regeneration report that outlined soil restoration strategies, biodiversity enhancement plans, and carbon sequestration opportunities.",
+          result: (content as any)?.case_result || "Following ORR's regenerative agriculture plan, the cooperative implemented soil-building practices that increased organic matter by 40% within two years. Input costs decreased by 30% as soil health improved and natural pest management systems developed."
         }}
-        imageAlt={content?.case_image_alt || "Regenerative farm with diverse crops and healthy soil"}
+        imageAlt="Regenerative farm with diverse crops and healthy soil"
         />
       </div>
       <div ref={el => { sectionsRef.current[6] = el; }} className="section-animate">
-        <FinalCTASection 
-          title={content?.cta_title}
-          description={content?.cta_description}
-          buttonText={content?.cta_button_text}
-        />
+        <FinalCTASection />
       </div>
     </div>
   )

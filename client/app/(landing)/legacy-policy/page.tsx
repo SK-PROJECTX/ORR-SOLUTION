@@ -42,7 +42,7 @@ export default function LegacyPolicy() {
 		const fetchData = async () => {
 			try {
 				console.log('🔄 Fetching Legal Policy data from backend...');
-				const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/legal-policy-content/');
+				const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/legal-policy-content/');
 				console.log('✅ Legal Policy API Response:', response.data);
 				if (response.data.success) {
 					console.log('📊 Legal Policy Data Structure:', {

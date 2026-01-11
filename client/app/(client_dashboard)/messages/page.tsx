@@ -107,7 +107,7 @@ export default function MessagesPage() {
           } else {
             // Convert single object to array or handle pagination
             ticketsArray = Object.values(data.data).filter(item => 
-              item && typeof item === 'object' && item.id
+              item && typeof item === 'object' && (item as any).id
             );
           }
         } else {
@@ -117,7 +117,7 @@ export default function MessagesPage() {
         }
         
         // Convert tickets to chat format
-        const ticketChats: Chat[] = ticketsArray.map((ticket) => {
+        const ticketChats: Chat[] = ticketsArray.map((ticket: any) => {
           console.log('Processing ticket:', ticket);
           console.log('Ticket ID:', ticket.id);
           

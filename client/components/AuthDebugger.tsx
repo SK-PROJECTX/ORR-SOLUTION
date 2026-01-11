@@ -2,9 +2,21 @@
 import { useState, useEffect } from 'react';
 import { AuthService } from '../lib/auth';
 
+interface AuthInfo {
+  isAuthenticated: boolean;
+  canEdit: boolean;
+  user: any;
+  token: string;
+}
+
+interface TestResults {
+  login?: string;
+  api?: string;
+}
+
 export default function AuthDebugger() {
-  const [authInfo, setAuthInfo] = useState<any>(null);
-  const [testResults, setTestResults] = useState<any>({});
+  const [authInfo, setAuthInfo] = useState<AuthInfo | null>(null);
+  const [testResults, setTestResults] = useState<TestResults>({});
   const auth = AuthService.getInstance();
 
   useEffect(() => {
@@ -23,10 +35,10 @@ export default function AuthDebugger() {
   const testLogin = async () => {
     try {
       const result = await auth.login('editor', 'editor123');
-      setTestResults(prev => ({ ...prev, login: 'Success' }));
+      setTestResults((prev: TestResults) => ({ ...prev, login: 'Success' }));
       updateAuthInfo();
     } catch (error) {
-      setTestResults(prev => ({ ...prev, login: `Failed: ${error}` }));
+      setTestResults((prev: TestResults) => ({ ...prev, login: `Failed: ${error}` }));
     }
   };
 
@@ -38,12 +50,12 @@ export default function AuthDebugger() {
       );
       
       if (response.ok) {
-        setTestResults(prev => ({ ...prev, api: 'Success' }));
+        setTestResults((prev: TestResults) => ({ ...prev, api: 'Success' }));
       } else {
-        setTestResults(prev => ({ ...prev, api: `Failed: ${response.status}` }));
+        setTestResults((prev: TestResults) => ({ ...prev, api: `Failed: ${response.status}` }));
       }
     } catch (error) {
-      setTestResults(prev => ({ ...prev, api: `Error: ${error}` }));
+      setTestResults((prev: TestResults) => ({ ...prev, api: `Error: ${error}` }));
     }
   };
 

@@ -64,34 +64,34 @@ export default function LandingPage() {
     <div className="star fixed-background">
       <HeroSection />
       <div className="scroll-section" id="hero-section">
-        <Hero content={content?.homepage} onContentUpdate={updateHomepage} />
+        <Hero />
       </div>
       <div className="scroll-section" id="approach-section">
-        <ApproachCard content={content?.approachSection} onContentUpdate={updateApproachSection} />
+        <ApproachCard />
       </div>
       <div className="scroll-section" id="services-section">
-        <ServicePillar content={content?.homepage} onContentUpdate={updateHomepage} />
+        <ServicePillar />
       </div>
       <div className="scroll-section" id="business-system-section">
-        <GPMetaphorSection content={content?.businessSystemSection} onContentUpdate={updateBusinessSystemSection} />
+        <GPMetaphorSection />
       </div>
       <div className="scroll-section" id="orr-role-section">
-        <ORRRoleSection content={content?.orrRoleSection} onContentUpdate={updateORRRoleSection} />
+        <ORRRoleSection />
       </div>
       <div className="scroll-section" id="message-section">
-        <MiniClientJourney content={content?.messageStrip} onContentUpdate={updateMessageStrip} />
+        <MiniClientJourney />
       </div>
       <div className="scroll-section" id="process-section">
-        <FiveStagesSection content={content?.processSection} onContentUpdate={updateProcessSection} />
+        <FiveStagesSection />
       </div>
       <div className="scroll-section" id="report-section">
-        <ORRReportSection content={content?.orrReportSection} onContentUpdate={updateORRReportSection} />
+        <ORRReportSection />
       </div>
       <div className="scroll-section">
         <PackagePreviewSection />
       </div>
       <div className="scroll-section" id="faq-section">
-        <FAQSection content={content?.faqs} onContentUpdate={updateFAQ} />
+        <FAQSection />
       </div>
       <div className="scroll-section">
         <MidClientJourneySection />

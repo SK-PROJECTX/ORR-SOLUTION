@@ -47,7 +47,7 @@ export default function ResourcesBlogs() {
     const fetchData = async () => {
       try {
         console.log('🔄 Fetching Resources data from backend...');
-        const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/resources-content/');
+        const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/resources-content/');
         console.log('✅ Resources API Response:', response.data);
         if (response.data.success) {
           console.log('📊 Resources Data Structure:', {
