@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Spinner from "../../../components/ui/Spinner";
 
 interface ServiceStage {
   id: number;
@@ -94,19 +95,11 @@ export default function Services() {
   }, [data]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen text-foreground flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!data) {
-    return (
-      <div className="min-h-screen text-foreground flex items-center justify-center">
-        <div className="text-white text-xl">Error loading content</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
