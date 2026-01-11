@@ -23,7 +23,8 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
   const [value, setValue] = useState(content || '');
   const [isSaving, setIsSaving] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const auth = AuthService.getInstance();
 
   useEffect(() => {
@@ -44,12 +45,13 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
   }, [content]);
 
   useEffect(() => {
-    if (isEditing && inputRef.current && value) {
-      inputRef.current.focus();
-      if (multiline) {
-        (inputRef.current as HTMLTextAreaElement).setSelectionRange(value.length, value.length);
-      } else {
-        (inputRef.current as HTMLInputElement).setSelectionRange(value.length, value.length);
+    if (isEditing && value) {
+      if (multiline && textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(value.length, value.length);
+      } else if (!multiline && inputRef.current) {
+        inputRef.current.focus();
+        inputRef.current.setSelectionRange(value.length, value.length);
       }
     }
   }, [isEditing, multiline, value?.length]);
@@ -113,7 +115,14 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
       return (
         <div className="relative">
           <textarea
-            {...inputProps}
+            ref={textareaRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+            className={`${className} bg-white text-black p-2 rounded border-2 border-blue-500 focus:outline-none !text-black`}
+            placeholder={placeholder}
+            disabled={isSaving}
             rows={Math.max(3, (value || '').split('\n').length)}
           />
           {isSaving && (
@@ -128,7 +137,14 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
         <div className="relative">
           <input
             type="text"
-            {...inputProps}
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+            className={`${className} bg-white text-black p-2 rounded border-2 border-blue-500 focus:outline-none !text-black`}
+            placeholder={placeholder}
+            disabled={isSaving}
           />
           {isSaving && (
             <div className="absolute top-2 right-2 text-blue-500 text-sm">
