@@ -54,7 +54,7 @@ export default function Services() {
     const fetchData = async () => {
       try {
         console.log('🔄 Fetching Services data from backend...');
-        const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/services-content/');
+        const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/services-content/');
         console.log('✅ Services API Response:', response.data);
         if (response.data.success) {
           console.log('📊 Services Data Structure:', {

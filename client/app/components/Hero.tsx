@@ -84,7 +84,6 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
             tag="h1"
             className="text-white font-extrabold mr-50 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl leading-tight"
             placeholder="Enter hero title..."
-            ref={titleRef}
           />
 
           <EditableText
@@ -94,7 +93,6 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
             className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed"
             placeholder="Enter hero subtitle..."
             multiline
-            ref={subtitleRef}
           />
 
           <EditableText
@@ -104,7 +102,6 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
             className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed"
             placeholder="Enter hero description..."
             multiline
-            ref={descRef}
           />
 
           <div ref={buttonRef} className="pt-2">
