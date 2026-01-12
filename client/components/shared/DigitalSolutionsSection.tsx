@@ -7,8 +7,8 @@ interface DigitalSolutionsSectionProps {
   subtitle?: string;
   description: string;
   imageAlt: string;
-  whoIsThisFor: string[];
-  features: string[];
+  whoIsThisFor: (string | { text: string; type: string })[];
+  features: (string | { text: string; type: string })[];
 }
 
 export default function DigitalSolutionsSection({
@@ -172,7 +172,7 @@ export default function DigitalSolutionsSection({
                 {whoIsThisFor.map((item, index) => (
                   <li key={index} className="flex items-start animate-list-item" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    {item}
+                    {typeof item === 'string' ? item : item.text}
                   </li>
                 ))}
               </ul>
@@ -202,7 +202,7 @@ export default function DigitalSolutionsSection({
                 {features.map((feature, index) => (
                   <li key={index} className="flex items-start animate-feature-pop" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    {feature}
+                    {typeof feature === 'string' ? feature : feature.text}
                   </li>
                 ))}
               </ul>
