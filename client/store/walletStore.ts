@@ -59,6 +59,7 @@ interface WalletState {
   removePaymentMethod: (paymentMethodId: string) => Promise<boolean>;
   setSelectedPlan: (plan: PricingPlan) => void;
   subscribeToPlan: (planId: number, paymentMethodId: string) => Promise<boolean>;
+  createCheckoutSession: (priceId: string, paymentMethodId: string) => Promise<string | null>;
 }
 
 export const useWalletStore = create<WalletState>()((set, get) => ({
@@ -82,7 +83,7 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       const plans = plansResponse.data.data.map((plan: any) => ({
         ...plan,
         amount: plan.amount / 100,
-        is_active: isSubscribed
+        is_active: isSubscribed && (plan.amount === 220 || plan.name.toLowerCase().includes('report'))
       }));
       
       set({ 
@@ -174,7 +175,8 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       // Refresh payment methods
       console.log('🔄 Refreshing payment methods...');
       await get().fetchPaymentMethods();
-      useToastStore.getState().addToast('Payment method added successfully', 'success');
+      const message = response.data?.message || 'Payment method added successfully';
+      useToastStore.getState().addToast(message, 'success');
       return true;
     } catch (error: any) {
       console.error('❌ Failed to add payment method:', error);
@@ -208,12 +210,13 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
   subscribeToPlan: async (planId: number, paymentMethodId: string) => {
     set({ isLoading: true });
     try {
-      await api.post('/subscribe/', {
+      const response = await api.post('/subscribe/', {
         plan_id: planId,
         payment_method_id: paymentMethodId
       });
       
-      useToastStore.getState().addToast('Successfully subscribed to plan!', 'success');
+      const message = response.data?.message || 'Successfully subscribed to plan!';
+      useToastStore.getState().addToast(message, 'success');
       set({ isLoading: false });
       return true;
     } catch (error) {
@@ -221,6 +224,29 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       useToastStore.getState().addToast('Failed to subscribe to plan', 'error');
       set({ isLoading: false });
       return false;
+    }
+  },
+
+  createCheckoutSession: async (priceId: string, paymentMethodId: string) => {
+    try {
+      const response = await api.post('/payments/create-checkout/', {
+        price_id: priceId,
+        payment_method_id: paymentMethodId
+      });
+      
+      const checkoutData = response.data?.data || response.data;
+      const message = response.data?.message || 'Redirecting to checkout...';
+      useToastStore.getState().addToast(message, 'success');
+
+      if (checkoutData?.checkout_url) {
+        return checkoutData.checkout_url;
+      }
+      return null;
+    } catch (error: any) {
+      console.error('Failed to create checkout session:', error);
+      const errorMessage = error.response?.data?.message || 'Failed to create checkout session';
+      useToastStore.getState().addToast(errorMessage, 'error');
+      return null;
     }
   },
 }));

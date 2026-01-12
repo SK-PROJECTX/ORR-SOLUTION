@@ -8,7 +8,7 @@ import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuthStore } from "@/store/authStore";
 
 export default function Page() {
-  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -31,14 +31,18 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       return;
     }
 
-    const success = await register(formData.email, formData.password, formData.firstName, formData.lastName);
-    if (success) {
-      router.push(`/email-confirmation?email=${encodeURIComponent(formData.email)}`);
+    try {
+      const success = await register(formData.email, formData.password, formData.firstName, formData.lastName);
+      if (success) {
+        router.push(`/email-confirmation?email=${encodeURIComponent(formData.email)}`);
+      }
+    } catch (error) {
+      console.error('Registration failed', error);
     }
   };
 
@@ -49,29 +53,29 @@ export default function Page() {
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
-           <div className="flex md:hidden flex-col items-center justify-center mb-8">
-              <img
-                src="/images/logo.svg"
-                alt="ORR solutions"
-                className="w-16 h-16 mb-4"
-              />
-            </div>
-         
+          <div className="flex md:hidden flex-col items-center justify-center mb-8">
+            <img
+              src="/images/logo.svg"
+              alt="ORR solutions"
+              className="w-16 h-16 mb-4"
+            />
+          </div>
+
           <div className="flex justify-between items-center mb-6">
-          <div className="mt-0">
-                <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-                Welcome 
+            <div className="mt-0">
+              <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
+                Welcome
               </h2>
               <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
                 Create a new account
               </p>
-          </div>
-         
+            </div>
 
-          <div className="mb-8">
-            <ThemeToggle />
-          </div>
-          
+
+            <div className="mb-8">
+              <ThemeToggle />
+            </div>
+
           </div>
 
           {error && (
@@ -81,11 +85,11 @@ export default function Page() {
           )}
 
           <form className="space-y-7" onSubmit={handleSubmit}>
-             <input
+            <input
               type="text"
               placeholder="First Name"
               value={formData.firstName}
-              onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
@@ -94,7 +98,7 @@ export default function Page() {
               type="text"
               placeholder="Last Name"
               value={formData.lastName}
-              onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
@@ -103,7 +107,7 @@ export default function Page() {
               type="email"
               placeholder="Email"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
               required
             />
@@ -112,7 +116,7 @@ export default function Page() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
                 required
               />
@@ -121,16 +125,16 @@ export default function Page() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition"
               >
-                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />  }
+                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
-            
+
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
                 required
               />
@@ -139,11 +143,11 @@ export default function Page() {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition"
               >
-                {showConfirmPassword ?  <Eye size={20} /> : <EyeOff size={20} />}
+                {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
 
-          
+
             <button
               type="submit"
               disabled={isLoading || formData.password !== formData.confirmPassword}
@@ -156,22 +160,22 @@ export default function Page() {
               <p className="text-red-400 text-sm mt-2">Passwords do not match</p>
             )}
 
-                <div className="hidden md:flex items-end  justify-end mt-4 ">
-                <Link
-                  href="/login"
-                  className="px-6 font-extrabold text-md text-[#FFFFFF] "
-                >
-                  Already have an account? <span className="text-[#61FD51] underline">Login</span>
-                </Link>
-              </div>
+            <div className="hidden md:flex items-end  justify-end mt-4 ">
+              <Link
+                href="/login"
+                className="px-6 font-extrabold text-md text-[#FFFFFF] "
+              >
+                Already have an account? <span className="text-[#61FD51] underline">Login</span>
+              </Link>
+            </div>
           </form>
-        
+
         </div>
 
-        
+
       </div>
 
-       <div
+      <div
         className="hidden md:flex flex-1 bg-cover m-3 rounded-lg bg-center relative text-white"
         style={{
           backgroundImage: "url('https://res.cloudinary.com/depeqzb6z/image/upload/v1764168892/side-image_1_jwpnup.png')",
@@ -194,15 +198,15 @@ export default function Page() {
         </div> */}
         <div className='justify-between flex flex-row w-full'>
           <div className="justify-start flex items-start">
-            <img 
+            <img
               src="/images/logo.svg"
               alt="ORR Solutions"
               className="w-32 h-32 mt-5 ml-10" />
           </div>
 
-          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center"> 
-              <ChevronLeft className="my-0" /> 
-              <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
+          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
+            <ChevronLeft className="my-0" />
+            <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
           </div>
         </div>
 
@@ -213,7 +217,7 @@ export default function Page() {
             Solve. Optimise.
           </p>
         </div>
-      </div>    
+      </div>
 
     </div>
   );

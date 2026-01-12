@@ -31,6 +31,9 @@ interface OnboardingData {
 }
 
 interface OnboardingStatus {
+  id?: number;
+  created_at?: string;
+  updated_at?: string;
   is_completed: boolean;
   jurisdiction?: string;
   jurisdiction_other?: string;
@@ -57,6 +60,7 @@ interface OnboardingStatus {
   ai_specialist_domains?: string;
   ai_specialist_other?: string;
   additional_context?: string;
+  user?: number;
 }
 
 interface OnboardingState {
@@ -76,9 +80,12 @@ export const useOnboardingStore = create<OnboardingState>()((set, get) => ({
   checkOnboardingStatus: async () => {
     try {
       const response = await api.get('/onboarding/me/');
-      const status = response.data;
+      // Handle both { data: ... } and flat response
+      const status = response.data?.data || response.data;
       set({ onboardingStatus: status });
-      return status.is_completed;
+      
+      return !!status?.is_completed;
+      
     } catch (error) {
       console.error('Failed to check onboarding status:', error);
       return false;
@@ -96,8 +103,9 @@ export const useOnboardingStore = create<OnboardingState>()((set, get) => ({
       useToastStore.getState().addToast('Onboarding completed successfully!', 'success');
       
       // Update the onboarding status in the store
+      const status = response.data?.data || response.data;
       set({ 
-        onboardingStatus: { ...response.data, is_completed: true },
+        onboardingStatus: { ...status, is_completed: true },
         isLoading: false 
       });
       

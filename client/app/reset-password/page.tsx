@@ -26,9 +26,13 @@ function ResetPasswordForm() {
       alert('Passwords do not match');
       return;
     }
-    const success = await resetPassword(uid, token, formData.newPassword);
-    if (success) {
-      router.push('/login');
+    try {
+      const success = await resetPassword(uid, token, formData.newPassword);
+      if (success) {
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('Password reset failed', error);
     }
   };
 
@@ -38,26 +42,26 @@ function ResetPasswordForm() {
       <div className="flex-1 flex items-center justify-center px-6 md:px-16 py-12">
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
-           <div className="flex md:hidden flex-col items-center justify-center mb-8">
-              <img
-                src="/images/logo.svg"
-                alt="ORR solutions"
-                className="w-16 h-16 mb-4"
-              />
-            </div>
+          <div className="flex md:hidden flex-col items-center justify-center mb-8">
+            <img
+              src="/images/logo.svg"
+              alt="ORR solutions"
+              className="w-16 h-16 mb-4"
+            />
+          </div>
 
           <div className="flex justify-between items-center mb-6">
-                   <div className="mt-0">
-                         <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
-                         Reset Your Password
-                       </h2>
-                   </div>
-                  
-                   <div className="mb-8">
-                     <ThemeToggle />
-                   </div>
-                   
-                   </div>
+            <div className="mt-0">
+              <h2 className="text-2xl font-extrabold mb-8 md:text-start text-center text-[#FFFFFF]">
+                Reset Your Password
+              </h2>
+            </div>
+
+            <div className="mb-8">
+              <ThemeToggle />
+            </div>
+
+          </div>
 
           {error && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
@@ -71,7 +75,7 @@ function ResetPasswordForm() {
                 type={showPassword ? "text" : "password"}
                 placeholder="New Password"
                 value={formData.newPassword}
-                onChange={(e) => setFormData({...formData, newPassword: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
                 required
               />
@@ -83,13 +87,13 @@ function ResetPasswordForm() {
                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             </div>
-            
+
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm New Password"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
                 required
               />
@@ -114,20 +118,20 @@ function ResetPasswordForm() {
               {isLoading ? "Resetting Password..." : "Reset Password"}
             </button>
 
-                <div className="hidden md:flex items-end  justify-end mt-4 ">
-                <Link
-                  href="/login"
-                  className="px-6 font-extrabold text-md text-[#FFFFFF] "
-                >
-                  Remember your password? <span className="text-[#61FD51] underline">Login</span>
-                </Link>
-              </div>
+            <div className="hidden md:flex items-end  justify-end mt-4 ">
+              <Link
+                href="/login"
+                className="px-6 font-extrabold text-md text-[#FFFFFF] "
+              >
+                Remember your password? <span className="text-[#61FD51] underline">Login</span>
+              </Link>
+            </div>
           </form>
-        
+
         </div>
       </div>
 
-       <div
+      <div
         className="hidden md:flex flex-1 bg-cover m-3 rounded-lg bg-center relative text-white"
         style={{
           backgroundImage: "url('https://res.cloudinary.com/depeqzb6z/image/upload/v1764168892/side-image_1_jwpnup.png')",
@@ -135,15 +139,15 @@ function ResetPasswordForm() {
       >
         <div className='justify-between flex flex-row w-full'>
           <div className="justify-start flex items-start">
-            <img 
+            <img
               src="/images/logo.svg"
               alt="ORR Solutions"
               className="w-32 h-32 mt-5 ml-10" />
           </div>
 
-          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center"> 
-              <ChevronLeft className="my-0" /> 
-              <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
+          <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
+            <ChevronLeft className="my-0" />
+            <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
           </div>
         </div>
 
@@ -153,7 +157,7 @@ function ResetPasswordForm() {
             Solve. Optimise.
           </p>
         </div>
-      </div>    
+      </div>
 
     </div>
   );

@@ -3,10 +3,24 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
-
+  transpilePackages: ['date-fns'],
+  
   images: {
     unoptimized: true,
-    domains: ["images.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+    ],
+  },
+  
+  turbopack: {
+    root: process.cwd(),
   },
 };
 

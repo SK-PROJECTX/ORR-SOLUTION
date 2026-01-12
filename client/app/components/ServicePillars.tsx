@@ -7,7 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ServicePillar() {
+interface ServicePillarProps {
+  content?: any;
+  onContentUpdate?: (data: any) => Promise<void>;
+}
+
+export default function ServicePillar({ content, onContentUpdate }: ServicePillarProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -22,7 +27,8 @@ export default function ServicePillar() {
       const spans = title.querySelectorAll('span');
       gsap.fromTo(spans,
         { opacity: 0, y: -30, rotateX: -90 },
-        { opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
+        {
+          opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
           scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none none" }
         }
       );
@@ -30,14 +36,16 @@ export default function ServicePillar() {
 
     gsap.fromTo(subtitleRef.current,
       { opacity: 0, scale: 0.5 },
-      { opacity: 1, scale: 1, duration: 0.8, delay: 0.3, ease: "back.out(1.7)",
+      {
+        opacity: 1, scale: 1, duration: 0.8, delay: 0.3, ease: "back.out(1.7)",
         scrollTrigger: { trigger: subtitleRef.current, start: "top 80%", toggleActions: "play none none none" }
       }
     );
 
     gsap.fromTo(cardRef.current,
       { opacity: 0, x: 150, rotateY: 30 },
-      { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
+      {
+        opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power4.out",
         scrollTrigger: { trigger: cardRef.current, start: "top 75%", toggleActions: "play none none none" }
       }
     );
@@ -45,7 +53,8 @@ export default function ServicePillar() {
     if (lineRef.current) {
       gsap.fromTo(lineRef.current,
         { scaleY: 0, transformOrigin: "top" },
-        { scaleY: 1, duration: 1.5, ease: "power2.inOut",
+        {
+          scaleY: 1, duration: 1.5, ease: "power2.inOut",
           scrollTrigger: { trigger: lineRef.current, start: "top 80%", toggleActions: "play none none none" }
         }
       );
@@ -55,7 +64,8 @@ export default function ServicePillar() {
       if (bullet) {
         gsap.fromTo(bullet,
           { scale: 0, opacity: 0, rotate: 360 },
-          { scale: 1, opacity: 1, rotate: 0, duration: 0.6, delay: 0.7 + i * 0.2, ease: "elastic.out(1, 0.5)",
+          {
+            scale: 1, opacity: 1, rotate: 0, duration: 0.6, delay: 0.7 + i * 0.2, ease: "elastic.out(1, 0.5)",
             scrollTrigger: { trigger: cardRef.current, start: "top 70%", toggleActions: "play none none none" }
           }
         );
@@ -66,7 +76,8 @@ export default function ServicePillar() {
       if (item) {
         gsap.fromTo(item,
           { opacity: 0, x: -50, rotateZ: -5 },
-          { opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8 + i * 0.25, ease: "power3.out",
+          {
+            opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8 + i * 0.25, ease: "power3.out",
             scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" }
           }
         );
@@ -111,9 +122,9 @@ export default function ServicePillar() {
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <Link href="/services/strategy-advisory-compliant" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
                   Strategic Advisory & Compliance
-                </Link>                
+                </Link>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                 Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation.
+                  Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation.
                 </p>
                 <Link href="/services/strategy-advisory-compliant">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold  rounded-lg cursor-pointer">Explore Strategic Advisory & Compliance</button>
@@ -123,11 +134,11 @@ export default function ServicePillar() {
               <div ref={el => { itemsRef.current[1] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
-                 Digital Systems, Automation & AI
+                  Digital Systems, Automation & AI
                 </h3>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                 SOPs, workflows, portals, dashboards, and AI-assisted tools designed 
-                around your team's habits, constraints and growth plans
+                  SOPs, workflows, portals, dashboards, and AI-assisted tools designed
+                  around your team's habits, constraints and growth plans
                 </p>
                 <Link href="/services/operational-systems-infrastructure">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Digital Systems, Automation & AI</button>
@@ -137,11 +148,11 @@ export default function ServicePillar() {
               <div ref={el => { itemsRef.current[2] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
-                 Living Systems & Regeneration
+                  Living Systems & Regeneration
                 </h3>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                 Support for land, water, species, and ecosystems - tailored to your sites 
-                your risks, and your opportunities
+                  Support for land, water, species, and ecosystems - tailored to your sites
+                  your risks, and your opportunities
                 </p>
                 <Link href="/services/living-systems-regeneration">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">Explore Living Systems & Regeneration</button>

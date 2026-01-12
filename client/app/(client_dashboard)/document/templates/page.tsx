@@ -14,6 +14,7 @@ interface Template {
   lastUpdated: string;
   tags: string[];
   preview?: string;
+  filePath?: string;
 }
 
 const templates: Template[] = [
@@ -42,47 +43,27 @@ const templates: Template[] = [
   },
   {
     id: '3',
-    title: 'Project Proposal Template',
-    description: 'Professional template for creating detailed project proposals',
-    category: 'Proposals',
+    title: 'ORR Cookies Policy V1.4',
+    description: 'Official ORR cookies policy document outlining data collection and usage practices',
+    category: 'Legal',
     type: 'document',
-    downloads: 2100,
+    downloads: 245,
     rating: 4.9,
-    lastUpdated: '2024-01-18',
-    tags: ['proposal', 'project', 'professional']
+    lastUpdated: '2026-01-05',
+    tags: ['legal', 'cookies', 'policy', 'privacy'],
+    filePath: '20260105_ORR_Cookiespolicy_V1.4.docx'
   },
   {
     id: '4',
-    title: 'Risk Assessment Framework',
-    description: 'Comprehensive framework for identifying and assessing business risks',
-    category: 'Risk Management',
+    title: 'ORR Privacy Policy V1.5',
+    description: 'Comprehensive privacy policy document detailing data protection and user rights',
+    category: 'Legal',
     type: 'document',
-    downloads: 675,
-    rating: 4.7,
-    lastUpdated: '2024-01-10',
-    tags: ['risk', 'assessment', 'framework']
-  },
-  {
-    id: '5',
-    title: 'Monthly Progress Report',
-    description: 'Template for tracking and reporting monthly project progress',
-    category: 'Reports',
-    type: 'report',
-    downloads: 1450,
-    rating: 4.5,
-    lastUpdated: '2024-01-20',
-    tags: ['progress', 'monthly', 'tracking']
-  },
-  {
-    id: '6',
-    title: 'Stakeholder Analysis Template',
-    description: 'Identify and analyze key stakeholders for your projects',
-    category: 'Analysis',
-    type: 'document',
-    downloads: 820,
-    rating: 4.6,
-    lastUpdated: '2024-01-14',
-    tags: ['stakeholder', 'analysis', 'project']
+    downloads: 312,
+    rating: 4.9,
+    lastUpdated: '2026-01-05',
+    tags: ['legal', 'privacy', 'policy', 'data-protection'],
+    filePath: '20260105_ORR_Privacypolicy_V1.5.docx'
   }
 ];
 
@@ -105,6 +86,17 @@ export default function TemplatesPage() {
     
     return matchesSearch && matchesCategory && matchesType;
   });
+
+  const handleDownload = (template: Template) => {
+    if (template.filePath) {
+      const link = document.createElement('a');
+      link.href = `/document/templates/${template.filePath}`;
+      link.download = template.filePath;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -147,13 +139,16 @@ export default function TemplatesPage() {
         ))}
       </div>
       
-      <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
+      {/* <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
         <span>{template.downloads} downloads</span>
         <span>Updated {new Date(template.lastUpdated).toLocaleDateString()}</span>
       </div>
-      
+       */}
       <div className="flex gap-2">
-        <button className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
+        <button 
+          onClick={() => handleDownload(template)}
+          className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
+        >
           <Download className="w-4 h-4" />
           Download
         </button>
@@ -190,7 +185,10 @@ export default function TemplatesPage() {
         </div>
         
         <div className="flex gap-2 flex-shrink-0">
-          <button className="flex items-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
+          <button 
+            onClick={() => handleDownload(template)}
+            className="flex items-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
             <Download className="w-4 h-4" />
             Download
           </button>
