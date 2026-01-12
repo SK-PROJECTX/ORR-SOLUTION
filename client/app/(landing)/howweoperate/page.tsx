@@ -215,7 +215,7 @@ export default function StickyScrollSplit() {
 
           {/* Right Side - Fixed Image */}
           <div className="block static">
-            <div className="fixed top-52 left-1/2 transform -translate-x-1/2 lg:top-58 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[45vh] sm:h-[45vh] lg:h-[calc(75vh-3rem)]">
+            <div className="fixed top-52 left-1/2 transform -translate-x-1/2 lg:top-58 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-[85%] sm:w-[80%] lg:w-[75%] max-w-[500px] sm:max-w-[600px] lg:max-w-[900px] h-[45vh] sm:h-[45vh] lg:h-[calc(75vh-3rem)] z-0">
               <div className="w-full h-full flex items-center">
                 <div className="relative w-full h-full rounded-xl lg:rounded-3xl overflow-hidden shadow-2xl">
                   <img
