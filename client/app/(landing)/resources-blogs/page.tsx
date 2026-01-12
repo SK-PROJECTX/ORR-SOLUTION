@@ -5,6 +5,7 @@ import { useScrollSplit } from "@/hooks/useScrollSplit";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
+import Spinner from "../../../components/ui/Spinner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +13,7 @@ interface ContentCard {
   id: number;
   badge: string;
   title: string;
-  content: string[];
+  content: string[] | { content: string }[];
   image_url: string;
   button1_text?: string;
   button2_text?: string;
@@ -67,19 +68,11 @@ export default function ResourcesBlogs() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen text-white flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!data) {
-    return (
-      <div className="min-h-screen text-white flex items-center justify-center">
-        <div className="text-white text-xl">Error loading content</div>
-      </div>
-    );
+    return <Spinner />;
   }
   
   return (
@@ -213,14 +206,20 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       <div className="text-gray-300 text-sm leading-relaxed">
         {!isExpanded ? (
           <div>
-            <p className="line-clamp-3">{card.content.slice(0, 2).join(' ')}</p>
+            <p className="line-clamp-3">
+              {Array.isArray(card.content) 
+                ? card.content.slice(0, 2).map(item => 
+                    typeof item === 'string' ? item : (item as { content: string }).content || ''
+                  ).join(' ')
+                : typeof card.content === 'string' ? card.content : ''}
+            </p>
             <p className="text-gray-400 mt-2">...</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {card.content.map((item, index) => (
-              <p key={index}>{item}</p>
-            ))}
+            {Array.isArray(card.content) ? card.content.map((item, index) => (
+              <p key={index}>{typeof item === 'string' ? item : (item as { content: string }).content || ''}</p>
+            )) : <p>{typeof card.content === 'string' ? card.content : ''}</p>}
           </div>
         )}
       </div>

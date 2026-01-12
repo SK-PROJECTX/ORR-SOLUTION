@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
+import Spinner from "../../../components/ui/Spinner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,19 +116,11 @@ export default function Contact() {
   }, [data]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen text-foreground star flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!data) {
-    return (
-      <div className="min-h-screen text-foreground star flex items-center justify-center">
-        <div className="text-white text-xl">Error loading content</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   const subjectOptions = [
