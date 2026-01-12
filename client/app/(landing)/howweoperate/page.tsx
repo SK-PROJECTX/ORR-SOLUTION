@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Spinner from "../../../components/ui/Spinner";
 
 interface ProcessStep {
   id: number;
@@ -97,19 +98,11 @@ export default function StickyScrollSplit() {
   }, [data]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!data) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Error loading content</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (

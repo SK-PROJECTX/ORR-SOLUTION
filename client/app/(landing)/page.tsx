@@ -21,6 +21,8 @@ import MidClientJourneySection from "../components/MidClientJourneySection";
 import PackagePreviewSection from "../components/PackagePreviewSection";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
 
+import Spinner from "../../components/ui/Spinner";
+
 export default function LandingPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,19 +47,11 @@ export default function LandingPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white text-xl">Loading content...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500 text-xl">Error: {error}</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
