@@ -4,6 +4,9 @@ import Image from 'next/image';
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getRichTextContent } from "../../lib/rich-text-utils";
+import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import { useHomepageContent } from "../../hooks/useHomepageContent";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,9 +16,19 @@ interface ORRReportSectionProps {
 }
 
 export default function ORRReportSection({ content, onContentUpdate }: ORRReportSectionProps) {
+  const { content: homepageContent } = useHomepageContent();
+  const orrReportSection = homepageContent?.orrReportSection;
+  
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const title = getRichTextContent(orrReportSection?.title) || "What you Get: The ORR Report";
+  const subtitle = getRichTextContent(orrReportSection?.subtitle) || "After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation.";
+  const feature1 = getRichTextContent(orrReportSection?.feature_1) || "explain your situation in your language,";
+  const feature2 = getRichTextContent(orrReportSection?.feature_2) || "highlights key issues and risks that affect your customers and teams";
+  const feature3 = getRichTextContent(orrReportSection?.feature_3) || "proposes quick fixes and longer-term improvements that respect your constraints";
+  const feature4 = getRichTextContent(orrReportSection?.feature_4) || "shows where advisory, digital systems/AI, or living-systems work will have most impact";
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -58,10 +71,10 @@ export default function ORRReportSection({ content, onContentUpdate }: ORRReport
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          What you Get: <span className="text-[#33FF99]">The ORR Report</span>
+          <SafeHTMLRenderer data={orrReportSection?.title} fallback="What you Get: The ORR Report" />
         </h2>
         <p ref={subtitleRef} className="text-gray-300 text-center mb-16 max-w-4xl mx-auto">
-          After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation.
+          <SafeHTMLRenderer data={orrReportSection?.subtitle} fallback="After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation." />
         </p>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
@@ -80,19 +93,19 @@ export default function ORRReportSection({ content, onContentUpdate }: ORRReport
             <div className="relative z-10 space-y-6">
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">explain your situation in your language,</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_1} fallback="explain your situation in your language," /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">highlights key issues and risks that affect your customers and teams</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_2} fallback="highlights key issues and risks that affect your customers and teams" /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">proposes quick fixes and longer-term improvements that respect your constraints</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_3} fallback="proposes quick fixes and longer-term improvements that respect your constraints" /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">shows where advisory, digital systems/AI, or living-systems work will have most impact</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_4} fallback="shows where advisory, digital systems/AI, or living-systems work will have most impact" /></span>
               </div>
             </div>
           </div>
@@ -104,19 +117,19 @@ export default function ORRReportSection({ content, onContentUpdate }: ORRReport
             <div className="relative z-10 space-y-6">
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">explain your situation in your language,</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_1} fallback="explain your situation in your language," /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">highlights key issues and risks that affect your customers and teams</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_2} fallback="highlights key issues and risks that affect your customers and teams" /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">proposes quick fixes and longer-term improvements that respect your constraints</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_3} fallback="proposes quick fixes and longer-term improvements that respect your constraints" /></span>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200">shows where advisory, digital systems/AI, or living-systems work will have most impact</span>
+                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_4} fallback="shows where advisory, digital systems/AI, or living-systems work will have most impact" /></span>
               </div>
             </div>
           </div>

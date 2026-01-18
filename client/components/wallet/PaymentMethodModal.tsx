@@ -7,7 +7,9 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { X } from 'lucide-react';
 import { useWalletStore } from '@/store/walletStore';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 interface PaymentMethodModalProps {
   isOpen: boolean;
@@ -113,6 +115,37 @@ const PaymentForm = ({ onClose }: { onClose: () => void }) => {
 
 export default function PaymentMethodModal({ isOpen, onClose, mode }: PaymentMethodModalProps) {
   if (!isOpen) return null;
+
+  // Check if Stripe is configured
+  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-[#071626] border border-[#1E3A4B] rounded-xl p-6 w-full max-w-md mx-4">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-[#22C55E]">
+              Payment Configuration Error
+            </h3>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-[#1E3A4B] rounded-lg transition-colors text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="text-center py-8">
+            <p className="text-gray-400 mb-4">Stripe is not configured properly.</p>
+            <p className="text-sm text-gray-500 mb-4">Please contact support to set up payment processing.</p>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-[#22C55E] text-black rounded-lg hover:bg-[#22C55E]/90 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

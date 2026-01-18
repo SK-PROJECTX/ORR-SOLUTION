@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { getRichTextHTML } from "@/lib/rich-text-utils";
 
 interface OfferCard {
   title: string;
@@ -19,10 +20,10 @@ function OfferCard({ title, description, icon }: OfferCard) {
           </svg>
         </div>
         <h3 className="text-xl font-bold text-white mb-4 group-hover:text-secondary transition-colors duration-300 animate-text-pop">
-          {title}
+          <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
         </h3>
         <p className="text-slate-300 leading-relaxed text-sm animate-text-fade">
-          {description}
+          <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
         </p>
       </div>
     </div>
@@ -138,7 +139,7 @@ export default function WhatWeOfferSection({ offers, layout = 'flex', title }: W
         ref={titleRef}
         className="text-4xl font-bold text-white text-center mb-16"
       >
-        {title ? title : <>What <span className="text-[#47ff4c]">We Offer</span></>}
+        {title ? <span dangerouslySetInnerHTML={getRichTextHTML(title)} /> : <>What <span className="text-[#47ff4c]">We Offer</span></>}
       </h2>
 
       <div className="max-w-7xl mx-auto">

@@ -2,40 +2,41 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
+import { getRichTextContent, getRichTextHTML } from "../../../lib/rich-text-utils";
 
 interface ProcessStep {
   id: number;
   step_number: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
-  bullet1?: string;
-  bullet2?: string;
-  bullet3?: string;
-  bullet4?: string;
-  bullet5?: string;
-  bullet6?: string;
-  bullet7?: string;
-  bullet8?: string;
-  bullet9?: string;
-  wordbreak?: string;
-  description1?: string;
-  description2?: string;
-  description3?: string;
-  description4?: string;
+  title: any;
+  subtitle?: any;
+  description?: any;
+  bullet1?: any;
+  bullet2?: any;
+  bullet3?: any;
+  bullet4?: any;
+  bullet5?: any;
+  bullet6?: any;
+  bullet7?: any;
+  bullet8?: any;
+  bullet9?: any;
+  wordbreak?: any;
+  description1?: any;
+  description2?: any;
+  description3?: any;
+  description4?: any;
   image_url: string;
-  button_text?: string;
-  button_text2?: string;
-  button_text3?: string;
+  button_text?: any;
+  button_text2?: any;
+  button_text3?: any;
   order: number;
   is_active: boolean;
 }
 
 interface PageData {
   id: number;
-  hero_title: string;
-  meta_title?: string;
-  meta_description?: string;
+  hero_title: any;
+  meta_title?: any;
+  meta_description?: any;
   is_active: boolean;
 }
 
@@ -111,11 +112,7 @@ export default function StickyScrollSplit() {
       <div className="relative w-full py-20 pt-32 text-white">
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
           <h1 className="text-center text-emerald-400 text-5xl md:text-6xl font-bold mb-12">
-            {data.page.hero_title?.split(' ').map((word, index) => (
-              <span key={index} className={index === 0 ? 'text-emerald-400' : 'text-white'}>
-                {word}{' '}
-              </span>
-            )) || 'How We Operate'}
+            <span dangerouslySetInnerHTML={getRichTextHTML(data.page.hero_title)} />
           </h1>
         </div>
       </div>
@@ -152,7 +149,7 @@ export default function StickyScrollSplit() {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div className="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      {card.step_number}
+                      <span dangerouslySetInnerHTML={getRichTextHTML(card.step_number)} />
                     </div>
                     <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-2xl">+</span>
@@ -160,50 +157,52 @@ export default function StickyScrollSplit() {
                   </div>
 
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
-                    {card.title}
+                    <span dangerouslySetInnerHTML={getRichTextHTML(card.title)} />
                   </h2>
                   
                   {card.subtitle && (
                     <h3 className="text-base sm:text-lg font-semibold text-emerald-400 mb-4">
-                      {card.subtitle}
+                      <span dangerouslySetInnerHTML={getRichTextHTML(card.subtitle)} />
                     </h3>
                   )}
                   
                   {card.description && (
-                    <p className="text-sm sm:text-base text-white mb-4">{card.description}</p>
+                    <p className="text-sm sm:text-base text-white mb-4">
+                      <span dangerouslySetInnerHTML={getRichTextHTML(card.description)} />
+                    </p>
                   )}
                   
                   <div className="space-y-2">
-                    {card.bullet1 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet1}</p>}
-                    {card.bullet2 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet2}</p>}
-                    {card.wordbreak && <p className="text-white text-base sm:text-lg font-bold text-center my-4">{card.wordbreak}</p>}
-                    {card.bullet3 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet3}</p>}
-                    {card.bullet4 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet4}</p>}
-                    {card.bullet5 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet5}</p>}
-                    {card.bullet6 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet6}</p>}
-                    {card.bullet7 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet7}</p>}
-                    {card.bullet8 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet8}</p>}
-                    {card.bullet9 && <p className="text-gray-300 text-sm sm:text-base">{card.bullet9}</p>}
+                    {card.bullet1 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet1)} /></p>}
+                    {card.bullet2 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet2)} /></p>}
+                    {card.wordbreak && <p className="text-white text-base sm:text-lg font-bold text-center my-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.wordbreak)} /></p>}
+                    {card.bullet3 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet3)} /></p>}
+                    {card.bullet4 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet4)} /></p>}
+                    {card.bullet5 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet5)} /></p>}
+                    {card.bullet6 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet6)} /></p>}
+                    {card.bullet7 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet7)} /></p>}
+                    {card.bullet8 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet8)} /></p>}
+                    {card.bullet9 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet9)} /></p>}
                   </div>
                   
-                  {card.description1 && <p className="text-gray-300 text-sm sm:text-base mt-4">{card.description1}</p>}
-                  {card.description2 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description2}</p>}
-                  {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description3}</p>}
-                  {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2">{card.description4}</p>}
+                  {card.description1 && <p className="text-gray-300 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.description1)} /></p>}
+                  {card.description2 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description2)} /></p>}
+                  {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description3)} /></p>}
+                  {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description4)} /></p>}
                   
                   {card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
                       <button className="bg-emerald-400 text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
-                        {card.button_text}
+                        <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text)} />
                       </button>
                       {card.button_text2 && (
                         <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          {card.button_text2}
+                          <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text2)} />
                         </button>
                       )}
                       {card.button_text3 && (
                         <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          {card.button_text3}
+                          <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text3)} />
                         </button>
                       )}
                     </div>
@@ -221,7 +220,7 @@ export default function StickyScrollSplit() {
                   <img
                     key={activeIndex}
                     src={data.steps[activeIndex]?.image_url}
-                    alt={data.steps[activeIndex]?.title}
+                    alt={getRichTextContent(data.steps[activeIndex]?.title)}
                     className="w-full h-full object-cover transition-all duration-1000 ease-out"
                     style={{
                       transform: 'scale(1.05)',
@@ -231,10 +230,10 @@ export default function StickyScrollSplit() {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                   <div className="absolute bottom-2 lg:bottom-8 left-2 lg:left-8 right-2 lg:right-8">
                     <div className="text-emerald-400 text-sm lg:text-xl font-bold mb-1 lg:mb-2">
-                      {data.steps[activeIndex]?.step_number}
+                      <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.step_number)} />
                     </div>
                     <div className="text-white text-sm lg:text-2xl xl:text-3xl font-bold">
-                      {data.steps[activeIndex]?.title}
+                      <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.title)} />
                     </div>
                   </div>
                 </div>

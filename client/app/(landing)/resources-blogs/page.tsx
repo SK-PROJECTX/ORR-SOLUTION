@@ -11,26 +11,26 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ContentCard {
   id: number;
-  badge: string;
-  title: string;
+  badge: any;
+  title: any;
   content: string[] | { content: string }[];
   image_url: string;
-  button1_text?: string;
-  button2_text?: string;
+  button1_text?: any;
+  button2_text?: any;
   order: number;
   is_active: boolean;
 }
 
 interface ResourcesPageData {
   id: number;
-  hero_title: string;
-  hero_description1: string;
-  hero_description2: string;
-  hero_description3: string;
-  hero_button1_text: string;
-  hero_button2_text: string;
-  meta_title?: string;
-  meta_description?: string;
+  hero_title: any;
+  hero_description1: any;
+  hero_description2: any;
+  hero_description3: any;
+  hero_button1_text: any;
+  hero_button2_text: any;
+  meta_title?: any;
+  meta_description?: any;
   is_active: boolean;
 }
 
@@ -101,32 +101,27 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
-        {data.hero_title?.split('&').map((part, index) => (
-          <span key={index}>
-            {index === 0 ? part : <span className="text-green-400">& {part}</span>}
-            {index === 0 && <br />}
-          </span>
-        )) || 'Resources & Client Portal'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_title || 'Resources & Client Portal' }} />
       </h1>
       
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
-        {data.hero_description1 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description1 || 'Loading content...' }} />
       </p>
       
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        {data.hero_description2 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description2 || 'Loading content...' }} />
       </p>
       
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        {data.hero_description3 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description3 || 'Loading content...' }} />
       </p>
       
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
-          {data.hero_button1_text || 'Request Access'}
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button1_text || 'Request Access' }} />
         </button>
         <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
-          {data.hero_button2_text || 'Learn More'}
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button2_text || 'Learn More' }} />
         </button>
       </div>
     </section>
@@ -197,11 +192,13 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
-          {card.badge}
+          <span dangerouslySetInnerHTML={{ __html: card.badge || '' }} />
         </span>
       </div>
       
-      <h3 className="text-xl font-bold mb-6">{card.title}</h3>
+      <h3 className="text-xl font-bold mb-6">
+        <span dangerouslySetInnerHTML={{ __html: card.title || '' }} />
+      </h3>
       
       <div className="text-gray-300 text-sm leading-relaxed">
         {!isExpanded ? (
@@ -227,10 +224,10 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
           <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">
-            {card.button1_text}
+            <span dangerouslySetInnerHTML={{ __html: card.button1_text || '' }} />
           </button>
           <button className="border border-green-400 text-green-400 hover:bg-green-400 hover:text-black px-6 py-3 rounded-full font-semibold transition-colors">
-            {card.button2_text}
+            <span dangerouslySetInnerHTML={{ __html: card.button2_text || '' }} />
           </button>
         </div>
       )}
