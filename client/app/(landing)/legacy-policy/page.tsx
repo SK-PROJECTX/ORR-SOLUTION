@@ -1,11 +1,9 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import axios from "axios";
-import Spinner from "../../../components/ui/Spinner";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -37,34 +35,8 @@ export default function LegacyPolicy() {
 	const descRef = useRef(null);
 	const cardRef = useRef(null);
 	const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
-	const [data, setData] = useState<LegalPolicyData | null>(null);
-	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				console.log('🔄 Fetching Legal Policy data from backend...');
-				const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/legal-policy-content/');
-				console.log('✅ Legal Policy API Response:', response.data);
-				if (response.data.success) {
-					console.log('📊 Legal Policy Data Structure:', {
-						page: response.data.data.page,
-						items: response.data.data.items.length + ' policy items'
-					});
-					setData(response.data.data);
-				}
-			} catch (error) {
-				console.error('❌ Error fetching Legal Policy data:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchData();
-	}, []);
-
-	useEffect(() => {
-		if (!data) return;
 
 		const title = titleRef.current;
 		if (title) {
@@ -93,7 +65,7 @@ export default function LegacyPolicy() {
 		itemsRef.current.forEach((item, i) => {
 			if (item) {
 				const number = item.querySelector('.policy-number');
-				const text = item.querySelector('.policy-text');
+				const content = item.querySelector('.policy-content');
 
 				gsap.fromTo(number,
 					{ opacity: 0, scale: 0, rotate: -180 },
@@ -113,15 +85,7 @@ export default function LegacyPolicy() {
 				}
 			}
 		});
-	}, [data]);
-
-	if (loading) {
-		return <Spinner />;
-	}
-
-	if (!data) {
-		return <Spinner />;
-	}
+	}, []);
 
 	return (
 		<div className="min-h-screen text-foreground star">
@@ -138,7 +102,7 @@ export default function LegacyPolicy() {
 
 			<section className="pb-16 px-6">
 				<div className="max-w-4xl mx-auto">
-					<div ref={cardRef} className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl ">
+					<div ref={cardRef} className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl">
 						<Image
 							src="/bgSvg.svg"
 							alt="background"
