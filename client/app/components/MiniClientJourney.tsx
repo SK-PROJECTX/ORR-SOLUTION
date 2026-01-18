@@ -4,8 +4,18 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import EditableText from "../../components/EditableText";
+import { getRichTextContent } from "../../lib/rich-text-utils";
+import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import { useHomepageContent } from "../../hooks/useHomepageContent";
 
 gsap.registerPlugin(ScrollTrigger);
+
+interface RichTextData {
+  content: string;
+  fontSize?: number;
+  fontWeight?: 'normal' | 'bold';
+  fontStyle?: 'normal' | 'italic';
+}
 
 interface MiniClientJourneyProps {
   content?: any;
@@ -13,14 +23,19 @@ interface MiniClientJourneyProps {
 }
 
 export default function MiniClientJourney({ content, onContentUpdate }: MiniClientJourneyProps) {
+  const { content: homepageContent } = useHomepageContent();
+  const messageStrip = homepageContent?.messageStrip;
+  
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
-  const message = content?.message || 'Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your "business physiology" in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve';
+  const title = getRichTextContent(messageStrip?.title) || "Message Strip";
+  const message = getRichTextContent(messageStrip?.message) || 'Businesses thrive like living organisms when all their systems work together *around real human needs*. ORR keeps your "business physiology" in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve';
 
-  const handleMessageSave = async (newMessage: string) => {
-    await onContentUpdate?.({ message: newMessage });
+  const handleMessageSave = async (newContent: string | RichTextData) => {
+    const contentString = typeof newContent === 'string' ? newContent : newContent.content;
+    await onContentUpdate?.({ message: contentString });
   };
 
   useEffect(() => {
@@ -63,7 +78,7 @@ export default function MiniClientJourney({ content, onContentUpdate }: MiniClie
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
-          Message <span className="text-[#33FF99]">Strip</span>
+          <SafeHTMLRenderer data={messageStrip?.title} fallback="Message Strip" />
         </h2>
 
         <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-[#33FF99]/20 rounded-full blur-[100px] sm:blur-[150px]"></div>

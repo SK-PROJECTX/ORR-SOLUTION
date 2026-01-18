@@ -127,7 +127,7 @@ export default function Sidebar() {
                 subItems: [
                     { label: " Report & Summaries", href: "/document/reports" },
                     { label: "Uploaded Documents", href: '/document/uploads' },
-                    { label: "Generated Reports", href: "/document/reports " },
+                    { label: "Generated Reports", href: "/document/generated-reports" },
                     { label: "ORR's Templates", href: "/document/templates" },
                     { label: "Contracts", href: "/document/contracts" },
                     { label: "Service Catalogue", href: "/document/catalogue" }

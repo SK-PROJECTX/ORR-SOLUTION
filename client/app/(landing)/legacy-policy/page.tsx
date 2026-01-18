@@ -7,22 +7,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface PolicyItem {
 	id: number;
 	number: string;
-	description: string;
+	description: any;
 	order: number;
 	is_active: boolean;
 }
 
 interface LegalPolicyPageData {
 	id: number;
-	hero_title: string;
-	hero_description: string;
-	meta_title?: string;
-	meta_description?: string;
+	hero_title: any;
+	hero_description: any;
+	meta_title?: any;
+	meta_description?: any;
 	is_active: boolean;
 }
 
@@ -67,18 +68,14 @@ export default function LegacyPolicy() {
 
 		const title = titleRef.current;
 		if (title) {
-			const text = title.textContent;
-			title.innerHTML = text!.split('').map((char, i) => 
-				`<span style="display:inline-block;opacity:0">${char === ' ' ? '&nbsp;' : char}</span>`
-			).join('');
-			
-			gsap.to(title.children, {
-				opacity: 1,
-				y: 0,
-				duration: 0.05,
-				stagger: 0.03,
-				ease: "power2.out"
-			});
+			const spans = title.querySelectorAll('span');
+			gsap.fromTo(spans,
+				{ opacity: 0, y: -30, rotateX: -90 },
+				{
+					opacity: 1, y: 0, rotateX: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)",
+					scrollTrigger: { trigger: title, start: "top 80%", toggleActions: "play none none none" }
+				}
+			);
 		}
 
 		gsap.fromTo(descRef.current,
@@ -106,18 +103,13 @@ export default function LegacyPolicy() {
 				);
 
 				if (text) {
-					const words = text.textContent!.split(' ');
-					text.innerHTML = words.map(word => `<span style="display:inline-block;opacity:0">${word}&nbsp;</span>`).join('');
-					
-					gsap.to(text.children, {
-						opacity: 1,
-						y: 0,
-						duration: 0.5,
-						stagger: 0.02,
-						delay: 0.3,
-						ease: "power2.out",
-						scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none reverse" }
-					});
+					gsap.fromTo(text,
+						{ opacity: 0, x: -50, rotateZ: -5 },
+						{
+							opacity: 1, x: 0, rotateZ: 0, duration: 0.9, delay: 0.8, ease: "power3.out",
+							scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none reverse" }
+						}
+					);
 				}
 			}
 		});
@@ -136,10 +128,10 @@ export default function LegacyPolicy() {
 			<section className="pt-32 pb-16 px-6">
 				<div className="max-w-4xl mx-auto text-center">
 					<h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
-						{data.page.hero_title || 'Legacy & Policy'}
+						<span dangerouslySetInnerHTML={{ __html: data.page.hero_title || 'Legacy & Policies ' }} />
 					</h1>
 					<p ref={descRef} className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-						{data.page.hero_description || 'Loading policy information...'}
+						<span dangerouslySetInnerHTML={{ __html: data.page.hero_description || 'Loading policy information...' }} />
 					</p>
 				</div>
 			</section>
@@ -163,7 +155,7 @@ export default function LegacyPolicy() {
 									</div>
 									<div className="flex-1 min-w-0">
 										<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
-											{item.description}
+											<span dangerouslySetInnerHTML={{ __html: item.description || '' }} />
 										</p>
 									</div>
 								</div>

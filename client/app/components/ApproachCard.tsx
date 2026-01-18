@@ -3,6 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getRichTextContent } from "../../lib/rich-text-utils";
+import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import { useHomepageContent } from "../../hooks/useHomepageContent";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,12 +15,20 @@ interface ApproachSectionProps {
 }
 
 export default function ApproachSection({ content, onContentUpdate }: ApproachSectionProps) {
+  const { content: homepageContent } = useHomepageContent();
+  const approachData = homepageContent?.approachSection;
+  
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const nodesRef = useRef<(HTMLDivElement | null)[]>([]);
   const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
   const linesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const title = getRichTextContent(approachData?.title) || "Supporting Copy";
+  const paragraph1 = getRichTextContent(approachData?.paragraph_1) || "Just like a skilled general practitioner, we start from your story not our framework. We take time to understand how your business really works before prescribing anything.";
+  const paragraph2 = getRichTextContent(approachData?.paragraph_2) || "We're not a lone consultant — we're a central coordination layer with a distributed network behind it. When needed, we draw on specialists across continents, but you always deal with one point of contact: ORR, focused on what's best for you.";
+  const paragraph3 = getRichTextContent(approachData?.paragraph_3) || "We fix what's slowing you down, strengthen systems around how your people actually work, and when deeper input is needed, we bring it in at the right moment — always in service of your goals.";
 
   useEffect(() => {
     gsap.fromTo(titleRef.current,
@@ -50,17 +61,13 @@ export default function ApproachSection({ content, onContentUpdate }: ApproachSe
 
     paragraphsRef.current.forEach((p, i) => {
       if (p) {
-        const words = p.textContent!.split(' ');
-        p.innerHTML = words.map(word => `<span style="display:inline;opacity:0">${word} </span>`).join('');
-
-        gsap.to(p.children, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.03,
-          ease: "power2.out",
-          scrollTrigger: { trigger: p, start: "top 85%", toggleActions: "play none none none" }
-        });
+        gsap.fromTo(p,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1, y: 0, duration: 0.8, delay: 0.5 + i * 0.2, ease: "power3.out",
+            scrollTrigger: { trigger: p, start: "top 85%", toggleActions: "play none none none" }
+          }
+        );
       }
     });
 
@@ -82,7 +89,7 @@ export default function ApproachSection({ content, onContentUpdate }: ApproachSe
   return (
     <section ref={sectionRef} className="relative w-full flex flex-col items-start pr-4 py-20 bg-cover bg-center">
       <h2 ref={titleRef} className="text-white text-3xl md:text-5xl font-semibold text-center mb-10 font-poppins w-full flex justify-center py-7">
-        Supporting <span className="text-[#3DFF7C] pl-5">Copy</span>
+        <SafeHTMLRenderer data={approachData?.title} fallback="Supporting Copy" />
       </h2>
 
       <div className="relative">
@@ -101,19 +108,19 @@ export default function ApproachSection({ content, onContentUpdate }: ApproachSe
           </div>
 
           <p ref={el => { paragraphsRef.current[0] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins mb-10 break-words">
-            Just like a skilled general practitioner, we start from your story not our framework. We take time to understand how your business really works before prescribing anything.
+            <SafeHTMLRenderer data={approachData?.paragraph_1} fallback="Just like a skilled general practitioner, we start from your story not our framework. We take time to understand how your business really works before prescribing anything." />
           </p>
 
           <div ref={el => { linesRef.current[0] = el; }} className="w-full h-[2px] bg-[#3DFF7C] mb-10" />
 
           <p ref={el => { paragraphsRef.current[1] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins mb-10 break-words">
-            We're not a lone consultant — we're a central coordination layer with a distributed network behind it. When needed, we draw on specialists across continents, but you always deal with one point of contact: ORR, focused on what's best for you.
+            <SafeHTMLRenderer data={approachData?.paragraph_2} fallback="We're not a lone consultant — we're a central coordination layer with a distributed network behind it. When needed, we draw on specialists across continents, but you always deal with one point of contact: ORR, focused on what's best for you." />
           </p>
 
           <div ref={el => { linesRef.current[1] = el; }} className="w-full h-[2px] bg-[#3DFF7C] mb-10" />
 
           <p ref={el => { paragraphsRef.current[2] = el; }} className="text-white/90 leading-relaxed text-lg md:text-[25px] font-poppins break-words">
-            We fix what's slowing you down, strengthen systems around how your people actually work, and when deeper input is needed, we bring it in at the right moment — always in service of your goals.
+            <SafeHTMLRenderer data={approachData?.paragraph_3} fallback="We fix what's slowing you down, strengthen systems around how your people actually work, and when deeper input is needed, we bring it in at the right moment — always in service of your goals." />
           </p>
         </div>
       </div>
