@@ -159,7 +159,8 @@ export default function Contact() {
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <p className="text-base sm:text-lg">{data.phone_number || '+012 3456 789'}</p>
+              <p className="text-base sm:text-lg">
+                <span dangerouslySetInnerHTML={{ __html: data.phone_number || 'demo@+012 3456 789.com' }}></span></p>
             </div>
 
             {/* Email */}
