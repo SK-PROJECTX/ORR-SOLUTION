@@ -3,40 +3,41 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
+import { getRichTextContent } from "../../../lib/rich-text-utils";
 
 interface ServiceStage {
   id: number;
   stage_number: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  focus_content: string;
-  button_text: string;
+  title: any;
+  subtitle: any;
+  description: any;
+  focus_content: any;
+  button_text: any;
   order: number;
   is_active: boolean;
 }
 
 interface ServicePillar {
   id: number;
-  title: string;
-  description: string;
-  button_text: string;
+  title: any;
+  description: any;
+  button_text: any;
   order: number;
   is_active: boolean;
 }
 
 interface ServicesPageData {
   id: number;
-  hero_title: string;
-  hero_subtitle: string;
-  pillars_title: string;
-  business_gp_title: string;
-  business_gp_subtitle: string;
-  business_gp_description: string;
-  business_gp_button_text: string;
+  hero_title: any;
+  hero_subtitle: any;
+  pillars_title: any;
+  business_gp_title: any;
+  business_gp_subtitle: any;
+  business_gp_description: any;
+  business_gp_button_text: any;
   business_gp_image: string;
-  meta_title?: string;
-  meta_description?: string;
+  meta_title?: any;
+  meta_description?: any;
   is_active: boolean;
 }
 
@@ -135,11 +136,10 @@ export default function Services() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
-            <span className="text-emerald-400">{data.page.hero_title.split(' - ')[0]}</span>
-            <span className="text-white"> - {data.page.hero_title.split(' - ')[1]}</span>
+            <span dangerouslySetInnerHTML={{ __html: data.page.hero_title || "ORR Solutions - Listen. Solve. Optimise." }} />
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            {data.page.hero_subtitle}
+            <span dangerouslySetInnerHTML={{ __html: data.page.hero_subtitle || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
           </p>
         </div>
       </section>
@@ -158,16 +158,20 @@ export default function Services() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-bold mb-4">{stage.title}</h2>
-                <h3 className="text-lg font-semibold mb-4">{stage.subtitle}</h3>
-                <p className="text-gray-300 text-sm mb-6">{stage.description}</p>
+                <h2 className="text-xl font-bold mb-4">
+                  <span dangerouslySetInnerHTML={{ __html: stage.title || "Stage Title" }} />
+                </h2>
+                <h3 className="text-lg font-semibold mb-4">
+                  <span dangerouslySetInnerHTML={{ __html: stage.subtitle || "Stage Subtitle" }} />
+                </h3>
+                <p className="text-gray-300 text-sm mb-6">
+                  <span dangerouslySetInnerHTML={{ __html: stage.description || "Stage Description" }} />
+                </p>
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
-                  {stage.focus_content.split('\n').map((line, i) => (
-                    <div key={i}>{line}</div>
-                  ))}
+                  <span dangerouslySetInnerHTML={{ __html: stage.focus_content || "Focus Content" }} />
                 </div>
                 <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">
-                  {stage.button_text}
+                  <span dangerouslySetInnerHTML={{ __html: stage.button_text || "Learn More" }} />
                 </button>
               </div>
             ))}
@@ -181,16 +185,20 @@ export default function Services() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold mb-4">{data.stages[4].title}</h2>
-              <h3 className="text-lg font-semibold mb-4">{data.stages[4].subtitle}</h3>
-              <p className="text-gray-300 text-sm mb-6">{data.stages[4].description}</p>
+              <h2 className="text-xl font-bold mb-4">
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].title || "Stage 5 Title" }} />
+              </h2>
+              <h3 className="text-lg font-semibold mb-4">
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].subtitle || "Stage 5 Subtitle" }} />
+              </h3>
+              <p className="text-gray-300 text-sm mb-6">
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].description || "Stage 5 Description" }} />
+              </p>
               <div className="text-gray-300 text-sm mb-8">
-                {data.stages[4].focus_content.split('\n').map((line, i) => (
-                  <div key={i}>{line}</div>
-                ))}
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].focus_content || "Focus Content" }} />
               </div>
               <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">
-                {data.stages[4].button_text}
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].button_text || "Learn More" }} />
               </button>
             </div>
           )}
@@ -205,20 +213,20 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
-              {data.page.pillars_title.split(' ').map((word, index) => (
-                <span key={index} className={index === 2 ? 'text-[#5ef558]' : 'text-white'}>
-                  {word}{' '}
-                </span>
-              ))}
+              <span dangerouslySetInnerHTML={{ __html: data.page.pillars_title || "Our Services" }} />
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {data.pillars.map((pillar) => (
               <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
-                <h3 className="text-3xl font-bold mb-8 text-center">{pillar.title}</h3>
-                <p className="text-gray-300 text-xl mb-8 text-center flex-grow">{pillar.description}</p>
+                <h3 className="text-3xl font-bold mb-8 text-center">
+                  <span dangerouslySetInnerHTML={{ __html: pillar.title || "Pillar Title" }} />
+                </h3>
+                <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
+                  <span dangerouslySetInnerHTML={{ __html: pillar.description || "Pillar Description" }} />
+                </p>
                 <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">
-                  {pillar.button_text}
+                  <span dangerouslySetInnerHTML={{ __html: pillar.button_text || "Learn More" }} />
                 </button>
               </div>
             ))}
@@ -235,20 +243,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-white mb-6">
-                {data.page.business_gp_title}
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_title || "Business GP Title" }} />
               </h2>
               <h3 className="text-4xl font-bold mb-8 text-white">
-                {data.page.business_gp_subtitle.split('—').map((part, index) => (
-                  <span key={index} className={index === 1 ? 'text-green-400' : 'text-white'}>
-                    {part}{index === 0 ? ' — ' : ''}
-                  </span>
-                ))}
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_subtitle || "Business GP Subtitle" }} />
               </h3>
               <p className="text-gray-300 text-xl mb-8">
-                {data.page.business_gp_description}
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_description || "Business GP Description" }} />
               </p>
               <button className="bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
-                {data.page.business_gp_button_text}
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_button_text || "Contact Us" }} />
               </button>
             </div>
             <div>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import NetworkCard from "../strategy_advisory/NetworkCard";
+import { getRichTextHTML } from "@/lib/rich-text-utils";
 
 interface NetworkCard {
   title: string;
@@ -90,10 +91,10 @@ export default function NetworkAdvantageSection({
       `}</style>
       <div ref={headerRef} className="text-center mb-16 slide-animate">
         <h2 className="text-4xl font-bold text-white mb-4">
-          {title}
+          <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
         </h2>
         <p className="text-slate-200 text-lg max-w-3xl mx-auto">
-          {description}
+          <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
         </p>
       </div>
 

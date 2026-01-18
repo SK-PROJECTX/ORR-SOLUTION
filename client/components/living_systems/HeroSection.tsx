@@ -1,3 +1,5 @@
+import { getRichTextHTML } from "@/lib/rich-text-utils";
+
 interface LivingSystemsHeroSectionProps {
   title?: string;
   subtitle?: string;
@@ -16,11 +18,11 @@ export default function LivingSystemsHeroSection({ title, subtitle, description,
 
         <div className="space-y-4 max-w-4xl">
           <p className="text-slate-200 text-base sm:text-lg md:text-xl leading-relaxed">
-            {subtitle || "We work with living systems — landscapes, forests, oceans, and ecosystems — to design regenerative solutions that bring life back to degraded environments."}
+            <span dangerouslySetInnerHTML={getRichTextHTML(subtitle || "We work with living systems — landscapes, forests, oceans, and ecosystems — to design regenerative solutions that bring life back to degraded environments.")} />
           </p>
 
           <p className="text-slate-200 text-base sm:text-lg md:text-xl leading-relaxed">
-            {description || "From farms and urban plots to coastlines, regenerative agriculture and circular economy design, we help organizations create systems that restore biodiversity, sequester carbon, and build resilience."}
+            <span dangerouslySetInnerHTML={getRichTextHTML(description || "From farms and urban plots to coastlines, regenerative agriculture and circular economy design, we help organizations create systems that restore biodiversity, sequester carbon, and build resilience.")} />
           </p>
         </div>
       </div>

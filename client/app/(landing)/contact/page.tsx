@@ -7,34 +7,35 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface ContactPageData {
   id: number;
-  hero_title: string;
-  contact_info_title: string;
-  contact_info_subtitle: string;
+  hero_title: any;
+  contact_info_title: any;
+  contact_info_subtitle: any;
   phone_number: string;
   email_address: string;
-  address: string;
-  first_name_label: string;
-  last_name_label: string;
-  email_label: string;
-  phone_label: string;
-  subject_label: string;
-  message_label: string;
-  first_name_placeholder: string;
-  last_name_placeholder: string;
-  email_placeholder: string;
-  phone_placeholder: string;
-  message_placeholder: string;
-  subject_option_1: string;
-  subject_option_2: string;
-  subject_option_3: string;
-  subject_option_4: string;
-  submit_button_text: string;
-  meta_title?: string;
-  meta_description?: string;
+  address: any;
+  first_name_label: any;
+  last_name_label: any;
+  email_label: any;
+  phone_label: any;
+  subject_label: any;
+  message_label: any;
+  first_name_placeholder: any;
+  last_name_placeholder: any;
+  email_placeholder: any;
+  phone_placeholder: any;
+  message_placeholder: any;
+  subject_option_1: any;
+  subject_option_2: any;
+  subject_option_3: any;
+  subject_option_4: any;
+  submit_button_text: any;
+  meta_title?: any;
+  meta_description?: any;
   is_active: boolean;
 }
 
@@ -124,10 +125,10 @@ export default function Contact() {
   }
 
   const subjectOptions = [
-    data.subject_option_1 || 'General Inquiry',
-    data.subject_option_2 || 'General Inquiry',
-    data.subject_option_3 || 'General Inquiry',
-    data.subject_option_4 || 'General Inquiry'
+    data.subject_option_1?.replace(/<[^>]*>/g, '') || 'General Inquiry',
+    data.subject_option_2?.replace(/<[^>]*>/g, '') || 'General Inquiry',
+    data.subject_option_3?.replace(/<[^>]*>/g, '') || 'General Inquiry',
+    data.subject_option_4?.replace(/<[^>]*>/g, '') || 'General Inquiry'
   ];
 
   return (
@@ -136,11 +137,7 @@ export default function Contact() {
       <section className="pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 ref={titleRef} className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-white">
-            {data.hero_title?.split(' ').map((word, index) => (
-              <span key={index} className={word === 'Us' ? 'text-primary' : 'text-white'}>
-                {word}{' '}
-              </span>
-            )) || 'Contact Us'}
+            <span dangerouslySetInnerHTML={{ __html: data.hero_title || 'Contact Us' }} />
           </h1>
         </div>
       </section>
@@ -150,9 +147,11 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 bg-card p-3 sm:p-4 rounded-2xl">
           {/* Contact Information Card - Left */}
           <div ref={infoCardRef} className="bg-primary rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{data.contact_info_title || 'Contact Information'}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">
+              <span dangerouslySetInnerHTML={{ __html: data.contact_info_title || 'Contact Information' }} />
+            </h2>
             <p className="text-white/90 mb-6 sm:mb-8 text-sm sm:text-base">
-              {data.contact_info_subtitle || 'Say something to start a live chat!'}
+              <span dangerouslySetInnerHTML={{ __html: data.contact_info_subtitle || 'Say something to start a live chat!' }} />
             </p>
 
             {/* Phone */}
@@ -160,7 +159,8 @@ export default function Contact() {
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <p className="text-base sm:text-lg">{data.phone_number || '+012 3456 789'}</p>
+              <p className="text-base sm:text-lg">
+                <span dangerouslySetInnerHTML={{ __html: data.phone_number || 'demo@+012 3456 789.com' }}></span></p>
             </div>
 
             {/* Email */}
@@ -168,7 +168,9 @@ export default function Contact() {
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <p className="text-base sm:text-lg">{data.email_address || 'demo@gmail.com'}</p>
+              <p className="text-base sm:text-lg">
+                <span dangerouslySetInnerHTML={{ __html: data.email_address || 'demo@gmail.com' }} />
+              </p>
             </div>
 
             {/* Address */}
@@ -177,7 +179,7 @@ export default function Contact() {
                 <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-base sm:text-lg">
-                {data.address || '132 Dartmouth Street Boston, Massachusetts 02156 United States'}
+                <span dangerouslySetInnerHTML={{ __html: data.address || '132 Dartmouth Street Boston, Massachusetts 02156 United States' }} />
               </p>
             </div>
           </div>
@@ -192,12 +194,12 @@ export default function Contact() {
                     htmlFor="firstName"
                     className="block text-gray-300 text-sm mb-2"
                   >
-                    {data.first_name_label || 'First Name'}
+                    <span dangerouslySetInnerHTML={{ __html: data.first_name_label || 'First Name' }} />
                   </label>
                   <input
                     type="text"
                     id="firstName"
-                    placeholder={data.first_name_placeholder || 'John'}
+                    placeholder={data.first_name_placeholder?.replace(/<[^>]*>/g, '') || 'John'}
                     className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
@@ -206,12 +208,12 @@ export default function Contact() {
                     htmlFor="lastName"
                     className="block text-gray-300 text-sm mb-2"
                   >
-                    {data.last_name_label || 'Last Name'}
+                    <span dangerouslySetInnerHTML={{ __html: data.last_name_label || 'Last Name' }} />
                   </label>
                   <input
                     type="text"
                     id="lastName"
-                    placeholder={data.last_name_placeholder || 'Doe'}
+                    placeholder={data.last_name_placeholder?.replace(/<[^>]*>/g, '') || 'Doe'}
                     className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
@@ -224,12 +226,12 @@ export default function Contact() {
                     htmlFor="email"
                     className="block text-gray-300 text-sm mb-2"
                   >
-                    {data.email_label || 'Email'}
+                    <span dangerouslySetInnerHTML={{ __html: data.email_label || 'Email' }} />
                   </label>
                   <input
                     type="email"
                     id="email"
-                    placeholder={data.email_placeholder || 'your@email.com'}
+                    placeholder={data.email_placeholder?.replace(/<[^>]*>/g, '') || 'your@email.com'}
                     className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
@@ -238,12 +240,12 @@ export default function Contact() {
                     htmlFor="phone"
                     className="block text-gray-300 text-sm mb-2"
                   >
-                    {data.phone_label || 'Phone Number'}
+                    <span dangerouslySetInnerHTML={{ __html: data.phone_label || 'Phone Number' }} />
                   </label>
                   <input
                     type="tel"
                     id="phone"
-                    placeholder={data.phone_placeholder || '+1 012 3456 789'}
+                    placeholder={data.phone_placeholder?.replace(/<[^>]*>/g, '') || '+1 012 3456 789'}
                     className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
@@ -252,7 +254,7 @@ export default function Contact() {
               {/* Select Subject */}
               <div ref={el => { formFieldsRef.current[2] = el; }}>
                 <label className="block text-gray-300 text-sm mb-4">
-                  {data.subject_label || 'Select Subject?'}
+                  <span dangerouslySetInnerHTML={{ __html: data.subject_label || 'Select Subject?' }} />
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {subjectOptions.map((subject, idx) => (
@@ -277,11 +279,11 @@ export default function Contact() {
                   htmlFor="message"
                   className="block text-gray-300 text-sm mb-2"
                 >
-                  {data.message_label || 'Message'}
+                  <span dangerouslySetInnerHTML={{ __html: data.message_label || 'Message' }} />
                 </label>
                 <textarea
                   id="message"
-                  placeholder={data.message_placeholder || 'Write your message...'}
+                  placeholder={data.message_placeholder?.replace(/<[^>]*>/g, '') || 'Write your message...'}
                   rows={1}
                   className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2 resize-none"
                 ></textarea>
@@ -294,7 +296,7 @@ export default function Contact() {
                     type="submit"
                     className="bg-gradient-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-all"
                   >
-                    {data.submit_button_text || 'Send Message'}
+                    <span dangerouslySetInnerHTML={{ __html: data.submit_button_text || 'Send Message' }} />
                   </button>
                   {/* Lucide-style send icon positioned overlapping the button */}
                   <Send className="absolute right-20 sm:right-28 -bottom-6 sm:-bottom-8 w-8 h-8 sm:w-12 sm:h-12 text-white" />
