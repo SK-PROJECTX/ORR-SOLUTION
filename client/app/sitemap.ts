@@ -1,27 +1,21 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "./components/ThemeProvider";
-import { ToastContainer } from "./components/Toast";
+import { MetadataRoute } from 'next';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export const revalidate = false;
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Define your site URL - update this to your production domain
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
 
-const siteURL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
-
-export const metadata: Metadata = {
-  title: {
-    default: "ORR Solutions | Operational & Resilience Consulting",
-    template: "%s | ORR Solutions",
-  },
-  description: "Transform your business with expert operational and resilience consulting. We help organizations optimize processes and build sustainable growth.",
+// Page configuration with keywords and priority
+const pages: Array<{
+  path: string;
+  keywords: string[];
+  priority: number;
+  changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  lastModified?: Date;
+}> = [
+  // Landing pages
+  {
+    path: '/',
     keywords: ['ORR Solutions', 
         'business as a living system', 
         'systems thinking for organisations', 
@@ -45,8 +39,15 @@ export const metadata: Metadata = {
         'scientific diagnostics for land management', 
         'integration of natural and organisational systems', 
         'systems thinking across ecological and human domains', 
-        'programme-aligned advisory services',
-         'professional services advisory', 
+        'programme-aligned advisory services'
+    ],
+    priority: 1.0,
+    changeFrequency: 'weekly',
+  },
+  {
+    path: '/howweoperate',
+    keywords: [
+        'professional services advisory', 
         'business advisory for self-employed professionals', 
         'advisory services for regulated professions', 
         'AI implementation advisory', 
@@ -55,7 +56,14 @@ export const metadata: Metadata = {
         'data-driven organisational intelligence', 
         'advisory-led web development', 'systems-first web architecture', 
         'digital infrastructure for complex organisations', 
-        'applied natural systems advisory',
+        'applied natural systems advisory'
+    ],
+    priority: 0.9,
+    changeFrequency: 'monthly',
+  },
+  {
+    path: '/services',
+    keywords: [
         'operational advisory for professional practices', 
         'administrative systems design', 'compliance and operations advisory', 
         'governance-ready business processes', 
@@ -68,21 +76,59 @@ export const metadata: Metadata = {
         'secure digital workspaces', 
         'administrative automation advisory', 
         'workflow automation for professional services',
-        'funded project systems design',
+    ],
+    priority: 0.9,
+    changeFrequency: 'weekly',
+  },
+
+  {
+    path: '/resources-blogs',
+    keywords: ['resources', 'blog', 'articles', 'insights'],
+    priority: 0.8,
+    changeFrequency: 'weekly',
+  },
+  {
+    path: '/contact',
+    keywords: ['contact', 'get in touch', 'support'],
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
+
+  //  services sub-pages 
+    {
+        path: '/services/living-systems-regeneration',
+        keywords: [
+            'funded project systems design',
             'regulatory and funding-driven project coordination',
             'sustainability and environmental compliance frameworks',
             'cross-disciplinary programme implementation',
             'policy-aligned operational systems',
             'residency and mobility programme operations',
             'nomad and relocation programme systems',
+        ],
+        priority: 0,
+        changeFrequency: 'weekly'
+    },
+
+     {
+        path: '/services/operational-systems-infrasture',
+        keywords: [
             'programme-based client lifecycle management',
             'business advisory for immigration lawyers',
             'immigration and mobility practice operations',
             'compliance workflows for residency programmes',
             'business advisory for medical professionals',
             'healthcare administrative systems',
-            'business advisory for architects and engineers',
-             'project-based professional workflows',
+            'business advisory for architects and engineers'
+        ],
+        priority: 0,
+        changeFrequency: 'weekly'
+    },
+
+     {
+        path: '/services/strategy-advisory-complaint',
+        keywords: [
+            'project-based professional workflows',
             'business advisory for accountants',
             'compliance-aligned financial practice systems',
             'organisational health diagnostics',
@@ -90,53 +136,18 @@ export const metadata: Metadata = {
             'bridging science, policy, and operations',
             'complexity-aware advisory services',
             'long-term systems resilience'
-    ],
-  authors: [{ name: "ORR Solutions" }],
-  creator: "ORR Solutions",
-  publisher: "ORR Solutions",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: siteURL,
-    siteName: "ORR Solutions",
-    title: "ORR Solutions | Operational & Resilience Consulting",
-    description: "Transform your business with expert operational and resilience consulting.",
-    images: [
-      {
-        url: `${siteURL}/images/og-default.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "ORR Solutions",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ORR Solutions",
-    description: "Expert operational and resilience consulting",
-    images: [`${siteURL}/images/og-default.jpg`],
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
-  manifest: "/site.webmanifest",
-};
+        ],
+        priority: 0,
+        changeFrequency: 'weekly'
+    },
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider>
-          {children}
-          <ToastContainer />
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return pages.map((page) => ({
+    url: `${SITE_URL}${page.path}`,
+    lastModified: page.lastModified || new Date(),
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
 }
