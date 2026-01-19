@@ -59,7 +59,7 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
         };
         
         setAllContent({
-          servicesPage: convertToString(data.services_page)
+          homepage: convertToString(data.homepage)
         });
         
         // Debug logging
@@ -102,20 +102,21 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
       <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-5xl space-y-6 sm:space-y-8">
           <h1 ref={titleRef} className="text-white font-extrabold mr-50 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl leading-tight">
-            <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.hero_title || "ORR Solutions – Listen. Solve. Optimise." }} />
+            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_title || "ORR Solutions – Listen. Solve. Optimise." }} />
           </h1>
 
           <p ref={subtitleRef} className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.hero_subtitle || "We treat your organisation as a whole system — digital, regulatory, and living. We listen first, then design the right mix of advisory, systems, AI, and on-the-ground projects so you can move better and grow smarter too." }} />
+            <span dangerouslySetInnerHTML={{
+              __html: allContent?.homepage?.hero_subtitles || "Your business GP for complex systems — digital and living." }} />
           </p>
 
           <p ref={descRef} className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.business_gp_description || "We listen to the whole organisation, solve with structure and insight, and optimise so you can grow with confidence." }} />
+            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_subtitle || "We listen to the whole organisation, solve with structure and insight, and optimise so you can grow with confidence." }} />
           </p>
 
           <div ref={buttonRef} className="pt-2">
             <a href="/contact" className="inline-block bg-gradient-primary text-[#0C294D] font-semibold px-4 sm:px-6 md:px-7 py-3 sm:py-4 rounded-lg shadow-md hover:brightness-105 transition text-sm sm:text-base md:text-lg">
-              <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.business_gp_button_text || "Contact Us" }} />
+              <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_cta_text || "Contact Us" }} />
             </a>
           </div>
         </div>

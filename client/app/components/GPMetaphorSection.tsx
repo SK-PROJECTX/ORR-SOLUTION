@@ -86,11 +86,11 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
         <p className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4 mb-8">
           <SafeHTMLRenderer data={businessSystemSection?.subtitle} fallback="We diagnose your bottlenecks, treat your administrative and compliance headaches, and unlock hidden value in your data, your operations, and your projects." />
         </p>
-        <div className="max-w-4xl mx-auto">
+        {/* <div className="max-w-4xl mx-auto">
           <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-slate-900 font-semibold py-4 px-8 rounded-xl hover:from-emerald-500 hover:to-emerald-700 transition-all duration-300 text-lg">
             Book your free initial consultation
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Systems Grid */}
