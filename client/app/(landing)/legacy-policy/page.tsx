@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 interface PolicyItem {
@@ -146,7 +145,7 @@ export default function LegacyPolicy() {
 
 			<section className="pb-16 px-6">
 				<div className="max-w-4xl mx-auto">
-					<div ref={cardRef} className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl ">
+					<div ref={cardRef} className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl">
 						<Image
 							src="/bgSvg.svg"
 							alt="background"
