@@ -52,7 +52,7 @@ export default function SupportHistory() {
       
       console.log('Fetching tickets with token:', token ? 'Token exists' : 'No token');
       
-      const response = await fetch('https://orr-backend-web-latest.onrender.com/tickets/', {
+      const response = await fetch('https://orr-backend.orr.solutions/tickets/', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ export default function SupportHistory() {
         return;
       }
       
-      const response = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${ticketId}/`, {
+      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ export default function SupportHistory() {
         return;
       }
       
-      const response = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${ticketId}/send-message/`, {
+      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/send-message/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
