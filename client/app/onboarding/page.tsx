@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/store/onboardingStore";
 import { useToastStore } from "@/store/toastStore";
 
@@ -125,7 +126,7 @@ function CustomStepper({ activeStep }: { activeStep: number }) {
       {steps.map((step, index) => (
         <div key={step} className="flex flex-col items-center">
           <div
-          className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${index === activeStep ? "bg-lemon" : "bg-gray-600"
+            className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${index === activeStep ? "bg-lemon" : "bg-gray-600"
               }`}
           >
             {step}
@@ -177,8 +178,35 @@ export default function OnboardingPage() {
     }
   };
 
-  const { submitOnboarding, isLoading } = useOnboardingStore();
+  const router = useRouter();
+  const { checkOnboardingStatus, submitOnboarding, isLoading } = useOnboardingStore();
   const { addToast } = useToastStore();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const isCompleted = await checkOnboardingStatus();
+        if (isCompleted) {
+          router.replace('/dashboard');
+        } else {
+          setIsChecking(false);
+        }
+      } catch (error) {
+        setIsChecking(false);
+      }
+    };
+    checkStatus();
+  }, [checkOnboardingStatus, router]);
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+        <div className="w-12 h-12 border-4 border-lemon border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-foreground/60 animate-pulse">Checking onboarding status...</p>
+      </div>
+    );
+  }
 
   const handleComplete = async () => {
     let finalAnswers = { ...answers };
@@ -216,19 +244,19 @@ export default function OnboardingPage() {
       accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept' || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
       portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,
-      user_type: finalAnswers['4-0'] === 'Others' ? 'other' : 
+      user_type: finalAnswers['4-0'] === 'Others' ? 'other' :
         finalAnswers['4-0'] === 'Small business owner' ? 'small_business' :
-        finalAnswers['4-0'] === 'Founder/Entrepreneur' ? 'founder' :
-        finalAnswers['4-0'] === 'Corporate representative' ? 'corporate' :
-        finalAnswers['4-0'] === 'Public sector/NGO' ? 'public_ngo' :
-        finalAnswers['4-0'] === 'Researcher/Academic' ? 'academic' :
-        finalAnswers['4-0'] === 'Individual professional' ? 'professional' : 'founder',
+          finalAnswers['4-0'] === 'Founder/Entrepreneur' ? 'founder' :
+            finalAnswers['4-0'] === 'Corporate representative' ? 'corporate' :
+              finalAnswers['4-0'] === 'Public sector/NGO' ? 'public_ngo' :
+                finalAnswers['4-0'] === 'Researcher/Academic' ? 'academic' :
+                  finalAnswers['4-0'] === 'Individual professional' ? 'professional' : 'founder',
       user_type_other: finalAnswers['4-0'] === 'Others' ? 'other user type' : undefined,
       project_stage: finalAnswers['4-1'] === 'Early Exploration' ? 'exploration' :
         finalAnswers['4-1'] === 'Pre-Startup/Planning' ? 'pre_startup' :
-        finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
-        finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
-        finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
+          finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
+            finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
+              finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
       orr_pillars: finalAnswers['4-2'] || '',
       has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
       project_description: finalAnswers['4-4'] || '',
@@ -271,10 +299,10 @@ export default function OnboardingPage() {
               </div>
             ) : (
               <div className={`grid gap-6 mb-16 ${currentStepData.options && currentStepData.options.length > 6
-                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                  : currentStepData.options && currentStepData.options.length > 3
-                    ? "grid-cols-1 md:grid-cols-2"
-                    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                : currentStepData.options && currentStepData.options.length > 3
+                  ? "grid-cols-1 md:grid-cols-2"
+                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                 }`}>
                 {currentStepData.options?.map((option) => {
                   const currentAnswer = getCurrentAnswer();
