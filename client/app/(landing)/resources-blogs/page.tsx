@@ -129,10 +129,13 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
 }
 
 function ContentSection({ cards }: { cards: ContentCard[] }) {
+  // Sort cards by order field
+  const sortedCards = [...cards].sort((a, b) => (a.order || 0) - (b.order || 0));
+  
   return (
     <section className="px-6 md:px-16 pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-        {cards.map((card, index) => (
+        {sortedCards.map((card, index) => (
           <ContentCardComponent key={card.id} card={card} />
         ))}
       </div>

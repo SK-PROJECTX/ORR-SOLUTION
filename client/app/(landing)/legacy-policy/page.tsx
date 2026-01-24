@@ -308,6 +308,49 @@ export default function LegacyPolicy() {
 	}, []);
 
 	return (
+		// <div className="min-h-screen text-foreground star">
+		// 	<section className="pt-32 pb-16 px-6">
+		// 		<div className="max-w-4xl mx-auto text-center">
+		// 			<h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
+		// 				<span dangerouslySetInnerHTML={{ __html: data.page.hero_title || 'Legacy & Policies ' }} />
+		// 			</h1>
+		// 			<p ref={descRef} className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+		// 				<span dangerouslySetInnerHTML={{ __html: data.page.hero_description || 'Loading policy information...' }} />
+		// 			</p>
+		// 		</div>
+		// 	</section>
+
+		// 	<section className="pb-16 px-6">
+		// 		<div className="max-w-4xl mx-auto">
+		// 			<div ref={cardRef} className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl">
+		// 				<Image
+		// 					src="/bgSvg.svg"
+		// 					alt="background"
+		// 					width={1500}
+		// 					height={1500}
+		// 					className="absolute top-1/2 left-1/2 scale-200 -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-50"
+		// 				/>
+						
+		// 				<div className="bg-card rounded-2xl p-4 relative">
+		// 					{data.items.map((item, index) => (
+		// 						<div key={item.id} ref={el => { itemsRef.current[index] = el; }} className={`flex gap-6 ${index < data.items.length - 1 ? 'mb-12' : 'pb-8'}`}>
+		// 							<div className="policy-number text-6xl font-bold text-primary shrink-0">
+		// 								<span dangerouslySetInnerHTML={{ __html: item.number }} />
+		// 							</div>
+		// 							<div className="flex-1 min-w-0">
+		// 								<p className="policy-text text-gray-300 leading-relaxed break-words overflow-wrap-anywhere">
+		// 									<span dangerouslySetInnerHTML={{ __html: item.description || '' }} />
+		// 								</p>
+		// 							</div>
+		// 						</div>
+		// 					))}
+		// 				</div>
+		// 			</div>
+		// 		</div>
+		// 	</section>
+		// </div>
+
+
 		<div className="min-h-screen text-foreground star">
 			<section className="pt-32 pb-16 px-6">
 				<div className="max-w-4xl mx-auto text-center">
@@ -331,7 +374,7 @@ export default function LegacyPolicy() {
 							height={1500}
 							className="absolute top-1/2 left-1/2 scale-200 -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-50"
 						/>
-						
+
 						<div className="bg-card rounded-2xl p-4 relative">
 							{/* Section 1: Introduction */}
 							<div ref={el => { itemsRef.current[0] = el; }} className="flex gap-6 mb-12">
