@@ -72,7 +72,7 @@ interface OnboardingState {
   clearError: () => void;
 }
 
-export const useOnboardingStore = create<OnboardingState>()((set, get) => ({
+export const useOnboardingStore = create<OnboardingState>()((set) => ({
   isLoading: false,
   error: null,
   onboardingStatus: null,
@@ -80,13 +80,27 @@ export const useOnboardingStore = create<OnboardingState>()((set, get) => ({
   checkOnboardingStatus: async () => {
     try {
       const response = await api.get('/onboarding/me/');
+
+      // If 204 No Content, it means onboarding is already completed or not required
+      if (response.status === 204) {
+        set({ onboardingStatus: { is_completed: true } });
+        return true;
+      }
+
       // Handle both { data: ... } and flat response
       const status = response.data?.data || response.data;
       set({ onboardingStatus: status });
-      
+
       return !!status?.is_completed;
-      
-    } catch (error) {
+
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 204) {
+          set({ onboardingStatus: { is_completed: true } });
+          return true;
+        }
+      }
       console.error('Failed to check onboarding status:', error);
       return false;
     }
@@ -99,21 +113,25 @@ export const useOnboardingStore = create<OnboardingState>()((set, get) => ({
         ...data,
         is_completed: true,
       });
-      
+
       useToastStore.getState().addToast('Onboarding completed successfully!', 'success');
-      
+
       // Update the onboarding status in the store
       const status = response.data?.data || response.data;
-      set({ 
+      set({
         onboardingStatus: { ...status, is_completed: true },
-        isLoading: false 
+        isLoading: false
       });
-      
+
       setTimeout(() => {
         window.location.href = '/dashboard';
       }, 1500);
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Onboarding submission failed';
+    } catch (error: unknown) {
+      let errorMessage = 'Onboarding submission failed';
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { data?: { message?: string } } };
+        errorMessage = axiosError.response?.data?.message || errorMessage;
+      }
       set({ error: errorMessage, isLoading: false });
       useToastStore.getState().addToast(errorMessage, 'error');
     }

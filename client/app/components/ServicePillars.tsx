@@ -29,7 +29,7 @@ export default function ServicePillar({ content, onContentUpdate }: ServicePilla
   useEffect(() => {
     const fetchAllContent = async () => {
       try {
-        const response = await fetch('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/all-content/');
+        const response = await fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/all-content/');
         if (!response.ok) throw new Error('Failed to fetch content');
         const result = await response.json();
         const data = result.data || result;
