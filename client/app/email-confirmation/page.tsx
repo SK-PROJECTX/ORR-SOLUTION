@@ -4,7 +4,7 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import axios from "axios";
+import api from '@/lib/axios';
 
 function EmailConfirmationContent() {
   const router = useRouter();
@@ -17,7 +17,7 @@ function EmailConfirmationContent() {
 
   useEffect(() => {
     if (email && token) {
-      axios.post('/verify-email/', { email, token })
+      api.post('/verify-email/', { email, token })
         .then(() => setStatus('success'))
         .catch(() => setStatus('error'));
     }
@@ -27,7 +27,7 @@ function EmailConfirmationContent() {
     setResending(true);
     setResendMessage('');
     try {
-      await axios.post('/api/resend-confirmation', { email });
+      await api.post('/api/resend-confirmation', { email });
       setResendMessage('Email sent successfully!');
     } catch {
       setResendMessage('Failed to send email. Please try again.');

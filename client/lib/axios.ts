@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://orr-backend-web-latest.onrender.com',
+  baseURL: 'https://orr-backend.orr.solutions',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
