@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ApproachCard from "../components/ApproachCard";
-import GPMetaphorSection from "../components/GPMetaphorSection";
+import BusinessSystemSection from "../components/BusinessSystemSectionNew";
 import Hero from "../components/Hero";
 import ServicePillar from "../components/ServicePillars";
 import { HeroSection } from "./components/HeroSection";
@@ -67,7 +67,7 @@ export default function LandingPage() {
         <ServicePillar />
       </div>
       <div className="scroll-section" id="business-system-section">
-        <GPMetaphorSection />
+        <BusinessSystemSection />
       </div>
       <div className="scroll-section" id="orr-role-section">
         <ORRRoleSection />

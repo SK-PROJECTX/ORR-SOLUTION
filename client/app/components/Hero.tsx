@@ -61,12 +61,6 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
         setAllContent({
           homepage: convertToString(data.homepage)
         });
-        
-        // Debug logging
-        console.log('🔍 All Content Data:', data);
-        console.log('🔍 Services Page Raw:', data.services_page);
-        console.log('🔍 Services Page Converted:', convertToString(data.services_page));
-        console.log('🔍 Hero Title Value:', convertToString(data.services_page)?.hero_title);
       } catch (error) {
         console.error('Error fetching content:', error);
       }
