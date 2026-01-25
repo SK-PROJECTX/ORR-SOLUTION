@@ -5,6 +5,46 @@ import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import { getRichTextContent } from "../../../lib/rich-text-utils";
 
+// Helper function to decode HTML entities and format content
+const decodeAndFormatContent = (content: any): string => {
+  if (!content) return '';
+  
+  let processedContent = content;
+  
+  // Handle the database format: {&#39;format&#39;: &#39;html&#39;, &#39;content&#39;: &#39;...&#39;}
+  if (typeof content === 'string' && content.includes('&#39;')) {
+    // First decode the HTML entities in the structure
+    processedContent = content
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
+    
+    // Extract content from the format object using regex that handles multiline content
+    const contentMatch = processedContent.match(/'content':\s*'([\s\S]*?)(?:'\s*}\s*$|'\s*,)/);
+    if (contentMatch) {
+      processedContent = contentMatch[1]
+        .replace(/\\'/g, "'")
+        .replace(/\\r\\n/g, '')
+        .replace(/\\n/g, '')
+        .replace(/\\r/g, '');
+    }
+  }
+  
+  // If it's already an object, extract content
+  if (typeof content === 'object' && content.content) {
+    processedContent = content.content;
+  }
+  
+  // Add line breaks after list items
+  if (processedContent && processedContent.includes('</li>')) {
+    processedContent = processedContent.replace(/<\/li>/g, '</li><br>');
+  }
+  
+  return processedContent || '';
+};
+
 interface ServiceStage {
   id: number;
   stage_number: number;
@@ -168,7 +208,7 @@ export default function Services() {
                   <span dangerouslySetInnerHTML={{ __html: stage.description || "Stage Description" }} />
                 </p>
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: stage.focus_content || "Focus Content" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
                 <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">
                   <span dangerouslySetInnerHTML={{ __html: stage.button_text || "Learn More" }} />
@@ -195,7 +235,7 @@ export default function Services() {
                 <span dangerouslySetInnerHTML={{ __html: data.stages[4].description || "Stage 5 Description" }} />
               </p>
               <div className="text-gray-300 text-sm mb-8">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].focus_content || "Focus Content" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
               <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">
                 <span dangerouslySetInnerHTML={{ __html: data.stages[4].button_text || "Learn More" }} />

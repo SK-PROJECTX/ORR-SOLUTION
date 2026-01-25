@@ -107,8 +107,14 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
   }
   
   // If it's RichTextField format or styled format, extract content
-  if (typeof data === 'object' && data.content) {
-    return data.content;
+  if (typeof data === 'object' && data !== null) {
+    // Handle nested format objects
+    if (data.content && typeof data.content === 'object' && data.content.content) {
+      return data.content.content;
+    }
+    if (data.content) {
+      return data.content;
+    }
   }
   
   return '';
@@ -224,6 +230,11 @@ export function getRichTextHTML(data: string | RichTextContent | StyledRichTextC
       .replace(/&copy;/g, '©')
       .replace(/&reg;/g, '®')
       .replace(/&trade;/g, '™');
+  }
+  
+  // Add line breaks after each list item for better spacing
+  if (content && content.includes('</li>')) {
+    content = content.replace(/<\/li>/g, '</li><br>');
   }
   
   return { __html: content };
