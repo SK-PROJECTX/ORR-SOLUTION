@@ -48,7 +48,7 @@ export default function ResourcesBlogs() {
     const fetchData = async () => {
       try {
         console.log('🔄 Fetching Resources data from backend...');
-        const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/resources-content/');
+        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/resources-content/');
         console.log('✅ Resources API Response:', response.data);
         if (response.data.success) {
           console.log('📊 Resources Data Structure:', {
@@ -101,27 +101,27 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_title || 'Resources & Client Portal' }} />
+        <span dangerouslySetInnerHTML={{ __html: data.hero_title?.content || 'Resources & Client Portal' }} />
       </h1>
       
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description1 || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description1?.content || 'Loading content...' }} />
       </p>
       
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description2 || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description2?.content || 'Loading content...' }} />
       </p>
       
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description3 || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description3?.content || 'Loading content...' }} />
       </p>
       
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
-          <span dangerouslySetInnerHTML={{ __html: data.hero_button1_text || 'Request Access' }} />
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button1_text?.content || 'Request Access' }} />
         </button>
         <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
-          <span dangerouslySetInnerHTML={{ __html: data.hero_button2_text || 'Learn More' }} />
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button2_text?.content || 'Learn More' }} />
         </button>
       </div>
     </section>
@@ -195,12 +195,12 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
-          <span dangerouslySetInnerHTML={{ __html: card.badge || '' }} />
+          <span dangerouslySetInnerHTML={{ __html: card.badge?.content || '' }} />
         </span>
       </div>
       
       <h3 className="text-xl font-bold mb-6">
-        <span dangerouslySetInnerHTML={{ __html: card.title || '' }} />
+        <span dangerouslySetInnerHTML={{ __html: card.title?.content || '' }} />
       </h3>
       
       <div className="text-gray-300 text-sm leading-relaxed">
@@ -227,10 +227,10 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
           <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">
-            <span dangerouslySetInnerHTML={{ __html: card.button1_text || '' }} />
+            <span dangerouslySetInnerHTML={{ __html: card.button1_text?.content || '' }} />
           </button>
           <button className="border border-green-400 text-green-400 hover:bg-green-400 hover:text-black px-6 py-3 rounded-full font-semibold transition-colors">
-            <span dangerouslySetInnerHTML={{ __html: card.button2_text || '' }} />
+            <span dangerouslySetInnerHTML={{ __html: card.button2_text?.content || '' }} />
           </button>
         </div>
       )}

@@ -96,7 +96,7 @@ export default function Services() {
     const fetchData = async () => {
       try {
         console.log('🔄 Fetching Services data from backend...');
-        const response = await axios.get('https://orr-backend-web-latest.onrender.com/admin-portal/v1/cms/services-content/');
+        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/');
         console.log('✅ Services API Response:', response.data);
         if (response.data.success) {
           console.log('📊 Services Data Structure:', {
@@ -176,10 +176,10 @@ export default function Services() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
-            <span dangerouslySetInnerHTML={{ __html: data.page.hero_title || "ORR Solutions - Listen. Solve. Optimise." }} />
+            <span dangerouslySetInnerHTML={{ __html: data.page.hero_title?.content || "ORR Solutions - Listen. Solve. Optimise." }} />
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: data.page.hero_subtitle || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
+            <span dangerouslySetInnerHTML={{ __html: data.page.hero_subtitle?.content || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
           </p>
         </div>
       </section>
@@ -199,19 +199,19 @@ export default function Services() {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: stage.title || "Stage Title" }} />
+                  <span dangerouslySetInnerHTML={{ __html: stage.title?.content || "Stage Title" }} />
                 </h2>
                 <h3 className="text-lg font-semibold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: stage.subtitle || "Stage Subtitle" }} />
+                  <span dangerouslySetInnerHTML={{ __html: stage.subtitle?.content || "Stage Subtitle" }} />
                 </h3>
                 <p className="text-gray-300 text-sm mb-6">
-                  <span dangerouslySetInnerHTML={{ __html: stage.description || "Stage Description" }} />
+                  <span dangerouslySetInnerHTML={{ __html: stage.description?.content || "Stage Description" }} />
                 </p>
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
                 <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">
-                  <span dangerouslySetInnerHTML={{ __html: stage.button_text || "Learn More" }} />
+                  <span dangerouslySetInnerHTML={{ __html: stage.button_text?.content || "Learn More" }} />
                 </button>
               </div>
             ))}
@@ -226,19 +226,19 @@ export default function Services() {
                 </svg>
               </div>
               <h2 className="text-xl font-bold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].title || "Stage 5 Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].title?.content || "Stage 5 Title" }} />
               </h2>
               <h3 className="text-lg font-semibold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].subtitle || "Stage 5 Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].subtitle?.content || "Stage 5 Subtitle" }} />
               </h3>
               <p className="text-gray-300 text-sm mb-6">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].description || "Stage 5 Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].description?.content || "Stage 5 Description" }} />
               </p>
               <div className="text-gray-300 text-sm mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
               <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].button_text || "Learn More" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.stages[4].button_text?.content || "Learn More" }} />
               </button>
             </div>
           )}
@@ -253,20 +253,20 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
-              <span dangerouslySetInnerHTML={{ __html: data.page.pillars_title || "Our Services" }} />
+              <span dangerouslySetInnerHTML={{ __html: data.page.pillars_title?.content || "Our Services" }} />
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {data.pillars.map((pillar) => (
               <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
                 <h3 className="text-3xl font-bold mb-8 text-center">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.title || "Pillar Title" }} />
+                  <span dangerouslySetInnerHTML={{ __html: pillar.title?.content || "Pillar Title" }} />
                 </h3>
                 <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.description || "Pillar Description" }} />
+                  <span dangerouslySetInnerHTML={{ __html: pillar.description?.content || "Pillar Description" }} />
                 </p>
                 <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.button_text || "Learn More" }} />
+                  <span dangerouslySetInnerHTML={{ __html: pillar.button_text?.content || "Learn More" }} />
                 </button>
               </div>
             ))}
@@ -283,16 +283,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-white mb-6">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_title || "Business GP Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_title?.content || "Business GP Title" }} />
               </h2>
               <h3 className="text-4xl font-bold mb-8 text-white">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_subtitle || "Business GP Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_subtitle?.content || "Business GP Subtitle" }} />
               </h3>
               <p className="text-gray-300 text-xl mb-8">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_description || "Business GP Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_description?.content || "Business GP Description" }} />
               </p>
               <button className="bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_button_text || "Contact Us" }} />
+                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_button_text?.content || "Contact Us" }} />
               </button>
             </div>
             <div>
