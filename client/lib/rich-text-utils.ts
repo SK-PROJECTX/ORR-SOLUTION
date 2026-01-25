@@ -109,10 +109,10 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
   // If it's RichTextField format or styled format, extract content
   if (typeof data === 'object' && data !== null) {
     // Handle nested format objects
-    if (data.content && typeof data.content === 'object' && data.content.content) {
-      return data.content.content;
+    if ('content' in data && data.content && typeof data.content === 'object' && data.content !== null && 'content' in data.content) {
+      return (data.content as any).content;
     }
-    if (data.content) {
+    if ('content' in data && data.content) {
       return data.content;
     }
   }
