@@ -1,3 +1,5 @@
+import { getRichTextHTML } from "@/lib/rich-text-utils";
+
 interface NetworkCardProps {
   title: string;
   description: string;
@@ -13,10 +15,10 @@ export default function NetworkCard({ title, description, icon }: NetworkCardPro
         </svg>
       </div>
       <h3 className="text-xl font-bold text-white mb-4">
-        {title}
+        <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
       </h3>
       <p className="text-white/90 text-sm mb-6">
-        {description}
+        <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
       </p>
       <button className="bg-white text-black px-6 py-2 rounded-2xl font-semibold hover:bg-gray-100 transition-colors">
         Join Now

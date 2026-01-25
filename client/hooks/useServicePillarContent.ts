@@ -39,6 +39,9 @@ interface StrategicAdvisoryContent {
     title: string;
     description: string;
     icon: string;
+  }> | Array<{
+    text: string;
+    type: string;
   }>;
 
   // Digital Solutions Section
@@ -46,8 +49,8 @@ interface StrategicAdvisoryContent {
   digital_subtitle?: string;
   digital_description?: string;
   digital_image_alt?: string;
-  digital_who_is_this_for?: string[];
-  digital_features?: string[];
+  digital_who_is_this_for?: (string | { text: string; type: string })[];
+  digital_features?: (string | { text: string; type: string })[];
 
   meta_title: string;
   meta_description: string;

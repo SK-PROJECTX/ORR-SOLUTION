@@ -52,7 +52,7 @@ export default function SupportHistory() {
       
       console.log('Fetching tickets with token:', token ? 'Token exists' : 'No token');
       
-      const response = await fetch('https://orr-backend-web-latest.onrender.com/tickets/', {
+      const response = await fetch('https://orr-backend.orr.solutions/tickets/', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ export default function SupportHistory() {
         return;
       }
       
-      const response = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${ticketId}/`, {
+      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ export default function SupportHistory() {
         return;
       }
       
-      const response = await fetch(`https://orr-backend-web-latest.onrender.com/tickets/${ticketId}/send-message/`, {
+      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/send-message/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -206,7 +206,8 @@ export default function SupportHistory() {
                 </div>
               ) : (
                 allTickets.map((ticket, i) => {
-                  const messages = ticketMessages[ticket.id] || [];
+                  const ticketId = (ticket as any).id || ticket.ticket_id;
+                  const messages = ticketMessages[ticketId] || [];
                   const hasAutoReply = messages.some(msg => msg.sender.username === 'system_auto_reply');
                   
                   return (
@@ -216,7 +217,7 @@ export default function SupportHistory() {
                     >
                       <div 
                         className="cursor-pointer"
-                        onClick={() => handleTicketClick(i, ticket.id)}
+                        onClick={() => handleTicketClick(i, ticketId)}
                       >
                         <div className="flex justify-between items-start mb-2">
                           <p className="text-sm font-bold">ID: {ticket.ticket_id}</p>
@@ -288,17 +289,17 @@ export default function SupportHistory() {
                               <input
                                 type="text"
                                 placeholder="Type your message..."
-                                value={newMessage[ticket.id] || ''}
-                                onChange={(e) => setNewMessage(prev => ({ ...prev, [ticket.id]: e.target.value }))}
-                                onKeyPress={(e) => e.key === 'Enter' && sendMessage(ticket.id)}
+                                value={newMessage[ticketId] || ''}
+                                onChange={(e) => setNewMessage(prev => ({ ...prev, [ticketId]: e.target.value }))}
+                                onKeyPress={(e) => e.key === 'Enter' && sendMessage(ticketId)}
                                 className="flex-1 px-3 py-2 bg-background/20 border border-background/30 rounded-lg text-background placeholder-background/60 focus:outline-none focus:border-background/50"
                               />
                               <button
-                                onClick={() => sendMessage(ticket.id)}
-                                disabled={sendingMessage === ticket.id || !newMessage[ticket.id]?.trim()}
+                                onClick={() => sendMessage(ticketId)}
+                                disabled={sendingMessage === ticketId || !newMessage[ticketId]?.trim()}
                                 className="px-4 py-2 bg-background text-lemon rounded-lg hover:bg-background/90 transition-colors disabled:opacity-50 flex items-center gap-2"
                               >
-                                {sendingMessage === ticket.id ? (
+                                {sendingMessage === ticketId ? (
                                   <Clock className="animate-spin" size={16} />
                                 ) : (
                                   <Send size={16} />

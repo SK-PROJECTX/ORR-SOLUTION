@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { getRichTextHTML } from "@/lib/rich-text-utils";
 
 interface DigitalSolutionsSectionProps {
   title: string;
   subtitle?: string;
   description: string;
   imageAlt: string;
-  whoIsThisFor: string[];
-  features: string[];
+  whoIsThisFor: (string | { text: string; type: string })[];
+  features: (string | { text: string; type: string })[];
 }
 
 export default function DigitalSolutionsSection({
@@ -172,7 +173,7 @@ export default function DigitalSolutionsSection({
                 {whoIsThisFor.map((item, index) => (
                   <li key={index} className="flex items-start animate-list-item" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    {item}
+                    <span dangerouslySetInnerHTML={getRichTextHTML(typeof item === 'string' ? item : item.text)} />
                   </li>
                 ))}
               </ul>
@@ -184,15 +185,15 @@ export default function DigitalSolutionsSection({
             {/* Header */}
             <div className="py-18">
               <h2 className="text-4xl font-bold text-white mb-4 animate-title-bounce">
-                {title}
+                <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
               </h2>
               {subtitle && (
                 <h2 className="text-4xl font-bold text-primary mb-6 animate-subtitle-glow">
-                  {subtitle}
+                  <span dangerouslySetInnerHTML={getRichTextHTML(subtitle)} />
                 </h2>
               )}
               <p className="text-slate-200 text-lg animate-description-fade">
-                {description}
+                <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
               </p>
             </div>
 
@@ -202,7 +203,7 @@ export default function DigitalSolutionsSection({
                 {features.map((feature, index) => (
                   <li key={index} className="flex items-start animate-feature-pop" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    {feature}
+                    <span dangerouslySetInnerHTML={getRichTextHTML(typeof feature === 'string' ? feature : feature.text)} />
                   </li>
                 ))}
               </ul>

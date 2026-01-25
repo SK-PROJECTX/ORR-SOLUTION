@@ -5,31 +5,32 @@ import { useScrollSplit } from "@/hooks/useScrollSplit";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
+import Spinner from "../../../components/ui/Spinner";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface ContentCard {
   id: number;
-  badge: string;
-  title: string;
-  content: string[];
+  badge: any;
+  title: any;
+  content: string[] | { content: string }[];
   image_url: string;
-  button1_text?: string;
-  button2_text?: string;
+  button1_text?: any;
+  button2_text?: any;
   order: number;
   is_active: boolean;
 }
 
 interface ResourcesPageData {
   id: number;
-  hero_title: string;
-  hero_description1: string;
-  hero_description2: string;
-  hero_description3: string;
-  hero_button1_text: string;
-  hero_button2_text: string;
-  meta_title?: string;
-  meta_description?: string;
+  hero_title: any;
+  hero_description1: any;
+  hero_description2: any;
+  hero_description3: any;
+  hero_button1_text: any;
+  hero_button2_text: any;
+  meta_title?: any;
+  meta_description?: any;
   is_active: boolean;
 }
 
@@ -47,7 +48,7 @@ export default function ResourcesBlogs() {
     const fetchData = async () => {
       try {
         console.log('🔄 Fetching Resources data from backend...');
-        const response = await axios.get('http://127.0.0.1:8000/admin-portal/v1/cms/resources-content/');
+        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/resources-content/');
         console.log('✅ Resources API Response:', response.data);
         if (response.data.success) {
           console.log('📊 Resources Data Structure:', {
@@ -67,19 +68,11 @@ export default function ResourcesBlogs() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen text-white flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!data) {
-    return (
-      <div className="min-h-screen text-white flex items-center justify-center">
-        <div className="text-white text-xl">Error loading content</div>
-      </div>
-    );
+    return <Spinner />;
   }
   
   return (
@@ -108,32 +101,27 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
-        {data.hero_title?.split('&').map((part, index) => (
-          <span key={index}>
-            {index === 0 ? part : <span className="text-green-400">& {part}</span>}
-            {index === 0 && <br />}
-          </span>
-        )) || 'Resources & Client Portal'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_title?.content || 'Resources & Client Portal' }} />
       </h1>
       
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
-        {data.hero_description1 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description1?.content || 'Loading content...' }} />
       </p>
       
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        {data.hero_description2 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description2?.content || 'Loading content...' }} />
       </p>
       
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        {data.hero_description3 || 'Loading content...'}
+        <span dangerouslySetInnerHTML={{ __html: data.hero_description3?.content || 'Loading content...' }} />
       </p>
       
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
-          {data.hero_button1_text || 'Request Access'}
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button1_text?.content || 'Request Access' }} />
         </button>
         <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
-          {data.hero_button2_text || 'Learn More'}
+          <span dangerouslySetInnerHTML={{ __html: data.hero_button2_text?.content || 'Learn More' }} />
         </button>
       </div>
     </section>
@@ -141,10 +129,13 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
 }
 
 function ContentSection({ cards }: { cards: ContentCard[] }) {
+  // Sort cards by order field
+  const sortedCards = [...cards].sort((a, b) => (a.order || 0) - (b.order || 0));
+  
   return (
     <section className="px-6 md:px-16 pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-        {cards.map((card, index) => (
+        {sortedCards.map((card, index) => (
           <ContentCardComponent key={card.id} card={card} />
         ))}
       </div>
@@ -204,23 +195,31 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
-          {card.badge}
+          <span dangerouslySetInnerHTML={{ __html: card.badge?.content || '' }} />
         </span>
       </div>
       
-      <h3 className="text-xl font-bold mb-6">{card.title}</h3>
+      <h3 className="text-xl font-bold mb-6">
+        <span dangerouslySetInnerHTML={{ __html: card.title?.content || '' }} />
+      </h3>
       
       <div className="text-gray-300 text-sm leading-relaxed">
         {!isExpanded ? (
           <div>
-            <p className="line-clamp-3">{card.content.slice(0, 2).join(' ')}</p>
+            <p className="line-clamp-3">
+              {Array.isArray(card.content) 
+                ? card.content.slice(0, 2).map(item => 
+                    typeof item === 'string' ? item : (item as { content: string }).content || ''
+                  ).join(' ')
+                : typeof card.content === 'string' ? card.content : ''}
+            </p>
             <p className="text-gray-400 mt-2">...</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {card.content.map((item, index) => (
-              <p key={index}>{item}</p>
-            ))}
+            {Array.isArray(card.content) ? card.content.map((item, index) => (
+              <p key={index}>{typeof item === 'string' ? item : (item as { content: string }).content || ''}</p>
+            )) : <p>{typeof card.content === 'string' ? card.content : ''}</p>}
           </div>
         )}
       </div>
@@ -228,10 +227,10 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
           <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">
-            {card.button1_text}
+            <span dangerouslySetInnerHTML={{ __html: card.button1_text?.content || '' }} />
           </button>
           <button className="border border-green-400 text-green-400 hover:bg-green-400 hover:text-black px-6 py-3 rounded-full font-semibold transition-colors">
-            {card.button2_text}
+            <span dangerouslySetInnerHTML={{ __html: card.button2_text?.content || '' }} />
           </button>
         </div>
       )}

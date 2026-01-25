@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import ApproachCard from "../components/ApproachCard";
-import GPMetaphorSection from "../components/GPMetaphorSection";
+import BusinessSystemSection from "../components/BusinessSystemSectionNew";
 import Hero from "../components/Hero";
 import ServicePillar from "../components/ServicePillars";
 import { HeroSection } from "./components/HeroSection";
@@ -20,6 +20,8 @@ import { useHomepageContent } from "../../hooks/useHomepageContent";
 import MidClientJourneySection from "../components/MidClientJourneySection";
 import PackagePreviewSection from "../components/PackagePreviewSection";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
+
+import Spinner from "../../components/ui/Spinner";
 
 export default function LandingPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -45,53 +47,45 @@ export default function LandingPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white text-xl">Loading content...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500 text-xl">Error: {error}</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
     <div className="star fixed-background">
       <HeroSection />
       <div className="scroll-section" id="hero-section">
-        <Hero content={content?.homepage} onContentUpdate={updateHomepage} />
+        <Hero />
       </div>
       <div className="scroll-section" id="approach-section">
-        <ApproachCard content={content?.approachSection} onContentUpdate={updateApproachSection} />
+        <ApproachCard />
       </div>
       <div className="scroll-section" id="services-section">
-        <ServicePillar content={content?.homepage} onContentUpdate={updateHomepage} />
+        <ServicePillar />
       </div>
       <div className="scroll-section" id="business-system-section">
-        <GPMetaphorSection content={content?.businessSystemSection} onContentUpdate={updateBusinessSystemSection} />
+        <BusinessSystemSection />
       </div>
       <div className="scroll-section" id="orr-role-section">
-        <ORRRoleSection content={content?.orrRoleSection} onContentUpdate={updateORRRoleSection} />
+        <ORRRoleSection />
       </div>
       <div className="scroll-section" id="message-section">
-        <MiniClientJourney content={content?.messageStrip} onContentUpdate={updateMessageStrip} />
+        <MiniClientJourney />
       </div>
       <div className="scroll-section" id="process-section">
-        <FiveStagesSection content={content?.processSection} onContentUpdate={updateProcessSection} />
+        <FiveStagesSection />
       </div>
       <div className="scroll-section" id="report-section">
-        <ORRReportSection content={content?.orrReportSection} onContentUpdate={updateORRReportSection} />
+        <ORRReportSection />
       </div>
       <div className="scroll-section">
         <PackagePreviewSection />
       </div>
       <div className="scroll-section" id="faq-section">
-        <FAQSection content={content?.faqs} onContentUpdate={updateFAQ} />
+        <FAQSection />
       </div>
       <div className="scroll-section">
         <MidClientJourneySection />

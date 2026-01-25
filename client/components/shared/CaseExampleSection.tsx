@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { getRichTextHTML } from "@/lib/rich-text-utils";
 
 interface CaseExample {
   challenge: string;
@@ -105,7 +106,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Challenge
                 </h3>
                 <p className="text-gray-700 text-sm leading-relaxed animate-card-text">
-                  {caseExample.challenge}
+                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.challenge)} />
                 </p>
               </div>
               
@@ -120,7 +121,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Solution
                 </h3>
                 <p className="text-gray-700 text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.3s'}}>
-                  {caseExample.solution}
+                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.solution)} />
                 </p>
               </div>
               
@@ -135,7 +136,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Result
                 </h3>
                 <p className="text-gray-700 text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.5s'}}>
-                  {caseExample.result}
+                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.result)} />
                 </p>
               </div>
             </div>

@@ -1,3 +1,5 @@
+import { getRichTextHTML } from "@/lib/rich-text-utils";
+
 interface HeroSectionProps {
   title: string;
   highlightedTitle: string;
@@ -11,16 +13,16 @@ export default function HeroSection({ title, highlightedTitle, description1, des
       <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-5xl space-y-6 sm:space-y-8">
           <h1 className="text-white font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl leading-tight">
-            <span className="text-[#47ff4c]">{highlightedTitle}</span> <br className="hidden sm:block" />
-            <span className="text-white">{title}</span>
+            <span className="text-[#47ff4c]"><span dangerouslySetInnerHTML={getRichTextHTML(highlightedTitle)} /></span> <br className="hidden sm:block" />
+            <span className="text-white"><span dangerouslySetInnerHTML={getRichTextHTML(title)} /></span>
           </h1>
 
           <p className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-            {description1}
+            <span dangerouslySetInnerHTML={getRichTextHTML(description1)} />
           </p>
 
           <p className="text-slate-200 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
-            {description2}
+            <span dangerouslySetInnerHTML={getRichTextHTML(description2)} />
           </p>
         </div>
 
