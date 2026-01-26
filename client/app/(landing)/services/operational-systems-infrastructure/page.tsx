@@ -20,6 +20,8 @@ export default function OperationalSystemsPage() {
     if (content) {
       console.log('📊 Operational Systems Page - Hero Title:', content.hero_title);
       console.log('📊 Operational Systems Page - Hero Subtitle:', content.hero_subtitle);
+      console.log("hello there");
+
       console.log('📊 Operational Systems Page - Services Title:', content.services_title);
     }
   }, [content, loading, error]);
