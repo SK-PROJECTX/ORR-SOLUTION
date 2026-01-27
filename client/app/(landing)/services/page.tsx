@@ -98,12 +98,23 @@ export default function Services() {
         console.log('🔄 Fetching Services data from backend...');
         const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/');
         console.log('✅ Services API Response:', response.data);
+        console.log('🔍 Full Response Data Structure:', JSON.stringify(response.data, null, 2));
         if (response.data.success) {
           console.log('📊 Services Data Structure:', {
             page: response.data.data.page,
             stages: response.data.data.stages.length + ' stages',
-            pillars: response.data.data.pillars.length + ' pillars'
+            pillars: response.data.data.pillars.length + ' pillars',
+            pillarsData: response.data.data.pillars
           });
+          console.log('🏛️ Pillars Array Details:', response.data.data.pillars.map((pillar: any, index: number) => ({
+            index,
+            id: pillar.id,
+            title: pillar.title,
+            description: pillar.description,
+            button_text: pillar.button_text,
+            order: pillar.order,
+            is_active: pillar.is_active
+          })));
           setData(response.data.data);
         }
       } catch (error) {
@@ -176,10 +187,10 @@ export default function Services() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
-            <span dangerouslySetInnerHTML={{ __html: data.page.hero_title?.content || "ORR Solutions - Listen. Solve. Optimise." }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || "ORR Solutions - Listen. Solve. Optimise." }} />
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: data.page.hero_subtitle?.content || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_subtitle) || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
           </p>
         </div>
       </section>
@@ -199,19 +210,19 @@ export default function Services() {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: stage.title?.content || "Stage Title" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.title) || "Stage Title" }} />
                 </h2>
                 <h3 className="text-lg font-semibold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: stage.subtitle?.content || "Stage Subtitle" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.subtitle) || "Stage Subtitle" }} />
                 </h3>
                 <p className="text-gray-300 text-sm mb-6">
-                  <span dangerouslySetInnerHTML={{ __html: stage.description?.content || "Stage Description" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.description) || "Stage Description" }} />
                 </p>
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
                 <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">
-                  <span dangerouslySetInnerHTML={{ __html: stage.button_text?.content || "Learn More" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || "Learn More" }} />
                 </button>
               </div>
             ))}
@@ -226,19 +237,19 @@ export default function Services() {
                 </svg>
               </div>
               <h2 className="text-xl font-bold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].title?.content || "Stage 5 Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].title) || "Stage 5 Title" }} />
               </h2>
               <h3 className="text-lg font-semibold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].subtitle?.content || "Stage 5 Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].subtitle) || "Stage 5 Subtitle" }} />
               </h3>
               <p className="text-gray-300 text-sm mb-6">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].description?.content || "Stage 5 Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].description) || "Stage 5 Description" }} />
               </p>
               <div className="text-gray-300 text-sm mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
               <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">
-                <span dangerouslySetInnerHTML={{ __html: data.stages[4].button_text?.content || "Learn More" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || "Learn More" }} />
               </button>
             </div>
           )}
@@ -253,23 +264,36 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
-              <span dangerouslySetInnerHTML={{ __html: data.page.pillars_title?.content || "Our Services" }} />
+              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.pillars_title) || "Our Services" }} />
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {data.pillars.map((pillar) => (
-              <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
-                <h3 className="text-3xl font-bold mb-8 text-center">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.title?.content || "Pillar Title" }} />
-                </h3>
-                <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.description?.content || "Pillar Description" }} />
-                </p>
-                <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">
-                  <span dangerouslySetInnerHTML={{ __html: pillar.button_text?.content || "Learn More" }} />
-                </button>
-              </div>
-            ))}
+            {(() => {
+              console.log('🔍 Pillars Data Debug:', {
+                pillarsArray: data.pillars,
+                pillarsLength: data.pillars?.length,
+                firstPillar: data.pillars?.[0],
+                allPillarsData: data.pillars?.map((p: any) => ({
+                  id: p.id,
+                  title: p.title,
+                  description: p.description,
+                  button_text: p.button_text
+                }))
+              });
+              return data.pillars.map((pillar) => (
+                <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
+                  <h3 className="text-3xl font-bold mb-8 text-center">
+                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.title) || "Pillar Title" }} />
+                  </h3>
+                  <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
+                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.description) || "Pillar Description" }} />
+                  </p>
+                  <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">
+                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || "Learn More" }} />
+                  </button>
+                </div>
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -283,16 +307,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-white mb-6">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_title?.content || "Business GP Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_title) || "Business GP Title" }} />
               </h2>
               <h3 className="text-4xl font-bold mb-8 text-white">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_subtitle?.content || "Business GP Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_subtitle) || "Business GP Subtitle" }} />
               </h3>
               <p className="text-gray-300 text-xl mb-8">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_description?.content || "Business GP Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || "Business GP Description" }} />
               </p>
               <button className="bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
-                <span dangerouslySetInnerHTML={{ __html: data.page.business_gp_button_text?.content || "Contact Us" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || "Contact Us" }} />
               </button>
             </div>
             <div>

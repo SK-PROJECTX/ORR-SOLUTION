@@ -9,6 +9,46 @@ import Spinner from "../../../components/ui/Spinner";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Helper function to decode HTML entities and format content
+const decodeAndFormatContent = (content: any): string => {
+  if (!content) return '';
+  
+  let processedContent = content;
+  
+  // Handle the database format: {&#39;format&#39;: &#39;html&#39;, &#39;content&#39;: &#39;...&#39;}
+  if (typeof content === 'string' && content.includes('&#39;')) {
+    // First decode the HTML entities in the structure
+    processedContent = content
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
+    
+    // Extract content from the format object using regex that handles multiline content
+    const contentMatch = processedContent.match(/'content':\s*'([\s\S]*?)(?:'\s*}\s*$|'\s*,)/);
+    if (contentMatch) {
+      processedContent = contentMatch[1]
+        .replace(/\\'/g, "'")
+        .replace(/\\r\\n/g, '')
+        .replace(/\\n/g, '')
+        .replace(/\\r/g, '');
+    }
+  }
+  
+  // If it's already an object, extract content
+  if (typeof content === 'object' && content.content) {
+    processedContent = content.content;
+  }
+  
+  // Add line breaks after list items
+  if (processedContent && processedContent.includes('</li>')) {
+    processedContent = processedContent.replace(/<\/li>/g, '</li><br>');
+  }
+  
+  return processedContent || '';
+};
+
 interface ContentCard {
   id: number;
   badge: any;
@@ -101,27 +141,27 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
   return (
     <section className="relative px-6 my-20 md:px-16 py-20 min-h-screen flex flex-col items-start justify-center">
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_title?.content || 'Resources & Client Portal' }} />
+        <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_title) || 'Resources & Client Portal' }} />
       </h1>
       
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description1?.content || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description1) || 'Loading content...' }} />
       </p>
       
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description2?.content || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description2) || 'Loading content...' }} />
       </p>
       
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
-        <span dangerouslySetInnerHTML={{ __html: data.hero_description3?.content || 'Loading content...' }} />
+        <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description3) || 'Loading content...' }} />
       </p>
       
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
         <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
-          <span dangerouslySetInnerHTML={{ __html: data.hero_button1_text?.content || 'Request Access' }} />
+          <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button1_text) || 'Request Access' }} />
         </button>
         <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
-          <span dangerouslySetInnerHTML={{ __html: data.hero_button2_text?.content || 'Learn More' }} />
+          <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button2_text) || 'Learn More' }} />
         </button>
       </div>
     </section>
@@ -195,12 +235,12 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
-          <span dangerouslySetInnerHTML={{ __html: card.badge?.content || '' }} />
+          <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.badge) || '' }} />
         </span>
       </div>
       
       <h3 className="text-xl font-bold mb-6">
-        <span dangerouslySetInnerHTML={{ __html: card.title?.content || '' }} />
+        <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.title) || '' }} />
       </h3>
       
       <div className="text-gray-300 text-sm leading-relaxed">
@@ -227,10 +267,10 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
       {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
           <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">
-            <span dangerouslySetInnerHTML={{ __html: card.button1_text?.content || '' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.button1_text) || '' }} />
           </button>
           <button className="border border-green-400 text-green-400 hover:bg-green-400 hover:text-black px-6 py-3 rounded-full font-semibold transition-colors">
-            <span dangerouslySetInnerHTML={{ __html: card.button2_text?.content || '' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.button2_text) || '' }} />
           </button>
         </div>
       )}
