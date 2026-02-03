@@ -173,6 +173,9 @@ export function LandingHeader() {
               <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign in</Link>
             <ThemeToggle />
             </div>
+            <div className='pt-8 border-t border-white/10'>
+                <Link href="/register" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Register</Link>
+            </div>
           </nav>
         </div>
       </div>
