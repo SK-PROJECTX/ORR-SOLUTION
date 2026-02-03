@@ -63,7 +63,7 @@ export default function Page() {
 
           <div className="flex justify-between items-center mb-6">
             <div className="mt-0">
-              <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
+              <h2 className="text-2xl font-extrabold mb-2 md:text-start mr-4 text-center text-[#FFFFFF]">
                 Welcome
               </h2>
               <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">

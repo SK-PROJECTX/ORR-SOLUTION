@@ -60,6 +60,7 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
   const card2Description = getRichTextContent(businessSystemSection?.card_2_description) || "Cash flow, resource distribution, and value exchange";
   const card3Title = getRichTextContent(businessSystemSection?.card_3_title) || "Immune System";
   const card3Description = getRichTextContent(businessSystemSection?.card_3_description) || "Risk management, compliance, and protective measures";
+  
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image */}
