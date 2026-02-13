@@ -33,7 +33,7 @@ export function LandingHeader() {
         <nav className="hidden lg:flex space-x-6">
           <Link href="/howweoperate" className={`hover:opacity-70 text-sm xl:text-base ${pathname.includes('/howweoperate') ? 'text-[#13BE77]' : 'text-gray-100'}`}>How We Operate</Link>
           <div className="relative">
-            <div onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
+            <div onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)} onMouseOver={()=> setIsServicesOpen(true)} onMouseOut={()=> setIsServicesOpen(false)}>
               <Link href="/services" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/services') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                 Services
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ export function LandingHeader() {
                 </svg>
               </Link>
               {isServicesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-80 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
+                <div className="absolute top-full left-0 mt-0 w-80 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
                   <Link href="/services/strategy-advisory-compliant" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/services/strategy-advisory-compliant' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                     Strategic Advisory & Compliance
                   </Link>
@@ -56,7 +56,7 @@ export function LandingHeader() {
             </div>
           </div>
           <Link href="/resources-blogs" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Resources & Blogs</Link>
-          <div className="relative" onMouseEnter={() => setIsLegalOpen(true)} onMouseLeave={() => setIsLegalOpen(false)}>
+          <div className="relative" onMouseEnter={() => setIsLegalOpen(true)} onMouseLeave={() => setIsLegalOpen(false)} onMouseOver={() => setIsLegalOpen(true)} onMouseOut={() => setIsLegalOpen(true)}>
             <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
               Legal & Policy
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ export function LandingHeader() {
               </svg>
             </Link>
             {isLegalOpen && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2">
+              <div className="absolute top-full left-0 mt-0 w-64 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2">
                 <Link href="/cookie-policy" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                   Cookie Policy
                 </Link>
