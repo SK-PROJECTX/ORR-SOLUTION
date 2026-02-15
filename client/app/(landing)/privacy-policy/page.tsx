@@ -19,7 +19,7 @@ const numberAnimation = {
       damping: 15,
     },
   },
-};
+} as const;
 
 export default function PrivacyPolicy() {
   return (
