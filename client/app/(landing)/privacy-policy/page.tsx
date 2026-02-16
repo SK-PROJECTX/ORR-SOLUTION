@@ -1,55 +1,137 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const numberAnimation = {
-  hidden: { opacity: 0, scale: 0.5 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 15,
-    },
-  },
-} as const;
+gsap.registerPlugin(ScrollTrigger);
 
 export default function PrivacyPolicy() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef(null);
+  const cardRef = useRef(null);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Title Animation
+      const title = titleRef.current;
+      if (title) {
+        const text = title.textContent;
+        title.innerHTML = text!
+          .split("")
+          .map(
+            (char) =>
+              `<span style="display:inline-block;opacity:0">${
+                char === " " ? "&nbsp;" : char
+              }</span>`,
+          )
+          .join("");
+
+        gsap.to(title.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.05,
+          stagger: 0.03,
+          ease: "power2.out",
+        });
+      }
+
+      // Description Animation
+      gsap.fromTo(
+        descRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: "power3.out" },
+      );
+
+      // Card Animation
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, scale: 0.9, rotateX: 15 },
+        {
+          opacity: 1,
+          scale: 1,
+          rotateX: 0,
+          duration: 1.2,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+
+      // Section Items Animation
+      itemsRef.current.forEach((item) => {
+        if (item) {
+          const number = item.querySelector(".policy-number");
+          const content = item.querySelector(".policy-content");
+
+          gsap.fromTo(
+            number,
+            { opacity: 0, scale: 0, rotate: -180 },
+            {
+              opacity: 1,
+              scale: 1,
+              rotate: 0,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            },
+          );
+
+          gsap.fromTo(
+            content,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              delay: 0.3,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            },
+          );
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="min-h-screen text-foreground star">
       <section className="pt-32 pb-16 px-6">
-        <motion.div
-          className="max-w-4xl mx-auto text-center"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-5xl font-bold mb-8 text-white">Privacy Policy</h1>
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
+            Privacy Policy
+          </h1>
+          <p
+            ref={descRef}
+            className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed"
+          >
             This Privacy Policy explains how we collect, use, store, and protect
             your personal data when you access the ORR Client Portal, Admin
             Portal, or any ORR-associated digital service.
           </p>
-        </motion.div>
+        </div>
       </section>
 
       <section className="pb-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <motion.div
+          <div
+            ref={cardRef}
             className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-200px" }}
-            variants={fadeIn}
-            transition={{ duration: 0.6 }}
           >
             <Image
               src="/bgSvg.svg"
@@ -61,24 +143,16 @@ export default function PrivacyPolicy() {
 
             <div className="bg-card rounded-2xl p-4 relative">
               {/* Section 1: Introduction */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[0] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   01
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     INTRODUCTION
                   </h2>
@@ -97,27 +171,19 @@ export default function PrivacyPolicy() {
                     and understood this Privacy Policy.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 2: Who We Are */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[1] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   02
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     WHO WE ARE
                   </h2>
@@ -143,27 +209,19 @@ export default function PrivacyPolicy() {
                     </span>
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 3: Data We Collect */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[2] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   03
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     DATA WE COLLECT
                   </h2>
@@ -274,27 +332,19 @@ export default function PrivacyPolicy() {
                     monitoring.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 4: How We Collect Data */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[3] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   04
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     HOW WE COLLECT DATA
                   </h2>
@@ -318,27 +368,19 @@ export default function PrivacyPolicy() {
                     We do not scrape data from other platforms.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 5: Why We Process Data */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[4] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   05
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     WHY WE PROCESS DATA (PURPOSES)
                   </h2>
@@ -404,27 +446,19 @@ export default function PrivacyPolicy() {
                     <li>Preventing fraud or misuse</li>
                   </ul>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 6: Legal Basis */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[5] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   06
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     LEGAL BASIS FOR PROCESSING
                   </h2>
@@ -473,27 +507,19 @@ export default function PrivacyPolicy() {
                     <li>Security event logging</li>
                   </ul>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 7: Data Retention */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[6] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   07
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     DATA RETENTION
                   </h2>
@@ -593,27 +619,19 @@ export default function PrivacyPolicy() {
                     contractual retention.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 8: Data Sharing */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[7] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   08
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     DATA SHARING
                   </h2>
@@ -662,27 +680,19 @@ export default function PrivacyPolicy() {
                     We never share behavioural data with advertisers.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 9: Security Measures */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   09
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     SECURITY MEASURES
                   </h2>
@@ -701,27 +711,19 @@ export default function PrivacyPolicy() {
                     <li>Regular access reviews</li>
                   </ul>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 10: Your Rights */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[9] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   10
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     YOUR RIGHTS UNDER GDPR
                   </h2>
@@ -744,27 +746,19 @@ export default function PrivacyPolicy() {
                     </span>
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 11: Cookies */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[10] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   11
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     COOKIES & ONLINE IDENTIFIERS
                   </h2>
@@ -781,27 +775,19 @@ export default function PrivacyPolicy() {
                     Users may decline non-essential cookies.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 12: Automated Decision-Making */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[11] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   12
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     AUTOMATED DECISION-MAKING
                   </h2>
@@ -814,27 +800,19 @@ export default function PrivacyPolicy() {
                     only.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 13: International Data Transfers */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[12] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   13
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     INTERNATIONAL DATA TRANSFERS
                   </h2>
@@ -849,27 +827,19 @@ export default function PrivacyPolicy() {
                     We ensure equivalent protection for all transfers.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 14: Updates */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[13] = el;
+                }}
                 className="flex gap-6 mb-12"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   14
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     UPDATES TO THIS POLICY
                   </h2>
@@ -886,27 +856,19 @@ export default function PrivacyPolicy() {
                     Major updates will be communicated within the portal.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Section 15: Contact */}
-              <motion.div
+              <div
+                ref={(el) => {
+                  itemsRef.current[14] = el;
+                }}
                 className="flex gap-6 pb-8"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-200px" }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="text-6xl font-bold text-primary shrink-0"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-200px" }}
-                  variants={numberAnimation}
-                >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
                   15
-                </motion.div>
-                <div className="flex-1 min-w-0">
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     CONTACT
                   </h2>
@@ -920,9 +882,9 @@ export default function PrivacyPolicy() {
                     privacy@orr.solutions
                   </p>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

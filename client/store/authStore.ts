@@ -1,8 +1,9 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import api from '@/lib/axios';
-import { useToastStore } from './toastStore';
-import { useOnboardingStore } from './onboardingStore';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { AxiosError } from "axios";
+import api from "@/lib/axios";
+import { useToastStore } from "./toastStore";
+import { useOnboardingStore } from "./onboardingStore";
 
 interface User {
   id: number;
@@ -25,10 +26,19 @@ interface AuthState {
   refreshToken: string | null;
   isLoading: boolean;
   error: string | null;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>;
+  register: (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+  ) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
-  resetPassword: (uid: string, token: string, newPassword: string) => Promise<boolean>;
+  resetPassword: (
+    uid: string,
+    token: string,
+    newPassword: string,
+  ) => Promise<boolean>;
   verifyEmail: (uid: string, token: string, email: string) => Promise<boolean>;
   validateToken: () => Promise<boolean>;
   logout: () => void;
@@ -39,42 +49,96 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
-      accessToken: typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null,
-      refreshToken: typeof window !== 'undefined' ? localStorage.getItem('refreshToken') : null,
+      accessToken:
+        typeof window !== "undefined"
+          ? localStorage.getItem("accessToken")
+          : null,
+      refreshToken:
+        typeof window !== "undefined"
+          ? localStorage.getItem("refreshToken")
+          : null,
       isLoading: false,
       error: null,
 
-      register: async (email: string, password: string, firstName: string, lastName: string) => {
+      register: async (
+        email: string,
+        password: string,
+        firstName: string,
+        lastName: string,
+      ) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await api.post('/client/register/', {
+          const response = await api.post("/client/register/", {
             username: firstName.toLowerCase() + lastName.toLowerCase(),
             email,
             password,
             first_name: firstName,
-            last_name: lastName
+            last_name: lastName,
           });
-          
+
           const { user, accessToken } = response.data.data;
-          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem("accessToken", accessToken);
           set({ user, accessToken, isLoading: false });
-          
-          useToastStore.getState().addToast('Registration successful! Please check your email for confirmation.', 'success');
+
+          useToastStore
+            .getState()
+            .addToast(
+              "Registration successful! Please check your email for confirmation.",
+              "success",
+            );
           return true;
-        } catch (error: any) {
-          const errorData = error.response?.data;
-          let errorMessage = 'Registration failed';
-          
-          if (errorData?.message) {
-            errorMessage = errorData.message;
-          } else if (errorData?.errors) {
-            errorMessage = Object.values(errorData.errors).flat().join(', ');
-          } else if (typeof errorData === 'string') {
-            errorMessage = errorData;
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as
+            | Record<string, unknown>
+            | string
+            | undefined;
+          let errorMessage = "Registration failed";
+
+          if (errorData) {
+            if (typeof errorData === "string") {
+              errorMessage = errorData;
+            } else if (
+              typeof errorData === "object" &&
+              errorData !== null &&
+              "message" in errorData &&
+              typeof (errorData as Record<string, unknown>).message === "string"
+            ) {
+              errorMessage = (errorData as Record<string, unknown>)
+                .message as string;
+            } else if (
+              typeof errorData === "object" &&
+              errorData !== null &&
+              "errors" in errorData &&
+              typeof (errorData as Record<string, unknown>).errors === "object"
+            ) {
+              const errors = (errorData as Record<string, unknown>).errors;
+              if (errors && typeof errors === "object") {
+                errorMessage = Object.values(errors)
+                  .flat()
+                  .map((val) => String(val))
+                  .join(", ");
+              }
+            } else if (typeof errorData === "object" && errorData !== null) {
+              // Handle Django/Rest-style field errors: {"email": ["..."], "username": ["..."]}
+              errorMessage = Object.entries(
+                errorData as Record<string, unknown>,
+              )
+                .map(([key, value]) => {
+                  const displayValue = Array.isArray(value)
+                    ? value.join(", ")
+                    : String(value);
+                  return `${key}: ${displayValue}`;
+                })
+                .join(" | ");
+            }
+          } else if (err.message) {
+            errorMessage = err.message;
           }
-          
+
+          console.error("Registration error detail:", errorData || err);
           set({ error: errorMessage, isLoading: false });
-          useToastStore.getState().addToast(errorMessage, 'error');
+          useToastStore.getState().addToast(errorMessage, "error");
           throw error;
         }
       },
@@ -82,30 +146,67 @@ export const useAuthStore = create<AuthState>()(
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await api.post('/login/', {
+          const response = await api.post("/login/", {
             email,
             password,
           });
-          
+
           if (response.status === 200 || response.status === 201) {
             const { user, accessToken, refreshToken } = response.data.data;
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-            set({ user, accessToken, refreshToken, isLoading: false, error: null });
-            
-            useToastStore.getState().addToast(`Welcome back, ${user?.first_name || 'User'}!`, 'success');
-            
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            set({
+              user,
+              accessToken,
+              refreshToken,
+              isLoading: false,
+              error: null,
+            });
+
+            useToastStore
+              .getState()
+              .addToast(
+                `Welcome back, ${user?.first_name || "User"}!`,
+                "success",
+              );
+
             // Check onboarding status
             await useOnboardingStore.getState().checkOnboardingStatus();
-            
+
             return true;
           } else {
-            throw new Error('Login failed');
+            throw new Error("Login failed");
           }
-        } catch (error: any) {
-          const errorMessage = error.response?.data?.message || error.message || 'Login failed';
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as
+            | Record<string, unknown>
+            | undefined;
+          let errorMessage =
+            errorData &&
+            typeof errorData === "object" &&
+            "message" in errorData &&
+            typeof errorData.message === "string"
+              ? errorData.message
+              : err.message || "Login failed";
+
+          if (
+            errorData &&
+            typeof errorData === "object" &&
+            !("message" in errorData)
+          ) {
+            errorMessage = Object.entries(errorData as Record<string, unknown>)
+              .map(([key, value]) => {
+                const displayValue = Array.isArray(value)
+                  ? value.join(", ")
+                  : String(value);
+                return `${key}: ${displayValue}`;
+              })
+              .join(" | ");
+          }
+
           set({ error: errorMessage, isLoading: false });
-          useToastStore.getState().addToast(errorMessage, 'error');
+          useToastStore.getState().addToast(errorMessage, "error");
           throw error;
         }
       },
@@ -113,33 +214,93 @@ export const useAuthStore = create<AuthState>()(
       forgotPassword: async (email: string) => {
         set({ isLoading: true, error: null });
         try {
-          await api.post('/forget-password/', { email });
-          useToastStore.getState().addToast('Password reset email sent!', 'success');
+          await api.post("/forget-password/", { email });
+          useToastStore
+            .getState()
+            .addToast("Password reset email sent!", "success");
           set({ isLoading: false });
           return true;
-        } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Failed to send reset email';
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as
+            | Record<string, unknown>
+            | undefined;
+          let errorMessage =
+            errorData &&
+            typeof errorData === "object" &&
+            "message" in errorData &&
+            typeof errorData.message === "string"
+              ? errorData.message
+              : "Failed to send reset email";
+
+          if (
+            errorData &&
+            typeof errorData === "object" &&
+            !("message" in errorData)
+          ) {
+            errorMessage = Object.entries(errorData as Record<string, unknown>)
+              .map(([key, value]) => {
+                const displayValue = Array.isArray(value)
+                  ? value.join(", ")
+                  : String(value);
+                return `${key}: ${displayValue}`;
+              })
+              .join(" | ");
+          }
+
           set({ error: errorMessage, isLoading: false });
-          useToastStore.getState().addToast(errorMessage, 'error');
+          useToastStore.getState().addToast(errorMessage, "error");
           throw error;
         }
       },
 
-      resetPassword: async (uid: string, token: string, newPassword: string) => {
+      resetPassword: async (
+        uid: string,
+        token: string,
+        newPassword: string,
+      ) => {
         set({ isLoading: true, error: null });
         try {
           await api.post(`/verify-reset-password/${uid}/${token}/`, {
             uid,
             token,
-            new_password: newPassword
+            new_password: newPassword,
           });
-          useToastStore.getState().addToast('Password reset successful!', 'success');
+          useToastStore
+            .getState()
+            .addToast("Password reset successful!", "success");
           set({ isLoading: false });
           return true;
-        } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Password reset failed';
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as
+            | Record<string, unknown>
+            | undefined;
+          let errorMessage =
+            errorData &&
+            typeof errorData === "object" &&
+            "message" in errorData &&
+            typeof errorData.message === "string"
+              ? errorData.message
+              : "Password reset failed";
+
+          if (
+            errorData &&
+            typeof errorData === "object" &&
+            !("message" in errorData)
+          ) {
+            errorMessage = Object.entries(errorData as Record<string, unknown>)
+              .map(([key, value]) => {
+                const displayValue = Array.isArray(value)
+                  ? value.join(", ")
+                  : String(value);
+                return `${key}: ${displayValue}`;
+              })
+              .join(" | ");
+          }
+
           set({ error: errorMessage, isLoading: false });
-          useToastStore.getState().addToast(errorMessage, 'error');
+          useToastStore.getState().addToast(errorMessage, "error");
           throw error;
         }
       },
@@ -147,31 +308,61 @@ export const useAuthStore = create<AuthState>()(
       verifyEmail: async (uid: string, token: string, email: string) => {
         set({ isLoading: true, error: null });
         try {
-          await api.post('/verify-email/', { uid, token, email });
-          useToastStore.getState().addToast('Email verified successfully!', 'success');
+          await api.post("/verify-email/", { uid, token, email });
+          useToastStore
+            .getState()
+            .addToast("Email verified successfully!", "success");
           set({ isLoading: false });
           return true;
-        } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Email verification failed';
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as
+            | Record<string, unknown>
+            | undefined;
+          let errorMessage =
+            errorData &&
+            typeof errorData === "object" &&
+            "message" in errorData &&
+            typeof errorData.message === "string"
+              ? errorData.message
+              : "Email verification failed";
+
+          if (
+            errorData &&
+            typeof errorData === "object" &&
+            !("message" in errorData)
+          ) {
+            errorMessage = Object.entries(errorData as Record<string, unknown>)
+              .map(([key, value]) => {
+                const displayValue = Array.isArray(value)
+                  ? value.join(", ")
+                  : String(value);
+                return `${key}: ${displayValue}`;
+              })
+              .join(" | ");
+          }
+
           set({ error: errorMessage, isLoading: false });
-          useToastStore.getState().addToast(errorMessage, 'error');
+          useToastStore.getState().addToast(errorMessage, "error");
           throw error;
         }
       },
 
       validateToken: async () => {
-        const accessToken = get().accessToken || localStorage.getItem('accessToken');
+        const accessToken =
+          get().accessToken || localStorage.getItem("accessToken");
         if (!accessToken) {
           return false;
         }
-        
+
         try {
-          await api.get('/profile/');
+          await api.get("/profile/");
           return true;
-        } catch (error: any) {
-          if (error.response?.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          if (err.response?.status === 401) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
             set({ user: null, accessToken: null, refreshToken: null });
             return false;
           }
@@ -180,11 +371,11 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         set({ user: null, accessToken: null, refreshToken: null });
-        useToastStore.getState().addToast('Logged out successfully', 'info');
-        window.location.href = '/login';
+        useToastStore.getState().addToast("Logged out successfully", "info");
+        window.location.href = "/login";
       },
 
       clearError: () => {
@@ -192,12 +383,16 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage',
-      partialize: (state) => ({ user: state.user, accessToken: state.accessToken, refreshToken: state.refreshToken }),
+      name: "auth-storage",
+      partialize: (state) => ({
+        user: state.user,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+      }),
       onRehydrateStorage: () => (state) => {
-        if (state && typeof window !== 'undefined') {
-          const accessToken = localStorage.getItem('accessToken');
-          const refreshToken = localStorage.getItem('refreshToken');
+        if (state && typeof window !== "undefined") {
+          const accessToken = localStorage.getItem("accessToken");
+          const refreshToken = localStorage.getItem("refreshToken");
           if (accessToken && !state.accessToken) {
             state.accessToken = accessToken;
           }
@@ -206,6 +401,6 @@ export const useAuthStore = create<AuthState>()(
           }
         }
       },
-    }
-  )
+    },
+  ),
 );
