@@ -69,9 +69,8 @@ function EmailConfirmationContent() {
         {/* Message */}
         <p className="max-w-2xl mx-auto leading-relaxed text-[15px]">
           We have sent an email to{" "}
-          <span className="font-semibold">{email}</span> to confirm the validity
-          of our email address. After receiving the email follow the link provided
-          to complete your registration.
+          <span className="font-semibold">{email}</span> To confirm the validity of your email address, please check your inbox and Spam/Junk folder if the email is not in your Primary inbox. 
+          After receiving the email, follow the link provided to complete your registration.
         </p>
 
         {/* Divider */}
