@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import { useTheme } from '../components/ThemeProvider';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,40 +16,42 @@ interface BusinessSystemSectionProps {
 export default function BusinessSystemSection({ content }: BusinessSystemSectionProps) {
   const [businessSystemData, setBusinessSystemData] = useState<any>(null);
   const [businessSystemCards, setBusinessSystemCards] = useState<any[]>([]);
+  
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [sectionResponse, cardsResponse] = await Promise.all([
-          fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-section/'),
-          fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-cards/')
-        ]);
-        
-        if (sectionResponse.ok) {
-          const sectionResult = await sectionResponse.json();
-          setBusinessSystemData(sectionResult.data);
-        }
-        
-        if (cardsResponse.ok) {
-          const cardsResult = await cardsResponse.json();
-          // Handle different response formats and ensure we have an array
-          let cardsData = cardsResult;
-          if (cardsResult && cardsResult.data) {
-            cardsData = cardsResult.data;
-          }
-          // Ensure cardsData is an array before sorting
-          const cardsArray = Array.isArray(cardsData) ? cardsData : [];
-          const sortedCards = cardsArray.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
-          setBusinessSystemCards(sortedCards);
-        }
-      } catch (error) {
-        console.error('Error fetching business system data:', error);
-      }
-    };
+  const { theme } = useTheme();
 
-    fetchData();
-  }, []);
+    const imageSrc =
+     
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const [sectionResponse, cardsResponse] = await Promise.all([
+        fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-section/'),
+        fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-cards/')
+      ]);
+
+      if (sectionResponse.ok) {
+        const sectionResult = await sectionResponse.json();
+        setBusinessSystemData(sectionResult.data);
+      }
+
+      if (cardsResponse.ok) {
+        const cardsResult = await cardsResponse.json();
+        let cardsData = cardsResult?.data ?? cardsResult;
+        const cardsArray = Array.isArray(cardsData) ? cardsData : [];
+        const sortedCards = cardsArray.sort(
+          (a: any, b: any) => (a.order || 0) - (b.order || 0)
+        );
+        setBusinessSystemCards(sortedCards);
+      }
+    } catch (error) {
+      console.error("Error fetching business system data:", error);
+    }
+  };
+
+  fetchData();
+}, []);
 
   const getStringValue = (value: any): string => {
     if (typeof value === 'string') return value;
@@ -115,17 +118,23 @@ export default function BusinessSystemSection({ content }: BusinessSystemSection
   return (
     <section ref={sectionRef} className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108164/Body_gfyom3.jpg"
-          alt="Body background"
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
+          <div className="absolute inset-0">     
+           <Image
+              key={theme}
+              src={
+                theme === "dark"
+                  ? "https://res.cloudinary.com/depeqzb6z/image/upload/v1771326436/ChatGPT_Image_Feb_17_2026_03_02_41_AM_ozzzwl.png?dark"
+                  : "https://res.cloudinary.com/depeqzb6z/image/upload/v1766108164/Body_gfyom3.jpg?light"
+              }
+              alt="Background"
+              fill
+              className="object-cover opacity-30"
+            />
         <div className="absolute inset-0 bg-slate-900/80" />
       </div>
-      
+  
+
+
       {/* Animated background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse" />
