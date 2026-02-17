@@ -19,11 +19,9 @@ export default function BusinessSystemSection({ content }: BusinessSystemSection
   
   const sectionRef = useRef<HTMLElement>(null);
 
-  const { theme } = useTheme();
+  const { effectiveTheme } = useTheme();
 
-    const imageSrc =
-     
-useEffect(() => {
+  useEffect(() => {
   const fetchData = async () => {
     try {
       const [sectionResponse, cardsResponse] = await Promise.all([
@@ -120,9 +118,9 @@ useEffect(() => {
       {/* Background Image */}
           <div className="absolute inset-0">     
            <Image
-              key={theme}
+              key={effectiveTheme}
               src={
-                theme === "dark"
+                effectiveTheme === "dark"
                   ? "https://res.cloudinary.com/depeqzb6z/image/upload/v1771326436/ChatGPT_Image_Feb_17_2026_03_02_41_AM_ozzzwl.png?dark"
                   : "https://res.cloudinary.com/depeqzb6z/image/upload/v1766108164/Body_gfyom3.jpg?light"
               }
@@ -130,7 +128,7 @@ useEffect(() => {
               fill
               className="object-cover opacity-30"
             />
-        <div className="absolute inset-0 bg-slate-900/80" />
+        {/* <div className="absolute inset-0 bg-slate-900/80" /> */}
       </div>
   
 
