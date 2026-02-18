@@ -14,99 +14,117 @@ export default function PrivacyPolicy() {
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title Animation
-      const title = titleRef.current;
-      if (title) {
-        const text = title.textContent;
-        title.innerHTML = text!
-          .split("")
-          .map(
-            (char) =>
-              `<span style="display:inline-block;opacity:0">${
-                char === " " ? "&nbsp;" : char
-              }</span>`,
-          )
-          .join("");
+    const mm = gsap.matchMedia();
 
-        gsap.to(title.children, {
-          opacity: 1,
-          y: 0,
-          duration: 0.05,
-          stagger: 0.03,
-          ease: "power2.out",
-        });
-      }
+    mm.add(
+      {
+        isMobile: "(max-width: 1023px)",
+        isDesktop: "(min-width: 1024px)",
+      },
+      (context) => {
+        const { isMobile } = context.conditions as { isMobile: boolean };
 
-      // Description Animation
-      gsap.fromTo(
-        descRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: "power3.out" },
-      );
+        // Title Animation
+        const title = titleRef.current;
+        if (title) {
+          const text = title.textContent;
+          title.innerHTML = text!
+            .split("")
+            .map(
+              (char) =>
+                `<span style="display:inline-block;opacity:0">${
+                  char === " " ? "&nbsp;" : char
+                }</span>`,
+            )
+            .join("");
 
-      // Card Animation
-      gsap.fromTo(
-        cardRef.current,
-        { opacity: 0, scale: 0.9, rotateX: 15 },
-        {
-          opacity: 1,
-          scale: 1,
-          rotateX: 0,
-          duration: 1.2,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      // Section Items Animation
-      itemsRef.current.forEach((item) => {
-        if (item) {
-          const number = item.querySelector(".policy-number");
-          const content = item.querySelector(".policy-content");
-
-          gsap.fromTo(
-            number,
-            { opacity: 0, scale: 0, rotate: -180 },
-            {
-              opacity: 1,
-              scale: 1,
-              rotate: 0,
-              duration: 0.8,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: item,
-                start: "top 85%",
-                toggleActions: "play none none reverse",
-              },
-            },
-          );
-
-          gsap.fromTo(
-            content,
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              delay: 0.3,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: item,
-                start: "top 85%",
-                toggleActions: "play none none reverse",
-              },
-            },
-          );
+          gsap.to(title.children, {
+            opacity: 1,
+            y: 0,
+            duration: 0.05,
+            stagger: 0.03,
+            ease: "power2.out",
+          });
         }
-      });
-    });
 
-    return () => ctx.revert();
+        // Description Animation
+        gsap.fromTo(
+          descRef.current,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: "power3.out" },
+        );
+
+        // Card Animation
+        gsap.fromTo(
+          cardRef.current,
+          { opacity: 0, scale: 0.9, rotateX: 15 },
+          {
+            opacity: 1,
+            scale: 1,
+            rotateX: 0,
+            duration: 1.2,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: cardRef.current,
+              start: isMobile ? "top 95%" : "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+
+        // Section Items Animation
+        itemsRef.current.forEach((item, index) => {
+          if (item) {
+            const number = item.querySelector(".policy-number");
+            const content = item.querySelector(".policy-content");
+
+            // For the first item on mobile, trigger even earlier
+            const startPos =
+              isMobile && index === 0
+                ? "top 98%"
+                : isMobile
+                  ? "top 95%"
+                  : "top 85%";
+
+            gsap.fromTo(
+              number,
+              { opacity: 0, scale: 0, rotate: -180 },
+              {
+                opacity: 1,
+                scale: 1,
+                rotate: 0,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                  trigger: item,
+                  start: startPos,
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+
+            gsap.fromTo(
+              content,
+              { opacity: 0, y: 20 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: 0.3,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: item,
+                  start: startPos,
+                  toggleActions: "play none none reverse",
+                },
+              },
+            );
+          }
+        });
+      },
+    );
+
+    return () => mm.revert();
   }, []);
 
   return (
