@@ -285,7 +285,7 @@ export default function PastConsultationsPage() {
                 )}
 
                 {/* Actions */}
-                <div className="flex gap-2 pt-4 border-t border-secondary">
+                {/* <div className="flex gap-2 pt-4 border-t border-secondary">
                   {consultation.meeting_link && (
                     <a
                       href={consultation.meeting_link}
@@ -300,7 +300,7 @@ export default function PastConsultationsPage() {
                   <button className="flex-1 py-2 px-3 bg-secondary text-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors">
                     View Details
                   </button>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
