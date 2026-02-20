@@ -76,7 +76,7 @@ export default function Dashboard() {
               </div> */}
             
             <button 
-              onClick={() => router.push('/notifications')}
+              onClick={() => router.push('/updates')}
               className="relative p-3 rounded-lg bg-card border border-secondary hover:bg-secondary transition-colors"
             >
               <Bell className="w-5 h-5 text-foreground" />
