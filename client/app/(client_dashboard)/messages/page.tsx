@@ -1,7 +1,17 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, Search, Phone, Video, MoreVertical, Paperclip, Smile, MessageSquare, CheckCircle } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Send,
+  Search,
+  Phone,
+  Video,
+  MoreVertical,
+  Paperclip,
+  Smile,
+  MessageSquare,
+  CheckCircle,
+} from "lucide-react";
 
 interface TicketMessage {
   id: number;
@@ -44,8 +54,8 @@ export default function MessagesPage() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<TicketMessage[]>([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [newMessage, setNewMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -65,28 +75,31 @@ export default function MessagesPage() {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
 
       if (!token) {
-        console.error('No authentication token found');
+        console.error("No authentication token found");
         setLoading(false);
         return;
       }
 
-      console.log('Using token:', token ? 'Token exists' : 'No token');
+      console.log("Using token:", token ? "Token exists" : "No token");
 
-      const response = await fetch('https://orr-backend.orr.solutions/tickets/', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await fetch(
+        "https://orr-backend.orr.solutions/tickets/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
-      console.log('Response status:', response.status);
+      console.log("Response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Messages API Response:', data);
+        console.log("Messages API Response:", data);
 
         // Handle different response formats
         let ticketsArray = [];
@@ -98,7 +111,7 @@ export default function MessagesPage() {
           ticketsArray = data.results;
         } else if (data && Array.isArray(data.tickets)) {
           ticketsArray = data.tickets;
-        } else if (data && data.data && typeof data.data === 'object') {
+        } else if (data && data.data && typeof data.data === "object") {
           // Handle case where data.data is an object with tickets property
           if (Array.isArray(data.data.tickets)) {
             ticketsArray = data.data.tickets;
@@ -106,30 +119,30 @@ export default function MessagesPage() {
             ticketsArray = data.data.results;
           } else {
             // Convert single object to array or handle pagination
-            ticketsArray = Object.values(data.data).filter((item: any) =>
-              item && typeof item === 'object' && item.id
+            ticketsArray = Object.values(data.data).filter(
+              (item: any) => item && typeof item === "object" && item.id,
             );
           }
         } else {
-          console.error('Unexpected response format:', data);
+          console.error("Unexpected response format:", data);
           setLoading(false);
           return;
         }
 
         // Convert tickets to chat format
         const ticketChats: Chat[] = ticketsArray.map((ticket: any) => {
-          console.log('Processing ticket:', ticket);
-          console.log('Ticket ID:', ticket.id);
+          console.log("Processing ticket:", ticket);
+          console.log("Ticket ID:", ticket.id);
 
           return {
             id: ticket.id, // Use the actual numeric ID from the API
             name: `Support - ${ticket.ticket_id}`,
-            lastMessage: ticket.subject || 'No subject',
+            lastMessage: ticket.subject || "No subject",
             timestamp: new Date(ticket.created_at).toLocaleDateString(),
             unread: 0,
             avatar: "🎧",
-            online: ticket.status !== 'resolved',
-            ticket
+            online: ticket.status !== "resolved",
+            ticket,
           };
         });
 
@@ -139,15 +152,21 @@ export default function MessagesPage() {
           fetchMessages(ticketChats[0].id);
         }
       } else {
-        console.error('Failed to fetch tickets:', response.status, response.statusText);
+        console.error(
+          "Failed to fetch tickets:",
+          response.status,
+          response.statusText,
+        );
         if (response.status === 401) {
-          console.error('Authentication failed - token may be expired or invalid');
+          console.error(
+            "Authentication failed - token may be expired or invalid",
+          );
           // Optionally redirect to login
           // window.location.href = '/login';
         }
       }
     } catch (error) {
-      console.error('Failed to fetch tickets:', error);
+      console.error("Failed to fetch tickets:", error);
     } finally {
       setLoading(false);
     }
@@ -155,100 +174,159 @@ export default function MessagesPage() {
 
   const fetchMessages = async (ticketId: number) => {
     try {
-      console.log('Fetching messages for ticket ID:', ticketId);
+      console.log("Fetching messages for ticket ID:", ticketId);
 
       if (!ticketId || ticketId === undefined) {
-        console.error('Invalid ticket ID:', ticketId);
+        console.error("Invalid ticket ID:", ticketId);
         return;
       }
 
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
 
       if (!token) {
-        console.error('No authentication token found for messages');
+        console.error("No authentication token found for messages");
         return;
       }
 
       // Use the correct endpoint format with numeric ID
-      const response = await fetch(`https://orr-backend.orr.solutions/admin-portal/v1/tickets/${ticketId}/messages/`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await fetch(
+        `https://orr-backend.orr.solutions/admin-portal/v1/tickets/${ticketId}/messages/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       if (response.ok) {
         const result = await response.json();
-        setMessages(result.data || []);
+        // Normalize different API response shapes into an array
+        let messagesArray: TicketMessage[] = [];
+        if (Array.isArray(result)) {
+          messagesArray = result;
+        } else if (result && Array.isArray(result.data)) {
+          messagesArray = result.data;
+        } else if (result && Array.isArray(result.results)) {
+          messagesArray = result.results;
+        } else if (result && result.data && typeof result.data === "object") {
+          // Convert object collections into an array of values that look like messages
+          messagesArray = Object.values(result.data).filter(
+            (item: any) => item && item.id,
+          );
+        } else {
+          messagesArray = [];
+        }
+
+        setMessages(messagesArray);
       } else {
-        console.error('Failed to fetch messages:', response.status, response.statusText);
+        console.error(
+          "Failed to fetch messages:",
+          response.status,
+          response.statusText,
+        );
         // If admin portal fails, try the client endpoint
         if (response.status === 404) {
-          const clientResponse = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/messages/`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          });
+          const clientResponse = await fetch(
+            `https://orr-backend.orr.solutions/tickets/${ticketId}/messages/`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
 
           if (clientResponse.ok) {
             const clientResult = await clientResponse.json();
-            setMessages(clientResult.data || []);
+            let clientMessages: TicketMessage[] = [];
+            if (Array.isArray(clientResult)) {
+              clientMessages = clientResult;
+            } else if (clientResult && Array.isArray(clientResult.data)) {
+              clientMessages = clientResult.data;
+            } else if (
+              clientResult &&
+              clientResult.data &&
+              typeof clientResult.data === "object"
+            ) {
+              clientMessages = Object.values(clientResult.data).filter(
+                (item: any) => item && item.id,
+              );
+            }
+
+            setMessages(clientMessages);
           } else {
-            console.error('Failed to fetch messages from client endpoint:', clientResponse.status);
+            console.error(
+              "Failed to fetch messages from client endpoint:",
+              clientResponse.status,
+            );
           }
         }
       }
     } catch (error) {
-      console.error('Failed to fetch messages:', error);
+      console.error("Failed to fetch messages:", error);
     }
   };
 
   const handleSendMessage = async () => {
     if (newMessage.trim() && selectedChat) {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
 
         if (!token) {
-          console.error('No authentication token found for sending message');
+          console.error("No authentication token found for sending message");
           return;
         }
 
-        const response = await fetch(`https://orr-backend.orr.solutions/tickets/${selectedChat.id}/send-message/`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          `https://orr-backend.orr.solutions/tickets/${selectedChat.id}/send-message/`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: newMessage }),
           },
-          body: JSON.stringify({ message: newMessage })
-        });
+        );
 
         if (response.ok) {
-          setNewMessage('');
+          setNewMessage("");
           // Refresh messages
           await fetchMessages(selectedChat.id);
         } else {
-          console.error('Failed to send message:', response.status, response.statusText);
+          console.error(
+            "Failed to send message:",
+            response.status,
+            response.statusText,
+          );
         }
       } catch (error) {
-        console.error('Failed to send message:', error);
+        console.error("Failed to send message:", error);
       }
     }
   };
 
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+    return new Date(dateString).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
   };
 
-  const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredChats = chats.filter((chat) =>
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const hasAutoReply = messages.some(msg => msg.sender_type === 'system' || msg.sender_name.includes('Auto Reply'));
+  const hasAutoReply =
+    Array.isArray(messages) &&
+    messages.some(
+      (msg) =>
+        msg &&
+        (msg.sender_type === "system" ||
+          (msg.sender_name && msg.sender_name.includes("Auto Reply"))),
+    );
 
   if (loading) {
     return (
@@ -264,7 +342,9 @@ export default function MessagesPage() {
       <div className="w-80 bg-card border-r border-secondary flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-secondary">
-          <h1 className="text-xl font-semibold text-foreground mb-4">Support Messages</h1>
+          <h1 className="text-xl font-semibold text-foreground mb-4">
+            Support Messages
+          </h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
             <input
@@ -291,8 +371,11 @@ export default function MessagesPage() {
                   setSelectedChat(chat);
                   fetchMessages(chat.id);
                 }}
-                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${selectedChat?.id === chat.id ? 'bg-secondary/30 border-l-4 border-l-primary' : ''
-                  }`}
+                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${
+                  selectedChat?.id === chat.id
+                    ? "bg-secondary/30 border-l-4 border-l-primary"
+                    : ""
+                }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -305,16 +388,27 @@ export default function MessagesPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-medium text-foreground truncate">{chat.name}</h3>
-                      <span className="text-xs text-foreground opacity-60">{chat.timestamp}</span>
+                      <h3 className="font-medium text-foreground truncate">
+                        {chat.name}
+                      </h3>
+                      <span className="text-xs text-foreground opacity-60">
+                        {chat.timestamp}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-foreground opacity-70 truncate">{chat.lastMessage}</p>
+                      <p className="text-sm text-foreground opacity-70 truncate">
+                        {chat.lastMessage}
+                      </p>
                       {chat.ticket?.status && (
-                        <span className={`text-xs px-2 py-1 rounded ${chat.ticket.status === 'resolved' ? 'bg-green-500/20 text-green-300' :
-                          chat.ticket.status === 'new' ? 'bg-blue-500/20 text-blue-300' :
-                            'bg-yellow-500/20 text-yellow-300'
-                          }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded ${
+                            chat.ticket.status === "resolved"
+                              ? "bg-green-500/20 text-green-300"
+                              : chat.ticket.status === "new"
+                                ? "bg-blue-500/20 text-blue-300"
+                                : "bg-yellow-500/20 text-yellow-300"
+                          }`}
+                        >
                           {chat.ticket.status}
                         </span>
                       )}
@@ -343,10 +437,12 @@ export default function MessagesPage() {
                   )}
                 </div>
                 <div>
-                  <h2 className="font-semibold text-foreground">{selectedChat.name}</h2>
+                  <h2 className="font-semibold text-foreground">
+                    {selectedChat.name}
+                  </h2>
                   <div className="flex items-center gap-2">
                     <p className="text-xs text-foreground opacity-60">
-                      {selectedChat.online ? 'Active' : 'Resolved'}
+                      {selectedChat.online ? "Active" : "Resolved"}
                     </p>
                     {hasAutoReply && (
                       <span className="text-xs px-2 py-1 rounded bg-green-500/20 text-green-300 flex items-center gap-1">
@@ -374,30 +470,38 @@ export default function MessagesPage() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => {
-                const isSystemMessage = message.sender_type === 'system' || message.sender_name.includes('Auto Reply');
-                const isUserMessage = message.sender_type === 'client';
+                const isSystemMessage =
+                  message.sender_type === "system" ||
+                  message.sender_name.includes("Auto Reply");
+                const isUserMessage = message.sender_type === "client";
 
                 return (
                   <div
                     key={message.id}
-                    className={`flex ${isUserMessage ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${isUserMessage ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${isUserMessage
-                        ? 'bg-primary text-black'
-                        : isSystemMessage
-                          ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-                          : 'bg-secondary text-foreground'
-                        }`}
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        isUserMessage
+                          ? "bg-primary text-black"
+                          : isSystemMessage
+                            ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                            : "bg-secondary text-foreground"
+                      }`}
                     >
                       {isSystemMessage && (
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-semibold">🤖 Auto Reply System</span>
+                          <span className="text-xs font-semibold">
+                            🤖 Auto Reply System
+                          </span>
                         </div>
                       )}
                       <p className="text-sm">{message.message}</p>
-                      <p className={`text-xs mt-1 ${isUserMessage ? 'text-black/70' : 'text-foreground/60'
-                        }`}>
+                      <p
+                        className={`text-xs mt-1 ${
+                          isUserMessage ? "text-black/70" : "text-foreground/60"
+                        }`}
+                      >
                         {formatTime(message.created_at)}
                       </p>
                     </div>
@@ -419,7 +523,7 @@ export default function MessagesPage() {
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                     placeholder="Type a message..."
                     className="w-full px-4 py-3 bg-secondary border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none pr-12"
                   />

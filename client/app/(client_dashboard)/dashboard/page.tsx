@@ -90,22 +90,22 @@ export default function Dashboard() {
           <StatCard 
             icon={<Users className="w-6 h-6 text-white" />}
             title="Total Meetings"
-            value="24"
-            change="+12%"
+            value="0"
+            change=""
             trend="up"
           />
           <StatCard 
             icon={<MousePointer className="w-6 h-6 text-white" />}
-            title="Engagement Rate"
-            value="89%"
-            change="+5%"
+            title="Upcomig meetings"
+            value="0"
+            change=""
             trend="up"
           />
           <StatCard 
             icon={<DollarSign className="w-6 h-6 text-white" />}
-            title="Revenue"
-            value="$12,450"
-            change="+8%"
+            title="Total Contracts"
+            value="0"
+            change=""
             trend="up"
           />
           <StatCard 
@@ -132,7 +132,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              {/* <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-secondary/30 rounded-lg">
                   <div className="text-2xl font-bold text-primary">12</div>
                   <p className="text-sm text-foreground opacity-70">Active Projects</p>
@@ -145,7 +145,7 @@ export default function Dashboard() {
                   <div className="text-2xl font-bold text-primary">95%</div>
                   <p className="text-sm text-foreground opacity-70">Success Rate</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Performance Chart */}
