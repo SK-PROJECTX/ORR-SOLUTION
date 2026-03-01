@@ -211,9 +211,9 @@ export default function MessagesPage() {
           messagesArray = result.results;
         } else if (result && result.data && typeof result.data === "object") {
           // Convert object collections into an array of values that look like messages
-          messagesArray = Object.values(result.data).filter(
-            (item: any) => item && item.id,
-          );
+          messagesArray = (Object.values(result.data) as TicketMessage[]).filter(
+              (item) => item && item.id,
+            );
         } else {
           messagesArray = [];
         }
@@ -249,8 +249,8 @@ export default function MessagesPage() {
               clientResult.data &&
               typeof clientResult.data === "object"
             ) {
-              clientMessages = Object.values(clientResult.data).filter(
-                (item: any) => item && item.id,
+              clientMessages = (Object.values(clientResult.data) as TicketMessage[]).filter(
+                (item) => item && item.id,
               );
             }
 

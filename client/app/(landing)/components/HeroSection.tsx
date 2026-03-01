@@ -44,7 +44,7 @@ export function HeroSection() {
           {/* Tablet/Large Mobile */}
           <source
             src={getOptimizedVideoUrl(currentRawVideo, 1080)}
-            type="video/mp4"
+            type="video/mp4" 
             media="(min-width: 640px)"
           />
           {/* Mobile */}
