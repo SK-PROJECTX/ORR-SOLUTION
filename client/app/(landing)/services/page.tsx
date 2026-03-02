@@ -1,9 +1,17 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import { getRichTextContent } from "../../../lib/rich-text-utils";
+
+// Map pillar index → detail page route
+const PILLAR_ROUTES: Record<number, string> = {
+  0: '/services/strategy-advisory-compliant',
+  1: '/services/operational-systems-infrastructure',
+  2: '/services/living-systems-regeneration',
+};
 
 // Helper function to decode HTML entities and format content
 const decodeAndFormatContent = (content: any): string => {
@@ -221,9 +229,9 @@ export default function Services() {
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
-                <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer">
+                <Link href="/contact" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer block text-center">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || "Learn More" }} />
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -248,9 +256,9 @@ export default function Services() {
               <div className="text-gray-300 text-sm mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
-              <button className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer">
+              <Link href="/contact" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer block text-center">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || "Learn More" }} />
-              </button>
+              </Link>
             </div>
           )}
         </div>
@@ -280,7 +288,7 @@ export default function Services() {
                   button_text: p.button_text
                 }))
               });
-              return data.pillars.map((pillar) => (
+              return data.pillars.map((pillar, index) => (
                 <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
                   <h3 className="text-3xl font-bold mb-8 text-center">
                     <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.title) || "Pillar Title" }} />
@@ -288,9 +296,12 @@ export default function Services() {
                   <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
                     <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.description) || "Pillar Description" }} />
                   </p>
-                  <button className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer">
+                  <Link
+                    href={PILLAR_ROUTES[index] || '/services'}
+                    className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer block text-center"
+                  >
                     <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || "Learn More" }} />
-                  </button>
+                  </Link>
                 </div>
               ));
             })()}
@@ -315,9 +326,9 @@ export default function Services() {
               <p className="text-gray-300 text-xl mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || "Business GP Description" }} />
               </p>
-              <button className="bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+              <Link href="/contact" className="inline-block bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || "Contact Us" }} />
-              </button>
+              </Link>
             </div>
             <div>
               <img 
