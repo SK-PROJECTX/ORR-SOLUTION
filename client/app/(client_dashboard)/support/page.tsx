@@ -184,7 +184,7 @@ export default function SupportPage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <Mail className="text-lemon w-5 h-5 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-foreground/80">support@orr.solutions</p>
+                  <p className="text-sm text-foreground/80">info@orr.solutions</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <Home className="text-lemon w-5 h-5 mt-0.5 flex-shrink-0" />
