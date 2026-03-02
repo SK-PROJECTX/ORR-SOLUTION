@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, FileText, Star, Search, Filter, Link as LinkIcon, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 interface PastConsultation {
   id: number;
@@ -159,6 +160,12 @@ export default function PastConsultationsPage() {
                 className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
               />
             </div>
+            <Link
+              href="/meeting-request"
+              className="px-5 py-2.5 bg-primary text-black rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
+            >
+              + Book a New Meeting
+            </Link>
           </div>
         </div>
 
@@ -311,12 +318,18 @@ export default function PastConsultationsPage() {
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-foreground opacity-30 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">No consultations found</h3>
-            <p className="text-foreground opacity-60">
+            <p className="text-foreground opacity-60 mb-6">
               {searchTerm || filterStatus !== 'all' 
                 ? 'Try adjusting your filters or search terms'
                 : 'Your past consultations will appear here once completed'
               }
             </p>
+            <a
+              href="/meeting-request"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-black rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              + Book a New Meeting
+            </a>
           </div>
         )}
       </div>

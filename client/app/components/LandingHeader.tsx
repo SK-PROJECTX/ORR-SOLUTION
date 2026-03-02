@@ -78,8 +78,8 @@ export function LandingHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center space-x-4">
-          <Link href="/login" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Sign in</Link>
-          <Link href="/register" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Register</Link>
+          <Link href="/login" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Sign In</Link>
+          <Link href="/register" className='bg-white py-2 px-4 text-black rounded-xl hover:bg-[#13BE77] hover:text-white text-sm xl:text-base'>Sign Up</Link>
           <ThemeToggle />
         </div>
 
@@ -170,11 +170,11 @@ export function LandingHeader() {
             </div>
             <Link href="/contact" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-              <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign in</Link>
+              <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign In</Link>
             <ThemeToggle />
             </div>
             <div className='pt-8 border-t border-white/10'>
-                <Link href="/register" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Register</Link>
+                <Link href="/register" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign Up</Link>
             </div>
           </nav>
         </div>

@@ -1,20 +1,25 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip } from 'recharts';
-import { Search, Bell, Calendar, Clock, Headphones, Wallet, TrendingUp, Users, MousePointer, DollarSign, Package } from 'lucide-react';
+import { Search, Bell, Calendar, Clock, Headphones, Wallet, TrendingUp, Users, MousePointer, DollarSign, Package, FileText, X, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMeetingStore } from '@/store/meetingStore';
+import { useBillingStore } from '@/store/billingStore';
+import { useDocumentStore } from '@/store/documentStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import api from '@/lib/axios';
 
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
   value: string;
+  loading?: boolean;
   change?: string;
   trend?: 'up' | 'down';
 }
 
-const StatCard: React.FC<StatCardProps> = ({ icon, title, value, change, trend }) => {
+const StatCard: React.FC<StatCardProps> = ({ icon, title, value, loading, change, trend }) => {
   return (
     <div className="bg-card border border-secondary rounded-xl p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-center justify-between mb-4">
@@ -28,20 +33,64 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, change, trend }
         )}
       </div>
       <h3 className="text-sm font-medium text-foreground opacity-70 mb-1">{title}</h3>
-      <p className="text-2xl font-bold text-foreground">{value}</p>
+      {loading ? (
+        <div className="h-8 w-16 bg-secondary/50 rounded animate-pulse"></div>
+      ) : (
+        <p className="text-2xl font-bold text-foreground">{value}</p>
+      )}
     </div>
   );
 };
 
 export default function Dashboard() {
   const router = useRouter();
-  const { fetchMyMeetings, getUpcomingMeetings, isLoading } = useMeetingStore();
+  const { fetchMyMeetings, getUpcomingMeetings, meetings, isLoading } = useMeetingStore();
+  const { fetchBillingHistory, billingHistory, isLoading: billingLoading } = useBillingStore();
+  const { fetchDocuments, documents, isLoading: docsLoading } = useDocumentStore();
+  const { fetchNotifications, notifications } = useNotificationStore();
+  const [walletBalance, setWalletBalance] = useState<string>('--');
+  const [walletLoading, setWalletLoading] = useState(true);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchMyMeetings();
-  }, [fetchMyMeetings]);
+    fetchBillingHistory();
+    fetchDocuments();
+    fetchNotifications();
+
+    // Fetch wallet/subscription balance
+    const fetchWalletBalance = async () => {
+      try {
+        const response = await api.get('/subscription/status/');
+        const data = response.data?.data;
+        if (data?.is_subscribed) {
+          setWalletBalance('Active');
+        } else {
+          setWalletBalance('No Plan');
+        }
+      } catch {
+        setWalletBalance('--');
+      } finally {
+        setWalletLoading(false);
+      }
+    };
+    fetchWalletBalance();
+  }, [fetchMyMeetings, fetchBillingHistory, fetchDocuments, fetchNotifications]);
 
   const upcomingMeetings = getUpcomingMeetings();
+  const unreadNotifications = notifications.filter(n => !n.is_read).length;
+
+  // Close notification panel when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    if (notifOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [notifOpen]);
 
   const formatMeetingDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -67,21 +116,67 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-4">
-              {/* <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
-                <input
-                  className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
-                  placeholder="Search anything..."
-                />
-              </div> */}
-            
-            <button 
-              onClick={() => router.push('/updates')}
-              className="relative p-3 rounded-lg bg-card border border-secondary hover:bg-secondary transition-colors"
-            >
-              <Bell className="w-5 h-5 text-foreground" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"></span>
-            </button>
+            <div className="relative" ref={notifRef}>
+              <button 
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="relative p-3 rounded-lg bg-card border border-secondary hover:bg-secondary transition-colors"
+              >
+                <Bell className="w-5 h-5 text-foreground" />
+                {unreadNotifications > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-primary rounded-full text-[10px] font-bold text-black px-1">
+                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                  </span>
+                )}
+              </button>
+
+              {/* Notification Panel */}
+              {notifOpen && (
+                <div className="absolute right-0 top-14 w-96 max-h-[480px] bg-card border border-secondary rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-secondary">
+                    <h4 className="font-semibold text-foreground text-sm">Notifications</h4>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => { setNotifOpen(false); router.push('/updates'); }}
+                        className="text-xs text-primary hover:text-primary/80 transition-colors"
+                      >
+                        View All
+                      </button>
+                      <button onClick={() => setNotifOpen(false)} className="text-foreground opacity-60 hover:opacity-100">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex-1 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="text-center py-10 text-foreground opacity-50 text-sm">No notifications</div>
+                    ) : (
+                      notifications.slice(0, 10).map(n => (
+                        <div
+                          key={n.id}
+                          className={`px-4 py-3 border-b border-secondary/50 hover:bg-secondary/20 transition-colors cursor-pointer ${!n.is_read ? 'bg-primary/5' : ''}`}
+                          onClick={() => {
+                            if (!n.is_read) {
+                              useNotificationStore.getState().markAsRead(n.id);
+                            }
+                          }}
+                        >
+                          <div className="flex items-start gap-2">
+                            {!n.is_read && <span className="mt-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>}
+                            <div className={`flex-1 ${n.is_read ? 'ml-4' : ''}`}>
+                              <p className="text-sm font-medium text-foreground leading-tight">{n.title}</p>
+                              <p className="text-xs text-foreground opacity-60 mt-0.5 line-clamp-2">{n.message}</p>
+                              <p className="text-[10px] text-foreground opacity-40 mt-1">
+                                {new Date(n.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -90,30 +185,26 @@ export default function Dashboard() {
           <StatCard 
             icon={<Users className="w-6 h-6 text-white" />}
             title="Total Meetings"
-            value="0"
-            change=""
-            trend="up"
+            value={String(Array.isArray(meetings) ? meetings.length : 0)}
+            loading={isLoading}
           />
           <StatCard 
             icon={<MousePointer className="w-6 h-6 text-white" />}
-            title="Upcomig meetings"
-            value="0"
-            change=""
-            trend="up"
+            title="Upcoming Meetings"
+            value={String(upcomingMeetings.length)}
+            loading={isLoading}
           />
           <StatCard 
             icon={<DollarSign className="w-6 h-6 text-white" />}
-            title="Total Contracts"
-            value="0"
-            change=""
-            trend="up"
+            title="Total Invoices"
+            value={String(Array.isArray(billingHistory) ? billingHistory.length : 0)}
+            loading={billingLoading}
           />
           <StatCard 
-            icon={<Package className="w-6 h-6 text-white" />}
-            title="Active Projects"
-            value="12"
-            change="-2%"
-            trend="down"
+            icon={<FileText className="w-6 h-6 text-white" />}
+            title="Documents"
+            value={String(Array.isArray(documents) ? documents.length : 0)}
+            loading={docsLoading}
           />
         </div>
 
@@ -151,26 +242,34 @@ export default function Dashboard() {
             {/* Performance Chart */}
             <div className="bg-card border border-secondary rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-foreground">Performance Overview</h3>
+                <h3 className="text-lg font-semibold text-foreground">Meetings Overview</h3>
                 <div className="flex items-center gap-2 text-sm text-foreground opacity-60">
                   <div className="w-3 h-3 bg-primary rounded-full"></div>
-                  <span>This Month</span>
+                  <span>Past 6 Months</span>
                 </div>
               </div>
 
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={[
-                    { month: 'Jan', value: 120 },
-                    { month: 'Feb', value: 180 },
-                    { month: 'Mar', value: 90 },
-                    { month: 'Apr', value: 200 },
-                    { month: 'May', value: 150 },
-                    { month: 'Jun', value: 170 }
-                  ]}>
+                  <BarChart data={(() => {
+                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    const now = new Date();
+                    const chartData = [];
+                    for (let i = 5; i >= 0; i--) {
+                      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                      const monthIdx = d.getMonth();
+                      const year = d.getFullYear();
+                      const count = Array.isArray(meetings) ? meetings.filter(m => {
+                        const md = new Date(m.requested_datetime);
+                        return md.getMonth() === monthIdx && md.getFullYear() === year;
+                      }).length : 0;
+                      chartData.push({ month: months[monthIdx], meetings: count });
+                    }
+                    return chartData;
+                  })()}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-secondary)" />
                     <XAxis dataKey="month" stroke="var(--color-foreground)" opacity={0.6} />
-                    <YAxis stroke="var(--color-foreground)" opacity={0.6} />
+                    <YAxis stroke="var(--color-foreground)" opacity={0.6} allowDecimals={false} />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: 'var(--color-card)', 
@@ -178,14 +277,12 @@ export default function Dashboard() {
                         borderRadius: '8px'
                       }}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="value" 
-                      stroke="var(--color-primary)" 
-                      strokeWidth={3}
-                      dot={{ fill: 'var(--color-primary)', strokeWidth: 2, r: 4 }}
+                    <Bar 
+                      dataKey="meetings" 
+                      fill="var(--color-primary)" 
+                      radius={[4, 4, 0, 0]}
                     />
-                  </LineChart>
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
@@ -201,8 +298,14 @@ export default function Dashboard() {
                 </div>
                 <h4 className="font-semibold text-foreground">My Wallet</h4>
               </div>
-              <p className="text-sm text-foreground opacity-60 mb-2">Current Balance</p>
-              <p className="text-3xl font-bold text-primary mb-4">$735.20</p>
+              <p className="text-sm text-foreground opacity-60 mb-2">Subscription Status</p>
+              {walletLoading ? (
+                <div className="h-10 w-24 bg-secondary/50 rounded animate-pulse mb-4"></div>
+              ) : (
+                <p className={`text-2xl font-bold mb-4 ${walletBalance === 'Active' ? 'text-green-400' : 'text-primary'}`}>
+                  {walletBalance}
+                </p>
+              )}
               <button 
                 onClick={() => router.push('/account/wallet')}
                 className="w-full py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition-colors"
