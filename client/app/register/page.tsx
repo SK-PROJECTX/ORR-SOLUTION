@@ -153,7 +153,7 @@ export default function Page() {
               disabled={isLoading || formData.password !== formData.confirmPassword}
               className="w-full bg-[#13BE77] text-white py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {isLoading ? "Registering..." : "Register"}
+              {isLoading ? "Signing Up..." : "Sign Up"}
             </button>
 
             {formData.password !== formData.confirmPassword && formData.confirmPassword && (

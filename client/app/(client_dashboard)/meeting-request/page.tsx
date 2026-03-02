@@ -33,7 +33,13 @@ const meetingOverviews = {
   }
 };
 
-const times = ["5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"];
+const allTimes = [
+  "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
+  "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+  "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
+  "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM",
+  "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM"
+];
 
 export default function MeetingRequestPage() {
   const [selectedType, setSelectedType] = useState("Discovery");
@@ -283,47 +289,62 @@ export default function MeetingRequestPage() {
 
             {/* Dates */}
             <div className="grid grid-cols-7 gap-2 text-center text-sm">
-              {getDaysInMonth(currentMonth).map((date, index) => (
-                <button
-                  key={index}
-                  onClick={() => date && setSelectedDate(date)}
-                  disabled={!date}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
-                    ${
-                      !date
-                        ? "invisible"
-                        : isDateSelected(date)
-                        ? "bg-lemon text-background font-semibold"
-                        : "bg-secondary text-foreground hover:bg-lemon/20"
-                    }
-                  `}
-                >
-                  {date?.getDate()}
-                </button>
-              ))}
+              {getDaysInMonth(currentMonth).map((date, index) => {
+                const isWeekend = date ? date.getDay() === 0 || date.getDay() === 6 : false;
+                const isPast = date ? date < new Date(new Date().setHours(0,0,0,0)) : false;
+                const isDisabled = !date || isWeekend || isPast;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => date && !isDisabled && setSelectedDate(date)}
+                    disabled={isDisabled}
+                    className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+                      ${
+                        !date
+                          ? "invisible"
+                          : isDisabled
+                          ? "text-foreground/20 cursor-not-allowed"
+                          : isDateSelected(date)
+                          ? "bg-lemon text-background font-semibold"
+                          : "bg-secondary text-foreground hover:bg-lemon/20"
+                      }
+                    `}
+                  >
+                    {date?.getDate()}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* TIME SELECTION */}
           <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-secondary">
-            <h3 className="text-lg font-semibold mb-6">{formatSelectedDate(selectedDate)}</h3>
+            <h3 className="text-lg font-semibold mb-2">{formatSelectedDate(selectedDate)}</h3>
+            <p className="text-xs text-foreground opacity-50 mb-4">Available weekdays 9:00 AM – 7:00 PM</p>
 
-            <div className="flex flex-col gap-3 sm:gap-4">
-              {times.map((time) => (
-                <button
-                  key={time}
-                  onClick={() => setSelectedTime(time)}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all
-                    ${
-                      selectedTime === time
-                        ? "bg-lemon text-background"
-                        : "bg-lemon/30 text-foreground"
-                    }
-                  `}
-                >
-                  {time}
-                </button>
-              ))}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 max-h-[320px] overflow-y-auto pr-1">
+              {(() => {
+                // Filter slots: only weekdays (Mon-Fri), 9AM - 7PM
+                const isWeekday = selectedDate ? selectedDate.getDay() >= 1 && selectedDate.getDay() <= 5 : true;
+                if (selectedDate && !isWeekday) {
+                  return <p className="col-span-2 text-center text-sm text-foreground opacity-60 py-4">No slots available on weekends. Please select a weekday.</p>;
+                }
+                return allTimes.map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => setSelectedTime(time)}
+                    className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-center text-sm font-semibold transition-all
+                      ${
+                        selectedTime === time
+                          ? "bg-lemon text-background"
+                          : "bg-lemon/30 text-foreground"
+                      }
+                    `}
+                  >
+                    {time}
+                  </button>
+                ));
+              })()}
             </div>
           </div>
         </div>

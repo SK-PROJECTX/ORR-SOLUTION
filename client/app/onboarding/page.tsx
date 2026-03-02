@@ -14,22 +14,26 @@ const questionnaire = {
       {
         question: "1. Which Jurisdiction will you be operating from?",
         options: ["Malta", "EU (Non-Malta)", "Non-EU", "Others"],
-        type: "single"
+        type: "dropdown",
+        placeholder: "Select your jurisdiction"
       },
       {
         question: "2. Preferred interface language:",
         options: ["English", "Maltese", "Italian", "Others"],
-        type: "single"
+        type: "dropdown",
+        placeholder: "Select your language"
       },
       {
         question: "3. Preferred Keyboard Layout:",
         options: ["EN-US", "EN-UK", "MT", "IT", "Others"],
-        type: "single"
+        type: "dropdown",
+        placeholder: "Select keyboard layout"
       },
       {
         question: "4. Preferred Date/Time format:",
         options: ["DD/MM/YYYY", "MM/DD/YYYY", "24-hour", "12-Hours"],
-        type: "single"
+        type: "dropdown",
+        placeholder: "Select date/time format"
       }
     ]
   },
@@ -39,7 +43,8 @@ const questionnaire = {
       {
         question: "5. Do you confirm that you have read and accept the Service Agreement?",
         options: ["Yes, I accept", "No"],
-        type: "single"
+        type: "single",
+        helpLink: { text: "Read the full Service Agreement", url: "/legacy-policy" }
       }
     ]
   },
@@ -67,9 +72,9 @@ const questionnaire = {
         type: "single"
       },
       {
-        question: "9. Which area(s) best match your needs? (ORR pillars)",
+        question: "9. Which area(s) best match your needs? (ORR pillars) — Select all that apply",
         options: ["Strategic Advisory & Compliance", "Digital Systems", "Automation & AI", "Living Systems & Regeneration", "Not Sure Yet"],
-        type: "single"
+        type: "multiple"
       },
       {
         question: "10. Do you currently have an active project in mind?",
@@ -79,6 +84,7 @@ const questionnaire = {
       {
         question: "11. Briefly describe your project or business:",
         type: "text",
+        options: [] as string[],
         placeholder: "Type your message here..." as const
       }
     ]
@@ -92,9 +98,9 @@ const questionnaire = {
         type: "single"
       },
       {
-        question: "14. Preferred communication tone:",
+        question: "14. Preferred communication tone: (Select all that apply)",
         options: ["Concise and direct", "Detailed and explanatory", "Technical", "Non-Technical", "No preference"],
-        type: "single"
+        type: "multiple"
       },
       {
         question: "15. Preferred contact method for notifications:",
@@ -107,13 +113,9 @@ const questionnaire = {
     title: "OPTIONAL (to improve AI response)",
     steps: [
       {
-        question: "16. Would you like the AI assistant to adapt to any specialist domain? (Select all that apply)",
-        options: ["Online (video)", "Phone call", "In-person (subject to availability)"],
-        type: "multiple"
-      },
-      {
-        question: "17. Any additional context you'd like the system to know?",
+        question: "16. Any additional context you'd like the system to know?",
         type: "text",
+        options: [] as string[],
         placeholder: "Type your message here..." as const
       }
     ]
@@ -257,15 +259,22 @@ export default function OnboardingPage() {
           finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
             finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
               finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
-      orr_pillars: finalAnswers['4-2'] || '',
+      orr_pillars: Array.isArray(finalAnswers['4-2']) ? finalAnswers['4-2'].join(', ') : finalAnswers['4-2'] || '',
       has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
       project_description: finalAnswers['4-4'] || '',
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
-      communication_tone: finalAnswers['5-1'] === 'No preference' ? 'concise' : finalAnswers['5-1']?.toLowerCase().split(' ')[0] || 'concise',
+      communication_tone: (() => {
+        const tone = finalAnswers['5-1'];
+        if (Array.isArray(tone)) {
+          if (tone.includes('No preference')) return 'concise';
+          return tone.map((t: string) => t.toLowerCase().split(' ')[0]).join(', ');
+        }
+        return tone === 'No preference' ? 'concise' : tone?.toLowerCase().split(' ')[0] || 'concise';
+      })(),
       notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
-      ai_specialist_domains: Array.isArray(finalAnswers['6-0']) ? finalAnswers['6-0'].join(', ') : finalAnswers['6-0'] || '',
-      ai_specialist_other: finalAnswers['6-0']?.includes('Others') ? 'other domains' : undefined,
-      additional_context: finalAnswers['6-1'] || '',
+      ai_specialist_domains: '',
+      ai_specialist_other: undefined,
+      additional_context: finalAnswers['6-0'] || '',
     };
 
     await submitOnboarding(onboardingData);
@@ -286,7 +295,18 @@ export default function OnboardingPage() {
         <div className="flex-1 flex flex-col justify-center min-h-screen px-6 py-10">
           <div className="max-w-5xl mx-auto w-full">
             <h2 className="text-3xl font-bold mb-8">{currentQuestion.title}</h2>
-            <p className="text-lg mb-16">{currentStepData.question}</p>
+            <p className="text-lg mb-4">{currentStepData.question}</p>
+            {(currentStepData as any).helpLink && (
+              <a
+                href={(currentStepData as any).helpLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[#00D683] hover:text-[#00D683]/80 text-sm font-medium mb-12 underline underline-offset-4 transition-colors"
+              >
+                {(currentStepData as any).helpLink.text} ↗
+              </a>
+            )}
+            {!(currentStepData as any).helpLink && <div className="mb-12" />}
 
             {currentStepData.type === "text" ? (
               <div className="mb-16">
@@ -296,6 +316,27 @@ export default function OnboardingPage() {
                   placeholder={(currentStepData as any).placeholder || "Type your message here..."}
                   className="w-full bg-[#10253F] border border-[#1A3B56] rounded-xl p-6 text-foreground min-h-[200px] focus:border-[#00D683] focus:outline-none"
                 />
+              </div>
+            ) : currentStepData.type === "dropdown" ? (
+              <div className="mb-16 max-w-md">
+                <select
+                  value={getCurrentAnswer() || ""}
+                  onChange={(e) => {
+                    const key = `${currentSection}-${currentStep}`;
+                    setAnswers({ ...answers, [key]: e.target.value });
+                  }}
+                  className="w-full bg-[#10253F] border border-[#1A3B56] rounded-xl px-6 py-5 text-foreground text-base focus:border-[#00D683] focus:outline-none appearance-none cursor-pointer"
+                  style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300D683' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.25rem center' }}
+                >
+                  <option value="" disabled className="bg-[#10253F] text-gray-400">
+                    {(currentStepData as any).placeholder || "Select an option"}
+                  </option>
+                  {currentStepData.options?.map((option) => (
+                    <option key={option} value={option} className="bg-[#10253F] text-foreground">
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             ) : (
               <div className={`grid gap-6 mb-16 ${currentStepData.options && currentStepData.options.length > 6
