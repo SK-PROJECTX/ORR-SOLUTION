@@ -29,6 +29,7 @@ body {
   color: var(--color-foreground);
   transition: background-color 0.3s ease;
 }
+
 .star {
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
@@ -46,20 +47,57 @@ body {
   debugging. They are lightweight and safe to keep alongside Tailwind.
 --------------------------------------------------------------------------- */
 
-.bg-background { background-color: var(--color-background); }
-.bg-card { background-color: var(--color-card); }
-.bg-card-light { background-color: var(--color-card-light); }
-.bg-primary { background-color: var(--color-primary); }
-.border-primary { border-color: var(--color-primary); }
-.bg-secondary { background-color: var(--color-secondary); }
-.bg-lemon { background-color: var(--color-lemon); }
-.border-lemon { border: var(--color-lemon); }
-.border-secondary { border: var(--color-secondary); }
-.text-foreground { color: var(--color-foreground); }
-.text-primary { color: var(--color-primary); }
-.text-secondary { color: var(--color-secondary); }
+.bg-background {
+  background-color: var(--color-background);
+}
 
-.bg-gradient-primary { background-image: var(--gradient-primary); }
+.bg-card {
+  background-color: var(--color-card);
+}
+
+.bg-card-light {
+  background-color: var(--color-card-light);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-lemon {
+  background-color: var(--color-lemon);
+}
+
+.border-lemon {
+  border: var(--color-lemon);
+}
+
+.border-secondary {
+  border: var(--color-secondary);
+}
+
+.text-foreground {
+  color: var(--color-foreground);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
 
 /* Glowing border effect matching SVG color */
 .glow-border {
@@ -85,7 +123,8 @@ body {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
@@ -121,4 +160,26 @@ html {
   }
 }
 
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
 
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lemon);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-background);
+}
