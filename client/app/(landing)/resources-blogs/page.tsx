@@ -6,15 +6,16 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Helper function to decode HTML entities and format content
 const decodeAndFormatContent = (content: any): string => {
   if (!content) return '';
-  
+
   let processedContent = content;
-  
+
   // Handle the database format: {&#39;format&#39;: &#39;html&#39;, &#39;content&#39;: &#39;...&#39;}
   if (typeof content === 'string' && content.includes('&#39;')) {
     // First decode the HTML entities in the structure
@@ -24,7 +25,7 @@ const decodeAndFormatContent = (content: any): string => {
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
-    
+
     // Extract content from the format object using regex that handles multiline content
     const contentMatch = processedContent.match(/'content':\s*'([\s\S]*?)(?:'\s*}\s*$|'\s*,)/);
     if (contentMatch) {
@@ -35,17 +36,17 @@ const decodeAndFormatContent = (content: any): string => {
         .replace(/\\r/g, '');
     }
   }
-  
+
   // If it's already an object, extract content
   if (typeof content === 'object' && content.content) {
     processedContent = content.content;
   }
-  
+
   // Add line breaks after list items
   if (processedContent && processedContent.includes('</li>')) {
     processedContent = processedContent.replace(/<\/li>/g, '</li><br>');
   }
-  
+
   return processedContent || '';
 };
 
@@ -114,7 +115,7 @@ export default function ResourcesBlogs() {
   if (!data) {
     return <Spinner />;
   }
-  
+
   return (
     <div className="min-h-screen text-white">
       <HeroSection data={data.page} />
@@ -143,26 +144,26 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
       <h1 ref={titleRef} className="text-4xl md:text-6xl font-bold mb-6">
         <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_title) || 'Resources & Client Portal' }} />
       </h1>
-      
+
       <p ref={p1Ref} className="max-w-2xl text-gray-300 text-lg mb-8 leading-relaxed">
         <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description1) || 'Loading content...' }} />
       </p>
-      
+
       <p ref={p2Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
         <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description2) || 'Loading content...' }} />
       </p>
-      
+
       <p ref={p3Ref} className="max-w-3xl text-gray-300 mb-12 leading-relaxed">
         <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description3) || 'Loading content...' }} />
       </p>
-      
+
       <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
-        <button className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
+        <Link href='/register' className="bg-green-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-green-300 transition-colors">
           <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button1_text) || 'Request Access' }} />
-        </button>
-        <button className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
+        </Link>
+        <Link href='/services' className="border border-green-400 text-green-400 px-8 py-3 rounded-full font-semibold hover:bg-green-400 hover:text-black transition-colors">
           <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button2_text) || 'Learn More' }} />
-        </button>
+        </Link>
       </div>
     </section>
   );
@@ -171,7 +172,7 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
 function ContentSection({ cards }: { cards: ContentCard[] }) {
   // Sort cards by order field
   const sortedCards = [...cards].sort((a, b) => (a.order || 0) - (b.order || 0));
-  
+
   return (
     <section className="px-6 md:px-16 pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
@@ -218,12 +219,11 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
   };
 
   return (
-    <div 
+    <div
       ref={cardRef}
       onClick={handleClick}
-      className={`bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 cursor-pointer transition-all duration-300 ${
-        isExpanded ? 'bg-[#1F3247]' : 'hover:bg-[#1A2B3D]/80'
-      }`}
+      className={`bg-[#1A2B3D] rounded-3xl p-6 border border-gray-700/30 cursor-pointer transition-all duration-300 ${isExpanded ? 'bg-[#1F3247]' : 'hover:bg-[#1A2B3D]/80'
+        }`}
     >
       <div className="mb-6">
         <img
@@ -232,25 +232,25 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
           className="w-full h-48 object-cover rounded-2xl"
         />
       </div>
-      
+
       <div className="mb-4">
         <span className="bg-green-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
           <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.badge) || '' }} />
         </span>
       </div>
-      
+
       <h3 className="text-xl font-bold mb-6">
         <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.title) || '' }} />
       </h3>
-      
+
       <div className="text-gray-300 text-sm leading-relaxed">
         {!isExpanded ? (
           <div>
             <p className="line-clamp-3">
-              {Array.isArray(card.content) 
-                ? card.content.slice(0, 2).map(item => 
-                    typeof item === 'string' ? item : (item as { content: string }).content || ''
-                  ).join(' ')
+              {Array.isArray(card.content)
+                ? card.content.slice(0, 2).map(item =>
+                  typeof item === 'string' ? item : (item as { content: string }).content || ''
+                ).join(' ')
                 : typeof card.content === 'string' ? card.content : ''}
             </p>
             <p className="text-gray-400 mt-2">...</p>
@@ -263,7 +263,7 @@ function ContentCardComponent({ card }: { card: ContentCard }) {
           </div>
         )}
       </div>
-      
+
       {card.button1_text && card.button2_text && isExpanded && (
         <div className="flex flex-col gap-3 mt-6">
           <button className="bg-green-400 text-black hover:bg-green-300 px-6 py-3 rounded-full font-semibold transition-colors">

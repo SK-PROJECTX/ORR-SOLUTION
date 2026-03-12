@@ -9,7 +9,7 @@ interface LivingSystemsFinalCTASectionProps {
 
 export default function LivingSystemsFinalCTASection({ title, description, buttonText }: LivingSystemsFinalCTASectionProps) {
   return (
-    <section className="relative z-30 py-24 text-center">
+    <section className="relative z-30 py-45 text-center">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
           <span dangerouslySetInnerHTML={getRichTextHTML(title || "Ready to Work With Your Living Systems,")} />
