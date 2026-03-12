@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import { getRichTextContent, getRichTextHTML } from "../../../lib/rich-text-utils";
+import Link from "next/link";
 
 interface ProcessStep {
   id: number;
@@ -77,15 +78,15 @@ export default function StickyScrollSplit() {
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
-      
+
       const sections = containerRef.current.querySelectorAll('.card-section');
       const scrollPosition = window.scrollY + window.innerHeight / 2;
-      
+
       sections.forEach((section, index: number) => {
         const htmlSection = section as HTMLElement;
         const sectionTop = htmlSection.offsetTop;
         const sectionBottom = sectionTop + htmlSection.offsetHeight;
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
           setActiveIndex(index);
         }
@@ -94,7 +95,7 @@ export default function StickyScrollSplit() {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, [data]);
 
@@ -136,14 +137,14 @@ export default function StickyScrollSplit() {
                 <div
                   className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
                   style={{
-                    transform: activeIndex === index 
-                      ? 'scale(1) rotateY(0deg)' 
-                      : activeIndex > index 
-                        ? `scale(${0.95 - (activeIndex - index) * 0.03}) rotateY(-2deg)` 
+                    transform: activeIndex === index
+                      ? 'scale(1) rotateY(0deg)'
+                      : activeIndex > index
+                        ? `scale(${0.95 - (activeIndex - index) * 0.03}) rotateY(-2deg)`
                         : 'scale(0.98) rotateY(2deg)',
                     opacity: 1,
-                    boxShadow: activeIndex === index 
-                      ? '0 25px 50px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(16, 185, 129, 0.1)' 
+                    boxShadow: activeIndex === index
+                      ? '0 25px 50px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(16, 185, 129, 0.1)'
                       : '0 10px 30px rgba(0, 0, 0, 0.3)'
                   }}
                 >
@@ -159,19 +160,19 @@ export default function StickyScrollSplit() {
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
                     <span dangerouslySetInnerHTML={getRichTextHTML(card.title)} />
                   </h2>
-                  
+
                   {card.subtitle && (
                     <h3 className="text-base sm:text-lg font-semibold text-emerald-400 mb-4">
                       <span dangerouslySetInnerHTML={getRichTextHTML(card.subtitle)} />
                     </h3>
                   )}
-                  
+
                   {card.description && (
                     <p className="text-sm sm:text-base text-white mb-4">
                       <span dangerouslySetInnerHTML={getRichTextHTML(card.description)} />
                     </p>
                   )}
-                  
+
                   <div className="space-y-2">
                     {card.bullet1 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet1)} /></p>}
                     {card.bullet2 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet2)} /></p>}
@@ -184,26 +185,26 @@ export default function StickyScrollSplit() {
                     {card.bullet8 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet8)} /></p>}
                     {card.bullet9 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet9)} /></p>}
                   </div>
-                  
+
                   {card.description1 && <p className="text-gray-300 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.description1)} /></p>}
                   {card.description2 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description2)} /></p>}
                   {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description3)} /></p>}
                   {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description4)} /></p>}
-                  
+
                   {card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
-                      <button className="bg-emerald-400 text-black px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
+                      <Link href='/contact' className="bg-emerald-400 text-black px-6 text-center sm:px-8 py-2 sm:py-3 rounded-full font-semibold  cursor-pointer hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
                         <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text)} />
-                      </button>
+                      </Link>
                       {card.button_text2 && (
-                        <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <Link href='/services' className="border border-emerald-400  text-center text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
                           <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text2)} />
-                        </button>
+                        </Link>
                       )}
                       {card.button_text3 && (
-                        <button className="border border-emerald-400 text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <Link href='/login' className="border border-emerald-400 text-center text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
                           <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text3)} />
-                        </button>
+                        </Link>
                       )}
                     </div>
                   )}
@@ -242,7 +243,7 @@ export default function StickyScrollSplit() {
           </div>
         </div>
       </div>
-      
+
       <style jsx>{`
         @keyframes imageAnim0 {
           0% { opacity: 0; transform: scale(1.2) translateX(30px); filter: blur(6px); }
