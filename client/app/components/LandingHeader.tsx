@@ -28,12 +28,12 @@ export function LandingHeader() {
         <Link href="/" className="flex items-center">
           <img src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395173/logo_qqpk6j.svg" alt="ORR Solutions" className="h-16 lg:h-20 w-auto" />
         </Link>
-        
+
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex space-x-6">
           <Link href="/howweoperate" className={`hover:opacity-70 text-sm xl:text-base ${pathname.includes('/howweoperate') ? 'text-[#13BE77]' : 'text-gray-100'}`}>How We Operate</Link>
           <div className="relative">
-            <div onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)} onMouseOver={()=> setIsServicesOpen(true)} onMouseOut={()=> setIsServicesOpen(false)}>
+            <div onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)} onMouseOver={() => setIsServicesOpen(true)} onMouseOut={() => setIsServicesOpen(false)}>
               <Link href="/services" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/services') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                 Services
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@ export function LandingHeader() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="lg:hidden text-white p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -104,9 +104,8 @@ export function LandingHeader() {
       )}
 
       {/* Mobile Menu Sidebar */}
-      <div className={`lg:hidden fixed top-0 right-0 h-screen w-80 bg-card transform transition-transform duration-300 ease-in-out z-50 ${
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
+      <div className={`lg:hidden fixed top-0 right-0 h-screen w-80 bg-card transform transition-transform duration-300 ease-in-out z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}>
         <div className="p-6 bg-card">
           <div className="flex justify-between items-center mb-8">
             <img src="/images/logo.svg" alt="ORR Solutions" className="h-8 w-auto" />
@@ -117,9 +116,9 @@ export function LandingHeader() {
             </button>
           </div>
           <nav className="flex flex-col space-y-6">
-            <Link href="/about-us" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/howweoperate' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>How We Operate</Link>
+            <Link href="/howweoperate" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/howweoperate' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>How We Operate</Link>
             <div>
-              <button 
+              <Link href='/services'
                 onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
                 className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/services') ? 'text-[#13BE77]' : 'text-gray-100'}`}
               >
@@ -127,7 +126,7 @@ export function LandingHeader() {
                 <svg className={`w-4 h-4 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </button>
+              </Link>
               {isMobileServicesOpen && (
                 <div className="ml-4 mt-2 space-y-2">
                   <Link href="/services/strategy-advisory-compliant" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/strategy_advisory' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
@@ -145,7 +144,7 @@ export function LandingHeader() {
             <Link href="/resources-blogs" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Resources & Blogs
             </Link>
             <div>
-              <button 
+              <button
                 onClick={() => setIsMobileLegalOpen(!isMobileLegalOpen)}
                 className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}
               >
@@ -171,10 +170,10 @@ export function LandingHeader() {
             <Link href="/contact" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/contact' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
             <div className="pt-6 border-t border-white/10 flex items-center justify-between">
               <Link href="/login" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign In</Link>
-            <ThemeToggle />
+              <ThemeToggle />
             </div>
             <div className='pt-8 border-t border-white/10'>
-                <Link href="/register" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign Up</Link>
+              <Link href="/register" className='bg-white py-2 px-10 text-black rounded-xl hover:bg-[#13BE77] hover:text-white transition-colors' onClick={() => setIsMobileMenuOpen(false)}>Sign Up</Link>
             </div>
           </nav>
         </div>

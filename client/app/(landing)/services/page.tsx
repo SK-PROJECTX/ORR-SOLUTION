@@ -16,9 +16,9 @@ const PILLAR_ROUTES: Record<number, string> = {
 // Helper function to decode HTML entities and format content
 const decodeAndFormatContent = (content: any): string => {
   if (!content) return '';
-  
+
   let processedContent = content;
-  
+
   // Handle the database format: {&#39;format&#39;: &#39;html&#39;, &#39;content&#39;: &#39;...&#39;}
   if (typeof content === 'string' && content.includes('&#39;')) {
     // First decode the HTML entities in the structure
@@ -28,7 +28,7 @@ const decodeAndFormatContent = (content: any): string => {
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
-    
+
     // Extract content from the format object using regex that handles multiline content
     const contentMatch = processedContent.match(/'content':\s*'([\s\S]*?)(?:'\s*}\s*$|'\s*,)/);
     if (contentMatch) {
@@ -39,17 +39,17 @@ const decodeAndFormatContent = (content: any): string => {
         .replace(/\\r/g, '');
     }
   }
-  
+
   // If it's already an object, extract content
   if (typeof content === 'object' && content.content) {
     processedContent = content.content;
   }
-  
+
   // Add line breaks after list items
   if (processedContent && processedContent.includes('</li>')) {
     processedContent = processedContent.replace(/<\/li>/g, '</li><br>');
   }
-  
+
   return processedContent || '';
 };
 
@@ -186,13 +186,13 @@ export default function Services() {
         }
       `}</style>
       {/* Hero Section */}
-      <section 
+      <section
         ref={el => { sectionsRef.current[0] = el; }}
         className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center"
       >
         <div className="absolute inset-0 " />
         <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-30 pointer-events-none" />
-        
+
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
             <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || "ORR Solutions - Listen. Solve. Optimise." }} />
@@ -204,7 +204,7 @@ export default function Services() {
       </section>
 
       {/* Process Stages */}
-      <section 
+      <section
         ref={el => { sectionsRef.current[1] = el; }}
         className="py-16 px-6"
       >
@@ -229,7 +229,7 @@ export default function Services() {
                 <div className="text-gray-300 text-sm mb-8 flex-grow">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
-                <Link href="/register" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer block text-center">
+                <Link href="/contact" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer block text-center">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || "Learn More" }} />
                 </Link>
               </div>
@@ -256,7 +256,7 @@ export default function Services() {
               <div className="text-gray-300 text-sm mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
-              <Link href="/login" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer block text-center">
+              <Link href="/register" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer block text-center">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || "Learn More" }} />
               </Link>
             </div>
@@ -265,7 +265,7 @@ export default function Services() {
       </section>
 
       {/* The Three Pillars */}
-      <section 
+      <section
         ref={el => { sectionsRef.current[2] = el; }}
         className="py-20 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800 min-h-[80vh] flex items-center"
       >
@@ -310,7 +310,7 @@ export default function Services() {
       </section>
 
       {/* Business GP Section */}
-      <section 
+      <section
         ref={el => { sectionsRef.current[3] = el; }}
         className="py-20 px-6 bg-background star relative min-h-[80vh] flex items-center"
       >
@@ -331,9 +331,9 @@ export default function Services() {
               </Link>
             </div>
             <div>
-              <img 
+              <img
                 src={data.page.business_gp_image}
-                alt="Business handshake" 
+                alt="Business handshake"
                 className="w-full h-auto rounded-lg"
               />
             </div>

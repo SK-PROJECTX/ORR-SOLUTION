@@ -1,4 +1,5 @@
 import { getRichTextHTML } from "@/lib/rich-text-utils";
+import Link from "next/link";
 
 interface LivingSystemsFinalCTASectionProps {
   title?: string;
@@ -19,9 +20,9 @@ export default function LivingSystemsFinalCTASection({ title, description, butto
         <p className="text-slate-200 text-lg mb-12 max-w-3xl mx-auto">
           <span dangerouslySetInnerHTML={getRichTextHTML(description || "Let's help your business discover and design systems that regenerate rather than deplete.")} />
         </p>
-        <button className="bg-gradient-to-r from-[#47ff4c] to-[#0ec277] text-black px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-[#47ff4c]/25 transition-all duration-300">
+        <Link href='/contact' className="bg-gradient-to-r from-[#47ff4c] to-[#0ec277] text-black px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-[#47ff4c]/25 transition-all duration-300">
           <span dangerouslySetInnerHTML={getRichTextHTML(buttonText || "Book a free Living Systems assessment")} />
-        </button>
+        </Link>
       </div>
     </section>
   )

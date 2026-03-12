@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import NetworkCard from "../strategy_advisory/NetworkCard";
 import { getRichTextHTML } from "@/lib/rich-text-utils";
 
+
 interface NetworkCard {
   title: string;
   description: string;
@@ -21,11 +22,11 @@ interface NetworkAdvantageSectionProps {
   layout?: 'grid' | 'flex';
 }
 
-export default function NetworkAdvantageSection({ 
-  title = "The ORR Network Advantage", 
-  description, 
-  networkCards = [], 
-  layout = 'flex' 
+export default function NetworkAdvantageSection({
+  title = "The ORR Network Advantage",
+  description,
+  networkCards = [],
+  layout = 'flex'
 }: NetworkAdvantageSectionProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -37,7 +38,7 @@ export default function NetworkAdvantageSection({
       const parts = card.text.split(' — ');
       const title = parts[0]?.trim() || `Network Partner ${index + 1}`;
       const description = parts[1]?.trim() || card.text;
-      
+
       return {
         title: title,
         description: description,
