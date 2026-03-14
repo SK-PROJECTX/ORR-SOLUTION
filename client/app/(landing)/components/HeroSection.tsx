@@ -20,7 +20,7 @@ export function HeroSection() {
         // If the hero section is out of view, minimize the video
         const isOut = !entry.isIntersecting;
         setIsMinimized(isOut);
-        
+
         // If it comes back into view, make sure it's visible again
         if (!isOut) {
           setIsVisible(true);
@@ -28,7 +28,7 @@ export function HeroSection() {
       },
       {
         root: null,
-        threshold: 0, 
+        threshold: 0,
       }
     );
 
@@ -44,26 +44,28 @@ export function HeroSection() {
   }, []);
 
   const getOptimizedVideoUrl = (url: string, width?: number) => {
+    // If no width is specified (desktop/original quality), use the original URL without transformation flags
+    if (!width) return url;
+
     const baseUrl = url.replace(
       "/upload/",
-      `/upload/f_auto,q_auto${width ? `,w_${width}` : ""}/`,
+      `/upload/c_scale${width ? `,w_${width}` : ""}/`,
     );
     return baseUrl;
   };
 
   const currentRawVideo =
     theme === "dark"
-      ? "https://res.cloudinary.com/depeqzb6z/video/upload/v1763167272/Final_Comp_1_eb2us1.mp4"
-      : "https://res.cloudinary.com/depeqzb6z/video/upload/v1763167291/Final_Comp_yiiy1e.mp4";
+      ? "https://res.cloudinary.com/depeqzb6z/video/upload/v1773386068/Final_Comp_1_iyegf6.mp4"
+      : "https://res.cloudinary.com/depeqzb6z/video/upload/v1773386094/Final_Comp_1_1_efvzc0.mp4";
 
   const posterUrl = currentRawVideo
     .replace("/video/upload/", "/video/upload/f_auto,q_auto,so_0/")
     .replace(".mp4", ".jpg");
 
-  const minimizedClasses = `fixed z-50 top-0 left-0 w-full shadow-2xl transition-all duration-500 ease-in-out h-[15vh] max-h-[120px] md:max-h-none md:top-auto md:left-auto md:bottom-6 md:right-6 md:w-[360px] md:h-auto md:aspect-video md:rounded-2xl overflow-hidden bg-slate-900 ${
-    !isVisible ? "opacity-0 pointer-events-none -translate-y-full md:translate-y-0 md:translate-x-[150%]" : "opacity-100 translate-y-0 translate-x-0"
-  }`;
-  
+  const minimizedClasses = `fixed z-50 top-0 left-0 w-full shadow-2xl transition-all duration-500 ease-in-out h-[15vh] max-h-[120px] md:max-h-none md:top-auto md:left-auto md:bottom-6 md:right-6 md:w-[360px] md:h-auto md:aspect-video md:rounded-2xl overflow-hidden bg-slate-900 ${!isVisible ? "opacity-0 pointer-events-none -translate-y-full md:translate-y-0 md:translate-x-[150%]" : "opacity-100 translate-y-0 translate-x-0"
+    }`;
+
   const normalClasses = "absolute inset-0 w-full h-full overflow-hidden bg-slate-900 transition-all duration-500 ease-in-out opacity-100 translate-y-0 translate-x-0";
 
   return (
@@ -82,20 +84,20 @@ export function HeroSection() {
         >
           {/* Desktop - WebM highly recommended but using MP4 for now as provided */}
           <source
-            src={getOptimizedVideoUrl(currentRawVideo, 1920)}
-            
+            src={getOptimizedVideoUrl(currentRawVideo)}
+
             media="(min-width: 1024px)"
           />
           {/* Tablet/Large Mobile */}
           <source
             src={getOptimizedVideoUrl(currentRawVideo, 1080)}
-             
+
             media="(min-width: 640px)"
           />
           {/* Mobile */}
           <source
             src={getOptimizedVideoUrl(currentRawVideo, 640)}
-            
+
           />
         </video>
 
@@ -105,8 +107,8 @@ export function HeroSection() {
             <h3 className={`text-white font-bold mb-3 text-center drop-shadow-md ${isMinimized ? 'text-sm md:text-lg' : 'text-2xl md:text-4xl'}`}>
               Why not join now?
             </h3>
-            <Link 
-              href="/register" 
+            <Link
+              href="/register"
               className={`bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors shadow-lg ${isMinimized ? 'px-4 py-1.5 text-xs' : 'px-8 py-3 text-lg'}`}
             >
               Sign up
@@ -116,7 +118,7 @@ export function HeroSection() {
 
         {/* Close button for minimized state */}
         {isMinimized && (
-          <button 
+          <button
             onClick={() => setIsVisible(false)}
             className="absolute top-2 right-2 z-20 bg-black/50 hover:bg-black/80 text-white rounded-full p-1 transition-colors"
             aria-label="Close video"

@@ -24,7 +24,7 @@ export function LandingHeader() {
 
   return (
     <header className='fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-2 transition-all duration-300 backdrop-blur-xl bg-transparent'>
-      <div className="max-w-[1400] mx-auto flex justify-between items-center">
+      <div className="max-w-[1400px] mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <img src="https://res.cloudinary.com/depeqzb6z/image/upload/v1764395173/logo_qqpk6j.svg" alt="ORR Solutions" className="h-16 lg:h-20 w-auto" />
         </Link>
