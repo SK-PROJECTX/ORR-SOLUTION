@@ -11,12 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ApproachSectionProps {
   content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
+  onUpdate?: (data: any) => Promise<void>;
 }
 
-export default function ApproachSection({ content, onContentUpdate }: ApproachSectionProps) {
+export default function ApproachSection({ content, onUpdate }: ApproachSectionProps) {
   const { content: homepageContent } = useHomepageContent();
-  const approachData = homepageContent?.approachSection;
+  const approachData = content || homepageContent?.approachSection;
   
   const sectionRef = useRef(null);
   const titleRef = useRef(null);

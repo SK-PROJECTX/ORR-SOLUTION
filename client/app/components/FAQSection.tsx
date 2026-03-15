@@ -12,12 +12,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface FAQSectionProps {
   content?: any;
-  onContentUpdate?: (id: number, data: any) => Promise<void>;
+  onUpdate?: (id: number, data: any) => Promise<void>;
 }
 
-export default function FAQSection({ content, onContentUpdate }: FAQSectionProps) {
+export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
   const { content: homepageContent } = useHomepageContent();
-  const faqs = homepageContent?.faqs || [];
+  const faqs = content || homepageContent?.faqs || [];
   
   const [openFAQ, setOpenFAQ] = useState(-1);
   const titleRef = useRef(null);

@@ -80,33 +80,16 @@ interface ResourcesData {
   cards: ContentCard[];
 }
 
+import { useCachedData } from "../../../hooks/useCachedData";
+
 export default function ResourcesBlogs() {
   useScrollSplit();
-  const [data, setData] = useState<ResourcesData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('🔄 Fetching Resources data from backend...');
-        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/resources-content/');
-        console.log('✅ Resources API Response:', response.data);
-        if (response.data.success) {
-          console.log('📊 Resources Data Structure:', {
-            page: response.data.data.page,
-            cards: response.data.data.cards.length + ' cards'
-          });
-          setData(response.data.data);
-        }
-      } catch (error) {
-        console.error('❌ Error fetching Resources data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  
+  const { data, loading } = useCachedData<ResourcesData>(
+    'orr_resources_content',
+    'https://orr-backend.orr.solutions/admin-portal/v1/cms/resources-content/',
+    (data) => data
+  );
 
   if (loading) {
     return <Spinner />;

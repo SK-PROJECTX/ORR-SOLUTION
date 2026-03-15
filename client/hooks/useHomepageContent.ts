@@ -41,9 +41,7 @@ export function useHomepageContent() {
       console.log('📊 Homepage data received:', result);
       
       const data = result.data || result;
-      console.log('✅ Homepage final processed data:', data);
-
-      setContent({
+      const processedContent: HomepageContentData = {
         homepage: data.homepage,
         approachSection: data.approach_section,
         businessSystemSection: data.business_system_section,
@@ -55,7 +53,14 @@ export function useHomepageContent() {
         faqs: data.faqs || [],
         testimonials: data.testimonials || [],
         contactInfo: data.contact_info
-      });
+      };
+
+      setContent(processedContent);
+      
+      // Cache the content
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('orr_homepage_content', JSON.stringify(processedContent));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch content');
     } finally {
@@ -64,6 +69,20 @@ export function useHomepageContent() {
   }, []);
 
   useEffect(() => {
+    // Try to load from cache first for immediate display
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('orr_homepage_content');
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          setContent(parsed);
+          setLoading(false); // We have cached content, so we can stop showing full page spinner
+        } catch (e) {
+          console.error('Failed to parse cached content', e);
+        }
+      }
+    }
+    
     fetchAllContent();
   }, [fetchAllContent]);
 

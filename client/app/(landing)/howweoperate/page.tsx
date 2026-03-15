@@ -46,34 +46,17 @@ interface HowWeOperateData {
   steps: ProcessStep[];
 }
 
+import { useCachedData } from "../../../hooks/useCachedData";
+
 export default function StickyScrollSplit() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [data, setData] = useState<HowWeOperateData | null>(null);
-  const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('🔄 Fetching How We Operate data from backend...');
-        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/how-we-operate/');
-        console.log('✅ How We Operate API Response:', response.data);
-        if (response.data.success) {
-          console.log('📊 How We Operate Data Structure:', {
-            page: response.data.data.page,
-            steps: response.data.data.steps.length + ' steps'
-          });
-          setData(response.data.data);
-        }
-      } catch (error) {
-        console.error('❌ Error fetching How We Operate data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data, loading } = useCachedData<HowWeOperateData>(
+    'orr_how_we_operate_content',
+    'https://orr-backend.orr.solutions/admin-portal/v1/cms/how-we-operate/',
+    (data) => data
+  );
 
   useEffect(() => {
     const handleScroll = () => {

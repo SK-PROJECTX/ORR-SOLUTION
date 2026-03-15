@@ -908,8 +908,171 @@ export default function LegacyPolicy() {
                     <li>payment of initial portal configuration fee</li>
                     <li>assignment of at least one DS module</li>
                   </ul>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    9.2 DS Modifications
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Once assigned:
+                  </p>
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>DS modules cannot be removed without admin approval
+                    </li>
+                    <li>DS updates may require configuration time</li>
+                    <li>DS versions may evolve over time, with notice provided</li>
+                  </ul>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    9.3 Workspace Outputs
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Documents created in Workspace are automatically saved in the Document Vault. ORR is not responsible for loss due to user deletion or incorrect inputs.
+                  </p>
+
                 </div>
               </div>
+
+              {/* Section 9:  CONSULTATION TERMS */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  10
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    CONSULTATION TERMS
+                  </h2>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    10.1 Scheduling
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Bookings are subject to availability.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    10.2 Cancellation
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Cancellations within the permitted window (as displayed) may be rescheduled.
+
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    10.3 Accuracy
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Consultation outcomes rely partly on the accuracy of information you provide.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    10.4 Transcriptions
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Transcriptions are used only for data enrichment and only with user consent.
+                  </p>
+
+                </div>
+              </div>
+
+              {/* Section 11:  INTELLECTUAL PROPERTY */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  11
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    INTELLECTUAL PROPERTY
+                  </h2>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    11.1 ORR IP
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    All Platform content, DS modules, tools, templates, systems, and reports remain the exclusive intellectual property of ORR.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    11.2 User License
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    You are granted a non-exclusive, non-transferable license to use Platform tools for your internal business.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    11.3 Restrictions
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    You may not:
+                  </p>
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>copy</li>
+                    <li>distribute</li>
+                    <li>resell</li>
+                    <li>reverse engineer</li>
+                  </ul>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    any ORR systems or DS logic.
+                  </p>
+
+                </div>
+              </div>
+
+
+              {/* Section 12:  LIMITATION OF LIABILITY */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  12
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    LIMITATION OF LIABILITY
+                  </h2>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    12.1 No Guarantees
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    ORR does not guarantee error-free operation or uninterrupted access.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    12.2 Indirect Damages
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    ORR is not liable for indirect, incidental, or consequential damages arising from Platform use.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    12.3 Liability Cap
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Liability is limited to the amount paid by you for the subscription period in which the damage occurred.
+                  </p>
+
+                </div>
+              </div>
+
+
+
+
+
+
             </div>
           </div>
         </div>

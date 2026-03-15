@@ -88,6 +88,12 @@ const pages: Array<{
     changeFrequency: 'weekly',
   },
   {
+    path: '/legal-policy',
+    keywords: ['legal', 'policy', 'terms'],
+    priority: 0.8,
+    changeFrequency: 'yearly',
+  },
+  {
     path: '/contact',
     keywords: ['contact', 'get in touch', 'support'],
     priority: 0.8,
@@ -111,7 +117,7 @@ const pages: Array<{
     },
 
      {
-        path: '/services/operational-systems-infrasture',
+        path: '/services/operational-systems-infrastructure',
         keywords: [
             'programme-based client lifecycle management',
             'business advisory for immigration lawyers',
@@ -126,7 +132,7 @@ const pages: Array<{
     },
 
      {
-        path: '/services/strategy-advisory-complaint',
+        path: '/services/strategy-advisory-compliant',
         keywords: [
             'project-based professional workflows',
             'business advisory for accountants',

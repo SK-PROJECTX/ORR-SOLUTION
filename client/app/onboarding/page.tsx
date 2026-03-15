@@ -44,7 +44,7 @@ const questionnaire = {
         question: "5. Do you confirm that you have read and accept the Service Agreement?",
         options: ["Yes, I accept", "No"],
         type: "single",
-        helpLink: { text: "Read the full Service Agreement", url: "/legacy-policy" }
+        helpLink: { text: "Read the full Service Agreement", url: "/legal-policy" }
       }
     ]
   },
