@@ -11,12 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ORRRoleSectionProps {
   content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
+  onUpdate?: (data: any) => Promise<void>;
 }
 
-export default function ORRRoleSection({ content, onContentUpdate }: ORRRoleSectionProps) {
+export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProps) {
   const { content: homepageContent } = useHomepageContent();
-  const orrRoleSection = homepageContent?.orrRoleSection;
+  const orrRoleSection = content || homepageContent?.orrRoleSection;
   
   const titleRef = useRef(null);
   const textRef = useRef(null);

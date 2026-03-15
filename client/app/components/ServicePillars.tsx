@@ -12,10 +12,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ServicePillarProps {
   content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
+  onUpdate?: (id: number, data: any) => Promise<void>;
 }
 
-export default function ServicePillar({ content, onContentUpdate }: ServicePillarProps) {
+export default function ServicePillar({ content, onUpdate }: ServicePillarProps) {
   const [allContent, setAllContent] = useState<any>(null);
   
   const sectionRef = useRef<HTMLElement>(null);
@@ -27,49 +27,34 @@ export default function ServicePillar({ content, onContentUpdate }: ServicePilla
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const fetchAllContent = async () => {
-      try {
-        const response = await fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/all-content/');
-        if (!response.ok) throw new Error('Failed to fetch content');
-        const result = await response.json();
-        const data = result.data || result;
-        
-        const convertToString = (obj: any) => {
-          if (!obj) return {};
-          const converted: any = {};
-          Object.keys(obj).forEach(key => {
-            const value = obj[key];
-            if (value === null || value === undefined) {
-              converted[key] = '';
-            } else if (typeof value === 'string') {
-              converted[key] = value;
-            } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-              if (value.content && typeof value.content === 'string') {
-                converted[key] = value.content;
-              } else {
-                converted[key] = '';
-              }
+    if (content) {
+      const convertToString = (obj: any) => {
+        if (!obj) return {};
+        const converted: any = {};
+        Object.keys(obj).forEach(key => {
+          const value = obj[key];
+          if (value === null || value === undefined) {
+            converted[key] = '';
+          } else if (typeof value === 'string') {
+            converted[key] = value;
+          } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            if (value.content && typeof value.content === 'string') {
+              converted[key] = value.content;
             } else {
-              converted[key] = String(value);
+              converted[key] = '';
             }
-          });
-          return converted;
-        };
-        
-        setAllContent({
-          servicesPage: convertToString(data.services_page)
+          } else {
+            converted[key] = String(value);
+          }
         });
-        
-        // Debug logging to check available fields
-        console.log('🔍 Services Page Fields:', Object.keys(convertToString(data.services_page)));
-        console.log('🔍 Looking for pillars_subtitle:', convertToString(data.services_page)?.pillars_subtitle);
-      } catch (error) {
-        console.error('Error fetching content:', error);
-      }
-    };
-
-    fetchAllContent();
-  }, []);
+        return converted;
+      };
+      
+      setAllContent({
+        servicesPage: convertToString(content)
+      });
+    }
+  }, [content]);
 
   useEffect(() => {
     const title = titleRef.current;

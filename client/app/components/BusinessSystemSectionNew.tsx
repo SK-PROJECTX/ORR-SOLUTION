@@ -11,9 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface BusinessSystemSectionProps {
   content?: any;
+  onUpdate?: (data: any) => Promise<void>;
 }
 
-export default function BusinessSystemSection({ content }: BusinessSystemSectionProps) {
+export default function BusinessSystemSection({ content, onUpdate }: BusinessSystemSectionProps) {
   const [businessSystemData, setBusinessSystemData] = useState<any>(null);
   const [businessSystemCards, setBusinessSystemCards] = useState<any[]>([]);
   
@@ -22,34 +23,14 @@ export default function BusinessSystemSection({ content }: BusinessSystemSection
   const { effectiveTheme } = useTheme();
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [sectionResponse, cardsResponse] = await Promise.all([
-        fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-section/'),
-        fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/business-system-cards/')
-      ]);
-
-      if (sectionResponse.ok) {
-        const sectionResult = await sectionResponse.json();
-        setBusinessSystemData(sectionResult.data);
+    if (content) {
+      setBusinessSystemData(content);
+      // If content has cards, set them
+      if (content.cards) {
+        setBusinessSystemCards(content.cards);
       }
-
-      if (cardsResponse.ok) {
-        const cardsResult = await cardsResponse.json();
-        let cardsData = cardsResult?.data ?? cardsResult;
-        const cardsArray = Array.isArray(cardsData) ? cardsData : [];
-        const sortedCards = cardsArray.sort(
-          (a: any, b: any) => (a.order || 0) - (b.order || 0)
-        );
-        setBusinessSystemCards(sortedCards);
-      }
-    } catch (error) {
-      console.error("Error fetching business system data:", error);
     }
-  };
-
-  fetchData();
-}, []);
+  }, [content]);
 
   const getStringValue = (value: any): string => {
     if (typeof value === 'string') return value;

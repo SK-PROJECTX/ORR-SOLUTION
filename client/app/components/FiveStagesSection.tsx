@@ -11,12 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface FiveStagesSectionProps {
   content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
+  onUpdate?: (data: any) => Promise<void>;
 }
 
-export default function FiveStagesSection({ content, onContentUpdate }: FiveStagesSectionProps) {
+export default function FiveStagesSection({ content, onUpdate }: FiveStagesSectionProps) {
   const { content: homepageContent } = useHomepageContent();
-  const processSection = homepageContent?.processSection;
+  const processSection = content || homepageContent?.processSection;
   
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);

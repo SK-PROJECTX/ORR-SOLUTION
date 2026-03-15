@@ -95,45 +95,16 @@ interface ServicesData {
   pillars: ServicePillar[];
 }
 
+import { useCachedData } from "../../../hooks/useCachedData";
+
 export default function Services() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
-  const [data, setData] = useState<ServicesData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('🔄 Fetching Services data from backend...');
-        const response = await axios.get('https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/');
-        console.log('✅ Services API Response:', response.data);
-        console.log('🔍 Full Response Data Structure:', JSON.stringify(response.data, null, 2));
-        if (response.data.success) {
-          console.log('📊 Services Data Structure:', {
-            page: response.data.data.page,
-            stages: response.data.data.stages.length + ' stages',
-            pillars: response.data.data.pillars.length + ' pillars',
-            pillarsData: response.data.data.pillars
-          });
-          console.log('🏛️ Pillars Array Details:', response.data.data.pillars.map((pillar: any, index: number) => ({
-            index,
-            id: pillar.id,
-            title: pillar.title,
-            description: pillar.description,
-            button_text: pillar.button_text,
-            order: pillar.order,
-            is_active: pillar.is_active
-          })));
-          setData(response.data.data);
-        }
-      } catch (error) {
-        console.error('❌ Error fetching Services data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  
+  const { data, loading } = useCachedData<ServicesData>(
+    'orr_services_content',
+    'https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/',
+    (data) => data
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -29,47 +29,37 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchAllContent = async () => {
-      try {
-        const response = await fetch('https://orr-backend.orr.solutions/admin-portal/v1/cms/all-content/');
-        if (!response.ok) throw new Error('Failed to fetch content');
-        const result = await response.json();
-        const data = result.data || result;
-
-        const convertToString = (obj: any) => {
-          if (!obj) return {};
-          const converted: any = {};
-          Object.keys(obj).forEach(key => {
-            const value = obj[key];
-            if (value === null || value === undefined) {
-              converted[key] = '';
-            } else if (typeof value === 'string') {
-              converted[key] = value;
-            } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-              if (value.content && typeof value.content === 'string') {
-                converted[key] = value.content;
-              } else {
-                converted[key] = '';
-              }
+    if (content) {
+      const convertToString = (obj: any) => {
+        if (!obj) return {};
+        const converted: any = {};
+        Object.keys(obj).forEach(key => {
+          const value = obj[key];
+          if (value === null || value === undefined) {
+            converted[key] = '';
+          } else if (typeof value === 'string') {
+            converted[key] = value;
+          } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            if (value.content && typeof value.content === 'string') {
+              converted[key] = value.content;
             } else {
-              converted[key] = String(value);
+              converted[key] = '';
             }
-          });
-          return converted;
-        };
-
-        setAllContent({
-          homepage: convertToString(data.homepage)
+          } else {
+            converted[key] = String(value);
+          }
         });
-      } catch (error) {
-        console.error('Error fetching content:', error);
-      }
-    };
+        return converted;
+      };
 
-    fetchAllContent();
-  }, []);
+      setAllContent({
+        homepage: convertToString(content)
+      });
+    }
+  }, [content]);
 
   useEffect(() => {
+    if (!allContent) return;
     gsap.fromTo(subtitleRef.current,
       { opacity: 0, x: -50, rotateY: -20 },
       { opacity: 1, x: 0, rotateY: 0, duration: 1, delay: 0.5, ease: "power3.out" }

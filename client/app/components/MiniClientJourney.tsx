@@ -19,12 +19,12 @@ interface RichTextData {
 
 interface MiniClientJourneyProps {
   content?: any;
-  onContentUpdate?: (data: any) => Promise<void>;
+  onUpdate?: (data: any) => Promise<void>;
 }
 
-export default function MiniClientJourney({ content, onContentUpdate }: MiniClientJourneyProps) {
+export default function MiniClientJourney({ content, onUpdate }: MiniClientJourneyProps) {
   const { content: homepageContent } = useHomepageContent();
-  const messageStrip = homepageContent?.messageStrip;
+  const messageStrip = content || homepageContent?.messageStrip;
   
   const titleRef = useRef(null);
   const cardRef = useRef(null);
@@ -35,7 +35,7 @@ export default function MiniClientJourney({ content, onContentUpdate }: MiniClie
 
   const handleMessageSave = async (newContent: string | RichTextData) => {
     const contentString = typeof newContent === 'string' ? newContent : newContent.content;
-    await onContentUpdate?.({ message: contentString });
+    await onUpdate?.({ message: contentString });
   };
 
   useEffect(() => {

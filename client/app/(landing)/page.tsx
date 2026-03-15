@@ -26,7 +26,7 @@ import Spinner from "../../components/ui/Spinner";
 export default function LandingPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { content, loading, error, updateHomepage, updateApproachSection, updateBusinessSystemSection, updateORRRoleSection, updateMessageStrip, updateProcessSection, updateORRReportSection, updateFAQ } = useHomepageContent();
+  const { content, loading, error, updateHomepage, updateApproachSection, updateBusinessSystemSection, updateORRRoleSection, updateMessageStrip, updateProcessSection, updateORRReportSection, updateServiceCard, updateFAQ } = useHomepageContent();
   
   useScrollSplit();
 
@@ -46,46 +46,65 @@ export default function LandingPage() {
     setIsAuthenticated(false);
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <Spinner />;
-  }
-
   return (
     <div className="star fixed-background">
       <HeroSection />
       <div className="scroll-section" id="hero-section">
-        <Hero />
+        <Hero 
+          content={content?.homepage} 
+          onContentUpdate={updateHomepage} 
+        />
       </div>
       <div className="scroll-section" id="approach-section">
-        <ApproachCard />
+        <ApproachCard 
+          content={content?.approachSection}
+          onUpdate={updateApproachSection}
+        />
       </div>
       <div className="scroll-section" id="services-section">
-        <ServicePillar />
+        <ServicePillar 
+          content={content?.serviceCards}
+          onUpdate={updateServiceCard}
+        />
       </div>
       <div className="scroll-section" id="business-system-section">
-        <BusinessSystemSection />
+        <BusinessSystemSection 
+          content={content?.businessSystemSection}
+          onUpdate={updateBusinessSystemSection}
+        />
       </div>
       <div className="scroll-section" id="orr-role-section">
-        <ORRRoleSection />
+        <ORRRoleSection 
+          content={content?.orrRoleSection}
+          onUpdate={updateORRRoleSection}
+        />
       </div>
       <div className="scroll-section" id="message-section">
-        <MiniClientJourney />
+        <MiniClientJourney 
+          content={content?.messageStrip}
+          onUpdate={updateMessageStrip}
+        />
       </div>
       <div className="scroll-section" id="process-section">
-        <FiveStagesSection />
+        <FiveStagesSection 
+          content={content?.processSection}
+          onUpdate={updateProcessSection}
+        />
       </div>
       <div className="scroll-section" id="report-section">
-        <ORRReportSection />
+        <ORRReportSection 
+          content={content?.orrReportSection}
+          onUpdate={updateORRReportSection}
+        />
       </div>
       <div className="scroll-section">
         <PackagePreviewSection />
       </div>
       <div className="scroll-section" id="faq-section">
-        <FAQSection />
+        <FAQSection 
+          content={content?.faqs}
+          onUpdate={updateFAQ}
+        />
       </div>
       <div className="scroll-section">
         <MidClientJourneySection />

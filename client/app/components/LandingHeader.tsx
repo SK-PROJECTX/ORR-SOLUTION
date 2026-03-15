@@ -57,7 +57,7 @@ export function LandingHeader() {
           </div>
           <Link href="/resources-blogs" className={`hover:opacity-70 text-sm xl:text-base ${pathname === '/resources-blogs' ? 'text-[#13BE77]' : 'text-gray-100'}`}>Resources & Blogs</Link>
           <div className="relative" onMouseEnter={() => setIsLegalOpen(true)} onMouseLeave={() => setIsLegalOpen(false)} onMouseOver={() => setIsLegalOpen(true)} onMouseOut={() => setIsLegalOpen(true)}>
-            <Link href="/legacy-policy" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
+            <Link href="/legal-policy" className={`hover:opacity-70 text-sm xl:text-base flex items-center ${pathname.includes('/legal-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}>
               Legal & Policy
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -119,7 +119,10 @@ export function LandingHeader() {
             <Link href="/howweoperate" className={`hover:text-[#13BE77] transition-colors text-lg ${pathname === '/howweoperate' ? 'text-[#13BE77]' : 'text-gray-100'}`} onClick={() => setIsMobileMenuOpen(false)}>How We Operate</Link>
             <div>
               <Link href='/services'
-                onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                onClick={() => {
+                  setIsMobileServicesOpen(!isMobileServicesOpen);
+                  setIsMobileMenuOpen(false);
+                }}
                 className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/services') ? 'text-[#13BE77]' : 'text-gray-100'}`}
               >
                 Services
@@ -129,7 +132,7 @@ export function LandingHeader() {
               </Link>
               {isMobileServicesOpen && (
                 <div className="ml-4 mt-2 space-y-2">
-                  <Link href="/services/strategy-advisory-compliant" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/strategy_advisory' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link href="/services/strategy-advisory-compliant" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/strategy-advisory-compliant' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
                     Strategic Advisory & Compliance
                   </Link>
                   <Link href="/services/operational-systems-infrastructure" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/services/operational-systems-infrastructure' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
@@ -146,7 +149,7 @@ export function LandingHeader() {
             <div>
               <button
                 onClick={() => setIsMobileLegalOpen(!isMobileLegalOpen)}
-                className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/legacy-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}
+                className={`hover:text-[#13BE77] transition-colors text-lg flex items-center justify-between w-full ${pathname.includes('/legal-policy') || pathname.includes('/cookie-policy') || pathname.includes('/privacy-policy') ? 'text-[#13BE77]' : 'text-gray-100'}`}
               >
                 Legal & Policy
                 <svg className={`w-4 h-4 transition-transform ${isMobileLegalOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +158,7 @@ export function LandingHeader() {
               </button>
               {isMobileLegalOpen && (
                 <div className="ml-4 mt-2 space-y-2">
-                  <Link href="/legacy-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/legacy-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link href="/legal-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/legal-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
                     Legal & Policy
                   </Link>
                   <Link href="/cookie-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
