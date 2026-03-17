@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
 import { useTheme } from "../components/ThemeProvider";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,8 +16,7 @@ interface ORRReportSectionProps {
 }
 
 export default function ORRReportSection({ content, onUpdate }: ORRReportSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const orrReportSection = content || homepageContent?.orrReportSection;
+  const orrReportSection = content;
   const { theme } = useTheme();
 
   const titleRef = useRef(null);

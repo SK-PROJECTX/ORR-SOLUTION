@@ -6,8 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import EditableText from "../../components/EditableText";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
-
 gsap.registerPlugin(ScrollTrigger);
 
 interface RichTextData {
@@ -23,9 +21,7 @@ interface MiniClientJourneyProps {
 }
 
 export default function MiniClientJourney({ content, onUpdate }: MiniClientJourneyProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const messageStrip = content || homepageContent?.messageStrip;
-  
+  const messageStrip = content;
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);

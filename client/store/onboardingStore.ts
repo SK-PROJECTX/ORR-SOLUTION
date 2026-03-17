@@ -23,7 +23,7 @@ interface OnboardingData {
   challenges?: string;
   challenges_other?: string;
   meeting_format: string;
-  communication_tone: string;
+  communication_tone: string | string[];
   notification_preference: string;
   ai_specialist_domains?: string;
   ai_specialist_other?: string;

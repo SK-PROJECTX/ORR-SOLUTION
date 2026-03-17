@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, Search, MessageSquare, Clock, CheckCircle, Send } from "lucide-react";
 import { useSupportStore } from "@/store/supportStore";
+import api from "@/lib/axios";
 
 interface TicketMessage {
   id: number;
@@ -30,126 +31,36 @@ interface Ticket {
 export default function SupportHistory() {
   const { tickets, isLoading, fetchTickets } = useSupportStore();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [clientTickets, setClientTickets] = useState<Ticket[]>([]);
-  const [ticketMessages, setTicketMessages] = useState<{[key: number]: TicketMessage[]}>({});
-  const [newMessage, setNewMessage] = useState<{[key: number]: string}>({});
-  const [sendingMessage, setSendingMessage] = useState<number | null>(null);
+  const [ticketMessages, setTicketMessages] = useState<{[key: string]: TicketMessage[]}>({});
+  const [newMessage, setNewMessage] = useState<{[key: string]: string}>({});
+  const [sendingMessage, setSendingMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTickets();
-    fetchClientTickets();
   }, [fetchTickets]);
 
-  const fetchClientTickets = async () => {
+  const fetchTicketMessages = async (ticketId: string) => {
     try {
-      // Use the correct token key from localStorage
-      const token = localStorage.getItem('accessToken');
-      
-      if (!token) {
-        console.error('No authentication token found');
-        return;
-      }
-      
-      console.log('Fetching tickets with token:', token ? 'Token exists' : 'No token');
-      
-      const response = await fetch('https://orr-backend.orr.solutions/tickets/', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      console.log('Response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data);
-        
-        // Handle different response formats
-        let ticketsArray = [];
-        if (Array.isArray(data)) {
-          ticketsArray = data;
-        } else if (data && Array.isArray(data.data)) {
-          ticketsArray = data.data;
-        } else if (data && Array.isArray(data.results)) {
-          ticketsArray = data.results;
-        } else if (data && Array.isArray(data.tickets)) {
-          ticketsArray = data.tickets;
-        } else {
-          console.error('Unexpected response format:', data);
-          return;
-        }
-        
-        setClientTickets(ticketsArray);
-      } else {
-        console.error('Failed to fetch tickets:', response.status, response.statusText);
-        if (response.status === 401) {
-          console.error('Authentication failed - check your login status');
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch client tickets:', error);
-    }
-  };
-
-  const fetchTicketMessages = async (ticketId: number) => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      
-      if (!token) {
-        console.error('No authentication token found for messages');
-        return;
-      }
-      
-      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        const ticketData = await response.json();
-        // Extract messages from ticket data
-        const messages = ticketData.messages || [];
-        setTicketMessages(prev => ({ ...prev, [ticketId]: messages }));
-      } else {
-        console.error('Failed to fetch messages:', response.status, response.statusText);
-      }
+      const response = await api.get(`/tickets/${ticketId}/messages/`);
+      const messages = response.data?.data || response.data || [];
+      setTicketMessages(prev => ({ ...prev, [ticketId]: messages }));
     } catch (error) {
       console.error('Failed to fetch ticket messages:', error);
     }
   };
 
-  const sendMessage = async (ticketId: number) => {
+  const sendMessage = async (ticketId: string) => {
     const message = newMessage[ticketId]?.trim();
     if (!message) return;
 
     try {
-      setSendingMessage(ticketId);
+      setSendingMessage(ticketId as any);
+      const response = await api.post(`/tickets/${ticketId}/send-message/`, { message });
       
-      const token = localStorage.getItem('accessToken');
-      
-      if (!token) {
-        console.error('No authentication token found for sending message');
-        return;
-      }
-      
-      const response = await fetch(`https://orr-backend.orr.solutions/tickets/${ticketId}/send-message/`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message })
-      });
-      
-      if (response.ok) {
+      if (response.status === 201 || response.status === 200) {
         // Refresh messages
         await fetchTicketMessages(ticketId);
         setNewMessage(prev => ({ ...prev, [ticketId]: '' }));
-      } else {
-        console.error('Failed to send message:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -158,7 +69,7 @@ export default function SupportHistory() {
     }
   };
 
-  const handleTicketClick = async (index: number, ticketId: number) => {
+  const handleTicketClick = async (index: number, ticketId: string) => {
     if (openIndex === index) {
       setOpenIndex(null);
     } else {
@@ -169,7 +80,7 @@ export default function SupportHistory() {
     }
   };
 
-  const allTickets = [...(tickets || []), ...clientTickets];
+  const allTickets = tickets || [];
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground p-6 md:p-12">
@@ -206,7 +117,7 @@ export default function SupportHistory() {
                 </div>
               ) : (
                 allTickets.map((ticket, i) => {
-                  const ticketId = (ticket as any).id || ticket.ticket_id;
+                  const ticketId = String((ticket as any).id || ticket.ticket_id);
                   const messages = ticketMessages[ticketId] || [];
                   const hasAutoReply = messages.some(msg => msg.sender.username === 'system_auto_reply');
                   

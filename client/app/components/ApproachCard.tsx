@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,8 +15,7 @@ interface ApproachSectionProps {
 }
 
 export default function ApproachSection({ content, onUpdate }: ApproachSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const approachData = content || homepageContent?.approachSection;
+  const approachData = content;
   
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
