@@ -1029,7 +1029,7 @@ export default function LegacyPolicy() {
               </div>
 
 
-              {/* Section 12:  LIMITATION OF LIABILITY */}
+              {/* Section 12:  DOCUMENT VAULT */}
               <div
                 ref={(el) => {
                   itemsRef.current[8] = el;
@@ -1041,37 +1041,205 @@ export default function LegacyPolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-white mb-4">
-                    LIMITATION OF LIABILITY
+                    DOCUMENT VAULT
                   </h2>
 
                   <h3 className="text-xl font-semibold text-white mb-3">
-                    12.1 No Guarantees
+                    The Document Vault stores:
                   </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">
-                    ORR does not guarantee error-free operation or uninterrupted access.
-                  </p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    12.2 Indirect Damages
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">
-                    ORR is not liable for indirect, incidental, or consequential damages arising from Platform use.
-                  </p>
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>reports</li>
+                    <li>invoices</li>
+                    <li>templates</li>
+                    <li>uploaded documents</li>
+                  </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    12.3 Liability Cap
-                  </h3>
                   <p className="text-gray-300 leading-relaxed mb-2">
-                    Liability is limited to the amount paid by you for the subscription period in which the damage occurred.
+                    ORR uses secure storage and versioning but cannot guarantee restoration of user-deleted files.
                   </p>
 
                 </div>
               </div>
 
 
+              {/* Section 13:  TERMINATION */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  13
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    TERMINATION
+                  </h2>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    ORR may suspend or terminate access if:
+                  </h3>
+
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>Terms are violated</li>
+                    <li>Billing fails repeatedly</li>
+                    <li>Fraudulent activity is detected</li>
+                    <li>Legal obligations require it</li>
+                  </ul>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Users may terminate their subscription at any time through the billing section.
+                  </p>
+
+                </div>
+              </div>
+
+              {/* Section 14:  LIMITATION OF LIABILITY */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  14
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    LIMITATION OF LIABILITY
+                  </h2>
+
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    To the maximum extent permitted by law:
+                  </h3>
+
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>ORR is not liable for indirect damages, loss of profits, or loss of business opportunities.</li>
+                    <li>ORR’s total liability for any claim is limited to the amount paid in the preceding 3 months.</li>
+                    <li>Consultation insights are advisory and not guaranteed outcomes.</li>
+                  </ul>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Nothing excludes liability for fraud or gross negligence.
+                  </p>
+
+                </div>
+              </div>
+
+              {/* Section 15:  DATA PROTECTION */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  15
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    DATA PROTECTION
+                  </h2>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Your use of the Platform is also governed by the ORR Privacy Policy and Cookie Policy.
+                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    By using the Platform, you acknowledge these documents.
+                  </p>
+
+                </div>
+              </div>
+
+              {/* Section 16:  GOVERNING LAW & JURISDICTION */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  16
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    GOVERNING LAW & JURISDICTION
+                  </h2>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    These Terms are governed by the laws of Malta or the jurisdiction of ORR’s corporate registration.
+                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Any disputes shall be resolved in the competent courts of that jurisdiction.
+                  </p>
+
+                </div>
+              </div>
+
+              {/* Section 17:  CHANGES TO THESE TERMS */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  17
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    CHANGES TO THESE TERMS
+                  </h2>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    ORR may revise these Terms to reflect:
+                  </p>
+
+                  <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
+                    <li>legal updates</li>
+                    <li>platform improvements</li>
+                    <li>DS changes</li>
+                    <li>new modules or features</li>
+                  </ul>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Major changes will be communicated through the Platform.
+                  </p>
+
+                </div>
+              </div>
 
 
+              {/* Section 18:  CONTACT */}
+              <div
+                ref={(el) => {
+                  itemsRef.current[8] = el;
+                }}
+                className="flex gap-6 mb-12"
+              >
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                  18
+                </div>
+                <div className="flex-1 min-w-0 policy-content">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    CONTACT
+                  </h2>
 
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    ORR Network
+                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Email: info@orr.solutions
+                  </p>
+
+                  <p className="text-gray-300 leading-relaxed mb-2">
+                    Website: www.orr.solution
+                  </p>
+
+                </div>
+              </div>
 
             </div>
           </div>

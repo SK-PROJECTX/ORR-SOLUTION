@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
+
 
 gsap.registerPlugin(ScrollTrigger);
 

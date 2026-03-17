@@ -5,8 +5,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
-
 gsap.registerPlugin(ScrollTrigger);
 
 interface FiveStagesSectionProps {
@@ -15,9 +13,7 @@ interface FiveStagesSectionProps {
 }
 
 export default function FiveStagesSection({ content, onUpdate }: FiveStagesSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const processSection = content || homepageContent?.processSection;
-  
+  const processSection = content;
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const stagesRef = useRef<(HTMLDivElement | null)[]>([]);

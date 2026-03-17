@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
 import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
-import { useHomepageContent } from "../../hooks/useHomepageContent";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,8 +16,7 @@ interface FAQSectionProps {
 }
 
 export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const faqs = content || homepageContent?.faqs || [];
+  const faqs = content || [];
   
   const [openFAQ, setOpenFAQ] = useState(-1);
   const titleRef = useRef(null);

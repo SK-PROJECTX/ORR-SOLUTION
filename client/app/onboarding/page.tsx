@@ -1,9 +1,105 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/store/onboardingStore";
 import { useToastStore } from "@/store/toastStore";
+
+function SearchableDropdown({
+  options,
+  value,
+  onChange,
+  placeholder
+}: {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const filteredOptions = options.filter(option =>
+    option.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full bg-[#10253F] border border-[#1A3B56] rounded-xl px-6 py-5 text-foreground text-base focus-within:border-[#00D683] flex justify-between items-center cursor-pointer transition-colors hover:border-[#00D683]/50"
+      >
+        <span className={value ? "text-foreground" : "text-gray-400"}>
+          {value || placeholder}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#00D683"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </div>
+
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-2 bg-[#10253F] border border-[#1A3B56] rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="p-3 border-b border-[#1A3B56]">
+            <input
+              type="text"
+              className="w-full bg-[#0B1829] text-foreground text-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#00D683]"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              autoFocus
+            />
+          </div>
+          <div className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#00D683] scrollbar-track-transparent">
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option) => (
+                <div
+                  key={option}
+                  className={`px-6 py-3 cursor-pointer text-sm transition-colors hover:bg-[#1A3B56] ${
+                    value === option ? 'bg-[#1A3B56] text-[#00D683]' : 'text-foreground'
+                  }`}
+                  onClick={() => {
+                    onChange(option);
+                    setIsOpen(false);
+                    setSearchTerm("");
+                  }}
+                >
+                  {option}
+                </div>
+              ))
+            ) : (
+              <div className="px-6 py-4 text-sm text-gray-400 text-center">
+                No results found
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const steps = [1, 2, 3, 4, 5, 6];
 
@@ -13,13 +109,40 @@ const questionnaire = {
     steps: [
       {
         question: "1. Which Jurisdiction will you be operating from?",
-        options: ["Malta", "EU (Non-Malta)", "Non-EU", "Others"],
+        options: [
+          "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+          "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+          "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+          "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
+          "Croatia", "Cuba", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
+          "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
+          "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti",
+          "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan",
+          "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
+          "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+          "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro",
+          "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
+          "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea",
+          "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
+          "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
+          "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+          "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+          "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
+          "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+          "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+        ],
         type: "dropdown",
         placeholder: "Select your jurisdiction"
       },
       {
         question: "2. Preferred interface language:",
-        options: ["English", "Maltese", "Italian", "Others"],
+        options: [
+          "English", "Maltese", "Arabic", "Bengali", "Bulgarian", "Catalan", "Chinese", "Croatian", "Czech", "Danish", "Dutch",
+          "Estonian", "Filipino", "Finnish", "French", "German", "Greek", "Gujarati", "Hebrew", "Hindi", "Hungarian", "Indonesian",
+          "Italian", "Japanese", "Kannada", "Korean", "Latvian", "Lithuanian", "Malay", "Malayalam", "Marathi", "Norwegian",
+          "Persian", "Polish", "Portuguese", "Punjabi", "Romanian", "Russian", "Serbian", "Slovak", "Slovenian", "Spanish",
+          "Swahili", "Swedish", "Tamil", "Telugu", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese"
+        ],
         type: "dropdown",
         placeholder: "Select your language"
       },
@@ -204,8 +327,8 @@ export default function OnboardingPage() {
   if (isChecking) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-        <div className="w-12 h-12 border-4 border-lemon border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-foreground/60 animate-pulse">Checking onboarding status...</p>
+        <div className="w-12 h-12 border-4 border-lemon border-t-transparent rounded-full mb-4"></div>
+        <p className="text-foreground/60">Checking onboarding status...</p>
       </div>
     );
   }
@@ -265,11 +388,19 @@ export default function OnboardingPage() {
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
       communication_tone: (() => {
         const tone = finalAnswers['5-1'];
+        const toneMap: Record<string, string> = {
+          'Concise and direct': 'concise',
+          'Detailed and explanatory': 'detailed',
+          'Technical': 'technical',
+          'Non-Technical': 'non_technical',
+          'No preference': 'no_preference'
+        };
+
         if (Array.isArray(tone)) {
-          if (tone.includes('No preference')) return 'concise';
-          return tone.map((t: string) => t.toLowerCase().split(' ')[0]).join(', ');
+          if (tone.includes('No preference')) return ['no_preference'];
+          return tone.map((t: string) => toneMap[t] || t.toLowerCase().split(' ')[0]);
         }
-        return tone === 'No preference' ? 'concise' : tone?.toLowerCase().split(' ')[0] || 'concise';
+        return tone === 'No preference' ? ['no_preference'] : [toneMap[tone as string] || tone?.toLowerCase().split(' ')[0] || 'concise'];
       })(),
       notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
       ai_specialist_domains: '',
@@ -301,7 +432,7 @@ export default function OnboardingPage() {
                 href={(currentStepData as any).helpLink.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[#00D683] hover:text-[#00D683]/80 text-sm font-medium mb-12 underline underline-offset-4 transition-colors"
+                className="inline-flex items-center gap-1.5 text-[#00D683] hover:text-[#00D683]/80 text-sm font-medium mb-12 underline underline-offset-4"
               >
                 {(currentStepData as any).helpLink.text} ↗
               </a>
@@ -319,24 +450,15 @@ export default function OnboardingPage() {
               </div>
             ) : currentStepData.type === "dropdown" ? (
               <div className="mb-16 max-w-md">
-                <select
+                <SearchableDropdown
+                  options={currentStepData.options || []}
                   value={getCurrentAnswer() || ""}
-                  onChange={(e) => {
+                  onChange={(val) => {
                     const key = `${currentSection}-${currentStep}`;
-                    setAnswers({ ...answers, [key]: e.target.value });
+                    setAnswers({ ...answers, [key]: val });
                   }}
-                  className="w-full bg-[#10253F] border border-[#1A3B56] rounded-xl px-6 py-5 text-foreground text-base focus:border-[#00D683] focus:outline-none appearance-none cursor-pointer"
-                  style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300D683' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1.25rem center' }}
-                >
-                  <option value="" disabled className="bg-[#10253F] text-gray-400">
-                    {(currentStepData as any).placeholder || "Select an option"}
-                  </option>
-                  {currentStepData.options?.map((option) => (
-                    <option key={option} value={option} className="bg-[#10253F] text-foreground">
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                  placeholder={(currentStepData as any).placeholder || "Select an option"}
+                />
               </div>
             ) : (
               <div className={`grid gap-6 mb-16 ${currentStepData.options && currentStepData.options.length > 6
@@ -357,7 +479,7 @@ export default function OnboardingPage() {
                       onClick={() => handleOptionSelect(option)}
                       className={`
                         relative cursor-pointer border rounded-xl px-6 py-8 text-center text-base 
-                        transition-all flex items-center justify-center w-full
+                        flex items-center justify-center w-full
                         ${isActive
                           ? "border-[#00D683] bg-[#10253F]"
                           : "border-[#1A3B56] bg-transparent"
@@ -378,9 +500,9 @@ export default function OnboardingPage() {
               </div>
             )}
 
-            <div className="border-b border-gray-600 my-16"></div>
+            <div className="my-16"></div>
 
-            <div className="flex justify-between">
+            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 sm:gap-0">
               {currentSection > 1 || currentStep > 0 ? (
                 <button
                   onClick={() => {
@@ -391,16 +513,16 @@ export default function OnboardingPage() {
                       setCurrentStep(questionnaire[(currentSection - 1) as keyof typeof questionnaire].steps.length - 1);
                     }
                   }}
-                  className="bg-gray-600 hover:bg-gray-500 text-white px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all"
+                  className="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white px-6 py-4 sm:px-8 sm:py-4 md:px-12 md:py-5 rounded-lg font-semibold text-base sm:text-lg tracking-wide"
                 >
                   ← BACK
                 </button>
-              ) : <div></div>}
+              ) : <div className="hidden sm:block"></div>}
 
               <button
                 onClick={currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? handleComplete : handleNext}
                 disabled={isLoading}
-                className="bg-lemon hover:bg-lemon/90 text-black px-12 py-5 rounded-lg font-semibold text-lg tracking-wide transition-all disabled:opacity-50"
+                className="w-full sm:w-auto bg-lemon hover:bg-lemon/90 text-black px-6 py-4 sm:px-8 sm:py-4 md:px-12 md:py-5 rounded-lg font-semibold text-base sm:text-lg tracking-wide disabled:opacity-50"
               >
                 {isLoading ? "SUBMITTING..." : currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? "COMPLETE" : "NEXT →"}
               </button>
