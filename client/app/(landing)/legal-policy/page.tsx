@@ -11,129 +11,179 @@ export default function LegacyPolicy() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef(null);
   const cardRef = useRef(null);
+  const containerRef = useRef(null);
+  const progressRef = useRef(null);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const bgImageRef = useRef(null);
 
   useEffect(() => {
-    const mm = gsap.matchMedia();
+    const mm = gsap.context(() => {
+      // 1. Startup Timeline (Immediate Load)
+      const startupTl = gsap.timeline();
 
-    mm.add(
-      {
-        isMobile: "(max-width: 1023px)",
-        isDesktop: "(min-width: 1024px)",
-      },
-      (context) => {
-        const { isMobile } = context.conditions as { isMobile: boolean };
+      // Scroll Progress Animation
+      gsap.to(progressRef.current, {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.1,
+        },
+      });
 
-        // Title Animation
-        const title = titleRef.current;
-        if (title) {
-          const text = title.textContent;
-          title.innerHTML = text!
-            .split("")
-            .map(
-              (char) =>
-                `<span style="display:inline-block;opacity:0">${char === " " ? "&nbsp;" : char}</span>`,
-            )
-            .join("");
+      // Title Animation (Cookie Policy Style)
+      const title = titleRef.current;
+      if (title) {
+        const text = title.textContent;
+        title.innerHTML = text!
+          .split("")
+          .map(
+            (char) =>
+              `<span style="display:inline-block;opacity:0">${char === " " ? "&nbsp;" : char}</span>`,
+          )
+          .join("");
 
-          gsap.to(title.children, {
-            opacity: 1,
-            y: 0,
-            duration: 0.05,
-            stagger: 0.03,
-            ease: "power2.out",
-          });
-        }
+        startupTl.to(title.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.05,
+          stagger: 0.03,
+          ease: "power2.out",
+        });
+      }
 
-        // Description Animation
-        gsap.fromTo(
-          descRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: "power3.out" },
-        );
+      // Description Animation
+      startupTl.fromTo(
+        descRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        "-=0.4",
+      );
 
-        // Card Animation
-        gsap.fromTo(
+      // Card 3D Entrance (Immediate)
+      if (cardRef.current) {
+        startupTl.fromTo(
           cardRef.current,
-          { opacity: 0, scale: 0.9, rotateX: 15 },
+          {
+            opacity: 0,
+            scale: 0.95,
+            rotateX: 15,
+            transformPerspective: 1000,
+            y: 50,
+          },
           {
             opacity: 1,
             scale: 1,
             rotateX: 0,
-            duration: 1.2,
+            y: 0,
+            duration: 1,
             ease: "power4.out",
-            scrollTrigger: {
-              trigger: cardRef.current,
-              start: isMobile ? "top 95%" : "top 80%",
-              toggleActions: "play none none reverse",
-            },
           },
+          "-=0.6",
         );
 
-        // Section Items Animation
-        itemsRef.current.forEach((item, index) => {
-          if (item) {
-            const number = item.querySelector(".policy-number");
-            const content = item.querySelector(".policy-content");
+        // Parallax background image
+        gsap.to(bgImageRef.current, {
+          yPercent: 15,
+          rotate: 25,
+          ease: "none",
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
 
-            // For the first item on mobile, trigger even earlier
-            const startPos =
-              isMobile && index === 0
-                ? "top 98%"
-                : isMobile
-                  ? "top 95%"
-                  : "top 85%";
+      // Section Items Animation
+      itemsRef.current.forEach((item, index) => {
+        if (item) {
+          const number = item.querySelector(".policy-number");
+          const content = item.querySelector(".policy-content");
 
-            gsap.fromTo(
+          if (index < 2) {
+            // First two items animate with startup timeline for immediate visibility
+            startupTl.fromTo(
+              [number, content],
+              { opacity: 0, y: 20 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power3.out",
+              },
+              "-=0.5",
+            );
+          } else {
+            // Subsequent items use ScrollTrigger with lenient bottom threshold
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: item,
+                start: "top 98%",
+                toggleActions: "play none none reverse",
+              },
+            });
+
+            tl.fromTo(
               number,
               { opacity: 0, scale: 0, rotate: -180 },
               {
                 opacity: 1,
                 scale: 1,
                 rotate: 0,
-                duration: 0.8,
+                duration: 0.6,
                 ease: "back.out(1.7)",
-                scrollTrigger: {
-                  trigger: item,
-                  start: startPos,
-                  toggleActions: "play none none reverse",
-                },
               },
-            );
-
-            gsap.fromTo(
+            ).fromTo(
               content,
               { opacity: 0, y: 20 },
               {
                 opacity: 1,
                 y: 0,
-                duration: 0.8,
-                delay: 0.3,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: item,
-                  start: startPos,
-                  toggleActions: "play none none reverse",
-                },
+                duration: 0.6,
+                ease: "power3.out",
               },
+              "-=0.4",
             );
           }
-        });
-      },
-    );
+        }
+      });
+    });
 
-    return () => mm.revert();
+    // Multiple refreshes to handle font loading and layout shifts
+    const timers = [
+      setTimeout(() => ScrollTrigger.refresh(), 200),
+      setTimeout(() => ScrollTrigger.refresh(), 1000),
+    ];
+
+    return () => {
+      mm.revert();
+      timers.forEach(clearTimeout);
+    };
   }, []);
+
   return (
-    <div className="min-h-screen text-foreground star">
+    <div ref={containerRef} className="min-h-screen text-foreground star selection:bg-primary/30">
+      {/* Scroll Progress Indicator */}
+      <div className="fixed top-0 left-0 w-full h-[2px] z-50">
+        <div 
+          ref={progressRef}
+          className="h-full bg-gradient-to-r from-primary via-blue-500 to-primary origin-left scale-x-0"
+        />
+      </div>
+
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
+          <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 text-white tracking-tight">
             Terms of Service
           </h1>
           <p
             ref={descRef}
-            className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
             These Terms of Service govern your access to and use of the ORR
             Network Platform, including all services, consultations, and
@@ -146,29 +196,30 @@ export default function LegacyPolicy() {
         <div className="max-w-4xl mx-auto">
           <div
             ref={cardRef}
-            className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl"
+            className="bg-card/50 backdrop-blur-xl border border-white/10 p-4 relative overflow-hidden rounded-3xl shadow-2xl"
           >
             <Image
+              ref={bgImageRef}
               src="/bgSvg.svg"
               alt="background"
               width={1500}
               height={1500}
-              className="absolute top-1/2 left-1/2 scale-200 -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-50"
+              className="absolute top-1/2 left-1/2 scale-[2.5] -translate-x-1/2 -translate-y-1/2 rotate-12 opacity-20 pointer-events-none"
             />
 
-            <div className="bg-card rounded-2xl p-4 relative">
+            <div className="bg-card/30 rounded-2xl p-6 md:p-10 relative">
               {/* Section 1: Introduction */}
               <div
                 ref={(el) => {
                   itemsRef.current[0] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   01
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     INTRODUCTION
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
@@ -198,13 +249,13 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[1] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   02
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     DEFINITIONS
                   </h2>
                   <ul className="space-y-2 text-gray-300 leading-relaxed">
@@ -278,13 +329,13 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[2] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   03
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     ELIGIBILITY
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
@@ -316,14 +367,14 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[3] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   04
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    ACCOUNT CREATION AND SECURITY
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
+                    ACCOUNT SECURITY
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
                     You agree to:
@@ -349,14 +400,14 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[4] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   05
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    DESCRIPTION OF SERVICES AND ACCESS LEVELS
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
+                    SERVICES & ACCESS
                   </h2>
 
                   <h3 className="text-xl font-semibold text-white mb-3">
@@ -704,13 +755,13 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[5] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   06
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     PAYMENT TERMS
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
@@ -805,13 +856,13 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[6] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   07
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     USER RESPONSIBILITIES
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
@@ -847,13 +898,13 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[7] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   08
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     ORR RESPONSIBILITIES
                   </h2>
                   <p className="text-gray-300 leading-relaxed mb-3">
@@ -887,14 +938,14 @@ export default function LegacyPolicy() {
                 ref={(el) => {
                   itemsRef.current[8] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   09
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    WORKSPACE & DS MODULE CONDITIONS
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
+                    WORKSPACE & DS CONDITIONS
                   </h2>
 
                   <h3 className="text-xl font-semibold text-white mb-3">
@@ -935,15 +986,15 @@ export default function LegacyPolicy() {
               {/* Section 9:  CONSULTATION TERMS */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[9] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   10
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     CONSULTATION TERMS
                   </h2>
 
@@ -982,15 +1033,15 @@ export default function LegacyPolicy() {
               {/* Section 11:  INTELLECTUAL PROPERTY */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[10] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   11
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     INTELLECTUAL PROPERTY
                   </h2>
 
@@ -1032,15 +1083,15 @@ export default function LegacyPolicy() {
               {/* Section 12:  DOCUMENT VAULT */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[11] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   12
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     DOCUMENT VAULT
                   </h2>
 
@@ -1066,15 +1117,15 @@ export default function LegacyPolicy() {
               {/* Section 13:  TERMINATION */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[12] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   13
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     TERMINATION
                   </h2>
 
@@ -1099,15 +1150,15 @@ export default function LegacyPolicy() {
               {/* Section 14:  LIMITATION OF LIABILITY */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[13] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   14
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     LIMITATION OF LIABILITY
                   </h2>
 
@@ -1131,15 +1182,15 @@ export default function LegacyPolicy() {
               {/* Section 15:  DATA PROTECTION */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[14] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   15
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     DATA PROTECTION
                   </h2>
 
@@ -1156,16 +1207,16 @@ export default function LegacyPolicy() {
               {/* Section 16:  GOVERNING LAW & JURISDICTION */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[15] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   16
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    GOVERNING LAW & JURISDICTION
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
+                    GOVERNING LAW
                   </h2>
 
                   <p className="text-gray-300 leading-relaxed mb-2">
@@ -1181,16 +1232,16 @@ export default function LegacyPolicy() {
               {/* Section 17:  CHANGES TO THESE TERMS */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[16] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   17
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    CHANGES TO THESE TERMS
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
+                    CHANGES TO TERMS
                   </h2>
 
                   <p className="text-gray-300 leading-relaxed mb-2">
@@ -1215,15 +1266,15 @@ export default function LegacyPolicy() {
               {/* Section 18:  CONTACT */}
               <div
                 ref={(el) => {
-                  itemsRef.current[8] = el;
+                  itemsRef.current[17] = el;
                 }}
-                className="flex gap-6 mb-12"
+                className="flex flex-col md:flex-row gap-8 mb-20 group"
               >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
+                <div className="policy-number text-7xl md:text-8xl font-black text-primary/20 group-hover:text-primary transition-colors duration-500 shrink-0 leading-none">
                   18
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">
                     CONTACT
                   </h2>
 

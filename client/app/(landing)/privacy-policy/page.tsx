@@ -12,6 +12,9 @@ export default function PrivacyPolicy() {
   const descRef = useRef(null);
   const cardRef = useRef(null);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef(null);
+  const progressRef = useRef(null);
+  const bgImageRef = useRef(null);
 
   useEffect(() => {
     const mm = gsap.matchMedia();
@@ -24,7 +27,22 @@ export default function PrivacyPolicy() {
       (context) => {
         const { isMobile } = context.conditions as { isMobile: boolean };
 
-        // Title Animation
+        // 1. Startup Timeline (Immediate Load)
+        const startupTl = gsap.timeline();
+
+        // Scroll Progress Animation
+        gsap.to(progressRef.current, {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.1,
+          },
+        });
+
+        // Title Animation (Character typewriter)
         const title = titleRef.current;
         if (title) {
           const text = title.textContent;
@@ -38,7 +56,7 @@ export default function PrivacyPolicy() {
             )
             .join("");
 
-          gsap.to(title.children, {
+          startupTl.to(title.children, {
             opacity: 1,
             y: 0,
             duration: 0.05,
@@ -48,29 +66,41 @@ export default function PrivacyPolicy() {
         }
 
         // Description Animation
-        gsap.fromTo(
+        startupTl.fromTo(
           descRef.current,
           { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: "power3.out" },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.4",
         );
 
-        // Card Animation
-        gsap.fromTo(
-          cardRef.current,
-          { opacity: 0, scale: 0.9, rotateX: 15 },
-          {
-            opacity: 1,
-            scale: 1,
-            rotateX: 0,
-            duration: 1.2,
-            ease: "power4.out",
+        // Card Animation (Immediate)
+        if (cardRef.current) {
+          startupTl.fromTo(
+            cardRef.current,
+            { opacity: 0, scale: 0.95, rotateX: 15, transformPerspective: 1000 },
+            {
+              opacity: 1,
+              scale: 1,
+              rotateX: 0,
+              duration: 1,
+              ease: "power4.out",
+            },
+            "-=0.6",
+          );
+
+          // Parallax background image
+          gsap.to(bgImageRef.current, {
+            yPercent: 15,
+            rotate: 25,
+            ease: "none",
             scrollTrigger: {
               trigger: cardRef.current,
-              start: isMobile ? "top 95%" : "top 80%",
-              toggleActions: "play none none reverse",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
             },
-          },
-        );
+          });
+        }
 
         // Section Items Animation
         itemsRef.current.forEach((item, index) => {
@@ -78,65 +108,87 @@ export default function PrivacyPolicy() {
             const number = item.querySelector(".policy-number");
             const content = item.querySelector(".policy-content");
 
-            // For the first item on mobile, trigger even earlier
-            const startPos =
-              isMobile && index === 0
-                ? "top 98%"
-                : isMobile
-                  ? "top 95%"
-                  : "top 85%";
-
-            gsap.fromTo(
-              number,
-              { opacity: 0, scale: 0, rotate: -180 },
-              {
-                opacity: 1,
-                scale: 1,
-                rotate: 0,
-                duration: 0.8,
-                ease: "back.out(1.7)",
+            if (index < 2) {
+              // First two items animate with startup timeline
+              startupTl.fromTo(
+                [number, content],
+                { opacity: 0, y: 20 },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  stagger: 0.1,
+                  ease: "power3.out",
+                },
+                "-=0.5",
+              );
+            } else {
+              // Subsequent items use ScrollTrigger with lenient threshold
+              const tl = gsap.timeline({
                 scrollTrigger: {
                   trigger: item,
-                  start: startPos,
+                  start: "top 98%",
                   toggleActions: "play none none reverse",
                 },
-              },
-            );
+              });
 
-            gsap.fromTo(
-              content,
-              { opacity: 0, y: 20 },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                delay: 0.3,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: item,
-                  start: startPos,
-                  toggleActions: "play none none reverse",
+              tl.fromTo(
+                number,
+                { opacity: 0, scale: 0, rotate: -180 },
+                {
+                  opacity: 1,
+                  scale: 1,
+                  rotate: 0,
+                  duration: 0.6,
+                  ease: "back.out(1.7)",
                 },
-              },
-            );
+              ).fromTo(
+                content,
+                { opacity: 0, y: 20 },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  ease: "power3.out",
+                },
+                "-=0.4",
+              );
+            }
           }
         });
       },
     );
 
-    return () => mm.revert();
+    // Multiple refreshes for layout stability
+    const timers = [
+      setTimeout(() => ScrollTrigger.refresh(), 200),
+      setTimeout(() => ScrollTrigger.refresh(), 1000),
+    ];
+
+    return () => {
+      mm.revert();
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   return (
-    <div className="min-h-screen text-foreground star">
+    <div ref={containerRef} className="min-h-screen text-foreground star selection:bg-primary/30">
+      {/* Scroll Progress Indicator */}
+      <div className="fixed top-0 left-0 w-full h-[2px] z-50">
+        <div 
+          ref={progressRef}
+          className="h-full bg-gradient-to-r from-primary via-blue-500 to-primary origin-left scale-x-0"
+        />
+      </div>
+
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 ref={titleRef} className="text-5xl font-bold mb-8 text-white">
+          <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 text-white tracking-tight">
             Privacy Policy
           </h1>
           <p
             ref={descRef}
-            className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
             This Privacy Policy explains how we collect, use, store, and protect
             your personal data when you access the ORR Client Portal, Admin
@@ -149,17 +201,18 @@ export default function PrivacyPolicy() {
         <div className="max-w-4xl mx-auto">
           <div
             ref={cardRef}
-            className="bg-card p-4 backdrop-blur-lg relative overflow-hidden rounded-2xl"
+            className="bg-card/50 backdrop-blur-xl border border-white/10 p-4 relative overflow-hidden rounded-3xl shadow-2xl"
           >
             <Image
+              ref={bgImageRef}
               src="/bgSvg.svg"
               alt="background"
               width={1500}
               height={1500}
-              className="absolute top-1/2 left-1/2 scale-200 -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-50"
+              className="absolute top-1/2 left-1/2 scale-[3] -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-40"
             />
 
-            <div className="bg-card rounded-2xl p-4 relative">
+            <div className="bg-card/80 rounded-[2rem] p-8 md:p-12 relative border border-white/5">
               {/* Section 1: Introduction */}
               <div
                 ref={(el) => {
