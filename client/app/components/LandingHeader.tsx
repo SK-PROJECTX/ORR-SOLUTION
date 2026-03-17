@@ -66,7 +66,7 @@ export function LandingHeader() {
             {isLegalOpen && (
               <div className="absolute top-full left-0 mt-0 w-64 bg-black/90 backdrop-blur-xl rounded-lg shadow-lg border border-white/10 py-2">
                 <Link href="/cookie-policy" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
-                  Cookie Policy
+                  Cookies Policy
                 </Link>
                 <Link href="/privacy-policy" className={`block px-4 py-3 hover:bg-white/10 text-sm ${pathname === '/privacy-policy' ? 'text-[#13BE77]' : 'text-gray-100'}`}>
                   Privacy Policy
@@ -162,7 +162,7 @@ export function LandingHeader() {
                     Legal & Policy
                   </Link>
                   <Link href="/cookie-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/cookie-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
-                    Cookie Policy
+                    Cookies Policy
                   </Link>
                   <Link href="/privacy-policy" className={`hover:text-[#13BE77] transition-colors text-base block ${pathname === '/privacy-policy' ? 'text-[#13BE77]' : 'text-gray-300'}`} onClick={() => setIsMobileMenuOpen(false)}>
                     Privacy Policy
