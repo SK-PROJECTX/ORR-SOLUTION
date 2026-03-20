@@ -13,44 +13,7 @@ interface Report {
   description: string;
 }
 
-const mockReports: Report[] = [
-  {
-    id: 1,
-    title: "Q4 Business Analysis Report",
-    type: "analysis",
-    date: "2024-01-15",
-    status: "completed",
-    size: "2.4 MB",
-    description: "Comprehensive analysis of Q4 performance and strategic recommendations"
-  },
-  {
-    id: 2,
-    title: "Digital Transformation Summary",
-    type: "summary",
-    date: "2024-01-10",
-    status: "completed",
-    size: "1.8 MB",
-    description: "Executive summary of digital transformation initiatives and outcomes"
-  },
-  {
-    id: 3,
-    title: "Financial Performance Review",
-    type: "financial",
-    date: "2024-01-08",
-    status: "pending",
-    size: "3.2 MB",
-    description: "Detailed financial analysis and budget recommendations"
-  },
-  {
-    id: 4,
-    title: "Operational Efficiency Study",
-    type: "operational",
-    date: "2024-01-05",
-    status: "draft",
-    size: "1.5 MB",
-    description: "Assessment of current operations and improvement opportunities"
-  }
-];
+const mockReports: Report[] = [];
 
 export default function ReportsPage() {
   const [reports] = useState<Report[]>(mockReports);
@@ -88,10 +51,10 @@ export default function ReportsPage() {
 
   const filteredReports = reports.filter(report => {
     const matchesSearch = report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         report.description.toLowerCase().includes(searchTerm.toLowerCase());
+      report.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'all' || report.type === filterType;
     const matchesStatus = filterStatus === 'all' || report.status === filterStatus;
-    
+
     return matchesSearch && matchesType && matchesStatus;
   });
 
@@ -104,7 +67,7 @@ export default function ReportsPage() {
             <h1 className="text-3xl font-bold text-foreground mb-2">Reports & Summaries</h1>
             <p className="text-foreground opacity-60">Access and manage your business reports and analysis documents</p>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
@@ -122,7 +85,7 @@ export default function ReportsPage() {
         {/* Filters */}
         <div className="flex items-center gap-4 mb-6 p-4 bg-card rounded-lg border border-secondary">
           <Filter className="w-5 h-5 text-primary" />
-          
+
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
@@ -203,7 +166,7 @@ export default function ReportsPage() {
             <FileText className="w-16 h-16 text-foreground opacity-30 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">No reports found</h3>
             <p className="text-foreground opacity-60">
-              {searchTerm || filterType !== 'all' || filterStatus !== 'all' 
+              {searchTerm || filterType !== 'all' || filterStatus !== 'all'
                 ? 'Try adjusting your filters or search terms'
                 : 'Your reports and summaries will appear here once generated'
               }

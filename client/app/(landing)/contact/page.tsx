@@ -52,7 +52,7 @@ export default function Contact() {
       try {
         console.log("🔄 Fetching Contact data from backend...");
         const response = await axios.get(
-          "https://orr-backend.orr.solutions/admin-portal/v1/cms/contact-content/",
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/contact-content/`,
         );
         console.log("✅ Contact API Response:", response.data);
         if (response.data.success) {
@@ -233,11 +233,7 @@ export default function Contact() {
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-base sm:text-lg">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: data.phone_number?.content || "demo@+012 3456 789.com",
-                  }}
-                ></span>
+                <span>{data.phone_number || "+1 012 3456 789"}</span>
               </p>
             </div>
 
@@ -252,11 +248,7 @@ export default function Contact() {
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-base sm:text-lg">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: data.email_address?.content || "demo@gmail.com",
-                  }}
-                />
+                <span>{data.email_address || "info@orr.solutions"}</span>
               </p>
             </div>
 
@@ -432,7 +424,7 @@ export default function Contact() {
                 >
                   <span
                     dangerouslySetInnerHTML={{
-                      __html: data.message_label || "Message",
+                      __html: data.message_label?.content || "Message",
                     }}
                   />
                 </label>

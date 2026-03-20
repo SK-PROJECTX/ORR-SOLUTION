@@ -101,7 +101,7 @@ function page() {
               <div className="flex flex-col gap-4 max-h-[300px] lg:max-h-[600px] overflow-y-auto">
                 <div>
                   <h3 className="text-sm font-semibold text-white">Follow ups</h3>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-black mt-1">
                     Click to follow up on events
                   </p>
                 </div>
@@ -122,7 +122,7 @@ function page() {
                           <p className="text-xs text-gray-400">
                             {event.meetingType}
                           </p>
-                          <div className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                          <div className="text-xs text-black mt-1 flex items-center gap-2">
                             <CalendarIcon size={13} className="text-primary" />
                             <span className="hidden sm:inline">{format(event.start, "MMM d, yyyy HH:mm")}</span>
                             <span className="sm:hidden">{format(event.start, "MMM d")}</span>
@@ -138,7 +138,7 @@ function page() {
                               ? "bg-orange-500/30 text-orange-500"
                               : event.status === "Declined"
                               ? "bg-red-500/30 text-red-500"
-                              : "bg-gray-500/30 text-gray-500"
+                              : "bg-gray-500/30 text-black"
                           }`}
                         >
                           {event.status}

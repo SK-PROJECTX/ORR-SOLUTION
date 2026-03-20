@@ -86,7 +86,7 @@ export default function PastConsultationsPage() {
       if (sortBy) params.append('ordering', sortBy);
       
       const queryString = params.toString();
-      const url = `https://orr-backend.orr.solutions/past-consultations/${queryString ? `?${queryString}` : ''}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/past-consultations/${queryString ? `?${queryString}` : ''}`;
       
       const response = await fetch(url, {
         headers: {

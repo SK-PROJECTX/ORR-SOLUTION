@@ -94,7 +94,7 @@ function page() {
                       <div className="bg-white/10 rounded-lg p-3 max-w-md">
                         <p className="text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis leo orci. Sed faucibus sed et bibendum consectetur. Feugiat mi eu. Phasellus libero consectetur libero mollis pharetra.</p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">10:15 am</p>
+                      <p className="text-xs text-black mt-1">10:15 am</p>
                     </div>
                   </div>
 
@@ -123,7 +123,7 @@ function page() {
                       </div>
                       <div className="w-12 h-1 bg-gray-400 rounded-full" />
                     </div>
-                    <p className="text-xs text-gray-500">06:09 pm</p>
+                    <p className="text-xs text-black">06:09 pm</p>
                   </div>
 
                   {/* Voice Message 2 */}
@@ -141,7 +141,7 @@ function page() {
                       </div>
                       <div className="w-12 h-1 bg-gray-400 rounded-full" />
                     </div>
-                    <p className="text-xs text-gray-500">06:09 pm</p>
+                    <p className="text-xs text-black">06:09 pm</p>
                   </div>
 
                   {/* Message 3 - Right (Admin) */}
@@ -161,7 +161,7 @@ function page() {
                       <div className="bg-white/10 rounded-lg p-3 max-w-md">
                         <p className="text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis leo orci. Sed faucibus sed et bibendum consectetur. Feugiat mi eu. Phasellus libero consectetur libero mollis pharetra.</p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">10:15 pm</p>
+                      <p className="text-xs text-black mt-1">10:15 pm</p>
                     </div>
                   </div>
                 </div>

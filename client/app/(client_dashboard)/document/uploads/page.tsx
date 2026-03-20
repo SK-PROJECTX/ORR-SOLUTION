@@ -60,58 +60,68 @@ export default function DocumentVault() {
 
       {/* Main container */}
       <div className="bg-card rounded-xl p-10 w-full min-h-[600px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Column 1 */}
-          <div>
-            <h2 className="text-sm mb-3 opacity-70">Project</h2>
-            <div className="space-y-6">
-              {grouped.Project.map((item) => (
-                <DocCard 
-                  key={item.id} 
-                  data={item} 
-                  isFavorite={localFavorites.has(item.id)}
-                  onToggleFavorite={() => handleToggleFavorite(item.id)}
-                  onFolderClick={() => handleFolderClick(item.id)}
-                  onDownloadClick={() => handleDownloadClick(item.id)}
-                />
-              ))}
-            </div>
+        {documents.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[500px] text-foreground/50">
+            <FolderOpen size={48} className="mb-4 opacity-50" />
+            <h2 className="text-xl font-medium">No documents securely vaulted yet</h2>
+            <p className="mt-2 text-sm text-center max-w-sm">
+              Your generated reports and strategic documents will appear here once they are ready.
+            </p>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {/* Column 1 */}
+            <div>
+              <h2 className="text-sm mb-3 opacity-70">Project</h2>
+              <div className="space-y-6">
+                {grouped.Project.map((item) => (
+                  <DocCard
+                    key={item.id}
+                    data={item}
+                    isFavorite={localFavorites.has(item.id)}
+                    onToggleFavorite={() => handleToggleFavorite(item.id)}
+                    onFolderClick={() => handleFolderClick(item.id)}
+                    onDownloadClick={() => handleDownloadClick(item.id)}
+                  />
+                ))}
+              </div>
+            </div>
 
-          {/* Column 2 */}
-          <div>
-            <h2 className="text-sm mb-3 opacity-70">Engagement</h2>
-            <div className="space-y-6">
-              {grouped.Engagement.map((item) => (
-                <DocCard 
-                  key={item.id} 
-                  data={item} 
-                  isFavorite={localFavorites.has(item.id)}
-                  onToggleFavorite={() => handleToggleFavorite(item.id)}
-                  onFolderClick={() => handleFolderClick(item.id)}
-                  onDownloadClick={() => handleDownloadClick(item.id)}
-                />
-              ))}
+            {/* Column 2 */}
+            <div>
+              <h2 className="text-sm mb-3 opacity-70">Engagement</h2>
+              <div className="space-y-6">
+                {grouped.Engagement.map((item) => (
+                  <DocCard
+                    key={item.id}
+                    data={item}
+                    isFavorite={localFavorites.has(item.id)}
+                    onToggleFavorite={() => handleToggleFavorite(item.id)}
+                    onFolderClick={() => handleFolderClick(item.id)}
+                    onDownloadClick={() => handleDownloadClick(item.id)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Column 3 */}
-          <div>
-            <h2 className="text-sm mb-3 opacity-70">Stage</h2>
-            <div className="space-y-6">
-              {grouped.Stage.map((item) => (
-                <DocCard 
-                  key={item.id} 
-                  data={item} 
-                  isFavorite={localFavorites.has(item.id)}
-                  onToggleFavorite={() => handleToggleFavorite(item.id)}
-                  onFolderClick={() => handleFolderClick(item.id)}
-                  onDownloadClick={() => handleDownloadClick(item.id)}
-                />
-              ))}
+            {/* Column 3 */}
+            <div>
+              <h2 className="text-sm mb-3 opacity-70">Stage</h2>
+              <div className="space-y-6">
+                {grouped.Stage.map((item) => (
+                  <DocCard
+                    key={item.id}
+                    data={item}
+                    isFavorite={localFavorites.has(item.id)}
+                    onToggleFavorite={() => handleToggleFavorite(item.id)}
+                    onFolderClick={() => handleFolderClick(item.id)}
+                    onDownloadClick={() => handleDownloadClick(item.id)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -129,13 +139,13 @@ function DocCard({ data, isFavorite, onToggleFavorite, onFolderClick, onDownload
   return (
     <div className="bg-lemon text-background p-5 rounded-lg relative shadow-md">
       {/* Star icon */}
-      <button 
+      <button
         onClick={onToggleFavorite}
         className="absolute right-4 top-4 hover:scale-110 transition-transform"
       >
-        <Star 
-          size={18} 
-          className={`${isFavorite ? 'text-background' : 'text-background/70'}`} 
+        <Star
+          size={18}
+          className={`${isFavorite ? 'text-background' : 'text-background/70'}`}
           fill={isFavorite ? 'currentColor' : 'none'}
         />
       </button>
@@ -148,26 +158,26 @@ function DocCard({ data, isFavorite, onToggleFavorite, onFolderClick, onDownload
       </p>
 
       <p className="text-[10px] opacity-80 leading-tight mb-6">{data.description}</p>
-      <div className="border-t border-foreground mb-5"/>
+      <div className="border-t border-foreground mb-5" />
 
       {/* Footer icons */}
       <div className="flex justify-between items-center">
-        
-          <button 
-            onClick={onFolderClick}
-            className="hover:scale-110 transition-transform p-1"
-            title="Open folder"
-          >
-            <FolderOpen size={18} className="text-background" />
-          </button>
-          <button 
-            onClick={onDownloadClick}
-            className="hover:scale-110 transition-transform p-1"
-            title="Download"
-          >
-            <Download size={18} className="text-background" />
-          </button>
-        </div>
+
+        <button
+          onClick={onFolderClick}
+          className="hover:scale-110 transition-transform p-1"
+          title="Open folder"
+        >
+          <FolderOpen size={18} className="text-background" />
+        </button>
+        <button
+          onClick={onDownloadClick}
+          className="hover:scale-110 transition-transform p-1"
+          title="Download"
+        >
+          <Download size={18} className="text-background" />
+        </button>
+      </div>
     </div>
   );
 }

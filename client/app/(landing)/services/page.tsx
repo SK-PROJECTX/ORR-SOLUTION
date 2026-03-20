@@ -104,8 +104,13 @@ export default function Services() {
   
   const { data, loading } = useCachedData<ServicesData>(
     'orr_services_content',
+<<<<<<< Updated upstream
     'https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/',
     processData
+=======
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/`,
+    (data) => data
+>>>>>>> Stashed changes
   );
 
   useEffect(() => {

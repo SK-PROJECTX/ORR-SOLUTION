@@ -87,7 +87,7 @@ export default function ResourcesBlogs() {
   
   const { data, loading } = useCachedData<ResourcesData>(
     'orr_resources_content',
-    'https://orr-backend.orr.solutions/admin-portal/v1/cms/resources-content/',
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/resources-content/`,
     (data) => data
   );
 

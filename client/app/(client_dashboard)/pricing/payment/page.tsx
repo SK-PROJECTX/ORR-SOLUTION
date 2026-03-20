@@ -77,7 +77,7 @@ export default function PaymentDetailsPage() {
                 <div className="w-5 h-5 bg-lemon rounded-sm"></div>
                 <div>
                   <p className="font-semibold text-sm">347809</p>
-                  <span className="text-xs text-gray-500">Visa · Edit</span>
+                  <span className="text-xs text-black">Visa · Edit</span>
                 </div>
               </div>
               <span className="text-lg font-bold">VISA</span>
@@ -89,7 +89,7 @@ export default function PaymentDetailsPage() {
                 <div className="w-5 h-5 rounded-sm"></div>
                 <div>
                   <p className="font-semibold text-sm">347809</p>
-                  <span className="text-xs text-gray-500">Paypal · Edit</span>
+                  <span className="text-xs text-black">Paypal · Edit</span>
                 </div>
               </div>
               <span className="text-lg font-bold text-blue-600">PP</span>
