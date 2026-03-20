@@ -32,11 +32,11 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
   const stage5Description = getRichTextContent(processSection?.stage_5_description) || "Ensure lasting impact and continuous improvement";
 
   const stages = [
-    { prefix: "Discover - ", titleData: processSection?.stage_1_title, fallbackTitle: "Listen", description: processSection?.stage_1_description },
-    { prefix: "Diagnose - ", titleData: processSection?.stage_2_title, fallbackTitle: "Diagnose", description: processSection?.stage_2_description },
-    { prefix: "Design - ", titleData: processSection?.stage_3_title, fallbackTitle: "Design", description: processSection?.stage_3_description },
-    { prefix: "Deploy - ", titleData: processSection?.stage_4_title, fallbackTitle: "Implement", description: processSection?.stage_4_description },
-    { prefix: "Grow - ", titleData: processSection?.stage_5_title, fallbackTitle: "Sustain", description: processSection?.stage_5_description }
+    { prefix: "Discover", titleData: processSection?.stage_1_title, fallbackTitle: "Listen", description: processSection?.stage_1_description },
+    { prefix: "Diagnose", titleData: processSection?.stage_2_title, fallbackTitle: "Diagnose", description: processSection?.stage_2_description },
+    { prefix: "Design", titleData: processSection?.stage_3_title, fallbackTitle: "Design", description: processSection?.stage_3_description },
+    { prefix: "Deploy", titleData: processSection?.stage_4_title, fallbackTitle: "Implement", description: processSection?.stage_4_description },
+    { prefix: "Grow", titleData: processSection?.stage_5_title, fallbackTitle: "Sustain", description: processSection?.stage_5_description }
   ];
 
   useEffect(() => {
@@ -74,44 +74,56 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
   }, []);
 
   return (
-    <section className="w-full text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins bg-background text-foreground transition-colors duration-300">
+      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">
           <SafeHTMLRenderer data={processSection?.title} fallback="How we work: Five Stages" />
         </h2>
 
-        <p ref={subtitleRef} className="text-gray-300 text-center mb-12 sm:mb-16">
+        <p ref={subtitleRef} className="opacity-70 text-center mb-12 sm:mb-16">
           <SafeHTMLRenderer data={processSection?.subtitle} fallback="Every stage is built around you – your pace, your risk appetite, your resources" />
         </p>
 
         <div className="relative">
-          <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-[#33FF99]"></div>
+          <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-primary opacity-30"></div>
 
-          {stages.map((stage, index) => (
-            <div ref={el => { stagesRef.current[index] = el; }} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0">
-              <div className="relative z-10 w-8 sm:w-12 h-8 sm:h-12 bg-[#33FF99] rounded-full flex items-center justify-center mr-6 sm:mr-8 flex-shrink-0">
-                <div className="w-3 sm:w-4 h-3 sm:h-4 bg-white rounded-full"></div>
-              </div>
+          {stages.map((stage, index) => {
+            const titleContent = getRichTextContent(stage.titleData) || stage.fallbackTitle;
+            const hasRepetition = titleContent.toLowerCase() === stage.prefix.toLowerCase();
 
-              <div className="flex-1 pt-1">
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">
-                  {stage.prefix}<SafeHTMLRenderer data={stage.titleData} fallback={stage.fallbackTitle} />
-                </h3>
-                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                  <SafeHTMLRenderer 
-                    data={stage.description} 
-                    fallback={index === 0 ? "We start by understanding your current situation" : 
-                             index === 1 ? "Identify key issues and opportunities" :
-                             index === 2 ? "Co-create solutions that fit your context" :
-                             index === 3 ? "Execute changes with your team" :
-                             "Ensure lasting impact and continuous improvement"}
-                  />
-                </p>
+            return (
+              <div ref={el => { stagesRef.current[index] = el; }} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0 group">
+                <div className="relative z-10 w-8 sm:w-12 h-8 sm:h-12 bg-primary rounded-full flex items-center justify-center mr-6 sm:mr-8 flex-shrink-0 shadow-[0_0_15px_rgba(14,194,119,0.3)] group-hover:shadow-[0_0_20px_rgba(14,194,119,0.5)] transition-shadow duration-300">
+                  <div className="w-3 sm:w-4 h-3 sm:h-4 bg-white rounded-full"></div>
+                </div>
+
+                <div className="flex-1 pt-1">
+                  <h3 className="flex flex-col mb-2 sm:mb-3">
+                    <span className="text-primary font-bold text-xs sm:text-sm tracking-widest uppercase mb-1 opacity-80">
+                      {stage.prefix}
+                    </span>
+                    {!hasRepetition && (
+                      <span className="text-xl sm:text-2xl font-semibold">
+                        <SafeHTMLRenderer data={stage.titleData} fallback={stage.fallbackTitle} />
+                      </span>
+                    )}
+                  </h3>
+                  <p className="opacity-70 text-sm sm:text-base leading-relaxed max-w-2xl">
+                    <SafeHTMLRenderer
+                      data={stage.description}
+                      fallback={index === 0 ? "We start by understanding your current situation" :
+                        index === 1 ? "Some matters do not need faster action first; they need better diagnosis." :
+                          index === 2 ? "Co-create solutions that fit your context" :
+                            index === 3 ? "Execute changes with your team" :
+                              "Ensure lasting impact and continuous improvement"}
+                    />
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -180,13 +180,13 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen text-foreground star">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 star">
       {/* Hero Section */}
       <section className="pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1
             ref={titleRef}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-white"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-foreground"
           >
             <span
               dangerouslySetInnerHTML={{
@@ -199,7 +199,7 @@ export default function Contact() {
 
       {/* Contact Form and Details Section */}
       <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 bg-card p-3 sm:p-4 rounded-2xl">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 glass-panel p-3 sm:p-4 rounded-2xl">
           {/* Contact Information Card - Left */}
           <div
             ref={infoCardRef}
@@ -285,7 +285,7 @@ export default function Contact() {
           {/* Contact Form - Right */}
           <div
             ref={formCardRef}
-            className="bg-card/50 backdrop-blur-md rounded-2xl p-4 sm:p-6 lg:p-8 border-white/10"
+            className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8"
           >
             <form className="space-y-4 sm:space-y-6">
               {/* First Name and Last Name Row */}
@@ -298,7 +298,7 @@ export default function Contact() {
                 <div>
                   <label
                     htmlFor="firstName"
-                    className="block text-gray-300 text-sm mb-2"
+                    className="block opacity-80 text-sm mb-2"
                   >
                     <span
                       dangerouslySetInnerHTML={{
@@ -313,13 +313,13 @@ export default function Contact() {
                       data.first_name_placeholder?.content?.replace(/<[^>]*>/g, "") ||
                       "John"
                     }
-                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
+                    className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="lastName"
-                    className="block text-gray-300 text-sm mb-2"
+                    className="block opacity-80 text-sm mb-2"
                   >
                     <span
                       dangerouslySetInnerHTML={{
@@ -334,7 +334,7 @@ export default function Contact() {
                       data.last_name_placeholder?.content?.replace(/<[^>]*>/g, "") ||
                       "Doe"
                     }
-                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
+                    className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
               </div>
@@ -349,7 +349,7 @@ export default function Contact() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-gray-300 text-sm mb-2"
+                    className="block opacity-80 text-sm mb-2"
                   >
                     <span
                       dangerouslySetInnerHTML={{
@@ -364,13 +364,13 @@ export default function Contact() {
                       data.email_placeholder?.content?.replace(/<[^>]*>/g, "") ||
                       "your@email.com"
                     }
-                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
+                    className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-gray-300 text-sm mb-2"
+                    className="block opacity-80 text-sm mb-2"
                   >
                     <span
                       dangerouslySetInnerHTML={{
@@ -385,7 +385,7 @@ export default function Contact() {
                       data.phone_placeholder?.content?.replace(/<[^>]*>/g, "") ||
                       "+1 012 3456 789"
                     }
-                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2"
+                    className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
                 </div>
               </div>
@@ -396,7 +396,7 @@ export default function Contact() {
                   formFieldsRef.current[2] = el;
                 }}
               >
-                <label className="block text-gray-300 text-sm mb-4">
+                <label className="block opacity-80 text-sm mb-4">
                   <span
                     dangerouslySetInnerHTML={{
                       __html: data.subject_label?.content || "Select Subject?",
@@ -414,7 +414,7 @@ export default function Contact() {
                         name="subject"
                         className="w-4 h-4 accent-primary"
                       />
-                      <span className="text-gray-300 text-sm">{subject}</span>
+                      <span className="opacity-80 text-sm">{subject}</span>
                     </label>
                   ))}
                 </div>
@@ -428,7 +428,7 @@ export default function Contact() {
               >
                 <label
                   htmlFor="message"
-                  className="block text-gray-300 text-sm mb-2"
+                  className="block opacity-80 text-sm mb-2"
                 >
                   <span
                     dangerouslySetInnerHTML={{
@@ -443,7 +443,7 @@ export default function Contact() {
                     "Write your message..."
                   }
                   rows={1}
-                  className="w-full bg-transparent border-b border-white/30 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors pb-2 resize-none"
+                  className="w-full bg-transparent border-b border-border text-white opacity-40 focus:outline-none focus:border-primary transition-colors pb-2 resize-none"
                 ></textarea>
               </div>
 

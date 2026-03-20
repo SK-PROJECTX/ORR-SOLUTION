@@ -48,6 +48,8 @@ interface HowWeOperateData {
 
 import { useCachedData } from "../../../hooks/useCachedData";
 
+const processData = (data: any) => data;
+
 export default function StickyScrollSplit() {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,7 +57,7 @@ export default function StickyScrollSplit() {
   const { data, loading } = useCachedData<HowWeOperateData>(
     'orr_how_we_operate_content',
     'https://orr-backend.orr.solutions/admin-portal/v1/cms/how-we-operate/',
-    (data) => data
+    processData
   );
 
   useEffect(() => {
@@ -91,11 +93,11 @@ export default function StickyScrollSplit() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background transition-colors duration-300">
       {/* Hero Section */}
-      <div className="relative w-full py-20 pt-32 text-white">
+      <div className="relative w-full py-20 pt-32 text-foreground">
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
-          <h1 className="text-center text-emerald-400 text-5xl md:text-6xl font-bold mb-12">
+          <h1 className="text-center text-primary text-5xl md:text-6xl font-bold mb-12">
             <span dangerouslySetInnerHTML={getRichTextHTML(data.page.hero_title)} />
           </h1>
         </div>
@@ -118,7 +120,7 @@ export default function StickyScrollSplit() {
                 }}
               >
                 <div
-                  className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
+                  className="glass-panel backdrop-blur-xl rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
                   style={{
                     transform: activeIndex === index
                       ? 'scale(1) rotateY(0deg)'
@@ -140,39 +142,39 @@ export default function StickyScrollSplit() {
                     </div>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3">
                     <span dangerouslySetInnerHTML={getRichTextHTML(card.title)} />
                   </h2>
 
                   {card.subtitle && (
-                    <h3 className="text-base sm:text-lg font-semibold text-emerald-400 mb-4">
+                    <h3 className="text-base sm:text-lg font-semibold text-primary mb-4">
                       <span dangerouslySetInnerHTML={getRichTextHTML(card.subtitle)} />
                     </h3>
                   )}
 
                   {card.description && (
-                    <p className="text-sm sm:text-base text-white mb-4">
+                    <p className="text-sm sm:text-base text-foreground mb-4">
                       <span dangerouslySetInnerHTML={getRichTextHTML(card.description)} />
                     </p>
                   )}
 
                   <div className="space-y-2">
-                    {card.bullet1 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet1)} /></p>}
-                    {card.bullet2 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet2)} /></p>}
-                    {card.wordbreak && <p className="text-white text-base sm:text-lg font-bold text-center my-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.wordbreak)} /></p>}
-                    {card.bullet3 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet3)} /></p>}
-                    {card.bullet4 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet4)} /></p>}
-                    {card.bullet5 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet5)} /></p>}
-                    {card.bullet6 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet6)} /></p>}
-                    {card.bullet7 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet7)} /></p>}
-                    {card.bullet8 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet8)} /></p>}
-                    {card.bullet9 && <p className="text-gray-300 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet9)} /></p>}
+                    {card.bullet1 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet1)} /></p>}
+                    {card.bullet2 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet2)} /></p>}
+                    {card.wordbreak && <p className="text-foreground text-base sm:text-lg font-bold text-center my-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.wordbreak)} /></p>}
+                    {card.bullet3 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet3)} /></p>}
+                    {card.bullet4 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet4)} /></p>}
+                    {card.bullet5 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet5)} /></p>}
+                    {card.bullet6 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet6)} /></p>}
+                    {card.bullet7 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet7)} /></p>}
+                    {card.bullet8 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet8)} /></p>}
+                    {card.bullet9 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet9)} /></p>}
                   </div>
 
-                  {card.description1 && <p className="text-gray-300 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.description1)} /></p>}
-                  {card.description2 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description2)} /></p>}
-                  {card.description3 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description3)} /></p>}
-                  {card.description4 && <p className="text-gray-300 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description4)} /></p>}
+                  {card.description1 && <p className="opacity-80 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.description1)} /></p>}
+                  {card.description2 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description2)} /></p>}
+                  {card.description3 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description3)} /></p>}
+                  {card.description4 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description4)} /></p>}
 
                   {card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
@@ -180,12 +182,12 @@ export default function StickyScrollSplit() {
                         <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text)} />
                       </Link>
                       {card.button_text2 && (
-                        <Link href='/services' className="border border-emerald-400  text-center text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <Link href='/services' className="border border-emerald-400  text-center text-primary px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
                           <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text2)} />
                         </Link>
                       )}
                       {card.button_text3 && (
-                        <Link href='/login' className="border border-emerald-400 text-center text-emerald-400 px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
+                        <Link href='/login' className="border border-emerald-400 text-center text-primary px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
                           <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text3)} />
                         </Link>
                       )}
@@ -213,10 +215,10 @@ export default function StickyScrollSplit() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                   <div className="absolute bottom-2 lg:bottom-8 left-2 lg:left-8 right-2 lg:right-8">
-                    <div className="text-emerald-400 text-sm lg:text-xl font-bold mb-1 lg:mb-2">
+                    <div className="text-primary text-sm lg:text-xl font-bold mb-1 lg:mb-2">
                       <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.step_number)} />
                     </div>
-                    <div className="text-white text-sm lg:text-2xl xl:text-3xl font-bold">
+                    <div className="text-foreground text-sm lg:text-2xl xl:text-3xl font-bold">
                       <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.title)} />
                     </div>
                   </div>

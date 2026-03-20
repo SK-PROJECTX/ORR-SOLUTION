@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -25,10 +24,7 @@ export default function ORRReportSection({ content, onUpdate }: ORRReportSection
 
   const title = getRichTextContent(orrReportSection?.title) || "What you Get: The ORR Report";
   const subtitle = getRichTextContent(orrReportSection?.subtitle) || "After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation.";
-  const feature1 = getRichTextContent(orrReportSection?.feature_1) || "explain your situation in your language,";
-  const feature2 = getRichTextContent(orrReportSection?.feature_2) || "highlights key issues and risks that affect your customers and teams";
-  const feature3 = getRichTextContent(orrReportSection?.feature_3) || "proposes quick fixes and longer-term improvements that respect your constraints";
-  const feature4 = getRichTextContent(orrReportSection?.feature_4) || "shows where advisory, digital systems/AI, or living-systems work will have most impact";
+  const reportOutcomes = ["Decision-ready", "Usable internally", "Clear next steps"];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -41,20 +37,19 @@ export default function ORRReportSection({ content, onUpdate }: ORRReportSection
       );
 
       gsap.fromTo(subtitleRef.current,
-        { opacity: 0 },
+        { opacity: 0, x: -20 },
         {
-          opacity: 1, duration: 0.8, delay: 0.2, ease: "power3.out",
+          opacity: 1, x: 0, duration: 0.8, delay: 0.2, ease: "power3.out",
           scrollTrigger: { trigger: subtitleRef.current, start: "top 80%" }
         }
       );
 
       cardsRef.current.forEach((card, i) => {
         if (card) {
-          const direction = i % 2 === 0 ? -60 : 60;
           gsap.fromTo(card,
-            { opacity: 0, x: direction, scale: 0.95 },
+            { opacity: 0, y: 30 },
             {
-              opacity: 1, x: 0, scale: 1, duration: 0.9, ease: "power3.out",
+              opacity: 1, y: 0, duration: 0.8, delay: 0.3 + i * 0.1, ease: "power3.out",
               scrollTrigger: { trigger: card, start: "top 85%" }
             }
           );
@@ -66,83 +61,90 @@ export default function ORRReportSection({ content, onUpdate }: ORRReportSection
   }, []);
 
   return (
-    <section className="w-full text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
+    <section className="w-full text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins bg-[#0a192f]">
+      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-10 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          <SafeHTMLRenderer data={orrReportSection?.title} fallback="What you Get: The ORR Report" />
-        </h2>
-        <p ref={subtitleRef} className="text-gray-300 text-center mb-16 max-w-4xl mx-auto">
-          <SafeHTMLRenderer data={orrReportSection?.subtitle} fallback="After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation." />
-        </p>
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          <div ref={el => { cardsRef.current[0] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
-            <Image
-              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108970/network-visualization_wxqzds.jpg"
-              alt="Network Visualization"
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          <div ref={el => { cardsRef.current[1] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
-            <div className="relative z-10 space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_1} fallback="explain your situation in your language," /></span>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_2} fallback="highlights key issues and risks that affect your customers and teams" /></span>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_3} fallback="proposes quick fixes and longer-term improvements that respect your constraints" /></span>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_4} fallback="shows where advisory, digital systems/AI, or living-systems work will have most impact" /></span>
+          {/* Left Column: Text-Led Content */}
+          <div className="space-y-10">
+            <div>
+              <h2 ref={titleRef} className="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight">
+                <SafeHTMLRenderer data={orrReportSection?.title} fallback="What You Get: The ORR Report" />
+              </h2>
+              <div ref={subtitleRef} className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl">
+                <SafeHTMLRenderer data={orrReportSection?.subtitle} fallback="After your first meeting, you receive a decision-ready ORR report designed to be immediately useful inside your organisation." />
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div ref={el => { cardsRef.current[2] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] p-8 rounded-3xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
-            <div className="relative z-10 space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_1} fallback="explain your situation in your language," /></span>
+            <div className="space-y-8">
+              {/* "It:" Section */}
+              <div ref={el => { cardsRef.current[0] = el; }} className="space-y-4">
+                <h3 className="text-[#33FF99] font-bold text-lg tracking-wide">It:</h3>
+                <ul className="space-y-4">
+                  {[
+                    "explains your situation in your language,",
+                    "highlights key issues and risks that affect your customers and teams,",
+                    "proposes quick fixes and longer-term improvements that respect your constraints,",
+                    "shows where advisory, digital systems/AI, or living-systems work will have most impact."
+                  ].map((bullet, idx) => (
+                    <li key={idx} className="flex items-start gap-4 text-gray-200 text-base md:text-lg">
+                      <span className="text-[#33FF99] mt-1.5 flex-shrink-0">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_2} fallback="highlights key issues and risks that affect your customers and teams" /></span>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_3} fallback="proposes quick fixes and longer-term improvements that respect your constraints" /></span>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-3 h-3 bg-[#33FF99] rounded-full mt-1 flex-shrink-0"></div>
-                <span className="text-gray-200"><SafeHTMLRenderer data={orrReportSection?.feature_4} fallback="shows where advisory, digital systems/AI, or living-systems work will have most impact" /></span>
+
+              {/* "You can:" Section */}
+              <div ref={el => { cardsRef.current[1] = el; }} className="space-y-4">
+                <h3 className="text-[#33FF99] font-bold text-lg tracking-wide">You can:</h3>
+                <ul className="space-y-4">
+                  {[
+                    "use it internally with your own teams,",
+                    "share it with other partners, or",
+                    "continue with ORR to implement the recommendations at the pace that suits you."
+                  ].map((bullet, idx) => (
+                    <li key={idx} className="flex items-start gap-4 text-gray-200 text-base md:text-lg">
+                      <span className="text-[#33FF99] mt-1.5 flex-shrink-0">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
 
-          <div ref={el => { cardsRef.current[3] = el; }} className="bg-gradient-to-br from-[#1a3a52] to-[#0f2a3f] rounded-3xl relative overflow-hidden h-80">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 z-10"></div>
-            <Image
-              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766109007/team-collaboration_x6q3ia.jpg"
-              alt="Team Collaboration"
-              fill
-              className="object-cover"
-            />
+          {/* Right Column: Outcome Summary Card */}
+          <div className="lg:sticky lg:top-32 flex justify-center lg:justify-end">
+            <div
+              ref={el => { cardsRef.current[2] = el; }}
+              className="bg-white/5 backdrop-blur-sm border border-white/10 p-10 md:p-14 rounded-[40px] shadow-2xl max-w-md w-full relative group hover:border-[#33FF99]/30 transition-colors duration-500"
+            >
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#33FF99]/10 rounded-full blur-2xl group-hover:bg-[#33FF99]/20 transition-all duration-500"></div>
+
+              <h4 className="text-white font-bold text-2xl mb-10 tracking-tight">Report Outcome</h4>
+
+              <div className="space-y-6">
+                {reportOutcomes.map((label, idx) => (
+                  <div key={idx} className="flex items-center gap-5 group/item">
+                    <div className="w-12 h-12 bg-[#33FF99]/10 rounded-2xl flex items-center justify-center group-hover/item:bg-[#33FF99]/20 transition-colors duration-300">
+                      <div className="w-2.5 h-2.5 bg-[#33FF99] rounded-full shadow-[0_0_10px_#33FF99]"></div>
+                    </div>
+                    <span className="text-gray-100 font-medium text-lg md:text-xl">{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-12 pt-10 border-t border-white/10 group-hover:border-[#33FF99]/20 transition-colors duration-500">
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  A structured deliverable that stabilized the conversation and clarifies the path forward.
+                </p>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </section>

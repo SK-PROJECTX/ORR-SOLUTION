@@ -15,8 +15,7 @@ interface ORRRoleSectionProps {
 }
 
 export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const orrRoleSection = content || homepageContent?.orrRoleSection;
+  const orrRoleSection = content;
   
   const titleRef = useRef(null);
   const textRef = useRef(null);

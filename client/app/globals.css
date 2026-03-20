@@ -99,6 +99,20 @@ body {
   background-image: var(--gradient-primary);
 }
 
+/* Glassmorphism utility */
+.glass-panel {
+  background-color: var(--color-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dark .glass-panel {
+  background-color: rgba(44, 44, 44, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 /* Glowing border effect matching SVG color */
 .glow-border {
   border: 2px solid var(--color-primary);
