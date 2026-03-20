@@ -121,7 +121,7 @@ export function HeroSection() {
 
         {/* CTA Overlay */}
         {isVideoEnded && (
-          <div className="absolute inset-0 glass-panel flex flex-col items-center justify-center p-4 z-10 transition-all duration-500 animate-in fade-in zoom-in border border-white/10">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-md flex flex-col items-center justify-center p-4 z-10 transition-all duration-500 animate-in fade-in zoom-in border border-white/10">
             <h3 className={`text-white font-bold mb-3 text-center drop-shadow-lg tracking-tight ${isMinimized ? 'text-sm md:text-lg' : 'text-2xl md:text-5xl'}`}>
               Why not join now?
             </h3>
