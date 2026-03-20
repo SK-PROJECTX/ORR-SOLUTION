@@ -49,8 +49,7 @@ interface GPMetaphorSectionProps {
 }
 
 export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaphorSectionProps) {
-  const { content: homepageContent } = useHomepageContent();
-  const businessSystemSection = homepageContent?.businessSystemSection;
+  const businessSystemSection = content;
   
   const title = getRichTextContent(businessSystemSection?.title) || "Business as a Living System";
   const subtitle = getRichTextContent(businessSystemSection?.subtitle) || "Every part connected, every function vital";

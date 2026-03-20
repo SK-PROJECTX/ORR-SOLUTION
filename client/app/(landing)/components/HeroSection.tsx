@@ -10,6 +10,7 @@ export function HeroSection() {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,9 +37,29 @@ export function HeroSection() {
       observer.observe(sectionRef.current);
     }
 
+    // Observer for footer to hide minimized video
+    const footer = document.querySelector('footer');
+    let footerObserver: IntersectionObserver | null = null;
+    
+    if (footer) {
+      footerObserver = new IntersectionObserver(
+        ([entry]) => {
+          setIsFooterVisible(entry.isIntersecting);
+        },
+        {
+          root: null,
+          threshold: 0.1, // Trigger when 10% of footer is visible
+        }
+      );
+      footerObserver.observe(footer);
+    }
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
+      }
+      if (footerObserver) {
+        footerObserver.disconnect();
       }
     };
   }, []);
@@ -63,10 +84,10 @@ export function HeroSection() {
     .replace("/video/upload/", "/video/upload/f_auto,q_auto,so_0/")
     .replace(".mp4", ".jpg");
 
-  const minimizedClasses = `fixed z-50 bottom-6 right-6 w-[240px] md:bottom-8 md:right-8 md:w-[400px] aspect-video rounded-xl md:rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] border border-white/20 backdrop-blur-xl transition-all duration-500 ease-in-out overflow-hidden bg-slate-900/90 ${!isVisible ? "opacity-0 pointer-events-none translate-y-[150%] md:translate-y-0 md:translate-x-[150%]" : "opacity-100 translate-y-0 translate-x-0"
+  const minimizedClasses = `fixed z-50 bottom-6 right-6 w-[240px] md:bottom-8 md:right-8 md:w-[400px] aspect-video rounded-xl md:rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] glass-panel transition-all duration-500 ease-in-out overflow-hidden ${(!isVisible || (isMinimized && isFooterVisible)) ? "opacity-0 pointer-events-none translate-y-[150%] md:translate-y-0 md:translate-x-[150%]" : "opacity-100 translate-y-0 translate-x-0"
     }`;
 
-  const normalClasses = "absolute inset-0 w-full h-full overflow-hidden bg-slate-900 transition-all duration-500 ease-in-out opacity-100 translate-y-0 translate-x-0";
+  const normalClasses = "absolute inset-0 w-full h-full overflow-hidden bg-background transition-all duration-500 ease-in-out opacity-100 translate-y-0 translate-x-0";
 
   return (
     <section ref={sectionRef} className="w-full aspect-video relative mt-[80px] lg:mt-0">
@@ -100,7 +121,7 @@ export function HeroSection() {
 
         {/* CTA Overlay */}
         {isVideoEnded && (
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 z-10 transition-all duration-500 animate-in fade-in zoom-in">
+          <div className="absolute inset-0 glass-panel flex flex-col items-center justify-center p-4 z-10 transition-all duration-500 animate-in fade-in zoom-in border border-white/10">
             <h3 className={`text-white font-bold mb-3 text-center drop-shadow-lg tracking-tight ${isMinimized ? 'text-sm md:text-lg' : 'text-2xl md:text-5xl'}`}>
               Why not join now?
             </h3>
@@ -153,4 +174,3 @@ export function HeroSection() {
     </section>
   );
 }
-

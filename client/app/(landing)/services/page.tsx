@@ -97,13 +97,15 @@ interface ServicesData {
 
 import { useCachedData } from "../../../hooks/useCachedData";
 
+const processData = (data: any) => data;
+
 export default function Services() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
   
   const { data, loading } = useCachedData<ServicesData>(
     'orr_services_content',
     'https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/',
-    (data) => data
+    processData
   );
 
   useEffect(() => {
@@ -159,16 +161,15 @@ export default function Services() {
       {/* Hero Section */}
       <section
         ref={el => { sectionsRef.current[0] = el; }}
-        className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center"
+        className="pt-32 pb-16 px-6 relative min-h-[80vh] flex items-center bg-background transition-colors duration-300"
       >
-        <div className="absolute inset-0 " />
-        <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('/stars.svg')] bg-cover opacity-10 dark:opacity-30 pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-foreground">
             <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || "ORR Solutions - Listen. Solve. Optimise." }} />
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl opacity-70 max-w-3xl mx-auto leading-relaxed text-foreground">
             <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_subtitle) || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
           </p>
         </div>
@@ -177,14 +178,14 @@ export default function Services() {
       {/* Process Stages */}
       <section
         ref={el => { sectionsRef.current[1] = el; }}
-        className="py-16 px-6"
+        className="py-16 px-6 bg-background transition-colors duration-300"
       >
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 md:grid-rows-2">
             {data.stages.slice(0, 4).map((stage, index) => (
-              <div key={stage.id} className="bg-slate-700 rounded-2xl p-8 text-white flex flex-col">
-                <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mb-6">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div key={stage.id} className="glass-panel rounded-2xl p-8 text-foreground flex flex-col transition-colors duration-300">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
+                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -194,13 +195,13 @@ export default function Services() {
                 <h3 className="text-lg font-semibold mb-4">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.subtitle) || "Stage Subtitle" }} />
                 </h3>
-                <p className="text-gray-300 text-sm mb-6">
+                <p className="opacity-70 text-sm mb-6">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.description) || "Stage Description" }} />
                 </p>
-                <div className="text-gray-300 text-sm mb-8 flex-grow">
+                <div className="opacity-70 text-sm mb-8 flex-grow">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
                 </div>
-                <Link href="/contact" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors mt-auto cursor-pointer block text-center">
+                <Link href="/contact" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-auto cursor-pointer block text-center">
                   <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || "Learn More" }} />
                 </Link>
               </div>
@@ -209,9 +210,9 @@ export default function Services() {
 
           {/* Stage 5 - Grow (Full Width) */}
           {data.stages[4] && (
-            <div className="bg-slate-700 rounded-2xl p-8 text-white max-w-[600px] mx-auto">
-              <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="glass-panel rounded-2xl p-8 text-foreground max-w-[600px] mx-auto transition-colors duration-300">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
@@ -221,13 +222,13 @@ export default function Services() {
               <h3 className="text-lg font-semibold mb-4">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].subtitle) || "Stage 5 Subtitle" }} />
               </h3>
-              <p className="text-gray-300 text-sm mb-6">
+              <p className="opacity-70 text-sm mb-6">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].description) || "Stage 5 Description" }} />
               </p>
-              <div className="text-gray-300 text-sm mb-8">
+              <div className="opacity-70 text-sm mb-8">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
               </div>
-              <Link href="/register" className="w-full bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-emerald-600 transition-colors cursor-pointer block text-center">
+              <Link href="/register" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors cursor-pointer block text-center">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || "Learn More" }} />
               </Link>
             </div>
@@ -238,7 +239,7 @@ export default function Services() {
       {/* The Three Pillars */}
       <section
         ref={el => { sectionsRef.current[2] = el; }}
-        className="py-20 px-6 bg-gradient-to-br from-emerald-600 to-emerald-800 min-h-[80vh] flex items-center"
+        className="py-20 px-6 bg-primary transition-colors duration-300 min-h-[80vh] flex items-center"
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -247,35 +248,22 @@ export default function Services() {
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {(() => {
-              console.log('🔍 Pillars Data Debug:', {
-                pillarsArray: data.pillars,
-                pillarsLength: data.pillars?.length,
-                firstPillar: data.pillars?.[0],
-                allPillarsData: data.pillars?.map((p: any) => ({
-                  id: p.id,
-                  title: p.title,
-                  description: p.description,
-                  button_text: p.button_text
-                }))
-              });
-              return data.pillars.map((pillar, index) => (
-                <div key={pillar.id} className="bg-black rounded-2xl px-8 py-12 text-white flex flex-col min-h-[300px]">
-                  <h3 className="text-3xl font-bold mb-8 text-center">
-                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.title) || "Pillar Title" }} />
-                  </h3>
-                  <p className="text-gray-300 text-xl mb-8 text-center flex-grow">
-                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.description) || "Pillar Description" }} />
-                  </p>
-                  <Link
-                    href={PILLAR_ROUTES[index] || '/services'}
-                    className="w-full bg-gradient-primary text-[#204460] font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mt-8 cursor-pointer block text-center"
-                  >
-                    <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || "Learn More" }} />
-                  </Link>
-                </div>
-              ));
-            })()}
+            {data.pillars.map((pillar, index) => (
+              <div key={pillar.id} className="glass-panel rounded-2xl px-8 py-12 text-foreground flex flex-col min-h-[300px] transition-colors duration-300">
+                <h3 className="text-3xl font-bold mb-8 text-center text-foreground">
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.title) || "Pillar Title" }} />
+                </h3>
+                <p className="opacity-70 text-xl mb-8 text-center flex-grow">
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.description) || "Pillar Description" }} />
+                </p>
+                <Link
+                  href={PILLAR_ROUTES[index] || '/services'}
+                  className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-8 cursor-pointer block text-center"
+                >
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || "Learn More" }} />
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -283,21 +271,21 @@ export default function Services() {
       {/* Business GP Section */}
       <section
         ref={el => { sectionsRef.current[3] = el; }}
-        className="py-20 px-6 bg-background star relative min-h-[80vh] flex items-center"
+        className="py-20 px-6 bg-background relative min-h-[80vh] flex items-center transition-colors duration-300"
       >
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-white mb-6">
+              <h2 className="text-4xl font-bold text-foreground mb-6">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_title) || "Business GP Title" }} />
               </h2>
-              <h3 className="text-4xl font-bold mb-8 text-white">
+              <h3 className="text-4xl font-bold mb-8 text-foreground">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_subtitle) || "Business GP Subtitle" }} />
               </h3>
-              <p className="text-gray-300 text-xl mb-8">
+              <p className="opacity-70 text-xl mb-8 text-foreground">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || "Business GP Description" }} />
               </p>
-              <Link href="/contact" className="inline-block bg-gradient-primary text-[#204460] px-12 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+              <Link href="/contact" className="inline-block bg-primary text-white px-12 py-4 rounded-lg text-lg font-bold hover:bg-lemon transition-colors">
                 <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || "Contact Us" }} />
               </Link>
             </div>
@@ -305,7 +293,7 @@ export default function Services() {
               <img
                 src={data.page.business_gp_image}
                 alt="Business handshake"
-                className="w-full h-auto rounded-lg"
+                className="w-full h-auto rounded-lg shadow-2xl border border-border"
               />
             </div>
           </div>
