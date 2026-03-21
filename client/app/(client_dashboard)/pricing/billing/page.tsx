@@ -63,7 +63,7 @@ export default function PlansBillingPage() {
                 <span className="text-xl font-bold text-blue-600">VISA</span>
                 <div>
                   <p className="font-semibold text-sm">Visa ending in 6789</p>
-                  <span className="text-xs text-gray-500">Expiry 01/2023</span>
+                  <span className="text-xs text-black">Expiry 01/2023</span>
                 </div>
               </div>
               <button className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm">Edit</button>

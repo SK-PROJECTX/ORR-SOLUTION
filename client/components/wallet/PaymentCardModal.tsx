@@ -44,7 +44,7 @@ export default function PaymentCardModal({
       case 'mastercard': return 'text-red-600';
       case 'amex': return 'text-green-600';
       case 'discover': return 'text-orange-600';
-      default: return 'text-gray-600';
+      default: return 'text-black';
     }
   };
 
@@ -79,7 +79,7 @@ export default function PaymentCardModal({
                   </div>
                   <div className="text-left">
                     <p className="font-semibold text-sm">{method.brand} ending in {method.last4}</p>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-black">
                       Expiry {method.exp_month.toString().padStart(2, '0')}/{method.exp_year}
                     </span>
                   </div>
@@ -93,7 +93,7 @@ export default function PaymentCardModal({
         ) : (
           <div className="text-center py-8">
             <p className="text-gray-400 mb-4">No payment methods available</p>
-            <p className="text-sm text-gray-500">Please add a payment method first</p>
+            <p className="text-sm text-black">Please add a payment method first</p>
           </div>
         )}
 

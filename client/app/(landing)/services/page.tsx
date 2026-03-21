@@ -101,11 +101,11 @@ const processData = (data: any) => data;
 
 export default function Services() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
-  
+
   const { data, loading } = useCachedData<ServicesData>(
     'orr_services_content',
-    'https://orr-backend.orr.solutions/admin-portal/v1/cms/services-content/',
-    processData
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/`,
+    (data) => data
   );
 
   useEffect(() => {

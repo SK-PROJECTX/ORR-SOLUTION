@@ -133,7 +133,7 @@ export default function PlansBillingPage() {
                 }}
                 disabled={(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed) || checkoutLoading}
                 className={`w-full py-3 rounded-lg font-semibold transition-colors ${(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed)
-                  ? 'bg-[#1E3A4B] text-gray-500 cursor-not-allowed border border-gray-700 opacity-60'
+                  ? 'bg-[#1E3A4B] text-black cursor-not-allowed border border-gray-700 opacity-60'
                   : 'bg-[#22C55E] text-black hover:bg-[#22C55E]/90'
                   }`}
               >
@@ -196,7 +196,7 @@ export default function PlansBillingPage() {
                       case 'mastercard': return 'text-red-600';
                       case 'amex': return 'text-green-600';
                       case 'discover': return 'text-orange-600';
-                      default: return 'text-gray-600';
+                      default: return 'text-black';
                     }
                   };
 
@@ -209,7 +209,7 @@ export default function PlansBillingPage() {
                         </div>
                         <div>
                           <p className="font-semibold text-sm">{method.brand} ending in {method.last4}</p>
-                          <span className="text-xs text-gray-500">Expiry {method.exp_month.toString().padStart(2, '0')}/{method.exp_year}</span>
+                          <span className="text-xs text-black">Expiry {method.exp_month.toString().padStart(2, '0')}/{method.exp_year}</span>
                         </div>
                       </div>
                       <button

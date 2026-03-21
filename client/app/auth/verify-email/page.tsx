@@ -51,7 +51,7 @@ function VerifyEmailContent() {
           <>
             <Loader2 className="w-16 h-16 text-blue-500 animate-spin mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-800 mb-2">Verifying Email</h1>
-            <p className="text-gray-600">Please wait while we verify your email address...</p>
+            <p className="text-black">Please wait while we verify your email address...</p>
           </>
         );
       
@@ -60,8 +60,8 @@ function VerifyEmailContent() {
           <>
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-800 mb-2">Email Verified Successfully!</h1>
-            <p className="text-gray-600 mb-4">Your email has been verified. You can now access your account.</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-black mb-4">Your email has been verified. You can now access your account.</p>
+            <p className="text-sm text-black">
               Redirecting to login in {countdown} second{countdown !== 1 ? 's' : ''}...
             </p>
           </>
@@ -72,7 +72,7 @@ function VerifyEmailContent() {
           <>
             <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-800 mb-2">Verification Failed</h1>
-            <p className="text-gray-600 mb-4">
+            <p className="text-black mb-4">
               The verification link is invalid or has expired. Please try registering again.
             </p>
             <button
@@ -101,7 +101,7 @@ export default function VerifyEmail() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <Loader2 className="w-16 h-16 text-blue-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-black">Loading...</p>
         </div>
       </div>
     }>

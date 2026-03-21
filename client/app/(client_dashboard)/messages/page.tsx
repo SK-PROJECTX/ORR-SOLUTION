@@ -86,7 +86,7 @@ export default function MessagesPage() {
       console.log("Using token:", token ? "Token exists" : "No token");
 
       const response = await fetch(
-        "https://orr-backend.orr.solutions/tickets/",
+        `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -190,7 +190,7 @@ export default function MessagesPage() {
 
       // Use the correct endpoint format with numeric ID
       const response = await fetch(
-        `https://orr-backend.orr.solutions/admin-portal/v1/tickets/${ticketId}/messages/`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/tickets/${ticketId}/messages/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -228,7 +228,7 @@ export default function MessagesPage() {
         // If admin portal fails, try the client endpoint
         if (response.status === 404) {
           const clientResponse = await fetch(
-            `https://orr-backend.orr.solutions/tickets/${ticketId}/messages/`,
+            `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${ticketId}/messages/`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -279,7 +279,7 @@ export default function MessagesPage() {
         }
 
         const response = await fetch(
-          `https://orr-backend.orr.solutions/tickets/${selectedChat.id}/send-message/`,
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${selectedChat.id}/send-message/`,
           {
             method: "POST",
             headers: {
