@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     images: [`${siteURL}/images/og-default.jpg`],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/logo.svg",
   },
 };
 
