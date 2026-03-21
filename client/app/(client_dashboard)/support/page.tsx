@@ -189,12 +189,12 @@ export default function SupportPage() {
                 <div className="flex items-start gap-3">
                   <Home className="text-lemon w-5 h-5 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-foreground/80 leading-tight">
-                    4074 Ebert Summit Suite 375<br />Lake Leonardchester
+                    Rabat<br />Malta
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <Phone className="text-lemon w-5 h-5 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-foreground/80">+44 123 654 7890</p>
+                  <p className="text-sm text-foreground/80">+356 9935 3618</p>
                 </div>
               </div>
             </div>
