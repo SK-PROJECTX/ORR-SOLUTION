@@ -50,7 +50,7 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
 
   return (
     <section className="w-full text-foreground bg-background px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins transition-colors duration-300">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
+      
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-16 text-center">
