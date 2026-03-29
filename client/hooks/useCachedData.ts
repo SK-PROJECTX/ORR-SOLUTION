@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useCachedData<T>(
   cacheKey: string,
@@ -10,19 +10,27 @@ export function useCachedData<T>(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchUrlRef = useRef(fetchUrl);
+  const processDataRef = useRef(processData);
+
+  useEffect(() => {
+    fetchUrlRef.current = fetchUrl;
+    processDataRef.current = processData;
+  }, [fetchUrl, processData]);
+
   const fetchData = useCallback(async (isSilent = false) => {
     try {
       if (!isSilent) setLoading(true);
       setError(null);
 
-      const response = await fetch(fetchUrl);
+      const response = await fetch(fetchUrlRef.current);
       if (!response.ok) {
-        throw new Error(`Failed to fetch from ${fetchUrl}`);
+        throw new Error(`Failed to fetch from ${fetchUrlRef.current}`);
       }
       
       const result = await response.json();
       if (result.success) {
-        const processed = processData(result.data);
+        const processed = processDataRef.current(result.data);
         setData(processed);
         
         // Update cache
@@ -34,11 +42,12 @@ export function useCachedData<T>(
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
       console.error(`Error fetching ${cacheKey}:`, err);
     } finally {
-      setLoading(false);
+      if (!isSilent) setLoading(false);
     }
-  }, [cacheKey, fetchUrl, processData]);
+  }, [cacheKey]);
 
   useEffect(() => {
+    let hasCache = false;
     // Try to load from cache first
     if (typeof window !== 'undefined') {
       const cached = localStorage.getItem(cacheKey);
@@ -47,13 +56,14 @@ export function useCachedData<T>(
           const parsed = JSON.parse(cached);
           setData(parsed);
           setLoading(false); // Stop showing full-page loading if we have cache
+          hasCache = true;
         } catch (e) {
           console.error(`Failed to parse cached ${cacheKey}`, e);
         }
       }
     }
     
-    fetchData(!!data); // Silent fetch if we already have data from cache
+    fetchData(hasCache); // Silent fetch if we already have data from cache
   }, [cacheKey, fetchData]);
 
   return { data, loading, error, refetch: fetchData };

@@ -82,7 +82,7 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
         fontStyle: 'normal'
       });
     }
-  }, [content]);
+  }, [typeof content === 'string' ? content : JSON.stringify(content)]);
 
   useEffect(() => {
     if (isEditing && richTextData.content) {
