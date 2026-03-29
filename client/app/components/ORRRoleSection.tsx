@@ -47,7 +47,7 @@ export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProp
 
   return (
     <section className="w-full h-[60vh] flex justify-center items-center text-white px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-20 pointer-events-none" />
+      
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mt-40 mb-12 text-center">

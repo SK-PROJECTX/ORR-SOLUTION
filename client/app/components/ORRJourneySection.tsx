@@ -93,9 +93,7 @@ export default function ORRJourneySection() {
   return (
     <section ref={sectionRef} className="w-full py-24 px-6 relative overflow-hidden font-poppins bg-background text-foreground transition-colors duration-300">
       {/* Global Background Integration */}
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
-
-      <div className="relative z-10 max-w-7xl mx-auto">
+            <div className="relative z-10 max-w-7xl mx-auto">
         <div ref={headerRef} className="text-center mb-20 space-y-6">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
             How the First Engagement Works

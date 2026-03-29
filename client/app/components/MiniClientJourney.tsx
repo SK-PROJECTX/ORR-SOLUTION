@@ -21,7 +21,7 @@ interface MiniClientJourneyProps {
 }
 
 const DEFAULT_MESSAGES = [
-  "Businesses thrive like living organisms when all their systems work together around real human needs. ORR keeps your “business physiology” in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve.",
+  "Businesses thrive like living organisms when all their systems work together <b>around real human needs</b>. ORR keeps your “business physiology” in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve.",
   "Some matters do not need faster action first; they need better diagnosis.",
   "If the usual fixes were enough, you probably would not have been sent here. ORR helps organisations make sense of difficult situations before they become expensive, prolonged, or structurally embedded."
 ];
@@ -33,8 +33,13 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  
-  const message1 = getRichTextContent(messageStrip?.message) || DEFAULT_MESSAGES[0];
+
+  let message1 = getRichTextContent(messageStrip?.message) || DEFAULT_MESSAGES[0];
+  if (typeof message1 === 'string') {
+    // Automatically convert *text* or **text** into <b>text</b>
+    message1 = message1.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<b>$1</b>');
+  }
+
   const activeMessages = [message1, DEFAULT_MESSAGES[1], DEFAULT_MESSAGES[2]];
 
   useEffect(() => {
@@ -42,7 +47,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
       setCurrentIndex((prev) => (prev + 1) % activeMessages.length);
     }, 8000);
     return () => clearInterval(timer);
-  }, [activeMessages.length]);
+  }, [activeMessages.length, currentIndex]);
 
   const handleMessageSave = async (newContent: string | RichTextData) => {
     const contentString = typeof newContent === 'string' ? newContent : newContent.content;
@@ -85,18 +90,17 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
 
   return (
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins bg-background text-foreground transition-colors duration-300">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
+
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
           <SafeHTMLRenderer data={messageStrip?.title} fallback="Message Strip" />
         </h2>
 
-        <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-primary/20 rounded-full blur-[100px] sm:blur-[150px]"></div>
+        <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-primary/20 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none -z-10"></div>
 
         <div ref={cardRef} className="relative glass-panel max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-2xl border border-gray-200 dark:border-white/20 overflow-hidden min-h-[220px] sm:min-h-[260px] md:min-h-[300px] flex flex-col justify-center">
-          <div className="text-primary text-2xl sm:text-3xl md:text-4xl mb-1 sm:mb-2 text-left absolute top-4 left-4 sm:top-6 sm:left-8">"</div>
-          
+
           <div className="relative w-full h-full">
             <AnimatePresence mode="wait">
               <motion.div
@@ -111,7 +115,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
                   content={activeMessages[currentIndex]}
                   onSave={handleMessageSave}
                   tag="p"
-                  className="leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl"
+                  className="leading-relaxed text-[18px] font-medium"
                   placeholder="Enter message..."
                   multiline
                 />
@@ -119,21 +123,21 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
             </AnimatePresence>
           </div>
 
-          <div className="text-primary text-2xl sm:text-3xl md:text-4xl mt-1 sm:mt-2 text-right absolute bottom-4 right-4 sm:bottom-6 sm:right-8">"</div>
         </div>
 
-        <div className="flex gap-3 mt-8 sm:mt-10">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-8 sm:mt-10">
           {activeMessages.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === idx 
-                  ? "bg-primary w-8 shadow-[0_0_10px_rgba(14,194,119,0.5)]" 
-                  : "bg-primary/30 hover:bg-primary/50"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
+              className={`px-5 py-2 sm:px-6 sm:py-2.5 cursor-pointer rounded-full text-[18px] font-semibold transition-all duration-300 border ${currentIndex === idx
+                ? "bg-primary text-primary-foreground border-primary shadow-[0_0_15px_rgba(14,194,119,0.4)] scale-105"
+                : "bg-primary/5 text-foreground/70 hover:bg-primary/10 hover:text-foreground border-primary/20"
+                }`}
+              aria-label={`Show message ${idx + 1}`}
+            >
+              Message {idx + 1}
+            </button>
           ))}
         </div>
       </div>

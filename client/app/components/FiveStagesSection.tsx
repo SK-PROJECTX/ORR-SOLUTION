@@ -32,12 +32,21 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
   const stage5Description = getRichTextContent(processSection?.stage_5_description) || "Ensure lasting impact and continuous improvement";
 
   const stages = [
-    { prefix: "Discover", titleData: processSection?.stage_1_title, fallbackTitle: "Listen", description: processSection?.stage_1_description },
-    { prefix: "Diagnose", titleData: processSection?.stage_2_title, fallbackTitle: "Diagnose", description: processSection?.stage_2_description },
-    { prefix: "Design", titleData: processSection?.stage_3_title, fallbackTitle: "Design", description: processSection?.stage_3_description },
-    { prefix: "Deploy", titleData: processSection?.stage_4_title, fallbackTitle: "Implement", description: processSection?.stage_4_description },
-    { prefix: "Grow", titleData: processSection?.stage_5_title, fallbackTitle: "Sustain", description: processSection?.stage_5_description }
+    { prefix: "Discover", titleData: processSection?.stage_1_title, fallbackTitle: "We listen", description: processSection?.stage_1_description },
+    { prefix: "Diagnose", titleData: processSection?.stage_2_title, fallbackTitle: "We find root causes", description: processSection?.stage_2_description },
+    { prefix: "Design", titleData: processSection?.stage_3_title, fallbackTitle: "We shape solution with you", description: processSection?.stage_3_description },
+    { prefix: "Deploy", titleData: processSection?.stage_4_title, fallbackTitle: "We put them to work together", description: processSection?.stage_4_description },
+    { prefix: "Grow", titleData: processSection?.stage_5_title, fallbackTitle: "We optimise over time", description: processSection?.stage_5_description }
   ];
+
+  const cleanTitle = (data: any, prefix: string) => {
+    if (!data) return data;
+    if (typeof data === 'string') {
+      const regex = new RegExp(`^(<p>)?\\s*${prefix}\\s*[-:]\\s*`, 'i');
+      return data.replace(regex, '$1');
+    }
+    return data;
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -75,7 +84,7 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
 
   return (
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden font-poppins bg-background text-foreground transition-colors duration-300">
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
+
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">
@@ -90,9 +99,6 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
           <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-primary opacity-30"></div>
 
           {stages.map((stage, index) => {
-            const titleContent = getRichTextContent(stage.titleData) || stage.fallbackTitle;
-            const hasRepetition = titleContent.toLowerCase() === stage.prefix.toLowerCase();
-
             return (
               <div ref={el => { stagesRef.current[index] = el; }} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0 group">
                 <div className="relative z-10 w-8 sm:w-12 h-8 sm:h-12 bg-primary rounded-full flex items-center justify-center mr-6 sm:mr-8 flex-shrink-0 shadow-[0_0_15px_rgba(14,194,119,0.3)] group-hover:shadow-[0_0_20px_rgba(14,194,119,0.5)] transition-shadow duration-300">
@@ -101,14 +107,9 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
 
                 <div className="flex-1 pt-1">
                   <h3 className="flex flex-col mb-2 sm:mb-3">
-                    <span className="text-primary font-bold text-xs sm:text-sm tracking-widest uppercase mb-1 opacity-80">
-                      {stage.prefix}
+                    <span className="text-primary text-xl sm:text-2xl font-semibold">
+                      <SafeHTMLRenderer data={cleanTitle(stage.titleData, stage.prefix)} fallback={stage.fallbackTitle} />
                     </span>
-                    {!hasRepetition && (
-                      <span className="text-xl sm:text-2xl font-semibold">
-                        <SafeHTMLRenderer data={stage.titleData} fallback={stage.fallbackTitle} />
-                      </span>
-                    )}
                   </h3>
                   <p className="opacity-70 text-sm sm:text-base leading-relaxed max-w-2xl">
                     <SafeHTMLRenderer

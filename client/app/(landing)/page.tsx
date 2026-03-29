@@ -10,6 +10,7 @@ import { HeroSection } from "./components/HeroSection";
 import MiniClientJourney from "../components/MiniClientJourney";
 import FiveStagesSection from "../components/FiveStagesSection";
 import FAQSection from "../components/FAQSection";
+import ORRReportSection from "../components/ORRReportSection";
 import ORRRoleSection from "../components/ORRRoleSection";
 import { AuthService } from "../../lib/auth";
 import LoginModal from "../../components/LoginModal";
@@ -100,6 +101,9 @@ export default function LandingPage() {
           content={content?.faqs}
           onUpdate={updateFAQ}
         />
+      </div>
+      <div className="scroll-section" id="report-section">
+        <ORRReportSection />
       </div>
       {/* <div className="scroll-section">
         <MidClientJourneySection />

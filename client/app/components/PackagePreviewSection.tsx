@@ -40,7 +40,7 @@ export default function PackagePreviewSection() {
 
   return (
     <section className="w-full py-24 px-6 relative overflow-hidden bg-background text-foreground transition-colors duration-300" >
-      <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-5 dark:opacity-20 pointer-events-none" />
+      
 
       <div className="relative z-10 max-w-5xl mx-auto">
         <div ref={titleRef} className="text-center mb-20 space-y-4">
