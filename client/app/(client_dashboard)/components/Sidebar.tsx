@@ -125,11 +125,11 @@ export default function Sidebar() {
               { label: "Document Vault", 
                 href: "/document",
                 subItems: [
-                    { label: " Report & Summaries", href: "/document/reports" },
-                    { label: "Uploaded Documents", href: '/document/uploads' },
+                    { label: " Report & Summaries", href: "/document/reports", locked: true },
+                    { label: "Uploaded Documents", href: '/document/uploads', locked: true },
                     // { label: "Generated Reports", href: "/document/generated-reports" },
-                    { label: "ORR's Templates", href: "/document/templates" },
-                    { label: "Contracts", href: "/document/contracts" },
+                    { label: "ORR's Templates", href: "/document/templates", locked: true, lockTitle: "Premium Feature", lockMessage: "Pay €45 upfront to unlock ORR's exclusive templates and resources." },
+                    { label: "Contracts", href: "/document/contracts", locked: true },
                     { label: "Service Catalogue", href: "/document/catalogue" }
                 ]
               },
@@ -230,6 +230,9 @@ type NavItem = {
   label: string;
   href: string;
   subItems?: NavItem[];
+  locked?: boolean;
+  lockTitle?: string;
+  lockMessage?: string;
 };
 
 function SidebarGroup({ 
@@ -287,21 +290,31 @@ function SidebarGroup({
                   {subOpen[item.href] && (
                     <div className="ml-4 mt-1 space-y-1">
                       {item.subItems.map((subItem) => (
-                        subItem.label === "ORR's Templates" ? (
+                        subItem.locked ? (
                           <div
                             key={subItem.href}
-                            className="relative"
+                            className="relative group block hover:z-[100]"
                           >
-                            <div className={`group flex items-center justify-between px-2 py-1 text-xs rounded cursor-not-allowed  ${
-                              pathname === subItem.href ? "text-lemon" : "text-foreground "
+                            <div className={`flex items-center justify-between px-2 py-1 text-xs rounded cursor-not-allowed  ${
+                              pathname === subItem.href ? "text-lemon" : "text-foreground opacity-70"
                             }`}>
                               <span className="flex items-center gap-2">
                                 {subItem.label}
-                                <Lock className="w-3 h-3" />
+                                <Lock className="w-3 h-3 text-foreground/50" />
                               </span>
-                              <div className="absolute left-[-10] mr-2 top-0 bg-card border border-primary/50 rounded-lg p-3 text-xs text-foreground invisible group-hover:visible transition-all z-50 w-48 shadow-xl">
-                                <p className="font-medium mb-1 text-primary">Premium Feature</p>
-                                <p>Pay €45 upfront to unlock ORR's exclusive templates and resources.</p>
+                              
+                              {/* High-visibility contrasting tooltip */}
+                              <div className="absolute left-4 top-full mt-2 bg-foreground text-background rounded-xl p-3.5 text-xs opacity-0 group-hover:opacity-100 invisible group-hover:visible scale-95 group-hover:scale-100 transition-all duration-200 ease-out z-[100] w-56 shadow-[0_10px_40px_-5px_rgba(0,0,0,0.3)] pointer-events-none origin-top-left">
+                                {/* Tooltip Arrow */}
+                                <div className="absolute -top-1.5 left-4 w-3 h-3 bg-foreground rotate-45 rounded-sm"></div>
+                                
+                                <div className="relative z-10">
+                                  <p className="font-bold mb-1.5 text-background flex items-center gap-1.5">
+                                    <Lock className="w-3 h-3" />
+                                    {subItem.lockTitle || "Locked Feature"}
+                                  </p>
+                                  <p className="opacity-90 leading-relaxed font-medium text-[11px]">{subItem.lockMessage || "This document section is currently locked."}</p>
+                                </div>
                               </div>
                             </div>
                           </div>
