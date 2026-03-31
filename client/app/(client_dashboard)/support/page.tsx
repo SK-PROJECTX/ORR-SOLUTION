@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Mail, Home, Phone, MessageSquare, ArrowRight, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { useSupportStore } from "@/store/supportStore";
+import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
 const priorityOptions = [
@@ -22,6 +23,7 @@ const statusConfig: Record<string, { icon: React.ReactNode; color: string }> = {
 
 export default function SupportPage() {
   const router = useRouter();
+  const { user } = useAuthStore();
   const { createTicket, fetchTickets, tickets, isSubmitting, isLoading } = useSupportStore();
   const [formData, setFormData] = useState({
     contact_name: '',
@@ -30,6 +32,16 @@ export default function SupportPage() {
     description: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        contact_name: prev.contact_name || `${user.first_name} ${user.last_name}`.trim(),
+        contact_email: prev.contact_email || user.email
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     fetchTickets();
@@ -42,7 +54,12 @@ export default function SupportPage() {
     }
     try {
       await createTicket(formData);
-      setFormData({ contact_name: '', contact_email: '', contact_website: '', description: '' });
+      setFormData({
+        contact_name: user ? `${user.first_name} ${user.last_name}`.trim() : '',
+        contact_email: user ? user.email : '',
+        contact_website: '',
+        description: ''
+      });
       setSubmitted(true);
       fetchTickets(); // Refresh ticket list
       setTimeout(() => setSubmitted(false), 5000);
