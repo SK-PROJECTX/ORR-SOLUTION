@@ -79,7 +79,8 @@ export const useOnboardingStore = create<OnboardingState>()((set) => ({
 
   checkOnboardingStatus: async () => {
     try {
-      const response = await api.get('/onboarding/me/');
+      // Use explicit typing for the API response
+      const response = await api.get<OnboardingStatus | { data: OnboardingStatus } | any>('/onboarding/me/');
 
       // If 204 No Content, it means onboarding is already completed or not required
       if (response.status === 204) {
@@ -87,20 +88,22 @@ export const useOnboardingStore = create<OnboardingState>()((set) => ({
         return true;
       }
 
-      // Handle both { data: ... } and flat response
+      // Handle both { data: ... } and flat response wrapping
       const status = response.data?.data || response.data;
       set({ onboardingStatus: status });
 
       return !!status?.is_completed;
 
-    } catch (error: unknown) {
-      if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { status?: number } };
-        if (axiosError.response?.status === 204) {
-          set({ onboardingStatus: { is_completed: true } });
-          return true;
-        }
+    } catch (error: any) {
+      // Handle expected states gracefully without logging errors
+      const statusCode = error.response?.status;
+      
+      // 404 means no onboarding record yet, 401 means unauthenticated
+      if (statusCode === 404 || statusCode === 401) {
+        return false;
       }
+
+      // Only log genuine unexpected errors
       console.error('Failed to check onboarding status:', error);
       return false;
     }

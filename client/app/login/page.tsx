@@ -5,11 +5,13 @@ import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { LanguageToggle } from "../components/LanguageToggle";
 import { useAuthStore } from "@/store/authStore";
 import { useOnboardingStore } from "@/store/onboardingStore";
+import { useLanguage } from "../components/LanguageProvider";
 
 export default function Page() {
-
+  const { t, language, interpolate } = useLanguage();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -79,7 +81,7 @@ export default function Page() {
 
           <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
             <ChevronLeft className="my-0" />
-            <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
+            <Link href={"/"} className="text-sm font-poppins font-regular">{interpolate(t.login.backToHomepage)}</Link>
           </div>
         </div>
 
@@ -110,14 +112,15 @@ export default function Page() {
 
             <div className="mt-0">
               <h2 className="text-2xl font-extrabold mb-2 md:text-start text-center text-[#FFFFFF]">
-                Welcome <span className="text-[#61FD51]">Back</span>
+                {interpolate(t.login.welcome)} <span className="text-[#61FD51]">{interpolate(t.login.back)}</span>
               </h2>
               <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-                Sign in to your dashboard
+                {interpolate(t.login.signInSubtitle)}
               </p>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-8 flex items-center gap-4">
+              <LanguageToggle />
               <ThemeToggle />
             </div>
 
@@ -133,7 +136,7 @@ export default function Page() {
           <form className="space-y-7" onSubmit={handleSubmit}>
             <input
               type="email"
-              placeholder="Email"
+              placeholder={interpolate(t.login.email)}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full border-b border-gray-300 px-6 py-5 focus:outline-none text-white"
@@ -142,7 +145,7 @@ export default function Page() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={interpolate(t.login.password)}
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="w-full border-b border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
@@ -166,7 +169,7 @@ export default function Page() {
                   onChange={(e) => setRemember(e.target.checked)}
                   className="form-checkbox h-4 w-4 text-[#61FD51] bg-transparent border-gray-300 rounded focus:ring-0 mr-2"
                 />
-                <span className="ml-2">Remember me</span>
+                <span className="ml-2">{interpolate(t.login.rememberMe)}</span>
               </label>
 
               <div className="hidden md:flex items-center">
@@ -174,7 +177,7 @@ export default function Page() {
                   href="/forgot-password"
                   className="px-6 font-extrabold underline text-md text-[#61FD51] "
                 >
-                  Forgot Password?
+                  {interpolate(t.login.forgotPassword)}
                 </Link>
               </div>
             </div>
@@ -183,7 +186,7 @@ export default function Page() {
               disabled={isLoading}
               className="w-full bg-[#13BE77] py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {isLoading ? "Signing In..." : "Login"}
+              {isLoading ? interpolate(t.login.signingIn) : interpolate(t.login.login)}
             </button>
 
             <div className="hidden md:flex items-end  justify-end mt-4 ">
@@ -191,7 +194,7 @@ export default function Page() {
                 href="/register"
                 className="px-6 font-extrabold text-md text-[#FFFFFF] "
               >
-                New here? <span className="text-[#61FD51] underline">Register</span>
+                {interpolate(t.login.newHere)} <span className="text-[#61FD51] underline">{interpolate(t.login.register)}</span>
               </Link>
             </div>
           </form>

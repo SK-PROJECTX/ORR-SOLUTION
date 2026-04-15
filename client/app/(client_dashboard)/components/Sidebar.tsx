@@ -6,6 +6,9 @@ import { ChevronDown, ChevronRight, LayoutGrid, Menu, X, LogOut, Loader2, Lock }
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useProfileStore } from "@/store/profileStore";
+import { useLanguage } from "../../components/LanguageProvider";
+import { LanguageToggle } from "../../components/LanguageToggle";
+import { ThemeToggle } from "../../components/ThemeToggle";
 
 type OpenState = {
   home: boolean;
@@ -16,6 +19,7 @@ type OpenState = {
 };
 
 export default function Sidebar() {
+  const { t, interpolate } = useLanguage();
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
   const { profile, fetchProfile } = useProfileStore();
@@ -65,12 +69,12 @@ export default function Sidebar() {
 
         <nav className="space-y-1">
           <SidebarGroup
-            label="Home"
+            label={interpolate(t.dashboard.sidebar.groups.home)}
             open={open.home}
             onClick={() => toggle("home")}
             items={[
-              { label: "Home/Dashboard", href: "/dashboard" },
-              { label: "Analytics", href: "/analytics" }
+              { label: interpolate(t.dashboard.sidebar.items.dashboard), href: "/dashboard" },
+              { label: interpolate(t.dashboard.sidebar.items.analytics), href: "/analytics" }
             ]}
             pathname={pathname}
             subOpen={subOpen}
@@ -78,79 +82,52 @@ export default function Sidebar() {
           />
 
           <SidebarGroup
-            label="Pages"
+            label={interpolate(t.dashboard.sidebar.groups.pages)}
             open={open.pages}
             onClick={() => toggle("pages")}
             items={[
-              // { 
-              //   label: "Profile", 
-              //   href: "/profile",
-              //   subItems: [
-              //     { label: "Profile Overview", href: "/profile/overview" },
-              //     { label: "Teams", href: "/profile/teams" },
-              //     { label: "All Projects", href: "/profile/projects" }
-              //   ]
-              // },
-              // { label: "Users", href: "/users" },
               {
-                label: "My Profile",
+                label: interpolate(t.dashboard.sidebar.items.myProfile),
                 href: "/account",
                 subItems: [
-                  { label: "Personal Info", href: "/account/settings" },
-                  {label: "Personalization", href: "/account/personalization" },
-                  { label: "Business Info", href: "/account/business-info" },
-                  { label: "My Wallet", href: "/account/wallet" },
+                  { label: interpolate(t.dashboard.sidebar.items.personalInfo), href: "/account/settings" },
+                  { label: interpolate(t.dashboard.sidebar.items.personalization), href: "/account/personalization" },
+                  { label: interpolate(t.dashboard.sidebar.items.businessInfo), href: "/account/business-info" },
+                  { label: interpolate(t.dashboard.sidebar.items.myWallet), href: "/account/wallet" },
                 ]
               },
               {
-                label: "Consultations", 
+                label: interpolate(t.dashboard.sidebar.groups.consultations), 
                 href: "/consultations",
                 subItems: [
-                  { label: "Book a Meeting", href: "/consultations/book" },
-                  { label: "Upcoming Consultations", href: "/consultations/upcoming-consultations" },
-                  { label: "Past Consultations", href: "/consultations/past-consultations" },
+                  { label: interpolate(t.dashboard.sidebar.items.bookMeeting), href: "/consultations/book" },
+                  { label: interpolate(t.dashboard.sidebar.items.upcomingConsultations), href: "/consultations/upcoming-consultations" },
+                  { label: interpolate(t.dashboard.sidebar.items.pastConsultations), href: "/consultations/past-consultations" },
                 ]
               },
-              // { label: "Projects"// { label: "Projects"              // { label: "Projects", href: "/projects" },
-              //  {
-              //   label: "Pricing Page",
-              //   href: "/pricing",
-              //   subItems: [
-              //     { label: "Pricing", href: "/pricing" },
-              //     { label: "Payment Details", href: "/pricing/payment" },
-              //     { label: "Billing History", href: "/pricing/billing" },
-              //   ]
-              // },
-              // { label: "Charts", href: "/charts" },
-              { label: "Document Vault", 
+              { label: interpolate(t.dashboard.sidebar.groups.documentVault), 
                 href: "/document",
                 subItems: [
-                    { label: " Report & Summaries", href: "/document/reports", locked: true },
-                    { label: "Uploaded Documents", href: '/document/uploads', locked: true },
-                    // { label: "Generated Reports", href: "/document/generated-reports" },
-                    { label: "ORR's Templates", href: "/document/templates", locked: true, lockTitle: "Premium Feature", lockMessage: "Pay €45 upfront to unlock ORR's exclusive templates and resources." },
-                    { label: "Contracts", href: "/document/contracts", locked: true },
-                    { label: "Service Catalogue", href: "/document/catalogue" }
+                    { label: interpolate(t.dashboard.sidebar.items.reports), href: "/document/reports", locked: true },
+                    { label: interpolate(t.dashboard.sidebar.items.uploads), href: '/document/uploads', locked: true },
+                    { label: interpolate(t.dashboard.sidebar.items.templates), href: "/document/templates", locked: true, lockTitle: interpolate(t.dashboard.sidebar.lock.premium), lockMessage: interpolate(t.dashboard.sidebar.lock.premiumMsg) },
+                    { label: interpolate(t.dashboard.sidebar.items.contracts), href: "/document/contracts", locked: true },
+                    { label: interpolate(t.dashboard.sidebar.items.catalogue), href: "/document/catalogue" }
                 ]
               },
 
-              { label: "Messages & Notification", href: '/messages' },
+              { label: interpolate(t.dashboard.sidebar.items.messages), href: '/messages' },
 
-              { label: "Updates & Announcement", href: "/updates" },
+              { label: interpolate(t.dashboard.sidebar.items.updates), href: "/updates" },
 
-              { label: "Support", 
+              { label: interpolate(t.dashboard.sidebar.groups.support), 
                 href: "/support",
                 subItems: [
-                  { label: "FAQs", href: "/faq" },
-                  { label: "Request Support", href: "/support" },
-                  { label: "Support History", href: "/support-history" }
+                  { label: interpolate(t.dashboard.sidebar.items.faqs), href: "/faq" },
+                  { label: interpolate(t.dashboard.sidebar.items.requestSupport), href: "/support" },
+                  { label: interpolate(t.dashboard.sidebar.items.supportHistory), href: "/support-history" }
                 ]
               }
-
-              // { label: "Request Support", href: "/support" },
-              // { label: "Support History", href: "/support-history" },
-              // { label: "Meeting Request System", href: "/meeting-request" },
-              // { label: "Favorite /Saved Items", href: "/favourite" },
               // { label: "Quick Action scheduling", href: "/scheduling" },
               // // { label: "Pre-meeting Forms & Question", href: "/pre-meeting" },
               // { label: "Feedback Mechanisms", href: "/feedback" },
@@ -194,32 +171,50 @@ export default function Sidebar() {
           /> */}
         </nav>
       </div>
-
-      <div className="bg-primary text-background rounded-xl p-3 mt-10 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold overflow-hidden">
-            {profile?.profile_pic ? (
-              <img 
-                src={profile.profile_pic} 
-                alt="Profile" 
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              <span>{profile?.first_name?.[0] || 'U'}{profile?.last_name?.[0] || ''}</span>
-            )}
-          </div>
-          <div className="leading-tight text-[12px] font-medium">
-            <div className="font-semibold">{profile?.first_name} {profile?.last_name}</div>
-            <div className="text-[10px] opacity-80 truncate max-w-[120px]">{user?.email}</div>
+      
+      <div className="mt-auto space-y-4">
+        {/* Settings Toggles */}
+        <div className="px-2">
+          <div className="flex items-center justify-between gap-4 p-3 bg-secondary/20 rounded-xl border border-secondary/30">
+            <div className="flex flex-col gap-1.5 w-full">
+              <span className="text-[10px] font-bold uppercase tracking-wider opacity-50 px-1">
+                Display & Language
+              </span>
+              <div className="flex items-center justify-between w-full">
+                <LanguageToggle />
+                <ThemeToggle />
+              </div>
+            </div>
           </div>
         </div>
-        <button 
-          onClick={logout}
-          className="p-2 hover:bg-background/20 rounded-lg transition-colors"
-          title="Logout"
-        >
-          <LogOut size={16} />
-        </button>
+
+        {/* User Profile Card */}
+        <div className="bg-primary text-background rounded-xl p-3 flex items-center justify-between shadow-lg">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground font-bold overflow-hidden border border-background/20 flex-shrink-0">
+              {profile?.profile_pic ? (
+                <img 
+                  src={profile.profile_pic} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <span className="text-sm">{profile?.first_name?.[0] || interpolate(t.dashboard.sidebar.items.user)[0]}{profile?.last_name?.[0] || ''}</span>
+              )}
+            </div>
+            <div className="leading-tight text-[11px] font-medium overflow-hidden">
+              <div className="font-bold truncate max-w-[100px]">{profile?.first_name} {profile?.last_name}</div>
+              <div className="text-[9px] opacity-80 truncate max-w-[100px]">{user?.email}</div>
+            </div>
+          </div>
+          <button 
+            onClick={logout}
+            className="p-2 hover:bg-background/20 rounded-lg transition-colors flex-shrink-0"
+            title={interpolate(t.dashboard.sidebar.items.logout)}
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
       </div>
     </aside>
     </>
@@ -252,6 +247,7 @@ function SidebarGroup({
   subOpen: {[key: string]: boolean};
   toggleSub: (key: string) => void;
 }) {
+  const { t, interpolate } = useLanguage();
   const isActive = items.some(item => pathname === item.href || item.subItems?.some(sub => pathname === sub.href));
   
   return (
@@ -311,9 +307,9 @@ function SidebarGroup({
                                 <div className="relative z-10">
                                   <p className="font-bold mb-1.5 text-background flex items-center gap-1.5">
                                     <Lock className="w-3 h-3" />
-                                    {subItem.lockTitle || "Locked Feature"}
+                                    {subItem.lockTitle || interpolate(t.dashboard.sidebar.lock.locked)}
                                   </p>
-                                  <p className="opacity-90 leading-relaxed font-medium text-[11px]">{subItem.lockMessage || "This document section is currently locked."}</p>
+                                  <p className="opacity-90 leading-relaxed font-medium text-[11px]">{subItem.lockMessage || interpolate(t.dashboard.sidebar.lock.lockedMsg)}</p>
                                 </div>
                               </div>
                             </div>
