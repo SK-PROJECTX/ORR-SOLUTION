@@ -1,13 +1,13 @@
-"use client";
-
-import Image from "next/image";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/app/components/LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CookiePolicy() {
+  const { t } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef(null);
   const cardRef = useRef(null);
@@ -172,15 +172,13 @@ export default function CookiePolicy() {
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 text-foreground tracking-tight">
-            Cookie Policy
+            {t.cookiePolicy.title}
           </h1>
           <p
             ref={descRef}
             className="text-lg md:text-xl opacity-70 max-w-3xl mx-auto leading-relaxed"
           >
-            This Cookie Policy explains how ORR Network uses cookies and similar
-            technologies on the ORR Client Portal, Admin Portal, and all
-            associated digital services.
+            {t.cookiePolicy.intro}
           </p>
         </div>
       </section>
@@ -213,18 +211,13 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    INTRODUCTION
+                    {t.cookiePolicy.s1Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-3">
-                    This Cookie Policy explains how ORR Network
-                    (&quot;ORR&quot;, &quot;we&quot;, &quot;us&quot;) uses
-                    cookies and similar technologies on the ORR Client Portal,
-                    Admin Portal, and all associated digital services
-                    (&quot;Platform&quot;).
+                    {t.cookiePolicy.s1p1}
                   </p>
                   <p className="opacity-80 leading-relaxed">
-                    This document should be read together with the ORR Privacy
-                    Policy.
+                    {t.cookiePolicy.s1p2}
                   </p>
                 </div>
               </div>
@@ -241,24 +234,22 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    WHAT ARE COOKIES?
+                    {t.cookiePolicy.s2Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-3">
-                    Cookies are small text files placed on your device when you
-                    access our Platform.
+                    {t.cookiePolicy.s2p1}
                   </p>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    Cookies may:
+                    {t.cookiePolicy.s2p2}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1">
-                    <li>enable platform functionality,</li>
-                    <li>remember preferences,</li>
-                    <li>support security and authentication,</li>
-                    <li>measure system performance.</li>
+                    <li>{t.cookiePolicy.s2li1}</li>
+                    <li>{t.cookiePolicy.s2li2}</li>
+                    <li>{t.cookiePolicy.s2li3}</li>
+                    <li>{t.cookiePolicy.s2li4}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed mt-3">
-                    We do not use cookies for advertising, profiling, or
-                    cross-site tracking.
+                    {t.cookiePolicy.s2p3}
                   </p>
                 </div>
               </div>
@@ -275,77 +266,72 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    TYPES OF COOKIES USED BY ORR
+                    {t.cookiePolicy.s3Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    ORR uses only the categories of cookies necessary to operate
-                    a secure, personalised consultation and workspace platform.
-                    We do not use any third-party marketing cookies.
+                    {t.cookiePolicy.s3p1}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">
-                    3.1 Essential (Strictly Necessary) Cookies
+                    {t.cookiePolicy.s31Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    These cookies are required for the Platform to function and
-                    cannot be disabled.
+                    {t.cookiePolicy.s31p1}
                   </p>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    They enable:
+                    {t.cookiePolicy.s31p2}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-3">
-                    <li>login and authentication</li>
-                    <li>session integrity and security</li>
-                    <li>navigation between secure areas</li>
-                    <li>form submissions</li>
-                    <li>payment and subscription processes</li>
-                    <li>access to workspace and DS modules</li>
+                    <li>{t.cookiePolicy.s31li1}</li>
+                    <li>{t.cookiePolicy.s31li2}</li>
+                    <li>{t.cookiePolicy.s31li3}</li>
+                    <li>{t.cookiePolicy.s31li4}</li>
+                    <li>{t.cookiePolicy.s31li5}</li>
+                    <li>{t.cookiePolicy.s31li6}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed italic">
-                    Without these cookies, the Platform cannot operate.
+                    {t.cookiePolicy.s31italic}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">
-                    3.2 Preference Cookies
+                    {t.cookiePolicy.s32Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    These cookies store user-selected settings, including:
+                    {t.cookiePolicy.s32p1}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-3">
-                    <li>interface language</li>
-                    <li>communication preferences</li>
-                    <li>dashboard personalisation settings</li>
-                    <li>workspace display choices</li>
+                    <li>{t.cookiePolicy.s32li1}</li>
+                    <li>{t.cookiePolicy.s32li2}</li>
+                    <li>{t.cookiePolicy.s32li3}</li>
+                    <li>{t.cookiePolicy.s32li4}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    They improve usability but are optional. If disabled, some
-                    preferences will reset each session.
+                    {t.cookiePolicy.s32p2}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3 mt-6">
-                    3.3 Internal Analytics Cookies (Non-Third-Party)
+                    {t.cookiePolicy.s33Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    ORR uses internal analytics only to understand:
+                    {t.cookiePolicy.s33p1}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-3">
-                    <li>which modules are used</li>
-                    <li>performance and stability</li>
-                    <li>tool adoption</li>
-                    <li>Platform improvements</li>
+                    <li>{t.cookiePolicy.s33li1}</li>
+                    <li>{t.cookiePolicy.s33li2}</li>
+                    <li>{t.cookiePolicy.s33li3}</li>
+                    <li>{t.cookiePolicy.s33li4}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    Characteristics:
+                    {t.cookiePolicy.s33p2}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-3">
-                    <li>no third-party tracking</li>
-                    <li>no advertising networks</li>
-                    <li>no cross-site identifiers</li>
-                    <li>no sharing of analytics data outside ORR</li>
+                    <li>{t.cookiePolicy.s33li5}</li>
+                    <li>{t.cookiePolicy.s33li6}</li>
+                    <li>{t.cookiePolicy.s33li7}</li>
+                    <li>{t.cookiePolicy.s33li8}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed">
-                    These cookies support ORR&apos;s Behaviour Engine but do not
-                    track users outside the Platform.
+                    {t.cookiePolicy.s33p3}
                   </p>
                 </div>
               </div>
@@ -362,24 +348,21 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    COOKIES WE DO NOT USE
+                    {t.cookiePolicy.s4Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-3">
-                    To avoid ambiguity, ORR confirms that we do not use:
+                    {t.cookiePolicy.s4p1}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-3">
-                    <li>advertising cookies</li>
-                    <li>behavioural targeting cookies</li>
-                    <li>social media tracking pixels</li>
-                    <li>cross-site tracking identifiers</li>
-                    <li>
-                      Google Ads, Meta, TikTok or LinkedIn marketing cookies
-                    </li>
-                    <li>retargeting cookies</li>
+                    <li>{t.cookiePolicy.s4li1}</li>
+                    <li>{t.cookiePolicy.s4li2}</li>
+                    <li>{t.cookiePolicy.s4li3}</li>
+                    <li>{t.cookiePolicy.s4li4}</li>
+                    <li>{t.cookiePolicy.s4li5}</li>
+                    <li>{t.cookiePolicy.s4li6}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed font-semibold">
-                    No user data is monetised or shared with third-party
-                    advertisers.
+                    {t.cookiePolicy.s4bold}
                   </p>
                 </div>
               </div>
@@ -396,43 +379,38 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    WHY WE USE COOKIES
+                    {t.cookiePolicy.s5Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    We use cookies for the following legitimate purposes:
+                    {t.cookiePolicy.s5p1}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    5.1 Platform Functionality
+                    {t.cookiePolicy.s51Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    Ensuring that secured areas such as the Workspace, Document
-                    Vault, Consultations, and Billing modules function
-                    correctly.
+                    {t.cookiePolicy.s51p}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    5.2 Personalisation
+                    {t.cookiePolicy.s52Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    Providing content relevance, improving the interface, and
-                    remembering user preferences.
+                    {t.cookiePolicy.s52p}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    5.3 Security
+                    {t.cookiePolicy.s53Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    Preventing session hijacking, verifying login integrity, and
-                    detecting abuse.
+                    {t.cookiePolicy.s53p}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    5.4 Performance & Analytics
+                    {t.cookiePolicy.s54Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed">
-                    Understanding how features are used to maintain system
-                    reliability and improve the user experience.
+                    {t.cookiePolicy.s54p}
                   </p>
                 </div>
               </div>
@@ -449,42 +427,38 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    CONSENT MANAGEMENT
+                    {t.cookiePolicy.s6Title}
                   </h2>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    6.1 Consent on First Visit
+                    {t.cookiePolicy.s61Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    Upon first access, users are presented with a cookie banner
-                    that:
+                    {t.cookiePolicy.s61p}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-4">
-                    <li>explains categories of cookies</li>
+                    <li>{t.cookiePolicy.s61li1}</li>
                     <li>
-                      allows acceptance or rejection of non-essential cookies
+                      {t.cookiePolicy.s61li2}
                     </li>
-                    <li>always enables essential cookies</li>
+                    <li>{t.cookiePolicy.s61li3}</li>
                   </ul>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    6.2 Modifying Consent
+                    {t.cookiePolicy.s62Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    Users may change their cookie settings at any time through
-                    the Portal&apos;s &quot;Cookie Preferences&quot; page.
+                    {t.cookiePolicy.s62p}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
-                    6.3 Withdrawal of Consent
+                    {t.cookiePolicy.s63Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    If consent is withdrawn, the Platform will deactivate all
-                    non-essential cookies.
+                    {t.cookiePolicy.s63p1}
                   </p>
                   <p className="opacity-80 leading-relaxed">
-                    Essential cookies remain because they are required for core
-                    Platform operation.
+                    {t.cookiePolicy.s63p2}
                   </p>
                 </div>
               </div>
@@ -501,11 +475,10 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    COOKIE RETENTION DURATIONS
+                    {t.cookiePolicy.s7Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    To comply with GDPR storage limitation principles, ORR
-                    applies:
+                    {t.cookiePolicy.s7p1}
                   </p>
 
                   <div className="overflow-x-auto">
@@ -513,49 +486,48 @@ export default function CookiePolicy() {
                       <thead>
                         <tr className="bg-gray-800">
                           <th className="border border-gray-600 px-4 py-2 text-left text-foreground">
-                            Cookie Type
+                            {t.cookiePolicy.tableColType}
                           </th>
                           <th className="border border-gray-600 px-4 py-2 text-left text-foreground">
-                            Retention Period
+                            {t.cookiePolicy.tableColRetention}
                           </th>
                           <th className="border border-gray-600 px-4 py-2 text-left text-foreground">
-                            Notes
+                            {t.cookiePolicy.tableColNotes}
                           </th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Essential Cookies
+                            {t.cookiePolicy.tableRow1Type}
                           </td>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Session-only
+                            {t.cookiePolicy.tableRow1Retention}
                           </td>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Deleted automatically when user logs out or closes
-                            browser.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Preference Cookies
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Up to 12 months
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Extended only if user reconsents.
+                            {t.cookiePolicy.tableRow1Notes}
                           </td>
                         </tr>
                         <tr>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Internal Analytics Cookies
+                            {t.cookiePolicy.tableRow2Type}
                           </td>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Up to 12 months
+                            {t.cookiePolicy.tableRow2Retention}
                           </td>
                           <td className="border border-gray-600 px-4 py-2 opacity-80">
-                            Never shared with external parties.
+                            {t.cookiePolicy.tableRow2Notes}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="border border-gray-600 px-4 py-2 opacity-80">
+                            {t.cookiePolicy.tableRow3Type}
+                          </td>
+                          <td className="border border-gray-600 px-4 py-2 opacity-80">
+                            {t.cookiePolicy.tableRow3Retention}
+                          </td>
+                          <td className="border border-gray-600 px-4 py-2 opacity-80">
+                            {t.cookiePolicy.tableRow3Notes}
                           </td>
                         </tr>
                       </tbody>
@@ -563,7 +535,7 @@ export default function CookiePolicy() {
                   </div>
 
                   <p className="opacity-80 leading-relaxed">
-                    These durations reflect strict minimisation practices.
+                    {t.cookiePolicy.s7p2}
                   </p>
                 </div>
               </div>
@@ -580,20 +552,18 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    THIRD-PARTY COOKIES
+                    {t.cookiePolicy.s8Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    ORR does not permit:
+                    {t.cookiePolicy.s8p1}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-4">
-                    <li>third-party trackers</li>
-                    <li>advertisements</li>
-                    <li>embedded social-media cookies</li>
+                    <li>{t.cookiePolicy.s8li1}</li>
+                    <li>{t.cookiePolicy.s8li2}</li>
+                    <li>{t.cookiePolicy.s8li3}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed">
-                    If a user accesses an external service (e.g., payment
-                    provider), that service&apos;s cookie policy applies
-                    independently.
+                    {t.cookiePolicy.s8p2}
                   </p>
                 </div>
               </div>
@@ -610,25 +580,25 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    HOW TO CONTROL COOKIES
+                    {t.cookiePolicy.s9Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    Users may:
+                    {t.cookiePolicy.s9p1}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1 mb-4">
-                    <li>adjust cookie preferences within the Platform</li>
-                    <li>block cookies through browser settings</li>
-                    <li>delete cookies at any time</li>
+                    <li>{t.cookiePolicy.s9li1}</li>
+                    <li>{t.cookiePolicy.s9li2}</li>
+                    <li>{t.cookiePolicy.s9li3}</li>
                   </ul>
                   <p className="opacity-80 leading-relaxed mb-2">
-                    However, blocking essential cookies will prevent:
+                    {t.cookiePolicy.s9p2}
                   </p>
                   <ul className="list-disc ml-6 opacity-80 leading-relaxed space-y-1">
-                    <li>login</li>
-                    <li>access to Workspace</li>
-                    <li>use of DS modules</li>
-                    <li>saving preferences</li>
-                    <li>operating consultations</li>
+                    <li>{t.cookiePolicy.s9li4}</li>
+                    <li>{t.cookiePolicy.s9li5}</li>
+                    <li>{t.cookiePolicy.s9li6}</li>
+                    <li>{t.cookiePolicy.s9li7}</li>
+                    <li>{t.cookiePolicy.s9li8}</li>
                   </ul>
                 </div>
               </div>
@@ -645,14 +615,13 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    UPDATES TO THIS POLICY
+                    {t.cookiePolicy.s10Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-3">
-                    We may update this Cookie Policy to reflect technological
-                    changes, legal updates, or service expansions.
+                    {t.cookiePolicy.s10p1}
                   </p>
                   <p className="opacity-80 leading-relaxed">
-                    Substantial changes will be notified within the Platform.
+                    {t.cookiePolicy.s10p2}
                   </p>
                 </div>
               </div>
@@ -669,16 +638,16 @@ export default function CookiePolicy() {
                 </div>
                 <div className="flex-1 min-w-0 policy-content">
                   <h2 className="text-2xl font-bold text-foreground mb-4">
-                    CONTACT US
+                    {t.cookiePolicy.s11Title}
                   </h2>
                   <p className="opacity-80 leading-relaxed mb-4">
-                    For any questions about cookies or data privacy:
+                    {t.cookiePolicy.s11p1}
                   </p>
                   <p className="opacity-80 leading-relaxed">
-                    <strong className="text-foreground">Email:</strong>{" "}
+                    <strong className="text-foreground">{t.cookiePolicy.s11email}</strong>{" "}
                     privacy@orr.solutions
                     <br />
-                    <strong className="text-foreground">Website:</strong>{" "}
+                    <strong className="text-foreground">{t.cookiePolicy.s11website}</strong>{" "}
                     www.orr.solutions
                   </p>
                 </div>

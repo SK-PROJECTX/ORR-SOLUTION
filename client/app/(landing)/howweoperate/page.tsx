@@ -4,6 +4,8 @@ import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import { getRichTextContent, getRichTextHTML } from "../../../lib/rich-text-utils";
 import Link from "next/link";
+import { useLanguage } from "../../components/LanguageProvider";
+import { useCachedData } from "../../../hooks/useCachedData";
 
 interface ProcessStep {
   id: number;
@@ -46,17 +48,18 @@ interface HowWeOperateData {
   steps: ProcessStep[];
 }
 
-import { useCachedData } from "../../../hooks/useCachedData";
+
 
 const processData = (data: any) => data;
 
 export default function StickyScrollSplit() {
+  const { t, language } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data, loading } = useCachedData<HowWeOperateData>(
     'orr_how_we_operate_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/how-we-operate/`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
     (data) => data
   );
 
@@ -98,7 +101,7 @@ export default function StickyScrollSplit() {
       <div className="relative w-full py-20 pt-32 text-foreground">
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
           <h1 className="text-center text-primary text-5xl md:text-6xl font-bold mb-12">
-            <span dangerouslySetInnerHTML={getRichTextHTML(data.page.hero_title)} />
+            <span dangerouslySetInnerHTML={getRichTextHTML(data.page.hero_title || t.howWeOperate.heroTitle)} />
           </h1>
         </div>
       </div>

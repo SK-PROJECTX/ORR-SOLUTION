@@ -4,7 +4,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from 'next/link';
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
+import { useLanguage } from './LanguageProvider';
 
 interface RichTextData {
   content: string;
@@ -27,6 +28,7 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const { t, language, interpolate } = useLanguage();
 
   useEffect(() => {
     if (content) {
@@ -37,16 +39,10 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
           const value = obj[key];
           if (value === null || value === undefined) {
             converted[key] = '';
-          } else if (typeof value === 'string') {
-            converted[key] = value;
-          } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-            if (value.content && typeof value.content === 'string') {
-              converted[key] = value.content;
-            } else {
-              converted[key] = '';
-            }
           } else {
-            converted[key] = String(value);
+            // Use the utility to extract content safely for current language
+            const text = getRichTextContent(value, language);
+            converted[key] = interpolate(text || '');
           }
         });
         return converted;
@@ -56,7 +52,7 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
         homepage: convertToString(content)
       });
     }
-  }, [content]);
+  }, [content, language, interpolate]);
 
   useEffect(() => {
     if (!allContent) return;
@@ -86,22 +82,22 @@ export default function Hero({ content, onContentUpdate }: HeroProps) {
       <div className="flex flex-col items-center text-center gap-6 sm:gap-8">
         <div className="max-w-5xl space-y-6 sm:space-y-8">
           <h1 ref={titleRef} className="text-white font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-7xl leading-tight">
-            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_title || "ORR Solutions – Listen. Solve. Optimise." }} />
+            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_title || interpolate(t.mainHero.title) }} />
           </h1>
 
           <p ref={subtitleRef} className="text-slate-200 text-base sm:text-lg md:text-xl max-w-4xl mx-auto leading-relaxed">
             <span dangerouslySetInnerHTML={{
-              __html: allContent?.homepage?.hero_subtitles || "Your business GP for complex systems — digital and living."
+              __html: allContent?.homepage?.hero_subtitle || interpolate(t.mainHero.subtitle)
             }} />
           </p>
 
           <p ref={descRef} className="text-slate-200 text-base sm:text-lg md:text-xl max-w-4xl mx-auto leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_subtitle || "We listen to the whole organisation, solve with structure and insight, and optimise so you can grow with confidence." }} />
+            <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_description || interpolate(t.mainHero.description) }} />
           </p>
 
           <div ref={buttonRef} className="pt-2 flex justify-center">
             <a href="/contact" className="inline-block bg-gradient-primary text-[#0C294D] font-semibold px-4 sm:px-6 md:px-7 py-3 sm:py-4 rounded-lg shadow-md hover:brightness-105 transition text-sm sm:text-base md:text-lg">
-              <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_cta_text || "Contact Us" }} />
+              <span dangerouslySetInnerHTML={{ __html: allContent?.homepage?.hero_cta_text || interpolate(t.mainHero.cta) }} />
             </a>
           </div>
         </div>

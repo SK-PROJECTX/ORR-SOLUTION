@@ -3,8 +3,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import EditableText from "../../components/EditableText";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "./LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,27 +21,24 @@ interface MiniClientJourneyProps {
   onUpdate?: (data: any) => Promise<void>;
 }
 
-const DEFAULT_MESSAGES = [
-  "Businesses thrive like living organisms when all their systems work together <b>around real human needs</b>. ORR keeps your “business physiology” in peak condition — aligning operations, communication, cash flow, compliance, data, and projects around the people you serve.",
-  "Some matters do not need faster action first; they need better diagnosis.",
-  "If the usual fixes were enough, you probably would not have been sent here. ORR helps organisations make sense of difficult situations before they become expensive, prolonged, or structurally embedded."
-];
-
 export default function MiniClientJourney({ content, onUpdate }: MiniClientJourneyProps) {
   const messageStrip = content;
+  const { t, language, interpolate } = useLanguage();
+  
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  let message1 = getRichTextContent(messageStrip?.message) || DEFAULT_MESSAGES[0];
+  let message1 = getRichTextContent(messageStrip?.message, language) || t.journey.messages[0];
   if (typeof message1 === 'string') {
     // Automatically convert *text* or **text** into <b>text</b>
     message1 = message1.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<b>$1</b>');
+    message1 = interpolate(message1);
   }
 
-  const activeMessages = [message1, DEFAULT_MESSAGES[1], DEFAULT_MESSAGES[2]];
+  const activeMessages = [message1, interpolate(t.journey.messages[1]), interpolate(t.journey.messages[2])];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -136,7 +134,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
                 }`}
               aria-label={`Show message ${idx + 1}`}
             >
-              Message {idx + 1}
+              {t.journey.messageLabel} {idx + 1}
             </button>
           ))}
         </div>

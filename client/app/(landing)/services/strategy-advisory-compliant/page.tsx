@@ -9,8 +9,10 @@ import DigitalSolutionsSection from "@/components/shared/DigitalSolutionsSection
 import CaseExampleSection from "@/components/shared/CaseExampleSection";
 import FinalCTASection from "@/components/strategy_advisory/FinalCTASection";
 import { getRichTextContent } from "@/lib/rich-text-utils";
+import { useLanguage } from "@/app/components/LanguageProvider";
 
 export default function StrategyAdvisoryPage() {
+  const { t, language, interpolate } = useLanguage();
   const { content, loading, error } = useStrategicAdvisoryContent();
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -46,13 +48,13 @@ export default function StrategyAdvisoryPage() {
   // Set page title and meta description from CMS
   useEffect(() => {
     if (content) {
-      document.title = getRichTextContent(content.meta_title) || getRichTextContent(content.hero_title);
+      document.title = interpolate(getRichTextContent(content.meta_title, language) || getRichTextContent(content.hero_title, language));
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription && content.meta_description) {
-        metaDescription.setAttribute('content', getRichTextContent(content.meta_description));
+        metaDescription.setAttribute('content', interpolate(getRichTextContent(content.meta_description, language)));
       }
     }
-  }, [content]);
+  }, [content, language, interpolate]);
 
   if (loading) {
     return (
@@ -66,7 +68,7 @@ export default function StrategyAdvisoryPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Content</h1>
+          <h1 className="text-2xl font-bold text-red-600 mb-4">{t.services.errorLoading}</h1>
           <p className="text-gray-600">{error}</p>
         </div>
       </div>
@@ -98,29 +100,29 @@ export default function StrategyAdvisoryPage() {
       `}</style>
       <div ref={el => { sectionsRef.current[0] = el; }} className="section-animate">
         <HeroSection
-          title={getRichTextContent(content?.hero_title) || ""}
-          subtitle={getRichTextContent(content?.hero_subtitle) || ""}
-          description={getRichTextContent(content?.hero_description) || ""}
+          title={getRichTextContent(content?.hero_title, language) || interpolate(t.services.strategicHeroTitle)}
+          subtitle={getRichTextContent(content?.hero_subtitle, language) || interpolate(t.services.heroSubtitle)}
+          description={getRichTextContent(content?.hero_description, language) || ""}
           image={content?.hero_image || ""}
         />
       </div>
       <div ref={el => { sectionsRef.current[1] = el; }} className="section-animate">
         <WhatWeOfferSection
-          title={getRichTextContent(content?.services_title) || ""}
+          title={getRichTextContent(content?.services_title, language) || interpolate(t.services.whatWeOffer)}
           offers={[
             {
-              title: getRichTextContent(content?.service_1_title) || "",
-              description: getRichTextContent(content?.service_1_description) || "",
+              title: getRichTextContent(content?.service_1_title, language) || "",
+              description: getRichTextContent(content?.service_1_description, language) || "",
               icon: "M12 3L1 9L12 15L21 12.35V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"
             },
             {
-              title: getRichTextContent(content?.service_2_title) || "",
-              description: getRichTextContent(content?.service_2_description) || "",
+              title: getRichTextContent(content?.service_2_title, language) || "",
+              description: getRichTextContent(content?.service_2_description, language) || "",
               icon: "M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7.5 13.5 12.5 13.5 15.5 13.5C15.5 13.5 16 13.75 16 14.25C16 14.75 15.5 15 15.5 15C12.5 15 7.5 15 3.75 18.75C3.75 18.75 5.25 20.5 8 20.5C11.5 20.5 17 16 17 8Z"
             },
             {
-              title: getRichTextContent(content?.service_3_title) || "",
-              description: getRichTextContent(content?.service_3_description) || "",
+              title: getRichTextContent(content?.service_3_title, language) || "",
+              description: getRichTextContent(content?.service_3_description, language) || "",
               icon: "M9.5 3A6.5 6.5 0 0 1 16 9.5C16 11.11 15.41 12.59 14.44 13.73L14.71 14H16L21 19L19 21L14 16V14.71L13.73 14.44C12.59 15.41 11.11 16 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3M9.5 5C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"
             }
           ]}
@@ -128,27 +130,27 @@ export default function StrategyAdvisoryPage() {
       </div>
       <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection
-          title={getRichTextContent(content?.process_title) || ""}
-          subtitle={getRichTextContent(content?.process_subtitle) || ""}
-          description={getRichTextContent(content?.process_description) || ""}
+          title={getRichTextContent(content?.process_title, language) || ""}
+          subtitle={getRichTextContent(content?.process_subtitle, language) || ""}
+          description={getRichTextContent(content?.process_description, language) || ""}
           sections={[
             {
-              title: getRichTextContent(content?.process_step_1_title) || "",
-              subtitle: getRichTextContent(content?.process_step_1_subtitle) || "",
+              title: getRichTextContent(content?.process_step_1_title, language) || "",
+              subtitle: getRichTextContent(content?.process_step_1_subtitle, language) || "",
               content: [
-                getRichTextContent(content?.process_step_1) || ""
+                getRichTextContent(content?.process_step_1, language) || ""
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_2_title) || "",
+              title: getRichTextContent(content?.process_step_2_title, language) || "",
               content: [
-                getRichTextContent(content?.process_step_2) || ""
+                getRichTextContent(content?.process_step_2, language) || ""
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_3_title) || "",
+              title: getRichTextContent(content?.process_step_3_title, language) || "",
               content: [
-                getRichTextContent(content?.process_step_3) || ""
+                getRichTextContent(content?.process_step_3, language) || ""
               ]
             }
           ]}
@@ -157,17 +159,17 @@ export default function StrategyAdvisoryPage() {
       </div>
       <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection
-          title={getRichTextContent(content?.network_title) || ""}
-          description={getRichTextContent(content?.network_description) || ""}
+          title={getRichTextContent(content?.network_title, language) || ""}
+          description={getRichTextContent(content?.network_description, language) || ""}
           networkCards={content?.network_cards || []}
         />
       </div>
       <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">
         <DigitalSolutionsSection
-          title={getRichTextContent(content?.digital_title) || ""}
-          subtitle={getRichTextContent(content?.digital_subtitle) || ""}
-          description={getRichTextContent(content?.digital_description) || ""}
-          imageAlt={getRichTextContent(content?.digital_image_alt) || ""}
+          title={getRichTextContent(content?.digital_title, language) || ""}
+          subtitle={getRichTextContent(content?.digital_subtitle, language) || ""}
+          description={getRichTextContent(content?.digital_description, language) || ""}
+          imageAlt={getRichTextContent(content?.digital_image_alt, language) || ""}
           whoIsThisFor={content?.digital_who_is_this_for || []}
           features={content?.digital_features || []}
         />
@@ -175,18 +177,18 @@ export default function StrategyAdvisoryPage() {
       <div ref={el => { sectionsRef.current[5] = el; }} className="section-animate">
         <CaseExampleSection
           caseExample={{
-            challenge: getRichTextContent(content?.case_challenge) || "",
-            solution: getRichTextContent(content?.case_solution) || "",
-            result: getRichTextContent(content?.case_result) || ""
+            challenge: getRichTextContent(content?.case_challenge, language) || "",
+            solution: getRichTextContent(content?.case_solution, language) || "",
+            result: getRichTextContent(content?.case_result, language) || ""
           }}
-          imageAlt={getRichTextContent(content?.case_image_alt) || ""}
+          imageAlt={getRichTextContent(content?.case_image_alt, language) || ""}
         />
       </div>
       <div ref={el => { sectionsRef.current[6] = el; }} className="section-animate">
         <FinalCTASection
-          title={getRichTextContent(content?.cta_title) || ""}
-          description={getRichTextContent(content?.cta_description) || ""}
-          buttonText={getRichTextContent(content?.cta_button_text) || ""}
+          title={getRichTextContent(content?.cta_title, language) || ""}
+          description={getRichTextContent(content?.cta_description, language) || ""}
+          buttonText={getRichTextContent(content?.cta_button_text, language) || ""}
         />
       </div>
     </div>

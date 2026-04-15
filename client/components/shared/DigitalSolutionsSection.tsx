@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { getRichTextHTML } from "@/lib/rich-text-utils";
+import { useLanguage } from "../../app/components/LanguageProvider";
 
 interface DigitalSolutionsSectionProps {
   title: string;
@@ -20,8 +21,14 @@ export default function DigitalSolutionsSection({
   whoIsThisFor,
   features
 }: DigitalSolutionsSectionProps) {
+  const { language, interpolate, t } = useLanguage();
   const leftColRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
+
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -158,7 +165,7 @@ export default function DigitalSolutionsSection({
             <div className="rounded-2xl h-80 flex items-center justify-center">
               <Image 
                 src="/network-visualization.jpg"
-                alt={imageAlt}
+                alt={interpolate(imageAlt)}
                 className="w-full h-full object-cover rounded-2xl"
                 width={800}
                 height={600}
@@ -167,13 +174,13 @@ export default function DigitalSolutionsSection({
             {/* Who is this for? */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-6 animate-section-title">
-                Who is <span className="text-primary">this for?</span>
+                <span dangerouslySetInnerHTML={getHTML(t.shared.whoIsThisFor)} />
               </h3>
               <ul className="space-y-3 text-slate-300">
                 {whoIsThisFor.map((item, index) => (
                   <li key={index} className="flex items-start animate-list-item" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    <span dangerouslySetInnerHTML={getRichTextHTML(typeof item === 'string' ? item : item.text)} />
+                    <span dangerouslySetInnerHTML={getHTML(typeof item === 'string' ? item : item.text)} />
                   </li>
                 ))}
               </ul>
@@ -185,15 +192,15 @@ export default function DigitalSolutionsSection({
             {/* Header */}
             <div className="py-18">
               <h2 className="text-4xl font-bold text-white mb-4 animate-title-bounce">
-                <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
+                <span dangerouslySetInnerHTML={getHTML(title)} />
               </h2>
               {subtitle && (
                 <h2 className="text-4xl font-bold text-primary mb-6 animate-subtitle-glow">
-                  <span dangerouslySetInnerHTML={getRichTextHTML(subtitle)} />
+                  <span dangerouslySetInnerHTML={getHTML(subtitle)} />
                 </h2>
               )}
               <p className="text-slate-200 text-lg animate-description-fade">
-                <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
+                <span dangerouslySetInnerHTML={getHTML(description)} />
               </p>
             </div>
 
@@ -203,7 +210,7 @@ export default function DigitalSolutionsSection({
                 {features.map((feature, index) => (
                   <li key={index} className="flex items-start animate-feature-pop" style={{animationDelay: `${index * 0.1}s`}}>
                     <span className="text-primary mr-2">•</span>
-                    <span dangerouslySetInnerHTML={getRichTextHTML(typeof feature === 'string' ? feature : feature.text)} />
+                    <span dangerouslySetInnerHTML={getHTML(typeof feature === 'string' ? feature : feature.text)} />
                   </li>
                 ))}
               </ul>

@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FileText, CheckCircle2, ArrowRight } from "lucide-react";
 
+import { useLanguage } from "./LanguageProvider";
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface ORRReportSectionProps {
@@ -12,30 +14,16 @@ interface ORRReportSectionProps {
 }
 
 export default function ORRReportSection({ content }: ORRReportSectionProps) {
+  const { t } = useLanguage();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const listItemsRef = useRef<(HTMLLIElement | null)[]>([]);
   const cardRef = useRef(null);
 
-  const reportOutcomes = [
-    { label: "Decision-ready", desc: "Actionable insights for leadership" },
-    { label: "Usable internally", desc: "Clear language for your teams" },
-    { label: "Strategic next steps", desc: "Prioritised roadmap for impact" }
-  ];
-
-  const whatItDoes = [
-    "Explains your situation in your own language",
-    "Highlights key issues and risks that affect your customers and teams",
-    "Proposes quick fixes and longer-term improvements that respect your constraints",
-    "Shows where advisory, digital systems/AI, or living-systems work will have most impact"
-  ];
-
-  const whatYouCanDo = [
-    "Use it internally with your own teams",
-    "Share it with other partners or stakeholders",
-    "Continue with ORR to implement recommendations at the pace that suits you"
-  ];
+  const reportOutcomes = t.reportSection.outcomes;
+  const whatItDoes = t.reportSection.itDoes;
+  const whatYouCanDo = t.reportSection.youCanDo;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -98,11 +86,11 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
               <FileText size={32} className="stroke-[1.5]" />
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">
-              What You Get: <span className="text-primary font-bold">The ORR Report</span>
+              {t.reportSection.title} <span className="text-primary font-bold">{t.reportSection.titleAccent}</span>
             </h2>
           </div>
           <p ref={subtitleRef} className="text-xl md:text-2xl text-foreground/70 leading-relaxed max-w-3xl ml-1 lg:ml-4">
-            After your first meeting, you receive a decision-ready report designed to be immediately useful inside your organisation. No fluff, just clarity.
+            {t.reportSection.subtitle}
           </p>
         </div>
 
@@ -115,7 +103,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
             <div className="space-y-8">
               <h3 className="text-2xl font-semibold flex items-center gap-4 text-foreground/90">
                 <span className="w-10 h-px bg-primary/40 block"></span>
-                The Report:
+                {t.reportSection.theReport}
               </h3>
               <ul className="space-y-6 lg:ml-6">
                 {whatItDoes.map((bullet, idx) => (
@@ -139,7 +127,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
             <div className="space-y-8">
               <h3 className="text-2xl font-semibold flex items-center gap-4 text-foreground/90">
                 <span className="w-10 h-px bg-primary/40 block"></span>
-                You Can:
+                {t.reportSection.youCan}
               </h3>
               <ul className="space-y-6 lg:ml-6">
                 {whatYouCanDo.map((bullet, idx) => (
@@ -175,10 +163,10 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
               
               <div className="mb-12">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide uppercase mb-6 border border-primary/10">
-                  Target Outcomes
+                  {t.reportSection.outcomesTitle}
                 </div>
                 <h4 className="text-3xl font-semibold text-foreground tracking-tight">
-                  Why It Matters
+                  {t.reportSection.outcomesSubtitle}
                 </h4>
               </div>
 
@@ -204,7 +192,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                   </span>
-                  Delivered securely after initial consultation
+                  {t.reportSection.secureDelivery}
                 </p>
               </div>
             </div>

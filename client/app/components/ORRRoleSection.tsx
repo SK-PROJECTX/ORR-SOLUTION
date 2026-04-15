@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
 import { useHomepageContent } from "../../hooks/useHomepageContent";
+import { useLanguage } from "./LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,12 +17,13 @@ interface ORRRoleSectionProps {
 
 export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProps) {
   const orrRoleSection = content;
+  const { t, language, interpolate } = useLanguage();
   
   const titleRef = useRef(null);
   const textRef = useRef(null);
 
-  const title = getRichTextContent(orrRoleSection?.title) || "ORR's Role";
-  const description = getRichTextContent(orrRoleSection?.description) || "We act like specialist doctors for your business physiology - but we start from your symptoms and your priorities. We check the health of your system, diagnosis issues, and co-design solutions that your people can actually use, keeping everything working together over time.";
+  const title = getRichTextContent(orrRoleSection?.title, language) || interpolate(t.orrRole.title);
+  const description = getRichTextContent(orrRoleSection?.description, language) || interpolate(t.orrRole.description);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -51,10 +53,10 @@ export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProp
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mt-40 mb-12 text-center">
-          <SafeHTMLRenderer data={orrRoleSection?.title} fallback="ORR's Role" />
+          <SafeHTMLRenderer data={orrRoleSection?.title} fallback={t.orrRole.title} />
         </h2>
         <p ref={textRef} className="text-gray-300 text-center text-2xl mb-16 max-w-4xl mx-auto">
-          <SafeHTMLRenderer data={orrRoleSection?.description} fallback="We act like specialist doctors for your business physiology - but we start from your symptoms and your priorities. We check the health of your system, diagnosis issues, and co-design solutions that your people can actually use, keeping everything working together over time." />
+          <SafeHTMLRenderer data={orrRoleSection?.description} fallback={t.orrRole.description} />
         </p>
       </div>
     </section>

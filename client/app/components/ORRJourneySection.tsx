@@ -4,7 +4,11 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
+
+gsap.registerPlugin(ScrollTrigger);
+
+import { useLanguage } from "./LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,40 +18,17 @@ interface ORRJourneySectionProps {
 }
 
 export default function ORRJourneySection() {
+  const { t } = useLanguage();
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
   const connectorsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const steps = [
-    {
-      label: "Step 1",
-      title: "First Meeting",
-      description: "You share the situation in your own words. We listen, ask focused questions, and map the context, priorities, and constraints.",
-      subtext: "€45/hour pro-rata",
-      type: "mandatory"
-    },
-    {
-      label: "Step 2",
-      title: "ORR Report",
-      description: "You receive a decision-ready report identifying root issues, key risks, quick fixes, and longer-term recommendations tailored to your organisation.",
-      subtext: "Complexity-based, capped at €220",
-      type: "mandatory"
-    },
-    {
-      label: "Step 3",
-      title: "Your Decision Point",
-      description: "You decide how to use the report: internally with your team, with partners, or as the basis for continued work with ORR.",
-      type: "critical"
-    },
-    {
-      label: "Step 4",
-      title: "Ongoing Support",
-      description: "If you continue with ORR, we help implement the recommendations through advisory, digital systems/AI, or living-systems work at the pace that suits you.",
-      type: "optional"
-    }
-  ];
+  const steps = t.journeySection.steps.map((step, index) => ({
+    ...step,
+    type: index === 2 ? "critical" : index === 3 ? "optional" : "mandatory"
+  }));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -96,10 +77,10 @@ export default function ORRJourneySection() {
             <div className="relative z-10 max-w-7xl mx-auto">
         <div ref={headerRef} className="text-center mb-20 space-y-6">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            How the First Engagement Works
+            {t.journeySection.title}
           </h2>
           <p className="opacity-70 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
-            A simple path from initial conversation to clear next steps.
+            {t.journeySection.subtitle}
           </p>
         </div>
 
@@ -135,7 +116,7 @@ export default function ORRJourneySection() {
                     </span>
                     {step.type === 'optional' && (
                       <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 border border-gray-200 dark:border-gray-500/30 px-2 py-0.5 rounded">
-                        Optional
+                        {t.journeySection.optional}
                       </span>
                     )}
                   </div>
@@ -174,7 +155,7 @@ export default function ORRJourneySection() {
             onClick={() => router.push('/login')}
             className="inline-flex items-center cursor-pointer justify-center bg-primary text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-lemon hover:scale-105 transition-all duration-300 shadow-xl"
           >
-            Start with a Focused Conversation
+            {t.journeySection.cta}
           </button>
         </div>
       </div>

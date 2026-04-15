@@ -5,7 +5,9 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
+
+import { useLanguage } from './LanguageProvider';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +18,7 @@ interface ServicePillarProps {
 }
 
 export default function ServicePillar({ content, onUpdate }: ServicePillarProps) {
+  const { t, language, interpolate } = useLanguage();
   const [allContent, setAllContent] = useState<any>(null);
   
   const sectionRef = useRef<HTMLElement>(null);
@@ -36,15 +39,18 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
           if (value === null || value === undefined) {
             converted[key] = '';
           } else if (typeof value === 'string') {
-            converted[key] = value;
+            converted[key] = interpolate(value);
           } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-            if (value.content && typeof value.content === 'string') {
-              converted[key] = value.content;
-            } else {
-              converted[key] = '';
+            // Check for language-specific fields or generic content
+            let val = '';
+            if (value[language] && typeof value[language] === 'string') {
+              val = value[language];
+            } else if (value.content && typeof value.content === 'string') {
+              val = value.content;
             }
+            converted[key] = interpolate(val);
           } else {
-            converted[key] = String(value);
+            converted[key] = interpolate(String(value));
           }
         });
         return converted;
@@ -54,7 +60,7 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
         servicesPage: convertToString(content)
       });
     }
-  }, [content]);
+  }, [content, language, interpolate]);
 
   useEffect(() => {
     const title = titleRef.current;
@@ -125,11 +131,11 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
   return (
     <section ref={sectionRef} className="relative w-full flex flex-col items-end py-12 sm:py-16 lg:py-20 bg-cover bg-center overflow-hidden">
       <h2 ref={titleRef} className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-poppins font-extrabold text-center mb-4 sm:mb-10 lg:mb-14 font-poppins font-bold w-full">
-        <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillars_title || "Our Services" }} />
+        <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillars_title || t.servicePillar.title }} />
       </h2>
 
-      <p ref={subtitleRef} className="text-center text-white font-poppins font-light mb-12 sm:mb-16 lg:mb-20 w-full">
-        <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillars_subtitle || "All three pillars are shaped around your context - no generic playbooks" }} />
+      <p ref={subtitleRef} className="text-center text-white font-poppins font-light mb-12 sm:mb-16 lg:mb-20 w-full px-6">
+        <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillars_subtitle || t.servicePillar.subtitle }} />
       </p>
 
       <div className="relative w-full max-w-7xl mr-0">
@@ -155,14 +161,14 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
               <div ref={el => { itemsRef.current[0] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <Link href="/services/strategy-advisory-compliant" className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins hover:text-[#3DFF7C] transition-colors">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_title || "Strategic Advisory & Compliance" }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_title || t.servicePillar.pillar1.title }} />
                 </Link>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_description || "Regulatory clarity, ESG and sustainability frameworks, biotechnology and environmental questions - distilled into simple, usable direction for your organisation." }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_description || t.servicePillar.pillar1.description }} />
                 </p>
                 <Link href="/services/strategy-advisory-compliant">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold  rounded-lg cursor-pointer">
-                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_button_text || "Explore Strategic Advisory & Compliance" }} />
+                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_1_button_text || t.servicePillar.pillar1.button }} />
                   </button>
                 </Link>
               </div>
@@ -170,14 +176,14 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
               <div ref={el => { itemsRef.current[1] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_title || "Digital Systems, Automation & AI" }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_title || t.servicePillar.pillar2.title }} />
                 </h3>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_description || "SOPs, workflows, portals, dashboards, and AI-assisted tools designed around your team's habits, constraints and growth plans" }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_description || t.servicePillar.pillar2.description }} />
                 </p>
                 <Link href="/services/operational-systems-infrastructure">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">
-                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_button_text || "Explore Digital Systems, Automation & AI" }} />
+                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_2_button_text || t.servicePillar.pillar2.button }} />
                   </button>
                 </Link>
               </div>
@@ -185,14 +191,14 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
               <div ref={el => { itemsRef.current[2] = el; }} className="relative">
                 <div className="md:hidden w-6 h-6 bg-[#3DFF7C] rounded-full mb-3"></div>
                 <h3 className="text-white font-semibold text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-2 sm:mb-3 font-poppins">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_title || "Living Systems & Regeneration" }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_title || t.servicePillar.pillar3.title }} />
                 </h3>
                 <p className="text-white/80 text-sm sm:text-base md:text-lg lg:text-[18px] leading-relaxed font-poppins">
-                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_description || "Support for land, water, species, and ecosystems - tailored to your sites your risks, and your opportunities" }} />
+                  <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_description || t.servicePillar.pillar3.description }} />
                 </p>
                 <Link href="/services/living-systems-regeneration">
                   <button className="mt-10 bg-gradient-to-r from-[#28B026] to-[#03F6CA] text-[#0C294D] p-4 font-poppins font-semibold rounded-lg cursor-pointer">
-                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_button_text || "Explore Living Systems & Regeneration" }} />
+                    <span dangerouslySetInnerHTML={{ __html: allContent?.servicesPage?.pillar_3_button_text || t.servicePillar.pillar3.button }} />
                   </button>
                 </Link>
               </div>

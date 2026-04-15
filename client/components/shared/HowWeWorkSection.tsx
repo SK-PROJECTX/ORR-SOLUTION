@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { getRichTextHTML } from "@/lib/rich-text-utils";
+import { useLanguage } from "../../app/components/LanguageProvider";
 
 interface HowWeWorkSectionProps {
   title?: string;
@@ -15,8 +16,14 @@ interface HowWeWorkSectionProps {
 }
 
 export default function HowWeWorkSection({ title, subtitle, description, sections, layout = 'grid' }: HowWeWorkSectionProps) {
+  const { language, interpolate } = useLanguage();
   const headerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -102,13 +109,13 @@ export default function HowWeWorkSection({ title, subtitle, description, section
       <div className="relative z-10">
         <div ref={headerRef} className="text-center mb-16 fade-animate">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
+            <span dangerouslySetInnerHTML={getHTML(title || "")} />
           </h2>
           <h3 className="text-3xl md:text-4xl font-bold text-[#47ff4c]">
-            <span dangerouslySetInnerHTML={getRichTextHTML(subtitle)} />
+            <span dangerouslySetInnerHTML={getHTML(subtitle)} />
           </h3>
           <p className="text-white text-lg mt-6 max-w-4xl mx-auto leading-relaxed">
-            <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
+            <span dangerouslySetInnerHTML={getHTML(description)} />
           </p>
         </div>
 
@@ -119,17 +126,17 @@ export default function HowWeWorkSection({ title, subtitle, description, section
                 {/* Listen & Report - spans full left side */}
                 <div className="lg:row-span-2 bg-[#1E3A5F]/60 p-8 lg:border-r border-[#47ff4c]/30 lg:mr-4">
                   <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
-                    <span dangerouslySetInnerHTML={getRichTextHTML(sections[0]?.title)} />
+                    <span dangerouslySetInnerHTML={getHTML(sections[0]?.title)} />
                   </h3>
                   {sections[0]?.subtitle && (
                     <h4 className="text-gray-300 text-lg font-semibold mb-6 animate-subtitle-slide">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(sections[0].subtitle)} />
+                      <span dangerouslySetInnerHTML={getHTML(sections[0].subtitle)} />
                     </h4>
                   )}
                   <div className="space-y-4 text-gray-300 leading-relaxed">
                     {sections[0]?.content.map((paragraph, pIndex) => (
                       <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>
-                        <span dangerouslySetInnerHTML={getRichTextHTML(paragraph)} />
+                        <span dangerouslySetInnerHTML={getHTML(paragraph)} />
                       </p>
                     ))}
                   </div>
@@ -139,17 +146,17 @@ export default function HowWeWorkSection({ title, subtitle, description, section
                 {sections[1] && (
                   <div className="bg-[#1E3A5F]/60 rounded-2xl p-8">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(sections[1].title)} />
+                      <span dangerouslySetInnerHTML={getHTML(sections[1].title)} />
                     </h3>
                     {sections[1].subtitle && (
                       <h4 className="text-gray-300 text-lg font-semibold mb-6 animate-subtitle-slide">
-                        <span dangerouslySetInnerHTML={getRichTextHTML(sections[1].subtitle)} />
+                        <span dangerouslySetInnerHTML={getHTML(sections[1].subtitle)} />
                       </h4>
                     )}
                     <div className="space-y-4 text-gray-300 leading-relaxed">
                       {sections[1].content.map((paragraph, pIndex) => (
                         <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>
-                          <span dangerouslySetInnerHTML={getRichTextHTML(paragraph)} />
+                          <span dangerouslySetInnerHTML={getHTML(paragraph)} />
                         </p>
                       ))}
                     </div>
@@ -160,17 +167,17 @@ export default function HowWeWorkSection({ title, subtitle, description, section
                 {sections[2] && (
                   <div className="bg-[#1E3A5F]/60 rounded-2xl p-8 ">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(sections[2].title)} />
+                      <span dangerouslySetInnerHTML={getHTML(sections[2].title)} />
                     </h3>
                     {sections[2].subtitle && (
                       <h4 className="text-gray-300 text-lg font-semibold mb-6 animate-subtitle-slide">
-                        <span dangerouslySetInnerHTML={getRichTextHTML(sections[2].subtitle)} />
+                        <span dangerouslySetInnerHTML={getHTML(sections[2].subtitle)} />
                       </h4>
                     )}
                     <div className="space-y-4 text-gray-300 leading-relaxed">
                       {sections[2].content.map((paragraph, pIndex) => (
                         <p key={pIndex} className="animate-paragraph-fade" style={{ animationDelay: `${pIndex * 0.2}s` }}>
-                          <span dangerouslySetInnerHTML={getRichTextHTML(paragraph)} />
+                          <span dangerouslySetInnerHTML={getHTML(paragraph)} />
                         </p>
                       ))}
                     </div>

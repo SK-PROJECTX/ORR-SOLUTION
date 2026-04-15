@@ -20,7 +20,7 @@ export interface StyledRichTextContent {
  * Extract plain text content from RichTextField data
  * Handles string, RichTextField JSON format, and styled content format
  */
-export function getRichTextContent(data: string | RichTextContent | StyledRichTextContent | null | undefined): string {
+export function getRichTextContent(data: any, language?: string): string {
   if (!data) return '';
   
   // If it's already a string, check if it's a JSON string first
@@ -57,8 +57,12 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
             .replace(/None/g, 'null');
           
           const parsed = JSON.parse(jsonString);
-          if (parsed && typeof parsed === 'object' && parsed.content) {
-            processedData = parsed.content;
+          if (parsed && typeof parsed === 'object') {
+            if (language && parsed[language]) {
+                processedData = parsed[language];
+            } else if (parsed.content) {
+                processedData = parsed.content;
+            }
           }
         } catch (e) {
           // JSON parsing failed, continue
@@ -70,8 +74,12 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
     if (processedData.trim().startsWith('{') && processedData.trim().endsWith('}')) {
       try {
         const parsed = JSON.parse(processedData);
-        if (parsed && typeof parsed === 'object' && parsed.content) {
-          processedData = parsed.content;
+        if (parsed && typeof parsed === 'object') {
+          if (language && parsed[language]) {
+              processedData = parsed[language];
+          } else if (parsed.content) {
+              processedData = parsed.content;
+          }
         }
       } catch (e) {
         // If parsing fails, treat as regular string
@@ -108,6 +116,12 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
   
   // If it's RichTextField format or styled format, extract content
   if (typeof data === 'object' && data !== null) {
+    // Check for language-specific content first
+    if (language && data[language]) {
+        if (typeof data[language] === 'string') return data[language];
+        if (typeof data[language] === 'object' && data[language].content) return data[language].content;
+    }
+
     // Handle nested format objects
     if ('content' in data && data.content && typeof data.content === 'object' && data.content !== null && 'content' in data.content) {
       return (data.content as any).content;
@@ -123,7 +137,7 @@ export function getRichTextContent(data: string | RichTextContent | StyledRichTe
 /**
  * Extract style information from RichTextField data
  */
-export function getRichTextStyle(data: string | RichTextContent | StyledRichTextContent | null | undefined): React.CSSProperties {
+export function getRichTextStyle(data: any): React.CSSProperties {
   if (!data) return {};
   
   if (typeof data === 'string') {
@@ -201,9 +215,9 @@ export function getRichTextStyle(data: string | RichTextContent | StyledRichText
 /**
  * Get content with styling applied as JSX
  */
-export function getRichTextWithStyle(data: string | RichTextContent | StyledRichTextContent | null | undefined): { content: string; style: React.CSSProperties } {
+export function getRichTextWithStyle(data: any, language?: string): { content: string; style: React.CSSProperties } {
   return {
-    content: getRichTextContent(data),
+    content: getRichTextContent(data, language),
     style: getRichTextStyle(data)
   };
 }
@@ -211,8 +225,8 @@ export function getRichTextWithStyle(data: string | RichTextContent | StyledRich
 /**
  * Safely render HTML content from rich text fields
  */
-export function getRichTextHTML(data: string | RichTextContent | StyledRichTextContent | null | undefined): { __html: string } {
-  let content = getRichTextContent(data);
+export function getRichTextHTML(data: any, language?: string): { __html: string } {
+  let content = getRichTextContent(data, language);
   
   // Decode HTML entities to render proper HTML
   if (content && content.includes('&')) {

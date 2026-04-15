@@ -1,5 +1,6 @@
 import { getRichTextHTML } from "@/lib/rich-text-utils";
 import Link from "next/link";
+import { useLanguage } from "../../app/components/LanguageProvider";
 
 interface FinalCTASectionProps {
   title: string;
@@ -9,20 +10,27 @@ interface FinalCTASectionProps {
 }
 
 export default function FinalCTASection({ title, highlightedTitle, description, buttonText }: FinalCTASectionProps) {
+  const { language, interpolate } = useLanguage();
+
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
+
   return (
     <section className="relative z-30 py-24 text-center">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-          <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
+          <span dangerouslySetInnerHTML={getHTML(title)} />
         </h2>
         <h2 className="text-4xl md:text-5xl font-bold text-[#47ff4c] mb-8">
-          <span dangerouslySetInnerHTML={getRichTextHTML(highlightedTitle)} />
+          <span dangerouslySetInnerHTML={getHTML(highlightedTitle)} />
         </h2>
         <p className="text-slate-200 text-lg mb-12 max-w-2xl mx-auto">
-          <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
+          <span dangerouslySetInnerHTML={getHTML(description)} />
         </p>
         <Link href='/contact' className="bg-gradient-to-r from-[#47ff4c] to-[#0ec277] text-black px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-[#47ff4c]/25 transition-all duration-300">
-          <span dangerouslySetInnerHTML={getRichTextHTML(buttonText)} />
+          <span dangerouslySetInnerHTML={getHTML(buttonText)} />
         </Link>
       </div>
     </section>
