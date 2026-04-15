@@ -1,11 +1,13 @@
 "use client";
 
 import { useTheme } from "../../components/ThemeProvider";
+import { useLanguage } from "../../components/LanguageProvider";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
 export function HeroSection() {
   const { theme } = useTheme();
+  const { t, interpolate } = useLanguage();
 
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -123,13 +125,13 @@ export function HeroSection() {
         {isVideoEnded && (
           <div className="absolute inset-0 bg-black/40 backdrop-blur-md flex flex-col items-center justify-center p-4 z-10 transition-all duration-500 animate-in fade-in zoom-in border border-white/10">
             <h3 className={`text-white font-bold mb-3 text-center drop-shadow-lg tracking-tight ${isMinimized ? 'text-sm md:text-lg' : 'text-2xl md:text-5xl'}`}>
-              Why not join now?
+              {interpolate(t.hero.joinNow)}
             </h3>
             <Link
               href="/register"
               className={`bg-emerald-500 text-white font-bold rounded-full hover:bg-emerald-400 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-95 ${isMinimized ? 'px-5 py-2 text-xs' : 'px-10 py-4 text-xl'}`}
             >
-              Sign up
+              {interpolate(t.hero.signUp)}
             </Link>
           </div>
         )}

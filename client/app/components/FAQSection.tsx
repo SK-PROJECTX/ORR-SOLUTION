@@ -5,7 +5,9 @@ import { Plus, X } from 'lucide-react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
+
+import { useLanguage } from './LanguageProvider';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +18,7 @@ interface FAQSectionProps {
 }
 
 export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
+  const { t } = useLanguage();
   const faqs = content || [];
   
   const [openFAQ, setOpenFAQ] = useState(-1);
@@ -54,7 +57,7 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-16 text-center">
-          Frequently <span className="text-primary">Asked Questions</span>
+          {t.faq.title} <span className="text-primary">{t.faq.titleAccent}</span>
         </h2>
 
         <div className="space-y-4">

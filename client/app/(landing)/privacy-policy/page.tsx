@@ -1,13 +1,13 @@
-"use client";
-
-import Image from "next/image";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from "@/app/components/LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PrivacyPolicy() {
+  const { t } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef(null);
   const cardRef = useRef(null);
@@ -171,6 +171,8 @@ export default function PrivacyPolicy() {
     };
   }, []);
 
+  const p = t.privacyPolicy;
+
   return (
     <div ref={containerRef} className="min-h-screen text-foreground star selection:bg-primary/30">
       {/* Scroll Progress Indicator */}
@@ -184,15 +186,13 @@ export default function PrivacyPolicy() {
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 text-white tracking-tight">
-            Privacy Policy
+            {p.title}
           </h1>
           <p
             ref={descRef}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            This Privacy Policy explains how we collect, use, store, and protect
-            your personal data when you access the ORR Client Portal, Admin
-            Portal, or any ORR-associated digital service.
+            {p.intro}
           </p>
         </div>
       </section>
@@ -214,743 +214,390 @@ export default function PrivacyPolicy() {
 
             <div className="bg-card/80 rounded-[2rem] p-8 md:p-12 relative border border-white/5">
               {/* Section 1: Introduction */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[0] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  01
-                </div>
+              <div ref={(el) => { itemsRef.current[0] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">01</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    INTRODUCTION
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    ORR Network (&quot;ORR&quot;, &quot;we&quot;,
-                    &quot;us&quot;) operates a digital platform that provides
-                    strategic consultation services, personalised business
-                    workspaces, document generation, Data Structure (DS)
-                    modules, and associated administrative functions. This
-                    Privacy Policy explains how we collect, use, store, and
-                    protect your personal data when you access the ORR Client
-                    Portal, Admin Portal, or any ORR-associated digital service.
-                  </p>
-                  <p className="text-gray-300 leading-relaxed font-semibold">
-                    By using our platform, you acknowledge that you have read
-                    and understood this Privacy Policy.
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s1Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s1p1}</p>
+                  <p className="text-gray-300 leading-relaxed font-semibold">{p.s1p2}</p>
                 </div>
               </div>
 
               {/* Section 2: Who We Are */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[1] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  02
-                </div>
+              <div ref={(el) => { itemsRef.current[1] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">02</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    WHO WE ARE
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    ORR Network is a consultancy and digital systems operator
-                    delivering:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s2Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s2p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-3">
-                    <li>Online business consultations</li>
-                    <li>Personalised DS-driven workspaces</li>
-                    <li>Document vault and report generation</li>
-                    <li>Behaviour-based insights</li>
-                    <li>Subscription and retainer-based services</li>
+                    <li>{p.s2li1}</li>
+                    <li>{p.s2li2}</li>
+                    <li>{p.s2li3}</li>
+                    <li>{p.s2li4}</li>
+                    <li>{p.s2li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    For all data processed directly through the platform, ORR is
-                    the Data Controller under the GDPR.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s2p2}</p>
                   <p className="text-gray-300 leading-relaxed">
-                    You may contact us at:{" "}
-                    <span className="text-[#13BE77]">
-                      privacy@orr.solutions
-                    </span>
+                    {p.s2p3} <span className="text-primary">{p.s15email}</span>
                   </p>
                 </div>
               </div>
 
               {/* Section 3: Data We Collect */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[2] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  03
-                </div>
+              <div ref={(el) => { itemsRef.current[2] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">03</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    DATA WE COLLECT
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    We collect only the data required to provide our services.
-                    Depending on your engagement with the platform, ORR may
-                    process the following categories:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s3Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s3p1}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.1 Account & Identity Data
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s31Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Full name</li>
-                    <li>Email address</li>
-                    <li>Phone number (optional)</li>
-                    <li>Country of residence / jurisdiction</li>
-                    <li>Preferred language</li>
+                    <li>{p.s31li1}</li>
+                    <li>{p.s31li2}</li>
+                    <li>{p.s31li3}</li>
+                    <li>{p.s31li4}</li>
+                    <li>{p.s31li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Used for: authentication, communication, and account
-                    identification.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s31note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.2 Business & Profile Data
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s32Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Business name</li>
-                    <li>Sector and subsector</li>
-                    <li>Business stage</li>
-                    <li>Business description</li>
-                    <li>DS-required structured data fields</li>
+                    <li>{p.s32li1}</li>
+                    <li>{p.s32li2}</li>
+                    <li>{p.s32li3}</li>
+                    <li>{p.s32li4}</li>
+                    <li>{p.s32li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Used for: DS personalisation, consultations, workspace
-                    tools.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s32note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.3 Consultation Data
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s33Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Meeting bookings</li>
-                    <li>Consultation notes</li>
-                    <li>
-                      Transcriptions (only with your consent or explicit
-                      initiation)
-                    </li>
-                    <li>Follow-up documentation</li>
-                    <li>Uploaded materials</li>
+                    <li>{p.s33li1}</li>
+                    <li>{p.s33li2}</li>
+                    <li>{p.s33li3}</li>
+                    <li>{p.s33li4}</li>
+                    <li>{p.s33li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Used for: generating consultation summaries, reports, and
-                    improvement recommendations.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s33note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.4 Financial & Billing Data
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s34Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Wallet balance</li>
-                    <li>Transaction logs</li>
-                    <li>Deposit confirmations</li>
-                    <li>Subscription status</li>
-                    <li>Approvals of pro-rata deductions</li>
-                    <li>Invoice records</li>
+                    <li>{p.s34li1}</li>
+                    <li>{p.s34li2}</li>
+                    <li>{p.s34li3}</li>
+                    <li>{p.s34li4}</li>
+                    <li>{p.s34li5}</li>
+                    <li>{p.s34li6}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Used for: billing, accounting, audit, and contractual
-                    obligations.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s34note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.5 Behavioural Data
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">
-                    Collected only inside the ORR platform:
-                  </p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s35Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">{p.s35p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Pages and modules visited</li>
-                    <li>Time spent in sections</li>
-                    <li>Tools accessed</li>
-                    <li>Workspace actions</li>
-                    <li>Browsing patterns that inform domain interests</li>
+                    <li>{p.s35li1}</li>
+                    <li>{p.s35li2}</li>
+                    <li>{p.s35li3}</li>
+                    <li>{p.s35li4}</li>
+                    <li>{p.s35li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-3 italic">
-                    Used for: personalisation, recommended tools, content
-                    surfacing, and UI optimisation.
-                  </p>
-                  <p className="text-gray-300 leading-relaxed mb-6 font-semibold">
-                    We do not use third-party tracking (Google Ads, Facebook
-                    pixels, etc.).
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-3 italic">{p.s35note}</p>
+                  <p className="text-gray-300 leading-relaxed mb-6 font-semibold">{p.s35warning}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    3.6 System & Technical Data
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s36Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>IP address</li>
-                    <li>Device/browser information</li>
-                    <li>Login timestamps</li>
-                    <li>Error logs</li>
-                    <li>System performance events</li>
+                    <li>{p.s36li1}</li>
+                    <li>{p.s36li2}</li>
+                    <li>{p.s36li3}</li>
+                    <li>{p.s36li4}</li>
+                    <li>{p.s36li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed italic">
-                    Used for: security, fraud prevention, and operational
-                    monitoring.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed italic">{p.s36note}</p>
                 </div>
               </div>
 
               {/* Section 4: How We Collect Data */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[3] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  04
-                </div>
+              <div ref={(el) => { itemsRef.current[3] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">04</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    HOW WE COLLECT DATA
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    We collect data through:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s4Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s4p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
-                    <li>Direct user input (forms, uploads, metadata entry)</li>
-                    <li>
-                      Consultation interactions (notes, outputs, statements)
-                    </li>
-                    <li>
-                      System-generated data (logs, timestamps, billing events)
-                    </li>
-                    <li>Behavioural interpretation (within the portal only)</li>
-                    <li>Subscription and billing events</li>
+                    <li>{p.s4li1}</li>
+                    <li>{p.s4li2}</li>
+                    <li>{p.s4li3}</li>
+                    <li>{p.s4li4}</li>
+                    <li>{p.s4li5}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed font-semibold">
-                    We do not buy external data.
-                    <br />
-                    We do not scrape data from other platforms.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed font-semibold">{p.s4footer}</p>
                 </div>
               </div>
 
               {/* Section 5: Why We Process Data */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[4] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  05
-                </div>
+              <div ref={(el) => { itemsRef.current[4] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">05</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    WHY WE PROCESS DATA (PURPOSES)
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    We process data only for legitimate and clearly defined
-                    purposes:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s5Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s5p1}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.1 Service Delivery
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s51Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Account creation</li>
-                    <li>Consultations</li>
-                    <li>DS-powered workspace tools</li>
-                    <li>Report generation</li>
-                    <li>Document vault access</li>
+                    <li>{p.s51li1}</li>
+                    <li>{p.s51li2}</li>
+                    <li>{p.s51li3}</li>
+                    <li>{p.s51li4}</li>
+                    <li>{p.s51li5}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.2 Personalisation
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s52Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Behaviour-driven recommendations</li>
-                    <li>Suggested tools and templates</li>
-                    <li>Contextual dashboard insights</li>
+                    <li>{p.s52li1}</li>
+                    <li>{p.s52li2}</li>
+                    <li>{p.s52li3}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.3 Contractual Performance
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s53Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Retainer administration</li>
-                    <li>Meeting scheduling</li>
-                    <li>Report creation</li>
-                    <li>Subscription operations</li>
+                    <li>{p.s53li1}</li>
+                    <li>{p.s53li2}</li>
+                    <li>{p.s53li3}</li>
+                    <li>{p.s53li4}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.4 Administrative Operations
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s54Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Billing and payment approvals</li>
-                    <li>Wallet management</li>
-                    <li>Support ticketing</li>
-                    <li>System notifications</li>
+                    <li>{p.s54li1}</li>
+                    <li>{p.s54li2}</li>
+                    <li>{p.s54li3}</li>
+                    <li>{p.s54li4}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.5 Legal Compliance
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s55Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Tax and accounting requirements</li>
-                    <li>Security obligations</li>
+                    <li>{p.s55li1}</li>
+                    <li>{p.s55li2}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    5.6 Legitimate Interests
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s56Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1">
-                    <li>Service improvement</li>
-                    <li>Platform analytics</li>
-                    <li>Preventing fraud or misuse</li>
+                    <li>{p.s56li1}</li>
+                    <li>{p.s56li2}</li>
+                    <li>{p.s56li3}</li>
                   </ul>
                 </div>
               </div>
 
               {/* Section 6: Legal Basis */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[5] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  06
-                </div>
+              <div ref={(el) => { itemsRef.current[5] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">06</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    LEGAL BASIS FOR PROCESSING
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    We rely on:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s6Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s6p1}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    6.1 Contract Necessity
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-6">
-                    When processing is required to deliver the services you
-                    request.
-                  </p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s61Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-6">{p.s61p1}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    6.2 Legitimate Interests
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">For:</p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s62Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">{p.s62p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Platform optimisation</li>
-                    <li>Internal analytics</li>
-                    <li>Non-intrusive behaviour tracking</li>
+                    <li>{p.s62li1}</li>
+                    <li>{p.s62li2}</li>
+                    <li>{p.s62li3}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Always balanced with your privacy rights.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s62note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    6.3 Consent
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">For:</p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s63Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">{p.s63p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-6">
-                    <li>Cookies</li>
-                    <li>Optional behaviour-based personalisation</li>
-                    <li>Meeting recordings/transcriptions (if used)</li>
+                    <li>{p.s63li1}</li>
+                    <li>{p.s63li2}</li>
+                    <li>{p.s63li3}</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    6.4 Legal Obligation
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">For:</p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s64Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-2">{p.s64p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1">
-                    <li>Invoice retention</li>
-                    <li>Accounting compliance</li>
-                    <li>Security event logging</li>
+                    <li>{p.s64li1}</li>
+                    <li>{p.s64li2}</li>
+                    <li>{p.s64li3}</li>
                   </ul>
                 </div>
               </div>
 
               {/* Section 7: Data Retention */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[6] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  07
-                </div>
+              <div ref={(el) => { itemsRef.current[6] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">07</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    DATA RETENTION
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    Revised to align with GDPR minimisation principles.
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s7Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s7p1}</p>
 
                   <div className="overflow-x-auto mb-4">
                     <table className="w-full border-collapse border border-gray-600">
                       <thead>
                         <tr className="bg-gray-800">
-                          <th className="border border-gray-600 px-4 py-2 text-left text-white">
-                            Data Category
-                          </th>
-                          <th className="border border-gray-600 px-4 py-2 text-left text-white">
-                            Retention Period
-                          </th>
-                          <th className="border border-gray-600 px-4 py-2 text-left text-white">
-                            Notes
-                          </th>
+                          <th className="border border-gray-600 px-4 py-2 text-left text-white">{p.tableColCategory}</th>
+                          <th className="border border-gray-600 px-4 py-2 text-left text-white">{p.tableColRetention}</th>
+                          <th className="border border-gray-600 px-4 py-2 text-left text-white">{p.tableColNotes}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Consultation Reports
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            5 years
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            No fixed legal requirement; 5 years covers dispute
-                            windows.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Behavioural Data
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            12 months
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Longer storage unnecessary for personalisation.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            System Logs
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            12–18 months
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Sufficient for operational and security audits.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Support Tickets
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            3 years
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Industry standard for SaaS operational records.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Uploaded Documents
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            24 months of inactivity or on request
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Unless required for financial/legal reasons.
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Financial Records (Invoices)
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            10 years
-                          </td>
-                          <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                            Mandatory EU accounting rule.
-                          </td>
-                        </tr>
+                        {p.tableRows.map((row, idx) => (
+                          <tr key={idx}>
+                            <td className="border border-gray-600 px-4 py-2 text-gray-300">{row.category}</td>
+                            <td className="border border-gray-600 px-4 py-2 text-gray-300">{row.retention}</td>
+                            <td className="border border-gray-600 px-4 py-2 text-gray-300">{row.notes}</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
 
-                  <p className="text-gray-300 leading-relaxed font-semibold">
-                    You may request deletion of any data not subject to legal or
-                    contractual retention.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed font-semibold">{p.s7footer}</p>
                 </div>
               </div>
 
               {/* Section 8: Data Sharing */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[7] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  08
-                </div>
+              <div ref={(el) => { itemsRef.current[7] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">08</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    DATA SHARING
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    We share data only when necessary:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s8Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s8p1}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    8.1 Internal Roles (Role-Based Access)
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s81Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Operators: client support & consultation processing</li>
-                    <li>
-                      Administrators: billing, DS assignment, system management
-                    </li>
-                    <li>Super Admin: platform governance</li>
-                    <li>Content Editors: content publishing only</li>
+                    <li>{p.s81li1}</li>
+                    <li>{p.s81li2}</li>
+                    <li>{p.s81li3}</li>
+                    <li>{p.s81li4}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    Access is strictly limited to required operational scope.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s81note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    8.2 External Processors (GDPR-Compliant)
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s82Title}</h3>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
-                    <li>Payment processors</li>
-                    <li>Secure document storage</li>
-                    <li>Analytics tools (internal, non-marketing)</li>
+                    <li>{p.s82li1}</li>
+                    <li>{p.s82li2}</li>
+                    <li>{p.s82li3}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-6 italic">
-                    All third-party processors operate under a signed Data
-                    Processing Agreement (DPA).
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-6 italic">{p.s82note}</p>
 
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    8.3 Legal Authorities
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                    Only when legally required.
-                  </p>
+                  <h3 className="text-xl font-semibold text-white mb-3">{p.s83Title}</h3>
+                  <p className="text-gray-300 leading-relaxed mb-4">{p.s83p1}</p>
 
                   <p className="text-gray-300 leading-relaxed font-semibold">
-                    We never sell personal data.
+                    {p.s8footer1}
                     <br />
-                    We never share behavioural data with advertisers.
+                    {p.s8footer2}
                   </p>
                 </div>
               </div>
 
               {/* Section 9: Security Measures */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[8] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  09
-                </div>
+              <div ref={(el) => { itemsRef.current[8] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">09</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    SECURITY MEASURES
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    We implement:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s9Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s9p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1">
-                    <li>Role-based access control (RBAC)</li>
-                    <li>Encrypted storage</li>
-                    <li>Secure communication channels</li>
-                    <li>Audit logs</li>
-                    <li>System monitoring</li>
-                    <li>
-                      MFA (optional for clients, enforced for administrators)
-                    </li>
-                    <li>Regular access reviews</li>
+                    <li>{p.s9li1}</li>
+                    <li>{p.s9li2}</li>
+                    <li>{p.s9li3}</li>
+                    <li>{p.s9li4}</li>
+                    <li>{p.s9li5}</li>
+                    <li>{p.s9li6}</li>
+                    <li>{p.s9li7}</li>
                   </ul>
                 </div>
               </div>
 
               {/* Section 10: Your Rights */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[9] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  10
-                </div>
+              <div ref={(el) => { itemsRef.current[9] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">10</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    YOUR RIGHTS UNDER GDPR
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    You may exercise:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s10Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s10p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
-                    <li>Right of Access</li>
-                    <li>Right to Rectification</li>
-                    <li>Right to Erasure</li>
-                    <li>Right to Restrict Processing</li>
-                    <li>Right to Data Portability</li>
-                    <li>Right to Object</li>
-                    <li>Right to Withdraw Consent</li>
+                    <li>{p.s10li1}</li>
+                    <li>{p.s10li2}</li>
+                    <li>{p.s10li3}</li>
+                    <li>{p.s10li4}</li>
+                    <li>{p.s10li5}</li>
+                    <li>{p.s10li6}</li>
+                    <li>{p.s10li7}</li>
                   </ul>
                   <p className="text-gray-300 leading-relaxed">
-                    Contact:{" "}
-                    <span className="text-[#13BE77]">
-                      privacy@orr.solutions
-                    </span>
+                    {p.s10footer.split(': ')[0]}: <span className="text-primary">{p.s15email}</span>
                   </p>
                 </div>
               </div>
 
               {/* Section 11: Cookies */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[10] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  11
-                </div>
+              <div ref={(el) => { itemsRef.current[10] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">11</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    COOKIES & ONLINE IDENTIFIERS
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">We use:</p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s11Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s11p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
-                    <li>Essential cookies (required for login and security)</li>
-                    <li>Preference cookies</li>
-                    <li>Platform analytics cookies (internal only)</li>
+                    <li>{p.s11li1}</li>
+                    <li>{p.s11li2}</li>
+                    <li>{p.s11li3}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed mb-3 font-semibold">
-                    No advertising or cross-site tracking cookies are used.
-                  </p>
-                  <p className="text-gray-300 leading-relaxed">
-                    Users may decline non-essential cookies.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed mb-3 font-semibold">{p.s11warning}</p>
+                  <p className="text-gray-300 leading-relaxed">{p.s11footer}</p>
                 </div>
               </div>
 
               {/* Section 12: Automated Decision-Making */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[11] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  12
-                </div>
+              <div ref={(el) => { itemsRef.current[11] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">12</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    AUTOMATED DECISION-MAKING
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    ORR does not use automated decision-making that produces
-                    legal or significant effects.
-                  </p>
-                  <p className="text-gray-300 leading-relaxed">
-                    Behaviour-based insights in the dashboard are assistive
-                    only.
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s12Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s12p1}</p>
+                  <p className="text-gray-300 leading-relaxed">{p.s12p2}</p>
                 </div>
               </div>
 
               {/* Section 13: International Data Transfers */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[12] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  13
-                </div>
+              <div ref={(el) => { itemsRef.current[12] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">13</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    INTERNATIONAL DATA TRANSFERS
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    If data leaves the EEA, it is protected by:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s13Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s13p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
-                    <li>Adequacy decisions, or</li>
-                    <li>Standard Contractual Clauses (SCCs)</li>
+                    <li>{p.s13li1}</li>
+                    <li>{p.s13li2}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed">
-                    We ensure equivalent protection for all transfers.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed">{p.s13footer}</p>
                 </div>
               </div>
 
               {/* Section 14: Updates */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[13] = el;
-                }}
-                className="flex gap-6 mb-12"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  14
-                </div>
+              <div ref={(el) => { itemsRef.current[13] = el; }} className="flex gap-6 mb-12">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">14</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    UPDATES TO THIS POLICY
-                  </h2>
-                  <p className="text-gray-300 leading-relaxed mb-3">
-                    We may update this Privacy Policy to reflect:
-                  </p>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s14Title}</h2>
+                  <p className="text-gray-300 leading-relaxed mb-3">{p.s14p1}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-4">
-                    <li>Legal changes</li>
-                    <li>Platform changes</li>
-                    <li>New DS modules</li>
-                    <li>New services</li>
+                    <li>{p.s14li1}</li>
+                    <li>{p.s14li2}</li>
+                    <li>{p.s14li3}</li>
+                    <li>{p.s14li4}</li>
                   </ul>
-                  <p className="text-gray-300 leading-relaxed">
-                    Major updates will be communicated within the portal.
-                  </p>
+                  <p className="text-gray-300 leading-relaxed">{p.s14footer}</p>
                 </div>
               </div>
 
               {/* Section 15: Contact */}
-              <div
-                ref={(el) => {
-                  itemsRef.current[14] = el;
-                }}
-                className="flex gap-6 pb-8"
-              >
-                <div className="policy-number text-6xl font-bold text-primary shrink-0">
-                  15
-                </div>
+              <div ref={(el) => { itemsRef.current[14] = el; }} className="flex gap-6 pb-8">
+                <div className="policy-number text-6xl font-bold text-primary shrink-0">15</div>
                 <div className="flex-1 min-w-0 policy-content">
-                  <h2 className="text-2xl font-bold text-white mb-4">
-                    CONTACT
-                  </h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">{p.s15Title}</h2>
                   <p className="text-gray-300 leading-relaxed">
-                    <strong className="text-white">ORR Network</strong>
+                    <strong className="text-white">{p.s15name}</strong>
                     <br />
                     <strong className="text-white">Website:</strong>{" "}
-                    www.orr.solutions
+                    {p.s15website}
                     <br />
                     <strong className="text-white">Email:</strong>{" "}
-                    privacy@orr.solutions
+                    {p.s15email}
                   </p>
                 </div>
               </div>

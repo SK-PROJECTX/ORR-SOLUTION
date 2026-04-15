@@ -4,7 +4,8 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
+import { useLanguage } from './LanguageProvider';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +17,7 @@ interface ApproachSectionProps {
 
 export default function ApproachSection({ content, onUpdate }: ApproachSectionProps) {
   const approachData = content;
+  const { t, language, interpolate } = useLanguage();
   
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
@@ -24,10 +26,10 @@ export default function ApproachSection({ content, onUpdate }: ApproachSectionPr
   const paragraphsRef = useRef<(HTMLParagraphElement | null)[]>([]);
   const linesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const title = getRichTextContent(approachData?.title) || "Supporting Copy";
-  const paragraph1 = getRichTextContent(approachData?.paragraph_1) || "Just like a skilled general practitioner, we start from your story not our framework. We take time to understand how your business really works before prescribing anything.";
-  const paragraph2 = getRichTextContent(approachData?.paragraph_2) || "We're not a lone consultant — we're a central coordination layer with a distributed network behind it. When needed, we draw on specialists across continents, but you always deal with one point of contact: ORR, focused on what's best for you.";
-  const paragraph3 = getRichTextContent(approachData?.paragraph_3) || "We fix what's slowing you down, strengthen systems around how your people actually work, and when deeper input is needed, we bring it in at the right moment — always in service of your goals.";
+  const title = getRichTextContent(approachData?.title, language) || interpolate(t.mainHero.title);
+  const paragraph1 = getRichTextContent(approachData?.paragraph_1, language) || interpolate(t.approach.paragraph1);
+  const paragraph2 = getRichTextContent(approachData?.paragraph_2, language) || interpolate(t.approach.paragraph2);
+  const paragraph3 = getRichTextContent(approachData?.paragraph_3, language) || interpolate(t.approach.paragraph3);
 
   useEffect(() => {
     gsap.fromTo(titleRef.current,

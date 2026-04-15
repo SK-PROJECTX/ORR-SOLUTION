@@ -69,10 +69,12 @@ export default function Page() {
         </div> */}
         <div className='justify-between flex flex-row w-full'>
           <div className="justify-start flex items-start">
-            <img
-              src="/images/logo.svg"
-              alt="ORR Solutions"
-              className="w-32 h-32 mt-5 ml-10" />
+            <Link href="/">
+              <img
+                src="/images/logo.svg"
+                alt="ORR Solutions"
+                className="w-32 h-32 mt-5 ml-10" />
+            </Link>
           </div>
 
           <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
@@ -95,11 +97,13 @@ export default function Page() {
         <div className="max-w-3xl w-full">
           {/* Top right sign-in */}
           <div className="flex md:hidden flex-col items-center justify-center mb-8">
-            <img
-              src="/images/logo.svg"
-              alt="ORR solutions"
-              className="w-16 h-16 mb-4"
-            />
+            <Link href="/">
+              <img
+                src="/images/logo.svg"
+                alt="ORR solutions"
+                className="w-16 h-16 mb-4"
+              />
+            </Link>
           </div>
 
           <div className="flex justify-between items-center mb-6">

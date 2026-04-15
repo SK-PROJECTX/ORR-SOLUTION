@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { getRichTextContent, getRichTextStyle } from '../lib/rich-text-utils';
+import { useLanguage } from '../app/components/LanguageProvider';
 
 interface SafeHTMLRendererProps {
   data: any;
@@ -15,20 +16,25 @@ export default function SafeHTMLRenderer({
   fallback = ''
 }: SafeHTMLRendererProps) {
   const ref = useRef<HTMLElement>(null);
+  const { language, interpolate } = useLanguage();
   
   useEffect(() => {
     if (ref.current) {
-      const content = getRichTextContent(data) || fallback;
-      const style = getRichTextStyle(data);
+      let content = getRichTextContent(data, language) || fallback;
+      
+      // Handle interpolation of keys and params
+      content = interpolate(content);
       
       ref.current.innerHTML = content;
+      
+      const style = getRichTextStyle(data);
       
       // Apply rich text styles
       if (style.fontSize) ref.current.style.fontSize = style.fontSize as string;
       if (style.fontWeight) ref.current.style.fontWeight = style.fontWeight as string;
       if (style.fontStyle) ref.current.style.fontStyle = style.fontStyle as string;
     }
-  }, [data, fallback]);
+  }, [data, fallback, language, interpolate]);
   
   return React.createElement(Tag, { 
     ref, 

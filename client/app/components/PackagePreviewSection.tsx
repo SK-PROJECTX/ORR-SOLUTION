@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { useLanguage } from "./LanguageProvider";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PackagePreviewSection() {
+  const { t } = useLanguage();
   const router = useRouter();
   const titleRef = useRef(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -45,10 +48,10 @@ export default function PackagePreviewSection() {
       <div className="relative z-10 max-w-5xl mx-auto">
         <div ref={titleRef} className="text-center mb-20 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Straightforward Pricing
+            {t.packagePreview.title}
           </h2>
           <p className="opacity-70 text-lg md:text-xl font-light">
-            A simple, transparent way to begin — with no surprises.
+            {t.packagePreview.subtitle}
           </p>
         </div>
 
@@ -59,13 +62,13 @@ export default function PackagePreviewSection() {
             className="glass-panel border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
           >
             <div className="space-y-6">
-              <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">Meetings</h3>
+              <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.meetings.title}</h3>
               <div className="space-y-2">
                 <div className="text-4xl md:text-5xl font-bold">
-                  €45<span className="text-lg font-normal opacity-50 ml-2">/hour pro-rata</span>
+                  {t.packagePreview.meetings.price}<span className="text-lg font-normal opacity-50 ml-2">{t.packagePreview.meetings.unit}</span>
                 </div>
                 <p className="opacity-80 text-lg font-medium leading-relaxed pt-2">
-                  Short, focused, and value-dense.
+                  {t.packagePreview.meetings.description}
                 </p>
               </div>
             </div>
@@ -77,13 +80,13 @@ export default function PackagePreviewSection() {
             className="glass-panel border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
           >
             <div className="space-y-6">
-              <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">The ORR Report</h3>
+              <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.report.title}</h3>
               <div className="space-y-2">
                 <div className="text-3xl md:text-4xl font-bold leading-tight">
-                  Fee depends on complexity, capped at €220.
+                  {t.packagePreview.report.description}
                 </div>
                 <p className="opacity-60 text-sm leading-relaxed pt-4 italic font-light">
-                  You’ll know the cost before we finalise it — no surprises.
+                  {t.packagePreview.report.notes}
                 </p>
               </div>
             </div>
@@ -92,14 +95,14 @@ export default function PackagePreviewSection() {
 
         <div className="mt-20 text-center space-y-12">
           <p className="opacity-70 text-lg max-w-2xl mx-auto leading-relaxed font-light">
-            You can use the report internally, share it with partners, or continue with ORR for implementation support at the pace that suits you.
+            {t.packagePreview.footerDescription}
           </p>
 
           <button
             onClick={() => router.push('/login')}
             className="inline-flex items-center cursor-pointer justify-center bg-primary text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-lemon hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(14,194,119,0.2)]"
           >
-            Book a First Meeting
+            {t.packagePreview.cta}
           </button>
         </div>
       </div>

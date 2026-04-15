@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
+import { useLanguage } from "../../../app/components/LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,6 +47,7 @@ export default function Contact() {
   const formFieldsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [data, setData] = useState<ContactPageData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,10 +175,10 @@ export default function Contact() {
   }
 
   const subjectOptions = [
-    data.subject_option_1?.content?.replace(/<[^>]*>/g, "") || "General Inquiry",
-    data.subject_option_2?.content?.replace(/<[^>]*>/g, "") || "General Inquiry",
-    data.subject_option_3?.content?.replace(/<[^>]*>/g, "") || "General Inquiry",
-    data.subject_option_4?.content?.replace(/<[^>]*>/g, "") || "General Inquiry",
+    data.subject_option_1?.content?.replace(/<[^>]*>/g, "") || t.contact.subjectGeneral,
+    data.subject_option_2?.content?.replace(/<[^>]*>/g, "") || t.contact.subjectGeneral,
+    data.subject_option_3?.content?.replace(/<[^>]*>/g, "") || t.contact.subjectGeneral,
+    data.subject_option_4?.content?.replace(/<[^>]*>/g, "") || t.contact.subjectGeneral,
   ];
 
   return (
@@ -190,7 +192,7 @@ export default function Contact() {
           >
             <span
               dangerouslySetInnerHTML={{
-                __html: data.hero_title?.content || "Contact Us",
+                __html: data.hero_title?.content || t.contact.heroTitle,
               }}
             />
           </h1>
@@ -208,7 +210,7 @@ export default function Contact() {
             <h2 className="text-2xl sm:text-3xl font-bold mb-3">
               <span
                 dangerouslySetInnerHTML={{
-                  __html: data.contact_info_title?.content || "Contact Information",
+                  __html: data.contact_info_title?.content || t.contact.infoTitle,
                 }}
               />
             </h2>
@@ -217,7 +219,7 @@ export default function Contact() {
                 dangerouslySetInnerHTML={{
                   __html:
                     data.contact_info_subtitle?.content ||
-                    "Say something to start a live chat!",
+                    t.contact.infoSubtitle,
                 }}
               />
             </p>
@@ -233,7 +235,7 @@ export default function Contact() {
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-base sm:text-lg">
-                <span>{data.phone_number || "+1 012 3456 789"}</span>
+                <span>{data.phone_number || t.contact.phoneDefault}</span>
               </p>
             </div>
 
@@ -248,7 +250,7 @@ export default function Contact() {
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <p className="text-base sm:text-lg">
-                <span>{data.email_address || "info@orr.solutions"}</span>
+                <span>{data.email_address || t.contact.emailDefault}</span>
               </p>
             </div>
 
@@ -267,7 +269,7 @@ export default function Contact() {
                   dangerouslySetInnerHTML={{
                     __html:
                       data.address?.content ||
-                      "132 Dartmouth Street Boston, Massachusetts 02156 United States",
+                      t.contact.addressDefault,
                   }}
                 />
               </p>
@@ -294,7 +296,7 @@ export default function Contact() {
                   >
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: data.first_name_label?.content || "First Name",
+                        __html: data.first_name_label?.content || t.contact.firstName,
                       }}
                     />
                   </label>
@@ -303,7 +305,7 @@ export default function Contact() {
                     id="firstName"
                     placeholder={
                       data.first_name_placeholder?.content?.replace(/<[^>]*>/g, "") ||
-                      "John"
+                      t.contact.firstNamePlaceholder
                     }
                     className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
@@ -315,7 +317,7 @@ export default function Contact() {
                   >
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: data.last_name_label?.content || "Last Name",
+                        __html: data.last_name_label?.content || t.contact.lastName,
                       }}
                     />
                   </label>
@@ -324,7 +326,7 @@ export default function Contact() {
                     id="lastName"
                     placeholder={
                       data.last_name_placeholder?.content?.replace(/<[^>]*>/g, "") ||
-                      "Doe"
+                      t.contact.lastNamePlaceholder
                     }
                     className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
@@ -345,7 +347,7 @@ export default function Contact() {
                   >
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: data.email_label?.content || "Email",
+                        __html: data.email_label?.content || t.contact.email,
                       }}
                     />
                   </label>
@@ -354,7 +356,7 @@ export default function Contact() {
                     id="email"
                     placeholder={
                       data.email_placeholder?.content?.replace(/<[^>]*>/g, "") ||
-                      "your@email.com"
+                      t.contact.emailPlaceholder
                     }
                     className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
@@ -366,7 +368,7 @@ export default function Contact() {
                   >
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: data.phone_label?.content || "Phone Number",
+                        __html: data.phone_label?.content || t.contact.phone,
                       }}
                     />
                   </label>
@@ -375,7 +377,7 @@ export default function Contact() {
                     id="phone"
                     placeholder={
                       data.phone_placeholder?.content?.replace(/<[^>]*>/g, "") ||
-                      "+1 012 3456 789"
+                      t.contact.phonePlaceholder
                     }
                     className="w-full bg-transparent border-b border-border text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary transition-colors pb-2"
                   />
@@ -391,7 +393,7 @@ export default function Contact() {
                 <label className="block opacity-80 text-sm mb-4">
                   <span
                     dangerouslySetInnerHTML={{
-                      __html: data.subject_label?.content || "Select Subject?",
+                      __html: data.subject_label?.content || t.contact.subject,
                     }}
                   />
                 </label>
@@ -424,7 +426,7 @@ export default function Contact() {
                 >
                   <span
                     dangerouslySetInnerHTML={{
-                      __html: data.message_label?.content || "Message",
+                      __html: data.message_label?.content || t.contact.message,
                     }}
                   />
                 </label>
@@ -432,7 +434,7 @@ export default function Contact() {
                   id="message"
                   placeholder={
                     data.message_placeholder?.content?.replace(/<[^>]*>/g, "") ||
-                    "Write your message..."
+                    t.contact.messagePlaceholder
                   }
                   rows={1}
                   className="w-full bg-transparent border-b border-border text-white opacity-40 focus:outline-none focus:border-primary transition-colors pb-2 resize-none"
@@ -453,7 +455,7 @@ export default function Contact() {
                   >
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: data.submit_button_text?.content || "Send Message",
+                        __html: data.submit_button_text?.content || t.contact.submitButton,
                       }}
                     />
                   </button>

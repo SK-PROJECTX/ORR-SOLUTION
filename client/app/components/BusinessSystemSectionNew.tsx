@@ -4,8 +4,9 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
 import { useTheme } from '../components/ThemeProvider';
+import { useLanguage } from './LanguageProvider';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,7 @@ interface BusinessSystemSectionProps {
 export default function BusinessSystemSection({ content, onUpdate }: BusinessSystemSectionProps) {
   const [businessSystemData, setBusinessSystemData] = useState<any>(null);
   const [businessSystemCards, setBusinessSystemCards] = useState<any[]>([]);
+  const { t } = useLanguage();
   
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -38,54 +40,54 @@ export default function BusinessSystemSection({ content, onUpdate }: BusinessSys
     return '';
   };
 
-  // Default dummy data
+  // Default localized data
   const defaultCards = [
     {
       id: 'default-1',
-      title: 'Organs',
-      description: 'Where your teams breathe and work. We help them move as one.',
+      title: t.businessSystem.organs.title,
+      description: t.businessSystem.organs.description,
       image: null,
       order: 1
     },
     {
       id: 'default-2',
-      title: 'Nervous System',
-      description: 'Your signals seeking clarity. We quiet the noise and guide their path.',
+      title: t.businessSystem.nervousSystem.title,
+      description: t.businessSystem.nervousSystem.description,
       image: null,
       order: 2
     },
     {
       id: 'default-3', 
-      title: 'Circulatory System',
-      description: 'Your lifeblood in motion. We restore balance to the flow.',
+      title: t.businessSystem.circulatorySystem.title,
+      description: t.businessSystem.circulatorySystem.description,
       image: null,
       order: 3
     },
     {
       id: 'default-4',
-      title: 'Immune System', 
-      description: 'Your unseen shields. We strengthen them before pressure arrives.',
+      title: t.businessSystem.immuneSystem.title, 
+      description: t.businessSystem.immuneSystem.description,
       image: null,
       order: 4
     },
     {
       id: 'default-5',
-      title: 'DNA',
-      description: 'The pattern beneath everything. We help you rewrite it with intention.',
+      title: t.businessSystem.dna.title,
+      description: t.businessSystem.dna.description,
       image: null,
       order: 5
     },
     {
       id: 'default-6',
-      title: 'Metabolism',
-      description: 'The hum of everyday work. We make its rhythm lighter and stronger.',
+      title: t.businessSystem.metabolism.title,
+      description: t.businessSystem.metabolism.description,
       image: null,
       order: 6
     },
     {
       id: 'default-7',
-      title: 'Senses',
-      description: 'Your way of listening to the world. We sharpen perception into insight.',
+      title: t.businessSystem.senses.title,
+      description: t.businessSystem.senses.description,
       image: null,
       order: 7
     }
@@ -122,10 +124,10 @@ export default function BusinessSystemSection({ content, onUpdate }: BusinessSys
 
       <div className="relative z-10 text-center mb-5 sm:mb-15 lg:mb-10">
         <h2 className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug mb-6">
-          <SafeHTMLRenderer data={businessSystemData?.title} fallback="Business as a Living System" />
+          <SafeHTMLRenderer data={businessSystemData?.title} fallback={t.businessSystem.title} />
         </h2>
         <p className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4 mb-8">
-          <SafeHTMLRenderer data={businessSystemData?.subtitle} fallback="Every part connected, every function vital" />
+          <SafeHTMLRenderer data={businessSystemData?.subtitle} fallback={t.businessSystem.subtitle} />
         </p>
       </div>
 

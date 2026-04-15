@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import Link from "next/link";
+import { useLanguage } from "../../components/LanguageProvider";
+import { useCachedData } from "../../../hooks/useCachedData";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,14 +82,15 @@ interface ResourcesData {
   cards: ContentCard[];
 }
 
-import { useCachedData } from "../../../hooks/useCachedData";
+
 
 export default function ResourcesBlogs() {
+  const { t, language } = useLanguage();
   useScrollSplit();
 
   const { data, loading } = useCachedData<ResourcesData>(
     'orr_resources_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/resources-content/`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/resources-content/?lang=${language}`,
     (data) => data
   );
 
@@ -111,6 +114,7 @@ export default function ResourcesBlogs() {
 
 // Design: HeroSection Redesign
 function HeroSection({ data }: { data: ResourcesPageData }) {
+  const { t } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const p1Ref = useRef<HTMLParagraphElement>(null);
   const p2Ref = useRef<HTMLParagraphElement>(null);
@@ -160,28 +164,28 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
 
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
         <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/60">
-          <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_title) || 'Resources & Client Portal' }} />
+          <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_title) || t.resources.heroTitle }} />
         </h1>
 
         <div className="space-y-6 max-w-3xl mb-12">
           <p ref={p1Ref} className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description1) || 'Loading content...' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description1) || t.resources.loading }} />
           </p>
           <p ref={p2Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description2) || 'Loading content...' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description2) || t.resources.loading }} />
           </p>
           <p ref={p3Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description3) || 'Loading content...' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_description3) || t.resources.loading }} />
           </p>
         </div>
 
         <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link href='/register' className="group relative inline-flex items-center justify-center bg-white text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase overflow-hidden hover:scale-105 transition-transform duration-300">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button1_text) || 'Request Access' }} className="relative z-10" />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button1_text) || t.resources.requestAccess }} className="relative z-10" />
             <div className="absolute inset-0 bg-green-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
           </Link>
           <Link href='/services' className="inline-flex items-center justify-center border hover:border-white border-white/20 bg-white/5 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase hover:bg-white/10 transition-all duration-300">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button2_text) || 'Learn More' }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.hero_button2_text) || t.resources.learnMore }} />
           </Link>
         </div>
       </div>
@@ -190,6 +194,7 @@ function HeroSection({ data }: { data: ResourcesPageData }) {
 }
 
 function ContentSection({ cards }: { cards: ContentCard[] }) {
+  const { t } = useLanguage();
   if (!cards || cards.length === 0) return null;
 
   // Sort cards by order field
@@ -206,7 +211,7 @@ function ContentSection({ cards }: { cards: ContentCard[] }) {
         {gridCards.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-white">Latest Articles</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-white">{t.resources.latestArticles}</h2>
               <div className="h-[1px] flex-grow ml-8 bg-gradient-to-r from-white/20 to-transparent" />
             </div>
             {/* Bento Grid / Masonry style structure */}
@@ -228,6 +233,7 @@ function ContentSection({ cards }: { cards: ContentCard[] }) {
 }
 
 function FeaturedCardComponent({ card }: { card: ContentCard }) {
+  const { t } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -265,7 +271,7 @@ function FeaturedCardComponent({ card }: { card: ContentCard }) {
           />
           <div className="absolute top-6 left-6 z-20">
             <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wider shadow-xl">
-              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.badge) || 'Featured' }} />
+              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(card.badge) || t.resources.featured }} />
             </span>
           </div>
         </div>
@@ -286,7 +292,7 @@ function FeaturedCardComponent({ card }: { card: ContentCard }) {
                   : typeof card.content === 'string' ? card.content : ''}
               </p>
               <div className="mt-8 flex items-center text-green-400 font-semibold group/btn w-fit">
-                Read Article
+                {t.resources.readArticle}
                 <svg className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>

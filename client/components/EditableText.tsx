@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, forwardRef } from 'react';
 import { AuthService } from '../lib/auth';
 import { Bold, Italic, Type } from 'lucide-react';
 import { getRichTextContent } from '../lib/rich-text-utils';
+import { useLanguage } from '../app/components/LanguageProvider';
 
 interface RichTextData {
   content: string;
@@ -194,9 +195,13 @@ const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
     title: canEdit ? 'Click to edit' : undefined,
   };
 
+  const { language, interpolate } = useLanguage();
+
   // Get display content and styles
   const rawContent = typeof content === 'string' ? content : content?.content || '';
-  const displayContent = getRichTextContent(rawContent);
+  let displayContent = getRichTextContent(rawContent, language);
+  displayContent = interpolate(displayContent);
+
   const displayStyles = {
     fontSize: typeof content === 'string' ? '16px' : `${content?.fontSize || 16}px`,
     fontWeight: typeof content === 'string' ? 'normal' : (content?.fontWeight || 'normal'),

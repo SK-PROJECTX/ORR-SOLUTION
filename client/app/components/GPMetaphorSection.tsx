@@ -5,8 +5,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getRichTextContent } from "../../lib/rich-text-utils";
-import SafeHTMLRenderer from "../../components/SafeHTMLRenderer";
+import SafeHTMLRenderer from "@/components/SafeHTMLRenderer";
 import { useHomepageContent } from "../../hooks/useHomepageContent";
+import { useLanguage } from "./LanguageProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,16 +50,17 @@ interface GPMetaphorSectionProps {
 }
 
 export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaphorSectionProps) {
+  const { t } = useLanguage();
   const businessSystemSection = content;
   
-  const title = getRichTextContent(businessSystemSection?.title) || "Business as a Living System";
-  const subtitle = getRichTextContent(businessSystemSection?.subtitle) || "Every part connected, every function vital";
-  const card1Title = getRichTextContent(businessSystemSection?.card_1_title) || "Nervous System";
-  const card1Description = getRichTextContent(businessSystemSection?.card_1_description) || "Communication, data flow, and decision-making pathways";
-  const card2Title = getRichTextContent(businessSystemSection?.card_2_title) || "Circulatory System";
-  const card2Description = getRichTextContent(businessSystemSection?.card_2_description) || "Cash flow, resource distribution, and value exchange";
-  const card3Title = getRichTextContent(businessSystemSection?.card_3_title) || "Immune System";
-  const card3Description = getRichTextContent(businessSystemSection?.card_3_description) || "Risk management, compliance, and protective measures";
+  const title = getRichTextContent(businessSystemSection?.title) || t.gpMetaphor.title;
+  const subtitle = getRichTextContent(businessSystemSection?.subtitle) || t.gpMetaphor.subtitle;
+  const card1Title = getRichTextContent(businessSystemSection?.card_1_title) || t.gpMetaphor.cards.nervous.title;
+  const card1Description = getRichTextContent(businessSystemSection?.card_1_description) || t.gpMetaphor.cards.nervous.description;
+  const card2Title = getRichTextContent(businessSystemSection?.card_2_title) || t.gpMetaphor.cards.circulatory.title;
+  const card2Description = getRichTextContent(businessSystemSection?.card_2_description) || t.gpMetaphor.cards.circulatory.description;
+  const card3Title = getRichTextContent(businessSystemSection?.card_3_title) || t.gpMetaphor.cards.immune.title;
+  const card3Description = getRichTextContent(businessSystemSection?.card_3_description) || t.gpMetaphor.cards.immune.description;
   
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
@@ -66,7 +68,7 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
       <div className="absolute inset-0">
         <Image
           src="https://res.cloudinary.com/depeqzb6z/image/upload/v1766108164/Body_gfyom3.jpg"
-          alt="Body background"
+          alt={t.gpMetaphor.title}
           fill
           className="object-cover opacity-30"
           priority
@@ -81,16 +83,16 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
 
       <div className="relative z-10 text-center mb-5 sm:mb-15 lg:mb-10">
         <h2 className="text-white text-4xl font-poppins sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-snug mb-6">
-          <SafeHTMLRenderer data={businessSystemSection?.title} fallback="Your business GP for complex systems" />
+          <SafeHTMLRenderer data={businessSystemSection?.title} fallback={t.gpMetaphor.title} />
         </h2>
         <p className="text-white font-poppins font-light text-base sm:text-lg md:text-xl lg:text-2xl mt-4 mb-8">
-          <SafeHTMLRenderer data={businessSystemSection?.subtitle} fallback="We diagnose your bottlenecks, treat your administrative and compliance headaches, and unlock hidden value in your data, your operations, and your projects." />
+          <SafeHTMLRenderer data={businessSystemSection?.subtitle} fallback={t.gpMetaphor.subtitle} />
         </p>
-        {/* <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-slate-900 font-semibold py-4 px-8 rounded-xl hover:from-emerald-500 hover:to-emerald-700 transition-all duration-300 text-lg">
-            Book your free initial consultation
+            {t.gpMetaphor.cta}
           </button>
-        </div> */}
+        </div>
       </div>
 
       {/* Systems Grid */}
@@ -101,11 +103,11 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
             <div className="flex items-center mb-6">
               <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3 animate-pulse" />
               <h3 className="text-emerald-400 text-xl font-bold font-poppins">
-                <SafeHTMLRenderer data={businessSystemSection?.card_1_title} fallback="Nervous System" />
+                <SafeHTMLRenderer data={businessSystemSection?.card_1_title} fallback={t.gpMetaphor.cards.nervous.title} />
               </h3>
             </div>
             <p className="text-white/90 font-poppins font-light text-base leading-relaxed">
-              <SafeHTMLRenderer data={businessSystemSection?.card_1_description} fallback="Communication, data flow, and decision-making pathways" />
+              <SafeHTMLRenderer data={businessSystemSection?.card_1_description} fallback={t.gpMetaphor.cards.nervous.description} />
             </p>
             <div className="absolute top-4 right-4 w-8 h-8 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
               <div className="w-2 h-2 bg-emerald-400 rounded-full" />
@@ -119,11 +121,11 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
             <div className="flex items-center mb-6">
               <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3 animate-pulse" />
               <h3 className="text-emerald-400 text-xl font-bold font-poppins">
-                <SafeHTMLRenderer data={businessSystemSection?.card_2_title} fallback="Circulatory System" />
+                <SafeHTMLRenderer data={businessSystemSection?.card_2_title} fallback={t.gpMetaphor.cards.circulatory.title} />
               </h3>
             </div>
             <p className="text-white/90 font-poppins font-light text-base leading-relaxed">
-              <SafeHTMLRenderer data={businessSystemSection?.card_2_description} fallback="Cash flow, resource distribution, and value exchange" />
+              <SafeHTMLRenderer data={businessSystemSection?.card_2_description} fallback={t.gpMetaphor.cards.circulatory.description} />
             </p>
             <div className="absolute top-4 right-4 w-8 h-8 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
               <div className="w-2 h-2 bg-emerald-400 rounded-full" />
@@ -137,11 +139,11 @@ export default function GPMetaphorSection({ content, onContentUpdate }: GPMetaph
             <div className="flex items-center mb-6">
               <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3 animate-pulse" />
               <h3 className="text-emerald-400 text-xl font-bold font-poppins">
-                <SafeHTMLRenderer data={businessSystemSection?.card_3_title} fallback="Immune System" />
+                <SafeHTMLRenderer data={businessSystemSection?.card_3_title} fallback={t.gpMetaphor.cards.immune.title} />
               </h3>
             </div>
             <p className="text-white/90 font-poppins font-light text-base leading-relaxed">
-              <SafeHTMLRenderer data={businessSystemSection?.card_3_description} fallback="Risk management, compliance, and protective measures" />
+              <SafeHTMLRenderer data={businessSystemSection?.card_3_description} fallback={t.gpMetaphor.cards.immune.description} />
             </p>
             <div className="absolute top-4 right-4 w-8 h-8 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-700">
               <div className="w-2 h-2 bg-emerald-400 rounded-full" />

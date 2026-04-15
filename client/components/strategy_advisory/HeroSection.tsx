@@ -1,3 +1,4 @@
+import { useLanguage } from "@/app/components/LanguageProvider";
 import HeroSection from "../shared/HeroSection";
 
 interface StrategyHeroSectionProps {
@@ -7,13 +8,15 @@ interface StrategyHeroSectionProps {
   image?: string;
 }
 
-export default function StrategyHeroSection({ title, subtitle, description, image }: StrategyHeroSectionProps) {
+export default function StrategyHeroSection({ title: propTitle, subtitle, description, image }: StrategyHeroSectionProps) {
+  const { t, interpolate } = useLanguage();
+
   return (
     <HeroSection
-      highlightedTitle="Strategic Advisory"
-      title="& Compliance"
-      description1={subtitle || "We deliver clarity in complexity. From regulatory frameworks to sustainability strategies, biotechnology consulting to compliance management, ORR guides organizations through evolving standards with precision and strategic foresight."}
-      description2={description || "Our approach combines deep technical expertise with practical implementation — ensuring every initiative is compliant, sustainable, and positioned for long-term growth."}
+      highlightedTitle={interpolate(propTitle || t.services.strategicHeroTitle)}
+      title=""
+      description1={interpolate(subtitle || "")}
+      description2={interpolate(description || "")}
     />
   )
 }

@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { getRichTextHTML } from "@/lib/rich-text-utils";
+import { useLanguage } from "../../app/components/LanguageProvider";
 
 interface CaseExample {
   challenge: string;
@@ -15,9 +16,15 @@ interface CaseExampleSectionProps {
 }
 
 export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampleSectionProps) {
+  const { language, interpolate } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -106,7 +113,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Challenge
                 </h3>
                 <p className="text-black text-sm leading-relaxed animate-card-text">
-                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.challenge)} />
+                  <span dangerouslySetInnerHTML={getHTML(caseExample.challenge)} />
                 </p>
               </div>
               
@@ -121,7 +128,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Solution
                 </h3>
                 <p className="text-black text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.3s'}}>
-                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.solution)} />
+                  <span dangerouslySetInnerHTML={getHTML(caseExample.solution)} />
                 </p>
               </div>
               
@@ -136,7 +143,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
                   Result
                 </h3>
                 <p className="text-black text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.5s'}}>
-                  <span dangerouslySetInnerHTML={getRichTextHTML(caseExample.result)} />
+                  <span dangerouslySetInnerHTML={getHTML(caseExample.result)} />
                 </p>
               </div>
             </div>
@@ -147,7 +154,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
             <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-full flex items-center justify-center transform -skew-x-12">
               <Image 
                 src="/parallelogram.jpg"
-                alt={imageAlt}
+                alt={interpolate(imageAlt)}
                 className="w-full h-full object-cover rounded-xl"
                 width={300}
                 height={300}

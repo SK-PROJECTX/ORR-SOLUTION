@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { getRichTextHTML } from "@/lib/rich-text-utils";
+import { useLanguage } from "../../app/components/LanguageProvider";
 
 interface OfferCard {
   title: string;
@@ -10,6 +11,13 @@ interface OfferCard {
 }
 
 function OfferCard({ title, description, icon }: OfferCard) {
+  const { language, interpolate } = useLanguage();
+  
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
+
   return (
     <div className="relative group w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] max-w-sm card-animate hover:-translate-y-2 transition-transform duration-300">
       <div className="absolute inset-0 bg-secondary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -20,10 +28,10 @@ function OfferCard({ title, description, icon }: OfferCard) {
           </svg>
         </div>
         <h3 className="text-xl font-bold text-white mb-4 group-hover:text-secondary transition-colors duration-300 animate-text-pop">
-          <span dangerouslySetInnerHTML={getRichTextHTML(title)} />
+          <span dangerouslySetInnerHTML={getHTML(title)} />
         </h3>
         <p className="text-slate-300 leading-relaxed text-sm animate-text-fade">
-          <span dangerouslySetInnerHTML={getRichTextHTML(description)} />
+          <span dangerouslySetInnerHTML={getHTML(description)} />
         </p>
       </div>
     </div>
@@ -35,9 +43,15 @@ interface WhatWeOfferSectionProps {
   layout?: 'grid' | 'flex';
   title?: string;
 }
-// ... (lines 16-57 skipped)
+
 export default function WhatWeOfferSection({ offers, layout = 'flex', title }: WhatWeOfferSectionProps) {
+  const { language, interpolate, t } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const getHTML = (data: string) => {
+    const htmlObj = getRichTextHTML(data, language);
+    return { __html: interpolate(htmlObj.__html) };
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -139,7 +153,7 @@ export default function WhatWeOfferSection({ offers, layout = 'flex', title }: W
         ref={titleRef}
         className="text-4xl font-bold text-white text-center mb-16"
       >
-        {title ? <span dangerouslySetInnerHTML={getRichTextHTML(title)} /> : <>What <span className="text-[#47ff4c]">We Offer</span></>}
+        <span dangerouslySetInnerHTML={getHTML(title || t.shared.whatWeOffer)} />
       </h2>
 
       <div className="max-w-7xl mx-auto">

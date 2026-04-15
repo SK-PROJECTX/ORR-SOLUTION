@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Spinner from "../../../components/ui/Spinner";
 import { getRichTextContent } from "../../../lib/rich-text-utils";
+import { useLanguage } from "../../../app/components/LanguageProvider";
 
 // Map pillar index → detail page route
 const PILLAR_ROUTES: Record<number, string> = {
@@ -101,6 +102,7 @@ const processData = (data: any) => data;
 
 export default function Services() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+  const { t } = useLanguage();
 
   const { data, loading } = useCachedData<ServicesData>(
     'orr_services_content',
@@ -167,10 +169,10 @@ export default function Services() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-foreground">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || "ORR Solutions - Listen. Solve. Optimise." }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || t.services.heroTitle }} />
           </h1>
           <p className="text-lg md:text-xl opacity-70 max-w-3xl mx-auto leading-relaxed text-foreground">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_subtitle) || "We treat your organisation as a whole system — digital, regulatory, and living." }} />
+            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_subtitle) || t.services.heroSubtitle }} />
           </p>
         </div>
       </section>
@@ -190,19 +192,19 @@ export default function Services() {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.title) || "Stage Title" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.title) || t.services.stageTitle }} />
                 </h2>
                 <h3 className="text-lg font-semibold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.subtitle) || "Stage Subtitle" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.subtitle) || t.services.stageSubtitle }} />
                 </h3>
                 <p className="opacity-70 text-sm mb-6">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.description) || "Stage Description" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.description) || t.services.stageDescription }} />
                 </p>
                 <div className="opacity-70 text-sm mb-8 flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || "Focus Content" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || t.services.focusContent }} />
                 </div>
                 <Link href="/contact" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-auto cursor-pointer block text-center">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || "Learn More" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || t.services.learnMore }} />
                 </Link>
               </div>
             ))}
@@ -217,19 +219,19 @@ export default function Services() {
                 </svg>
               </div>
               <h2 className="text-xl font-bold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].title) || "Stage 5 Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].title) || t.services.stageTitle }} />
               </h2>
               <h3 className="text-lg font-semibold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].subtitle) || "Stage 5 Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].subtitle) || t.services.stageSubtitle }} />
               </h3>
               <p className="opacity-70 text-sm mb-6">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].description) || "Stage 5 Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].description) || t.services.stageDescription }} />
               </p>
               <div className="opacity-70 text-sm mb-8">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || "Focus Content" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || t.services.focusContent }} />
               </div>
               <Link href="/register" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors cursor-pointer block text-center">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || "Learn More" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || t.services.learnMore }} />
               </Link>
             </div>
           )}
@@ -244,7 +246,7 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
-              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.pillars_title) || "Our Services" }} />
+              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.pillars_title) || t.services.pillarsTitle }} />
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -260,7 +262,7 @@ export default function Services() {
                   href={PILLAR_ROUTES[index] || '/services'}
                   className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-8 cursor-pointer block text-center"
                 >
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || "Learn More" }} />
+                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || t.services.learnMore }} />
                 </Link>
               </div>
             ))}
@@ -277,16 +279,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-foreground mb-6">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_title) || "Business GP Title" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_title) || t.services.businessGpTitle }} />
               </h2>
               <h3 className="text-4xl font-bold mb-8 text-foreground">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_subtitle) || "Business GP Subtitle" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_subtitle) || t.services.businessGpSubtitle }} />
               </h3>
               <p className="opacity-70 text-xl mb-8 text-foreground">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || "Business GP Description" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || t.services.businessGpDescription }} />
               </p>
               <Link href="/contact" className="inline-block bg-primary text-white px-12 py-4 rounded-lg text-lg font-bold hover:bg-lemon transition-colors">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || "Contact Us" }} />
+                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || t.services.contactUs }} />
               </Link>
             </div>
             <div>
