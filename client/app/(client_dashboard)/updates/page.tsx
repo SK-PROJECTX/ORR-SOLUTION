@@ -3,8 +3,10 @@
 import { Search, X, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNotificationStore } from "@/store/notificationStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 export default function NotificationPage() {
+  const { t, language: currentLang } = useLanguage();
   const { notifications, isLoading, fetchNotifications, markAsRead } = useNotificationStore();
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
 
@@ -29,13 +31,13 @@ export default function NotificationPage() {
       {/* Search bar & header */}
       <div className="w-full flex flex-col items-center pt-10 relative z-10">
         <h1 className="text-[28px] font-semibold text-lemon mr-auto ml-20">
-          Notification
+          {interpolate(t.dashboard.notifications.title)}
         </h1>
 
         <div className="w-[380px] h-[48px] mt-4 bg-card rounded-full px-6 flex items-center border border-secondary">
           <input
             type="text"
-            placeholder="Search anything here..."
+            placeholder={interpolate(t.dashboard.common.search)}
             className="bg-transparent outline-none text-sm w-full text-foreground placeholder:text-foreground/50"
           />
 <Search size={16}/>
@@ -58,17 +60,17 @@ export default function NotificationPage() {
         "
       >
         <h2 className="text-[22px] font-semibold text-lemon mb-6">
-          Alert
+          {interpolate(t.dashboard.notifications.alertTitle)}
         </h2>
 
         <div className="flex flex-col gap-4">
           {isLoading ? (
             <div className="text-center py-8 text-foreground/70">
-              Loading notifications...
+              {interpolate(t.dashboard.common.loading)}
             </div>
           ) : notifications.length === 0 ? (
             <div className="text-center py-8 text-foreground/70">
-              No notifications found
+              {interpolate(t.dashboard.notifications.noNotifications)}
             </div>
           ) : (
             notifications.map((notification) => {
@@ -84,7 +86,7 @@ export default function NotificationPage() {
                         {notification.title}
                       </p>
                       <p className="text-xs text-foreground/50 mt-1">
-                        {new Date(notification.created_at).toLocaleDateString()}
+                        {new Date(notification.created_at).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

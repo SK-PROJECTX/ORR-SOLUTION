@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, FileText, Star, Search, Filter, Link as LinkIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 
 interface PastConsultation {
   id: number;
@@ -60,6 +61,7 @@ const RatingStars = ({ rating }: { rating?: string }) => {
 };
 
 export default function PastConsultationsPage() {
+  const { t } = useLanguage();
   const [consultations, setConsultations] = useState<PastConsultation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,8 +147,8 @@ export default function PastConsultationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-primary mb-2">Past Consultations</h1>
-            <p className="text-foreground opacity-60">Review your consultation history and outcomes</p>
+            <h1 className="text-3xl font-bold text-primary mb-2">{interpolate(t.dashboard.consultations.past.title)}</h1>
+            <p className="text-foreground opacity-60">{interpolate(t.dashboard.consultations.past.history)}</p>
           </div>
           
           <div className="flex items-center gap-4">
@@ -154,7 +156,7 @@ export default function PastConsultationsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search consultations..."
+                placeholder={interpolate(t.dashboard.consultations.past.searchPlace)}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 bg-card border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none w-80"
@@ -164,7 +166,7 @@ export default function PastConsultationsPage() {
               href="/meeting-request"
               className="px-5 py-2.5 bg-primary text-black rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
-              + Book a New Meeting
+              + {interpolate(t.dashboard.consultations.past.bookNew)}
             </Link>
           </div>
         </div>
@@ -178,9 +180,9 @@ export default function PastConsultationsPage() {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="bg-secondary border border-secondary rounded-md px-3 py-2 text-foreground text-sm"
           >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">{interpolate(t.dashboard.consultations.past.allStatus)}</option>
+            <option value="completed">{interpolate(t.dashboard.common.completed)}</option>
+            <option value="cancelled">{interpolate(t.dashboard.common.cancelled)}</option>
             <option value="no-show">No Show</option>
           </select>
 
@@ -189,16 +191,16 @@ export default function PastConsultationsPage() {
             onChange={(e) => setSortBy(e.target.value)}
             className="bg-secondary border border-secondary rounded-md px-3 py-2 text-foreground text-sm"
           >
-            <option value="-formatted_date">Sort by Date (Newest)</option>
-            <option value="formatted_date">Sort by Date (Oldest)</option>
-            <option value="-rating">Sort by Rating (High)</option>
-            <option value="rating">Sort by Rating (Low)</option>
-            <option value="client_name">Sort by Client (A-Z)</option>
-            <option value="-client_name">Sort by Client (Z-A)</option>
+            <option value="-formatted_date">{interpolate(t.dashboard.consultations.past.sortBy.dateNew)}</option>
+            <option value="formatted_date">{interpolate(t.dashboard.consultations.past.sortBy.dateOld)}</option>
+            <option value="-rating">{interpolate(t.dashboard.consultations.past.sortBy.ratingHigh)}</option>
+            <option value="rating">{interpolate(t.dashboard.consultations.past.sortBy.ratingLow)}</option>
+            <option value="client_name">{interpolate(t.dashboard.consultations.past.sortBy.clientAZ)}</option>
+            <option value="-client_name">{interpolate(t.dashboard.consultations.past.sortBy.clientZA)}</option>
           </select>
 
           <div className="ml-auto text-sm text-foreground opacity-60">
-            {filteredConsultations.length} of {consultations.length} consultations
+            {filteredConsultations.length} {interpolate(t.dashboard.consultations.past.resultsCount, { count: consultations.length })}
           </div>
         </div>
 
@@ -206,7 +208,7 @@ export default function PastConsultationsPage() {
         {isLoading && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <span className="ml-3 text-foreground opacity-60">Loading consultations...</span>
+            <span className="ml-3 text-foreground opacity-60">{interpolate(t.dashboard.common.loading)}...</span>
           </div>
         )}
 
@@ -218,7 +220,7 @@ export default function PastConsultationsPage() {
               onClick={fetchPastConsultations}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
             >
-              Retry
+              {interpolate(t.dashboard.common.retry)}
             </button>
           </div>
         )}
@@ -273,7 +275,7 @@ export default function PastConsultationsPage() {
                   <div className="mb-4">
                     <div className="flex items-center gap-2 mb-2">
                       <FileText className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-medium text-foreground">Notes</span>
+                      <span className="text-sm font-medium text-foreground">{interpolate(t.dashboard.consultations.book.agenda)}</span>
                     </div>
                     <p className="text-sm text-foreground opacity-70 bg-secondary/30 p-3 rounded-lg">
                       {consultation.meeting_notes}
@@ -284,7 +286,7 @@ export default function PastConsultationsPage() {
                 {/* Outcome */}
                 {consultation.outcome && (
                   <div className="mb-4">
-                    <div className="text-sm font-medium text-primary mb-1">Outcome</div>
+                    <div className="text-sm font-medium text-primary mb-1">{interpolate(t.dashboard.common.view)}</div>
                     <p className="text-sm text-foreground opacity-70">
                       {consultation.outcome}
                     </p>
@@ -317,18 +319,18 @@ export default function PastConsultationsPage() {
         {!isLoading && !error && filteredConsultations.length === 0 && (
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-foreground opacity-30 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No consultations found</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">{interpolate(t.dashboard.consultations.past.noResults)}</h3>
             <p className="text-foreground opacity-60 mb-6">
               {searchTerm || filterStatus !== 'all' 
-                ? 'Try adjusting your filters or search terms'
-                : 'Your past consultations will appear here once completed'
+                ? interpolate(t.dashboard.consultations.past.tryAdjust)
+                : interpolate(t.dashboard.consultations.past.willAppear)
               }
             </p>
             <a
               href="/meeting-request"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-black rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
-              + Book a New Meeting
+              + {interpolate(t.dashboard.consultations.past.bookNew)}
             </a>
           </div>
         )}

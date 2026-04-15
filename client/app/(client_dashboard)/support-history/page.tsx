@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ChevronDown, Search, MessageSquare, Clock, CheckCircle, Send } from "lucide-react";
 import { useSupportStore } from "@/store/supportStore";
 import api from "@/lib/axios";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 interface TicketMessage {
   id: number;
@@ -29,6 +30,7 @@ interface Ticket {
 }
 
 export default function SupportHistory() {
+  const { t, language: currentLang } = useLanguage();
   const { tickets, isLoading, fetchTickets } = useSupportStore();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [ticketMessages, setTicketMessages] = useState<{[key: string]: TicketMessage[]}>({});
@@ -87,12 +89,12 @@ export default function SupportHistory() {
       <div className=" mx-auto">
         <div className="flex ">
           <h1 className="text-lemon text-xl font-semibold mb-6 text-nowrap">
-            Support history
+            {interpolate(t.dashboard.support.historyTitle)}
           </h1>
           <div className="w-full flex justify-center mb-10">
             <div className="w-full max-w-xl bg-card border border-lemon rounded-full px-5 py-3 flex items-center">
               <input
-                placeholder="Search anything here..."
+                placeholder={interpolate(t.dashboard.common.search)}
                 className="flex-1 bg-card outline-none text-sm placeholder-foreground/50 text-foreground"
               />
               <Search className="text-lemon text-lg" />
@@ -102,18 +104,18 @@ export default function SupportHistory() {
 
         <div className="bg-card p-4 rounded-3xl">
           <div className="w-full bg-card rounded-3xl p-10 shadow-lg relative border border-secondary">
-            <h2 className="text-2xl font-semibold mb-10 text-foreground">History</h2>
+            <h2 className="text-2xl font-semibold mb-10 text-foreground">{interpolate(t.dashboard.support.historyHeading)}</h2>
 
             <div className="absolute left-10 top-32 bottom-10 w-[4px] bg-lemon rounded-full" />
 
             <div className="flex flex-col gap-6 ml-10">
               {isLoading ? (
                 <div className="text-center py-8 text-foreground/70">
-                  Loading support history...
+                  {interpolate(t.dashboard.common.loading)}
                 </div>
               ) : allTickets.length === 0 ? (
                 <div className="text-center py-8 text-foreground/70">
-                  No support tickets found
+                  {interpolate(t.dashboard.support.noTicketsFound)}
                 </div>
               ) : (
                 allTickets.map((ticket, i) => {
@@ -136,7 +138,7 @@ export default function SupportHistory() {
                             {hasAutoReply && (
                               <span className="text-xs px-2 py-1 rounded bg-green-600 text-white font-semibold flex items-center gap-1">
                                 <CheckCircle size={12} />
-                                Auto-replied
+                                {interpolate(t.dashboard.support.autoReplied)}
                               </span>
                             )}
                             <span className="text-xs px-2 py-1 rounded bg-background/20 font-semibold uppercase">
@@ -146,11 +148,11 @@ export default function SupportHistory() {
                         </div>
                         <h3 className="text-lg font-semibold mb-2">{ticket.subject || 'No Subject'}</h3>
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm opacity-90 mb-2">
-                          <p><span className="font-medium">Priority:</span> {ticket.priority}</p>
-                          <p><span className="font-medium">Source:</span> {ticket.source}</p>
-                          <p><span className="font-medium">Date:</span> {new Date(ticket.created_at).toLocaleDateString()}</p>
+                          <p><span className="font-medium">{interpolate(t.dashboard.account.overview.profile.business.priority)}:</span> {ticket.priority}</p>
+                          <p><span className="font-medium">{interpolate(t.dashboard.support.sourceLabel)}:</span> {ticket.source}</p>
+                          <p><span className="font-medium">{interpolate(t.dashboard.account.billing.history.date)}:</span> {new Date(ticket.created_at).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}</p>
                           {messages.length > 0 && (
-                            <p><span className="font-medium">Messages:</span> {messages.length}</p>
+                            <p><span className="font-medium">{interpolate(t.dashboard.support.messagesLabel)}:</span> {messages.length}</p>
                           )}
                         </div>
 
@@ -171,7 +173,7 @@ export default function SupportHistory() {
                             <div className="mb-4">
                               <h4 className="font-semibold mb-3 flex items-center gap-2">
                                 <MessageSquare size={16} />
-                                Conversation
+                                {interpolate(t.dashboard.support.conversation)}
                               </h4>
                               <div className="space-y-3 max-h-60 overflow-y-auto">
                                 {messages.map((message) => (
@@ -179,12 +181,12 @@ export default function SupportHistory() {
                                     <div className="flex items-center justify-between mb-2">
                                       <span className="font-medium">
                                         {message.sender.username === 'system_auto_reply' 
-                                          ? '🤖 Auto Reply System' 
+                                          ? interpolate(t.dashboard.support.systemReply)
                                           : `${message.sender.first_name} ${message.sender.last_name}`.trim() || message.sender.username
                                         }
                                       </span>
                                       <span className="text-xs opacity-70">
-                                        {new Date(message.created_at).toLocaleString()}
+                                        {new Date(message.created_at).toLocaleString(currentLang === 'it' ? 'it-IT' : 'en-US')}
                                       </span>
                                     </div>
                                     <p className="text-sm">{message.message}</p>
@@ -199,7 +201,7 @@ export default function SupportHistory() {
                             <div className="flex gap-2">
                               <input
                                 type="text"
-                                placeholder="Type your message..."
+                                placeholder={interpolate(t.dashboard.support.typeMessage)}
                                 value={newMessage[ticketId] || ''}
                                 onChange={(e) => setNewMessage(prev => ({ ...prev, [ticketId]: e.target.value }))}
                                 onKeyPress={(e) => e.key === 'Enter' && sendMessage(ticketId)}
@@ -215,7 +217,7 @@ export default function SupportHistory() {
                                 ) : (
                                   <Send size={16} />
                                 )}
-                                Send
+                                {interpolate(t.dashboard.support.send)}
                               </button>
                             </div>
                           </div>

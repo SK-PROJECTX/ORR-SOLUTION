@@ -3,6 +3,7 @@ import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import type { DropResult } from "@hello-pangea/dnd";
 import { Calendar, Ellipsis, Filter, MenuIcon } from "lucide-react";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 // Types
 type Task = {
@@ -113,6 +114,7 @@ const initialData: BoardData = {
 };
 
 export default function OrganisationBoard() {
+  const { t } = useLanguage();
   const [data, setData] = React.useState<BoardData>(initialData);
 
   const onDragEnd = (result: DropResult) => {
@@ -149,13 +151,13 @@ export default function OrganisationBoard() {
   return (
     <>
     <div className="min-h-screen p-6 text-foreground">
-      <h1 className="text-xl font-semibold text-primary my-6">Organisation-Level Views</h1>
+      <h1 className="text-xl font-semibold text-primary my-6">{interpolate(t.dashboard.kanban.title)}</h1>
 
       <div className="bg-card rounded-xl p-6 ">
         <div className="flex justify-between">
           <div>
-            <h2 className="text-lg font-medium mb-1 text-foreground">Overview</h2>
-            <p className="text-sm text-foreground opacity-70 mb-6">Edit or modify all card as you want</p>
+            <h2 className="text-lg font-medium mb-1 text-foreground">{interpolate(t.dashboard.kanban.overview)}</h2>
+            <p className="text-sm text-foreground opacity-70 mb-6">{interpolate(t.dashboard.kanban.desc)}</p>
           </div>
           <div className="flex items-center space-x-2">
             <div className="flex -space-x-2">
@@ -173,7 +175,7 @@ export default function OrganisationBoard() {
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex items-center bg-secondary border border-lemon rounded-lg px-4 py-2 w-full lg:w-auto">
               <span className="mr-2 text-foreground opacity-70">🔍</span>
-              <input className="bg-transparent w-full outline-none text-foreground" placeholder="Search projects" />
+              <input className="bg-transparent w-full outline-none text-foreground" placeholder={interpolate(t.dashboard.kanban.searchPlace)} />
             </div>
 
             <div className="flex items-center bg-secondary border border-primary rounded-lg px-4 py-2 w-full lg:w-auto">
@@ -183,7 +185,7 @@ export default function OrganisationBoard() {
           </div>
 
           <button className="flex items-center gap-2 text-primary justify-center lg:justify-start">
-            <span className=""><Filter size={20}/></span> Apply Filter
+            <span className=""><Filter size={20}/></span> {interpolate(t.dashboard.kanban.applyFilter)}
           </button>
         </div>
 
@@ -194,7 +196,7 @@ export default function OrganisationBoard() {
               <div key={columnId} className="bg-secondary rounded-xl">
                 <div className="bg-background px-6 py-4 rounded-t-xl">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-primary font-semibold">{column.title}</h3>
+                    <h3 className="text-primary font-semibold">{interpolate(t.dashboard.kanban.columns[column.id] || column.title)}</h3>
                     <Ellipsis className="text-primary"/> 
                   </div>
                 </div>
@@ -225,7 +227,7 @@ export default function OrganisationBoard() {
                                 <p className="text-xs text-foreground opacity-60 mb-2">👥 {task.team}</p>
 
                                 <div className="flex items-center justify-between text-xs text-foreground opacity-70">
-                                  <span className="flex items-center gap-1">⏱ {task.days} Days</span>
+                                  <span className="flex items-center gap-1">⏱ {task.days} {interpolate(t.dashboard.kanban.task.days)}</span>
                                   <span className="flex items-center gap-2">
                                     📎 {task.attachments} 💬 {task.comments}
                                   </span>

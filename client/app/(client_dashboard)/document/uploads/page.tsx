@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { Star, FolderOpen, Download, Loader2 } from "lucide-react";
 import { useDocumentStore } from "@/store/documentStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 export default function DocumentVault() {
+  const { t } = useLanguage();
   const { documents, isLoading, fetchDocuments, toggleFavorite, downloadDocument } = useDocumentStore();
   const [localFavorites, setLocalFavorites] = useState<Set<number>>(new Set());
 
@@ -42,11 +44,11 @@ export default function DocumentVault() {
   if (isLoading) {
     return (
       <div className="min-h-screen w-full px-10 py-10 bg-background text-foreground relative">
-        <h1 className="text-xl font-semibold mb-8 text-lemon">Document Vault</h1>
+        <h1 className="text-xl font-semibold mb-8 text-lemon">{interpolate(t.dashboard.vault.title)}</h1>
         <div className="bg-card rounded-xl p-10 w-full min-h-[600px] flex items-center justify-center">
           <div className="flex items-center gap-2 text-foreground/70">
             <Loader2 className="animate-spin" size={20} />
-            Loading documents...
+            {interpolate(t.dashboard.vault.loading)}
           </div>
         </div>
       </div>
@@ -56,23 +58,23 @@ export default function DocumentVault() {
   return (
     <div className="min-h-screen w-full px-10 py-10 bg-background text-foreground relative">
       {/* Title */}
-      <h1 className="text-xl font-semibold mb-8 text-lemon">Document Vault</h1>
+      <h1 className="text-xl font-semibold mb-8 text-lemon">{interpolate(t.dashboard.vault.title)}</h1>
 
       {/* Main container */}
       <div className="bg-card rounded-xl p-10 w-full min-h-[600px]">
         {documents.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[500px] text-foreground/50">
             <FolderOpen size={48} className="mb-4 opacity-50" />
-            <h2 className="text-xl font-medium">No documents securely vaulted yet</h2>
+            <h2 className="text-xl font-medium">{interpolate(t.dashboard.vault.emptyTitle)}</h2>
             <p className="mt-2 text-sm text-center max-w-sm">
-              Your generated reports and strategic documents will appear here once they are ready.
+              {interpolate(t.dashboard.vault.emptyDesc)}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {/* Column 1 */}
             <div>
-              <h2 className="text-sm mb-3 opacity-70">Project</h2>
+              <h2 className="text-sm mb-3 opacity-70">{interpolate(t.dashboard.vault.columns.project)}</h2>
               <div className="space-y-6">
                 {grouped.Project.map((item) => (
                   <DocCard
@@ -89,7 +91,7 @@ export default function DocumentVault() {
 
             {/* Column 2 */}
             <div>
-              <h2 className="text-sm mb-3 opacity-70">Engagement</h2>
+              <h2 className="text-sm mb-3 opacity-70">{interpolate(t.dashboard.vault.columns.engagement)}</h2>
               <div className="space-y-6">
                 {grouped.Engagement.map((item) => (
                   <DocCard
@@ -106,7 +108,7 @@ export default function DocumentVault() {
 
             {/* Column 3 */}
             <div>
-              <h2 className="text-sm mb-3 opacity-70">Stage</h2>
+              <h2 className="text-sm mb-3 opacity-70">{interpolate(t.dashboard.vault.columns.stage)}</h2>
               <div className="space-y-6">
                 {grouped.Stage.map((item) => (
                   <DocCard
@@ -136,6 +138,7 @@ function DocCard({ data, isFavorite, onToggleFavorite, onFolderClick, onDownload
   onFolderClick: () => void;
   onDownloadClick: () => void;
 }) {
+  const { t } = useLanguage();
   return (
     <div className="bg-lemon text-background p-5 rounded-lg relative shadow-md">
       {/* Star icon */}
@@ -153,8 +156,8 @@ function DocCard({ data, isFavorite, onToggleFavorite, onFolderClick, onDownload
       <h3 className="font-semibold text-[15px] mb-2 pr-8">{data.title}</h3>
 
       <p className="text-xs mb-1">
-        <span className="font-semibold">Type:</span> {data.document_type} &nbsp;&nbsp;
-        <span className="font-semibold">Size:</span> {data.file_size}
+        <span className="font-semibold">{interpolate(t.dashboard.vault.labels.type)}:</span> {data.document_type} &nbsp;&nbsp;
+        <span className="font-semibold">{interpolate(t.dashboard.vault.labels.size)}:</span> {data.file_size}
       </p>
 
       <p className="text-[10px] opacity-80 leading-tight mb-6">{data.description}</p>
@@ -166,14 +169,14 @@ function DocCard({ data, isFavorite, onToggleFavorite, onFolderClick, onDownload
         <button
           onClick={onFolderClick}
           className="hover:scale-110 transition-transform p-1"
-          title="Open folder"
+          title={interpolate(t.dashboard.vault.actions.openFolder)}
         >
           <FolderOpen size={18} className="text-background" />
         </button>
         <button
           onClick={onDownloadClick}
           className="hover:scale-110 transition-transform p-1"
-          title="Download"
+          title={interpolate(t.dashboard.vault.actions.download)}
         >
           <Download size={18} className="text-background" />
         </button>

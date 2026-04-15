@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FiSearch, FiMoreHorizontal, FiPlus } from "react-icons/fi";
 import { Plus, X } from 'lucide-react';
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 /**
  * Notes:
@@ -22,6 +23,7 @@ const resources = Array.from({ length: 9 }).map((_, i) => ({
 
 
 export default function ResourcesPage() {
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
     const [openFAQ, setOpenFAQ] = useState(0);
 
@@ -32,14 +34,14 @@ export default function ResourcesPage() {
       <div className="relative z-10 mx-auto px-6 py-12">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-10">
-          <h1 className="text-primary text-2xl md:text-3xl font-semibold">Resources</h1>
+          <h1 className="text-primary text-2xl md:text-3xl font-semibold">{interpolate(t.dashboard.resources.title)}</h1>
 
           <div className="w-full md:w-1/3">
             <div className="relative">
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search anything here..."
+                placeholder={interpolate(t.dashboard.common.search)}
                 className="w-full rounded-full border border-primary bg-transparent px-4 py-3 pl-5 text-sm outline-none placeholder:opacity-60 text-foreground"
               />
               <FiSearch className="absolute right-4 top-1/2 -translate-y-1/2 text-primary" />
@@ -51,7 +53,7 @@ export default function ResourcesPage() {
         {/* Frame container */}
         <div className="bg-card rounded-2xl p-6 md:p-8shadow-inner">
           <div className="bg-secondary rounded-md px-4 py-3 mb-6 text-sm text-foreground opacity-70">
-            Access shared documents, guides, or training materials
+            {interpolate(t.dashboard.resources.subtitle)}
           </div>
 
           {/* Resource grid */}
@@ -79,7 +81,7 @@ export default function ResourcesPage() {
 
                     <div className="flex items-center justify-between text-xs text-foreground opacity-60 mt-4">
                       <div>
-                        <div>{r.participants} Participants</div>
+                        <div>{r.participants} {interpolate(t.dashboard.resources.participants)}</div>
                       </div>
                       <div>{r.date}</div>
                     </div>

@@ -266,7 +266,7 @@ function CustomStepper({ activeStep }: { activeStep: number }) {
 }
 
 export default function OnboardingPage() {
-  const { t, language, interpolate } = useLanguage();
+  const { t, language, setLanguage, interpolate } = useLanguage();
   const [currentSection, setCurrentSection] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -275,6 +275,14 @@ export default function OnboardingPage() {
   const questionnaire = getQuestionnaire(t, interpolate);
   const currentQuestion = questionnaire[currentSection as keyof typeof questionnaire];
   const currentStepData = currentQuestion.steps[currentStep];
+
+  // Restore text input when step changes
+  useEffect(() => {
+    if (currentStepData.type === "text") {
+      const key = `${currentSection}-${currentStep}`;
+      setTextInput(answers[key] || "");
+    }
+  }, [currentSection, currentStep, currentStepData.type]);
 
   const handleOptionSelect = (value: string) => {
     const key = `${currentSection}-${currentStep}`;
@@ -291,10 +299,24 @@ export default function OnboardingPage() {
   };
 
   const handleNext = () => {
+    const key = `${currentSection}-${currentStep}`;
+    const currentAnswer = currentStepData.type === "text" ? textInput : answers[key];
+
+    // Basic validation: must have some content/selection to proceed
+    if (currentStepData.type === "text" && !textInput.trim() && currentSection !== 6) {
+      addToast(interpolate(t?.onboarding?.errors?.requiredField || "This field is required."), "error");
+      return;
+    }
+    
+    if (currentStepData.type !== "text" && (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0))) {
+      addToast(interpolate(t?.onboarding?.errors?.selectOption || "Please select an option to continue."), "error");
+      return;
+    }
+
     if (currentStepData.type === "text") {
-      const key = `${currentSection}-${currentStep}`;
       setAnswers({ ...answers, [key]: textInput });
-      setTextInput("");
+      // textInput is now cleared via the useEffect above when the step actually changes,
+      // but we can also do it here for immediate feedback if needed.
     }
 
     if (currentStep < currentQuestion.steps.length - 1) {
@@ -348,6 +370,17 @@ export default function OnboardingPage() {
       finalAnswers = { ...finalAnswers, [key]: textInput };
     }
 
+    // Language mapping helper
+    const getOptionIndex = (section: number, step: number) => {
+      const key = `${section}-${step}`;
+      const val = finalAnswers[key];
+      if (!val) return -1;
+      
+      const q = getQuestionnaire(t, interpolate)[section as keyof ReturnType<typeof getQuestionnaire>];
+      const s = q.steps[step];
+      return (s.options || []).indexOf(val);
+    };
+
     // Validate service agreement acceptance
     const acceptText = t?.onboarding?.s2?.accept || 'Yes, I accept';
     if (finalAnswers['2-0'] !== interpolate(acceptText)) {
@@ -367,49 +400,54 @@ export default function OnboardingPage() {
     }
 
     const onboardingData = {
-      jurisdiction: finalAnswers['1-0'] === 'Others' ? 'other' : finalAnswers['1-0']?.toLowerCase() || 'malta',
-      jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other jurisdiction' : undefined,
-      language: finalAnswers['1-1'] === 'Others' ? 'other' : finalAnswers['1-1']?.toLowerCase().substring(0, 2) || 'en',
+      jurisdiction: finalAnswers['1-0'] === 'Malta' ? 'malta' : 'other',
+      jurisdiction_other: finalAnswers['1-0'] === 'Malta' ? undefined : (finalAnswers['1-0'] || 'Not specified'),
+      language: finalAnswers['1-1'] === 'Others' ? 'other' : 
+                (getOptionIndex(1, 1) === 1 ? 'it' : 'en'),
       language_other: finalAnswers['1-1'] === 'Others' ? 'other language' : undefined,
-      keyboard_layout: finalAnswers['1-2'] === 'Others' ? 'other' : finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
+      keyboard_layout: finalAnswers['1-2'] === 'Others' ? 'other' : 
+                      finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
       keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other layout' : undefined,
       date_format: finalAnswers['1-3']?.includes('DD/MM') ? 'dd_mm_yyyy' : 'mm_dd_yyyy',
       time_format_24h: finalAnswers['1-3']?.includes('24-hour') || false,
-      accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept' || true,
+      accepted_service_agreement: finalAnswers['2-0']?.includes('accept') || finalAnswers['2-0']?.includes('accetto') || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
       portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,
-      user_type: finalAnswers['4-0'] === 'Others' ? 'other' :
-        finalAnswers['4-0'] === 'Small business owner' ? 'small_business' :
-          finalAnswers['4-0'] === 'Founder/Entrepreneur' ? 'founder' :
-            finalAnswers['4-0'] === 'Corporate representative' ? 'corporate' :
-              finalAnswers['4-0'] === 'Public sector/NGO' ? 'public_ngo' :
-                finalAnswers['4-0'] === 'Researcher/Academic' ? 'academic' :
-                  finalAnswers['4-0'] === 'Individual professional' ? 'professional' : 'founder',
+      user_type: (() => {
+        const idx = getOptionIndex(4, 0);
+        const types = ['founder', 'small_business', 'corporate', 'public_ngo', 'academic', 'professional', 'other'];
+        return types[idx] || 'founder';
+      })(),
       user_type_other: finalAnswers['4-0'] === 'Others' ? 'other user type' : undefined,
-      project_stage: finalAnswers['4-1'] === 'Early Exploration' ? 'exploration' :
-        finalAnswers['4-1'] === 'Pre-Startup/Planning' ? 'pre_startup' :
-          finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
-            finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
-              finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
+      project_stage: (() => {
+        const idx = getOptionIndex(4, 1);
+        const stages = ['exploration', 'pre_startup', 'operational', 'scaling', 'unsure'];
+        return stages[idx] || 'exploration';
+      })(),
       orr_pillars: Array.isArray(finalAnswers['4-2']) ? finalAnswers['4-2'].join(', ') : finalAnswers['4-2'] || '',
-      has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
+      has_active_project: finalAnswers['4-3']?.toLowerCase().includes('yes') || finalAnswers['4-3']?.toLowerCase().includes('sì') ? 'yes' : 'no',
       project_description: finalAnswers['4-4'] || '',
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
       communication_tone: (() => {
-        const tone = finalAnswers['5-1'];
-        const toneMap: Record<string, string> = {
-          'Concise and direct': 'concise',
-          'Detailed and explanatory': 'detailed',
-          'Technical': 'technical',
-          'Non-Technical': 'non_technical',
-          'No preference': 'no_preference'
+        const tones = finalAnswers['5-1'];
+        if (!Array.isArray(tones)) return 'no_preference';
+        
+        const q = getQuestionnaire(t, interpolate)[5 as keyof ReturnType<typeof getQuestionnaire>];
+        const s = q.steps[1];
+        const toneMap: Record<number, string> = {
+          0: 'concise',
+          1: 'detailed',
+          2: 'technical',
+          3: 'non_technical',
+          4: 'no_preference'
         };
 
-        if (Array.isArray(tone)) {
-          if (tone.includes('No preference')) return ['no_preference'];
-          return tone.map((t: string) => toneMap[t] || t.toLowerCase().split(' ')[0]);
-        }
-        return tone === 'No preference' ? ['no_preference'] : [toneMap[tone as string] || tone?.toLowerCase().split(' ')[0] || 'concise'];
+        const result = tones.map(t => {
+          const idx = (s.options || []).indexOf(t);
+          return toneMap[idx];
+        }).filter(Boolean);
+
+        return result.length > 0 ? result.join(', ') : 'no_preference';
       })(),
       notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
       ai_specialist_domains: '',
@@ -470,6 +508,12 @@ export default function OnboardingPage() {
                   onChange={(val) => {
                     const key = `${currentSection}-${currentStep}`;
                     setAnswers({ ...answers, [key]: val });
+                    
+                    // Automatically switch language if this is the language selection step (Section 1, Step 1)
+                    if (currentSection === 1 && currentStep === 1) {
+                      const langCode = val.toLowerCase().startsWith('en') || val.toLowerCase().startsWith('ing') ? 'en' : 'it';
+                      setLanguage(langCode as any);
+                    }
                   }}
                   placeholder={(currentStepData as any).placeholder || interpolate(t?.onboarding?.selectOption || "Select an option")}
                 />

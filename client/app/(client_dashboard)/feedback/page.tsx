@@ -1,14 +1,16 @@
 import React from "react";
 import Image from "next/image";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 const testimonials = [1, 2, 3, 4];
 
 export default function FeedbackPage() {
+  const { t } = useLanguage();
   return (
     <section className="w-full min-h-scree py-20 px-4 md:px-10 lg:px-20 text-foreground">
       {/* Section Title */}
       <h2 className="text-xl md:text-2xl font-semibold text-primary mb-6">
-        Feedback Mechanisms
+        {interpolate(t.dashboard.feedback.title)}
       </h2>
 
       {/* Main Wrapper */}
@@ -16,14 +18,14 @@ export default function FeedbackPage() {
         {/* Header */}
         <div className="flex items-center gap-6 mb-8">
           <button className="text-sm md:text-base text-foreground hover:text-primary transition flex items-center gap-2">
-            View All →
+            {interpolate(t.dashboard.feedback.viewAll)} →
           </button>
-          <p className="text-sm md:text-base text-foreground opacity-70">Client Feedback</p>
+          <p className="text-sm md:text-base text-foreground opacity-70">{interpolate(t.dashboard.feedback.clientFeedback)}</p>
         </div>
 
         {/* Heading */}
         <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-primary mb-12">
-          What They Say After Using Our Resource
+          {interpolate(t.dashboard.feedback.heading)}
         </h3>
 
         {/* Grid */}
@@ -56,8 +58,7 @@ export default function FeedbackPage() {
 
               {/* Text */}
               <p className="text-foreground opacity-80 text-sm leading-relaxed">
-                This kit exceeded my expectations! The components are versatile and
-                make implementation much easier.
+                {interpolate(t.dashboard.feedback.defaultTestimonial)}
               </p>
             </div>
           ))}

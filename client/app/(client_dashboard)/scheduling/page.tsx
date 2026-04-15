@@ -8,10 +8,11 @@ import {
   Navigate,
 } from "react-big-calendar";
 import {format, startOfWeek, getDay} from "date-fns";
-import {enUS} from "date-fns/locale";
+import { enUS, it } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSchedulingStore } from "@/store/schedulingStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 // Simple parse function to replace date-fns parse
 const simpleParse = (dateString: string) => new Date(dateString);
@@ -44,7 +45,10 @@ const calendarStyles = `
 // Tailwind-friendly wrapper for react-big-calendar styles
 // You should also include the react-big-calendar css in your global CSS if using Next.js.
 
-const locales = { "en-US": enUS };
+const locales = { 
+  "en-US": enUS,
+  "it-IT": it
+};
 const localizer = dateFnsLocalizer({ format, parse: simpleParse, startOfWeek, getDay, locales });
 type EventItem = {
   id: number;
@@ -57,23 +61,23 @@ type EventItem = {
 
 
 
-function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boolean }) {
+function EventSidebar({ items, isLoading, t }: { items: EventItem[]; isLoading: boolean; t: any }) {
   return (
     <div className="h-full">
       <div className="bg-card rounded-xl p-4 h-full flex flex-col">
         <div className="flex-shrink-0 mb-4">
-          <h3 className="text-xl text-lemon font-semibold mb-1">Details Day</h3>
-          <p className="text-sm text-foreground/70">Don't miss scheduled events</p>
+          <h3 className="text-xl text-lemon font-semibold mb-1">{interpolate(t.dashboard.scheduling.details)}</h3>
+          <p className="text-sm text-foreground/70">{interpolate(t.dashboard.scheduling.missEvents)}</p>
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide">
           {isLoading ? (
             <div className="text-center py-8 text-foreground/70">
-              Loading meetings...
+              {interpolate(t.dashboard.scheduling.loading)}
             </div>
           ) : items.length === 0 ? (
             <div className="text-center py-8 text-foreground/70">
-              No meetings scheduled
+              {interpolate(t.dashboard.scheduling.noMeetings)}
             </div>
           ) : (
             items.map((it) => (
@@ -85,7 +89,7 @@ function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boo
                   <div className="flex justify-between items-start">
                     <div>
                       <h4 className="text-sm font-semibold text-foreground">{it.title}</h4>
-                      <p className="text-xs text-foreground/70">Online Meeting</p>
+                      <p className="text-xs text-foreground/70">{interpolate(t.dashboard.scheduling.onlineMeeting)}</p>
                     </div>
                     <div className="text-xs text-foreground bg-card px-2 py-1 rounded">
                       {format(it.start, "h:mm a")} - {format(it.end, "h:mm a")}
@@ -103,7 +107,7 @@ function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boo
   );
 }
 
-function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
+function CustomToolbar({ localizer, label, onNavigate, view, onView, t }: any) {
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-3">
@@ -124,16 +128,16 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
       </div>
 
       <div className="flex items-center gap-3">
-        <button onClick={() => onNavigate('TODAY')} className="bg-lemon text-black px-3 py-1 rounded">Today</button>
+        <button onClick={() => onNavigate('TODAY')} className="bg-lemon text-black px-3 py-1 rounded">{interpolate(t.dashboard.scheduling.today)}</button>
         <div className="relative inline-block text-left">
           <select
             value={view}
             onChange={(e) => onView(e.target.value)}
             className="bg-card px-3 py-1 rounded text-sm text-foreground"
           >
-            <option value={Views.MONTH} className="bg-card text-foreground">Month</option>
-            <option value={Views.WEEK} className="bg-card text-foreground">Week</option>
-            <option value={Views.DAY} className="bg-card text-foreground">Day</option>
+            <option value={Views.MONTH} className="bg-card text-foreground">{interpolate(t.dashboard.scheduling.views.month)}</option>
+            <option value={Views.WEEK} className="bg-card text-foreground">{interpolate(t.dashboard.scheduling.views.week)}</option>
+            <option value={Views.DAY} className="bg-card text-foreground">{interpolate(t.dashboard.scheduling.views.day)}</option>
           </select>
         </div>
         <button className="px-2 py-2">⋮</button>
@@ -143,6 +147,7 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
 }
 
 export default function SchedulingPage() {
+  const { t, language: currentLang } = useLanguage();
   const { meetings, isLoading, fetchMeetings } = useSchedulingStore();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState(Views.MONTH);
@@ -208,11 +213,11 @@ export default function SchedulingPage() {
     <div className="min-h-screen bg-background text-foreground p-6 sm:p-8 md:p-10 lg:p-14">
       <div className=" mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-semibold text-lemon">Scheduling</h1>
+          <h1 className="text-3xl font-semibold text-lemon">{interpolate(t.dashboard.scheduling.title)}</h1>
           <div className="w-full max-w-md mx-auto hidden md:block">
             <div className="relative">
               <input
-                placeholder="Search anything here..."
+                placeholder={interpolate(t.dashboard.common.search)}
                 className="w-full rounded-full py-2 pl-4 pr-10 bg-card text-sm"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-lemon">🔍</span>
@@ -222,7 +227,7 @@ export default function SchedulingPage() {
 
         <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
           <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0">
-            <EventSidebar items={events} isLoading={isLoading} />
+            <EventSidebar items={events} isLoading={isLoading} t={t} />
           </aside>
 
           <main className="flex-1">
@@ -241,11 +246,14 @@ export default function SchedulingPage() {
                 selectable
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 style={{ height: '100%' }}
-                components={{ toolbar: CustomToolbar }}
+                components={{ 
+                  toolbar: (props: any) => <CustomToolbar {...props} t={t} /> 
+                }}
                 eventPropGetter={(ev: any) => eventStyleGetter(ev as EventItem)}
                 popup
                 step={30}
                 showMultiDayTimes
+                culture={currentLang === 'it' ? 'it-IT' : 'en-US'}
               />
             </div>
           </main>

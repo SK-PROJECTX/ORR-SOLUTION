@@ -4,15 +4,18 @@ import React, { useEffect } from "react";
 import { Star, Folder, Download } from "lucide-react";
 import { useFavoriteStore } from "@/store/favoriteStore";
 import { useDocumentStore } from "@/store/documentStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 const FavouriteCard = ({ 
   favorite, 
   onRemove, 
-  onDownload 
+  onDownload,
+  t
 }: { 
   favorite: any;
   onRemove: () => void;
   onDownload: () => void;
+  t: any;
 }) => {
   return (
     <div className="bg-lemon w-full p-5 rounded-xl text-background shadow-md relative">
@@ -24,8 +27,8 @@ const FavouriteCard = ({
       </div>
 
       <div className="flex items-center gap-6 text-sm mt-4 opacity-90">
-        <p>Type: {favorite.document.document_type}</p>
-        <p>Size: {favorite.document.file_size}</p>
+        <p>{interpolate(t.dashboard.favorites.type)}: {favorite.document.document_type}</p>
+        <p>{interpolate(t.dashboard.favorites.size)}: {favorite.document.file_size}</p>
       </div>
 
       <p className="text-sm mt-2 opacity-90">
@@ -47,6 +50,7 @@ const FavouriteCard = ({
 };
 
 export default function FavouritesPage() {
+  const { t } = useLanguage();
   const { favorites, isLoading, fetchFavorites, removeFavorite } = useFavoriteStore();
   const { downloadDocument } = useDocumentStore();
 
@@ -66,8 +70,8 @@ export default function FavouritesPage() {
     return (
       <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center p-6">
         <div className="w-full bg-card p-8 md:p-10 rounded-3xl shadow-lg">
-          <h2 className="text-2xl font-semibold mb-10 text-left text-lemon">Favourites / Saved Items</h2>
-          <div className="text-center text-foreground/70">Loading favorites...</div>
+          <h2 className="text-2xl font-semibold mb-10 text-left text-lemon">{interpolate(t.dashboard.favorites.title)}</h2>
+          <div className="text-center text-foreground/70">{interpolate(t.dashboard.favorites.loading)}</div>
         </div>
       </div>
     );
@@ -76,11 +80,11 @@ export default function FavouritesPage() {
   return (
     <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center p-6">
       <div className="w-full bg-card p-8 md:p-10 rounded-3xl shadow-lg">
-        <h2 className="text-2xl font-semibold mb-10 text-left text-lemon">Favourites / Saved Items</h2>
+        <h2 className="text-2xl font-semibold mb-10 text-left text-lemon">{interpolate(t.dashboard.favorites.title)}</h2>
 
         {favorites.length === 0 ? (
           <div className="text-center text-foreground/70 py-8">
-            No favorite documents found
+            {interpolate(t.dashboard.favorites.noFavorites)}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,6 +94,7 @@ export default function FavouritesPage() {
                 favorite={favorite}
                 onRemove={() => handleRemoveFavorite(favorite.id)}
                 onDownload={() => handleDownload(favorite.document.id)}
+                t={t}
               />
             ))}
           </div>

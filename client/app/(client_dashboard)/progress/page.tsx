@@ -3,6 +3,7 @@ import React from "react";
 import { Stepper, Step, StepLabel, StepConnector, stepConnectorClasses } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BadgeCheck } from "lucide-react";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 // ----- CUSTOM CONNECTOR ----- //
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
@@ -42,18 +43,24 @@ function StepPillIcon({ active, completed, label, passed }: any) {
   );
 }
 
-const steps = ["Discover", "Diagnose", "Design", "Deploy", "Grow"];
-
 export default function ProgressTrackerPage() {
+  const { t } = useLanguage();
+  const steps = [
+    interpolate(t.dashboard.progress.stages.discover),
+    interpolate(t.dashboard.progress.stages.diagnose),
+    interpolate(t.dashboard.progress.stages.design),
+    interpolate(t.dashboard.progress.stages.deploy),
+    interpolate(t.dashboard.progress.stages.grow),
+  ];
   return (
     <div className="min-h-screen w-full bg-[#041C32] text-white px-4 py-10 flex flex-col items-center gap-16">
-      <h1 className="text-[#4EFFA1] text-xl font-semibold w-full max-w-6xl">Progress Tracker</h1>
+      <h1 className="text-[#4EFFA1] text-xl font-semibold w-full max-w-6xl">{interpolate(t.dashboard.progress.title)}</h1>
 
       {/* ================= FIRST CARD (DONE) ================= */}
       <div className="w-full max-w-6xl bg-[#0B2A3F] rounded-3xl p-10 shadow-xl relative">
-        <div className="absolute right-10 top-10 bg-[#21E67A] text-[#083018] text-xs font-semibold px-4 py-1 rounded-full">Done</div>
+        <div className="absolute right-10 top-10 bg-[#21E67A] text-[#083018] text-xs font-semibold px-4 py-1 rounded-full">{interpolate(t.dashboard.progress.done)}</div>
 
-        <h2 className="text-2xl font-semibold mb-10">Progress Tracker</h2>
+        <h2 className="text-2xl font-semibold mb-10">{interpolate(t.dashboard.progress.title)}</h2>
 
         <Stepper alternativeLabel activeStep={4} connector={<CustomConnector />}>          
           {steps.map((label, index) => (
@@ -70,7 +77,7 @@ export default function ProgressTrackerPage() {
         <div className="grid grid-cols-5 gap-8 mt-10 text-center">
           {steps.map((step, i) => (
             <div key={i}>
-              <p className="text-xs text-gray-300 leading-relaxed">Lorem ipsimu dyeygvdgeshc vuscgev</p>
+              <p className="text-xs text-gray-300 leading-relaxed"></p>
             </div>
           ))}
         </div>
@@ -78,9 +85,9 @@ export default function ProgressTrackerPage() {
 
       {/* ================= SECOND CARD (CURRENT LAP) ================= */}
       <div className="w-full max-w-6xl bg-[#0B2A3F] rounded-3xl p-10 shadow-xl relative">
-        <div className="absolute right-10 top-10 bg-[#21E67A] text-[#083018] text-xs font-semibold px-4 py-1 rounded-full">Current Lap</div>
+        <div className="absolute right-10 top-10 bg-[#21E67A] text-[#083018] text-xs font-semibold px-4 py-1 rounded-full">{interpolate(t.dashboard.progress.currentLap)}</div>
 
-        <h2 className="text-2xl font-semibold mb-10">Progress Tracker</h2>
+        <h2 className="text-2xl font-semibold mb-10">{interpolate(t.dashboard.progress.title)}</h2>
 
         <Stepper alternativeLabel activeStep={1} connector={<CustomConnector />}>          
           {steps.map((label, index) => {
@@ -102,7 +109,7 @@ export default function ProgressTrackerPage() {
         <div className="grid grid-cols-5 gap-8 mt-10 text-center">
           {steps.map((step, i) => (
             <div key={i}>
-              <p className="text-xs text-gray-300 leading-relaxed">Lorem ipsimu dyeygvdgeshc vuscgev</p>
+              <p className="text-xs text-gray-300 leading-relaxed"></p>
             </div>
           ))}
         </div>

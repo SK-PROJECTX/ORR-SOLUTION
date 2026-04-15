@@ -18,7 +18,7 @@ interface ORRJourneySectionProps {
 }
 
 export default function ORRJourneySection() {
-  const { t } = useLanguage();
+  const { t, interpolate } = useLanguage();
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -134,7 +134,13 @@ export default function ORRJourneySection() {
                 {step.subtext && (
                   <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
                     <p className="text-primary font-bold text-lg md:text-xl">
-                      {step.subtext}
+                      {interpolate(step.subtext, { 
+                        currency: t.dashboard.pricing.currency,
+                        meetingPrice: t.dashboard.pricing.meetingPrice,
+                        reportPrice: t.dashboard.pricing.reportPrice,
+                        hrs: t.dashboard.pricing.hrs,
+                        proRata: t.dashboard.pricing.proRata
+                      })}
                     </p>
                   </div>
                 )}

@@ -8,13 +8,17 @@ import {
   Navigate,
 } from "react-big-calendar";
 import {format, startOfWeek, getDay} from "date-fns";
-import {enUS} from "date-fns/locale";
+import {enUS, it} from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CalendarCog, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMeetingStore } from "@/store/meetingStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 // Simple parse function to replace date-fns parse
 const simpleParse = (dateString: string) => new Date(dateString);
+
+const locales = { "en": enUS, "it": it };
+const localizer = dateFnsLocalizer({ format, parse: simpleParse, startOfWeek, getDay, locales });
 
 // Custom calendar styles
 const calendarStyles = `
@@ -41,8 +45,6 @@ const calendarStyles = `
   }
 `;
 
-const locales = { "en-US": enUS };
-const localizer = dateFnsLocalizer({ format, parse: simpleParse, startOfWeek, getDay, locales });
 type EventItem = {
   id: number;
   title: string;
@@ -55,22 +57,23 @@ type EventItem = {
 
 
 function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boolean }) {
+  const { t, language } = useLanguage();
   return (
     <div className="h-full">
       <div className="bg-card rounded-xl p-4 h-full flex flex-col">
         <div className="flex-shrink-0 mb-4">
-          <h3 className="text-xl text-lemon font-semibold mb-1">Details Day</h3>
-          <p className="text-sm text-foreground/70">Don't miss scheduled events</p>
+          <h3 className="text-xl text-lemon font-semibold mb-1">{interpolate(t.dashboard.consultations.upcoming.detailsDay)}</h3>
+          <p className="text-sm text-foreground/70">{interpolate(t.dashboard.consultations.upcoming.dontMiss)}</p>
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-4 scrollbar-hide">
           {isLoading ? (
             <div className="text-center py-8 text-foreground/70">
-              Loading meetings...
+              {interpolate(t.dashboard.common.loading)}
             </div>
           ) : items.length === 0 ? (
             <div className="text-center py-8 text-foreground/70">
-              No meetings scheduled
+              {interpolate(t.dashboard.consultations.upcoming.noMeetings)}
             </div>
           ) : (
             items.map((it) => (
@@ -82,14 +85,14 @@ function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boo
                   <div className="flex justify-between items-start">
                     <div>
                       <h4 className="text-sm font-semibold text-foreground">{it.title}</h4>
-                      <p className="text-xs text-foreground/70">Online Meeting</p>
+                      <p className="text-xs text-foreground/70">{interpolate(t.dashboard.consultations.upcoming.onlineMeeting)}</p>
                     </div>
                     <div className="text-xs text-foreground bg-card px-2 py-1 rounded">
                       {format(it.start, "h:mm a")} - {format(it.end, "h:mm a")}
                     </div>
                   </div>
 
-                 <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(it.start, "EEEE, MMM d, yyyy")}</p>
+                 <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(it.start, "EEEE, MMM d, yyyy", { locale: language === 'it' ? it : enUS })}</p>
                 </div>
               </div>
             ))
@@ -101,6 +104,7 @@ function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boo
 }
 
 function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
+  const { t } = useLanguage();
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-3">
@@ -121,16 +125,16 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
       </div>
 
       <div className="flex items-center gap-3">
-        <button onClick={() => onNavigate('TODAY')} className="bg-lemon text-black px-3 py-1 rounded">Today</button>
+        <button onClick={() => onNavigate('TODAY')} className="bg-lemon text-black px-3 py-1 rounded">{interpolate(t.dashboard.consultations.upcoming.today)}</button>
         <div className="relative inline-block text-left">
           <select
             value={view}
             onChange={(e) => onView(e.target.value)}
             className="bg-card px-3 py-1 rounded text-sm text-foreground"
           >
-            <option value={Views.MONTH} className="bg-card text-foreground">Month</option>
-            <option value={Views.WEEK} className="bg-card text-foreground">Week</option>
-            <option value={Views.DAY} className="bg-card text-foreground">Day</option>
+            <option value={Views.MONTH} className="bg-card text-foreground">{interpolate(t.dashboard.consultations.upcoming.views.month)}</option>
+            <option value={Views.WEEK} className="bg-card text-foreground">{interpolate(t.dashboard.consultations.upcoming.views.week)}</option>
+            <option value={Views.DAY} className="bg-card text-foreground">{interpolate(t.dashboard.consultations.upcoming.views.day)}</option>
           </select>
         </div>
         <button className="px-2 py-2">⋮</button>
@@ -140,6 +144,7 @@ function CustomToolbar({ localizer, label, onNavigate, view, onView }: any) {
 }
 
 export default function SchedulingPage() {
+  const { t, language } = useLanguage();
   const { meetings, isLoading, fetchMyMeetings, getUpcomingMeetings } = useMeetingStore();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState(Views.MONTH);
@@ -207,11 +212,11 @@ export default function SchedulingPage() {
     <div className="min-h-screen bg-background text-foreground p-6 sm:p-8 md:p-10 lg:p-14">
       <div className=" mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-semibold text-lemon">Upcoming Consultation</h1>
+          <h1 className="text-3xl font-semibold text-lemon">{interpolate(t.dashboard.consultations.upcoming.title)}</h1>
           <div className="w-full max-w-md mx-auto hidden md:block">
             <div className="relative">
               <input
-                placeholder="Search anything here..."
+                placeholder={interpolate(t.dashboard.common.search)}
                 className="w-full rounded-full py-2 pl-4 pr-10 bg-card text-sm"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-lemon">🔍</span>
@@ -240,6 +245,7 @@ export default function SchedulingPage() {
                 selectable
                 views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 style={{ height: '100%' }}
+                culture={language}
                 components={{ toolbar: CustomToolbar }}
                 eventPropGetter={(ev: any) => eventStyleGetter(ev as EventItem)}
                 popup

@@ -113,8 +113,8 @@ export default function Dashboard() {
         {/* Header */}
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">{interpolate(t?.dashboard?.page?.title || "Dashboard")}</h1>
-            <p className="text-foreground opacity-60 mt-1">{interpolate(t?.dashboard?.page?.welcomeBack || "Welcome back! Here's your overview")}</p>
+            <h1 className="text-3xl font-bold text-foreground">{interpolate(t.dashboard.page.title)}</h1>
+            <p className="text-foreground opacity-60 mt-1">{interpolate(t.dashboard.page.welcomeBack)}</p>
           </div>
 
           <div className="flex items-center gap-4">
@@ -135,13 +135,13 @@ export default function Dashboard() {
               {notifOpen && (
                 <div className="absolute right-0 top-14 w-96 max-h-[480px] bg-card border border-secondary rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden">
                   <div className="flex items-center justify-between px-4 py-3 border-b border-secondary">
-                    <h4 className="font-semibold text-foreground text-sm">{interpolate(t?.dashboard?.page?.notifications || "Notifications")}</h4>
+                    <h4 className="font-semibold text-foreground text-sm">{interpolate(t.dashboard.page.notifications)}</h4>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => { setNotifOpen(false); router.push('/updates'); }}
                         className="text-xs text-primary hover:text-primary/80 transition-colors"
                       >
-                        {interpolate(t?.dashboard?.page?.viewAll || "View All")}
+                        {interpolate(t.dashboard.page.viewAll)}
                       </button>
                       <button onClick={() => setNotifOpen(false)} className="text-foreground opacity-60 hover:opacity-100">
                         <X className="w-4 h-4" />
@@ -150,7 +150,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1 overflow-y-auto">
                     {notifications.length === 0 ? (
-                      <div className="text-center py-10 text-foreground opacity-50 text-sm">{interpolate(t?.dashboard?.page?.noNotifications || "No notifications")}</div>
+                      <div className="text-center py-10 text-foreground opacity-50 text-sm">{interpolate(t.dashboard.page.noNotifications)}</div>
                     ) : (
                       notifications.slice(0, 10).map(n => (
                         <div
@@ -186,25 +186,25 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard 
             icon={<Users className="w-6 h-6 text-white" />}
-            title={interpolate(t?.dashboard?.page?.stats?.totalMeetings || "Total Meetings")}
+            title={interpolate(t.dashboard.page.stats.totalMeetings)}
             value={String(Array.isArray(meetings) ? meetings.length : 0)}
             loading={isLoading}
           />
           <StatCard 
             icon={<MousePointer className="w-6 h-6 text-white" />}
-            title={interpolate(t?.dashboard?.page?.stats?.upcomingMeetings || "Upcoming Meetings")}
+            title={interpolate(t.dashboard.page.stats.upcomingMeetings)}
             value={String(upcomingMeetings.length)}
             loading={isLoading}
           />
           <StatCard 
             icon={<DollarSign className="w-6 h-6 text-white" />}
-            title={interpolate(t?.dashboard?.page?.stats?.totalInvoices || "Total Invoices")}
+            title={interpolate(t.dashboard.page.stats.totalInvoices)}
             value={String(Array.isArray(billingHistory) ? billingHistory.length : 0)}
             loading={billingLoading}
           />
           <StatCard 
             icon={<FileText className="w-6 h-6 text-white" />}
-            title={interpolate(t?.dashboard?.page?.stats?.documents || "Documents")}
+            title={interpolate(t.dashboard.page.stats.documents)}
             value={String(Array.isArray(documents) ? documents.length : 0)}
             loading={docsLoading}
           />
@@ -220,8 +220,8 @@ export default function Dashboard() {
                   👋
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground">{interpolate(t?.dashboard?.page?.welcome?.morning || "Good morning!")}</h2>
-                  <p className="text-foreground opacity-60">{interpolate(t?.dashboard?.page?.welcome?.goals || "Ready to tackle today's goals?")}</p>
+                  <h2 className="text-xl font-semibold text-foreground">{interpolate(t.dashboard.page.welcome.morning)}</h2>
+                  <p className="text-foreground opacity-60">{interpolate(t.dashboard.page.welcome.goals)}</p>
                 </div>
               </div>
 
@@ -244,10 +244,10 @@ export default function Dashboard() {
             {/* Performance Chart */}
             <div className="bg-card border border-secondary rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-foreground">{interpolate(t?.dashboard?.page?.overview?.title || "Meetings Overview")}</h3>
+                <h3 className="text-lg font-semibold text-foreground">{interpolate(t.dashboard.page.overview.title)}</h3>
                 <div className="flex items-center gap-2 text-sm text-foreground opacity-60">
                   <div className="w-3 h-3 bg-primary rounded-full"></div>
-                  <span>{interpolate(t?.dashboard?.page?.overview?.pastMonths || "Past 6 Months")}</span>
+                  <span>{interpolate(t.dashboard.page.overview.pastMonths)}</span>
                 </div>
               </div>
 
@@ -298,9 +298,9 @@ export default function Dashboard() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center">
                   <Wallet className="w-5 h-5 text-white" />
                 </div>
-                <h4 className="font-semibold text-foreground">{interpolate(t?.dashboard?.page?.wallet?.title || "My Wallet")}</h4>
+                <h4 className="font-semibold text-foreground">{interpolate(t.dashboard.page.wallet.title)}</h4>
               </div>
-              <p className="text-sm text-foreground opacity-60 mb-2">{interpolate(t?.dashboard?.page?.wallet?.status || "Subscription Status")}</p>
+              <p className="text-sm text-foreground opacity-60 mb-2">{interpolate(t.dashboard.page.wallet.status)}</p>
               {walletLoading ? (
                 <div className="h-10 w-24 bg-secondary/50 rounded animate-pulse mb-4"></div>
               ) : (
@@ -312,18 +312,18 @@ export default function Dashboard() {
                 onClick={() => router.push('/account/wallet')}
                 className="w-full py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition-colors"
               >
-                {interpolate(t?.dashboard?.page?.wallet?.view || "View My Wallet")}
+                {interpolate(t.dashboard.page.wallet.view)}
               </button>
             </div>
 
             {/* Quick Actions */}
             <div className="bg-card border border-secondary rounded-xl p-6">
-              <h5 className="font-semibold text-foreground mb-4">{interpolate(t?.dashboard?.page?.quickActions?.title || "Quick Actions")}</h5>
+              <h5 className="font-semibold text-foreground mb-4">{interpolate(t.dashboard.page.quickActions.title)}</h5>
               <div className="space-y-3">
                 {[
-                  { icon: <Calendar className="w-5 h-5" />, title: interpolate(t?.dashboard?.page?.quickActions?.schedule?.title || "Schedule Meeting"), desc: interpolate(t?.dashboard?.page?.quickActions?.schedule?.desc || "Book consultation"), path: "/meeting-request" },
-                  { icon: <Clock className="w-5 h-5" />, title: interpolate(t?.dashboard?.page?.quickActions?.scheduleView?.title || "View Schedule"), desc: interpolate(t?.dashboard?.page?.quickActions?.scheduleView?.desc || "Upcoming consultations"), path: "/scheduling" },
-                  { icon: <Headphones className="w-5 h-5" />, title: interpolate(t?.dashboard?.page?.quickActions?.support?.title || "Get Support"), desc: interpolate(t?.dashboard?.page?.quickActions?.support?.desc || "Contact our team"), path: "/support" },
+                  { icon: <Calendar className="w-5 h-5" />, title: interpolate(t.dashboard.page.quickActions.schedule.title), desc: interpolate(t.dashboard.page.quickActions.schedule.desc), path: "/meeting-request" },
+                  { icon: <Clock className="w-5 h-5" />, title: interpolate(t.dashboard.page.quickActions.scheduleView.title), desc: interpolate(t.dashboard.page.quickActions.scheduleView.desc), path: "/scheduling" },
+                  { icon: <Headphones className="w-5 h-5" />, title: interpolate(t.dashboard.page.quickActions.support.title), desc: interpolate(t.dashboard.page.quickActions.support.desc), path: "/support" },
                 ].map((action, i) => (
                   <button
                     key={i}
@@ -350,13 +350,13 @@ export default function Dashboard() {
             {/* Upcoming Consultations */}
             <div className="bg-card border border-secondary rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h6 className="font-semibold text-foreground">{interpolate(t?.dashboard?.page?.upcomingConsultations?.title || "Upcoming Consultations")}</h6>
+                <h6 className="font-semibold text-foreground">{interpolate(t.dashboard.page.upcomingConsultations.title)}</h6>
                 {upcomingMeetings.length > 0 && (
                   <button 
                     onClick={() => router.push('/consultations/upcoming-consultations')}
                     className="text-xs text-primary hover:text-primary/80 transition-colors"
                   >
-                    {interpolate(t?.dashboard?.page?.viewAll || "View All")}
+                    {interpolate(t.dashboard.page.viewAll)}
                   </button>
                 )}
               </div>
@@ -386,12 +386,12 @@ export default function Dashboard() {
                 ) : (
                   <div className="text-center py-8">
                     <Calendar className="w-12 h-12 text-foreground opacity-30 mx-auto mb-3" />
-                    <p className="text-foreground opacity-60 text-sm">{interpolate(t?.dashboard?.page?.upcomingConsultations?.noMeetings || "No upcoming consultations")}</p>
+                    <p className="text-foreground opacity-60 text-sm">{interpolate(t.dashboard.page.upcomingConsultations.noMeetings)}</p>
                     <button 
                       onClick={() => router.push('/meeting-request')}
                       className="text-xs text-primary hover:text-primary/80 transition-colors mt-2"
                     >
-                      {interpolate(t?.dashboard?.page?.upcomingConsultations?.scheduleFirst || "Schedule your first meeting")}
+                      {interpolate(t.dashboard.page.upcomingConsultations.scheduleFirst)}
                     </button>
                   </div>
                 )}

@@ -6,46 +6,24 @@ import { useMeetingStore } from "@/store/meetingStore";
 import { useRouter } from "next/navigation";
 import { useToastStore } from "@/store/toastStore";
 import axios from "@/lib/axios";
-
-const meetingTypes = [
-  "First meeting",
-  "Discovery",
-  "Follow-up",
-  "Report review",
-];
-
-const meetingOverviews = {
-  "First meeting": {
-    overview: "Your introduction to ORR. This meeting focuses on understanding your organisation at a high level, clarifying your priorities, and determining whether our support is the right fit. No preparation is required — we listen first.",
-    agenda: "1. Welcome & quick orientation to ORR's GP model\n2. Client introduction and current context\n3. High-level challenges and priorities\n4. Clarifying questions from ORR\n5. Outline of next steps (Discovery Meeting + documentation)\n6. Q&A"
-  },
-  "Discovery": {
-    overview: "A structured diagnostic session where we map your organisation's systems, challenges, and desired outcomes. This is the foundation for ORR's Diagnose → Design → Deploy process. Expect targeted questions and a deeper review of how your organisation works.",
-    agenda: "1. Recap of objectives and scope\n2. Deep-dive into operational, regulatory, digital, and strategic areas\n3. Review of existing documents, processes, and systems\n4. Identification of pain points and constraints\n5. Mapping desired outcomes and early hypotheses\n6. Confirmation of what ORR will analyse and deliver next"
-  },
-  "Follow-up": {
-    overview: "A short, focused checkpoint to validate findings, close information gaps, and confirm assumptions before ORR moves into solution design. This meeting ensures accuracy and alignment.",
-    agenda: "1. Review of updates since last meeting\n2. Clarifications on data, documents, or processes\n3. Validation of early observations or assumptions\n4. Additional client input needed before design\n5. Alignment on what ORR will prepare for the next stage"
-  },
-  "Report review": {
-    overview: "A walkthrough of ORR's findings, recommendations, and the proposed roadmap. This meeting ensures full understanding before decisions are made and next steps begin.",
-    agenda: "1. Summary of the discovery & diagnostic process\n2. Presentation of key findings\n3. Walkthrough of recommended actions or solutions\n4. Discussion on timelines, priorities, and resource needs\n5. Agreement on next steps (Design, Deploy, or adjustments)\n6. Q&A and final clarifications"
-  }
-};
-
-const allTimes = [
-  "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
-  "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
-  "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
-  "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM",
-  "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM"
-];
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 export default function MeetingRequestPage() {
-  const [selectedType, setSelectedType] = useState("Discovery");
+  const { t, language: currentLang } = useLanguage();
+  
+  const meetingTypes = [
+    { id: "first_meeting", label: interpolate(t.dashboard.consultations.types.first_meeting) },
+    { id: "discovery", label: interpolate(t.dashboard.consultations.types.discovery) },
+    { id: "follow_up", label: interpolate(t.dashboard.consultations.types.follow_up) },
+    { id: "report_review", label: interpolate(t.dashboard.consultations.types.report_review) },
+  ];
+
+  const meetingOverviews = t.dashboard.consultations.typeDetails;
+
+  const [selectedType, setSelectedType] = useState<keyof typeof meetingOverviews>("discovery");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [agenda, setAgenda] = useState(meetingOverviews["Discovery"].agenda);
+  const [agenda, setAgenda] = useState(meetingOverviews["discovery"].agenda);
   const [notes, setNotes] = useState("");
   const [schedulingUrl, setSchedulingUrl] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -53,6 +31,12 @@ export default function MeetingRequestPage() {
   const { createMeeting, isLoading } = useMeetingStore();
   const { addToast } = useToastStore();
   const router = useRouter();
+
+  // Sync agenda when language changes if it hasn't been manually edited? 
+  // For now, just reset if type changes or on first load.
+  useEffect(() => {
+    setAgenda(meetingOverviews[selectedType].agenda);
+  }, [selectedType, currentLang]);
 
   useEffect(() => {
     const fetchEventType = async () => {
@@ -107,12 +91,12 @@ export default function MeetingRequestPage() {
   };
 
   const formatMonthYear = (date: Date) => {
-    return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    return date.toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US', { month: 'long', year: 'numeric' });
   };
 
   const formatSelectedDate = (date: Date | null) => {
-    if (!date) return 'Select a date';
-    return date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
+    if (!date) return interpolate(t.dashboard.consultations.book.selectDate);
+    return date.toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' });
   };
 
   const isDateSelected = (date: Date | null) => {
@@ -122,12 +106,12 @@ export default function MeetingRequestPage() {
 
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime || !agenda.trim()) {
-      addToast('Please fill all required fields', 'error');
+      addToast(interpolate(t.dashboard.consultations.book.validation.fillAll), 'error');
       return;
     }
 
     if (!selectedDate) {
-      addToast('Please select a date', 'error');
+      addToast(interpolate(t.dashboard.consultations.book.validation.selectDate), 'error');
       return;
     }
 
@@ -141,7 +125,7 @@ export default function MeetingRequestPage() {
     datetime.setHours(hours, minutes, 0, 0);
     
     const meetingData = {
-      meeting_type: selectedType.toLowerCase().replace(' ', '_') as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
+      meeting_type: selectedType as 'discovery' | 'first_meeting' | 'follow_up' | 'report_review',
       requested_datetime: datetime.toISOString(),
       agenda: agenda.trim(),
       notes: notes.trim(),
@@ -154,10 +138,10 @@ export default function MeetingRequestPage() {
       
       if (meetingId) {
         // Clear form fields after successful submission
-        setSelectedType("Discovery");
+        setSelectedType("discovery");
         setSelectedDate(null);
         setSelectedTime(null);
-        setAgenda(meetingOverviews["Discovery"].agenda);
+        setAgenda(meetingOverviews["discovery"].agenda);
         setNotes("");
         // Navigate to pre-meeting page with meeting ID
         router.push(`/pre-meeting?meetingId=${meetingId}`);
@@ -175,14 +159,14 @@ export default function MeetingRequestPage() {
       {/* HEADER */}
       <div className="max-w-6xl mx-auto flex justify-between items-center mb-10">
         <h1 className="text-xl font-semibold text-lemon">
-          Meeting Request System
+          {interpolate(t.dashboard.consultations.book.title)}
         </h1>
 
         {/* Search Box */}
         <div className="flex items-center bg-card px-5 py-2 rounded-full w-[320px] gap-3 border border-secondary">
           <input
             type="text"
-            placeholder="Search anything here..."
+            placeholder={interpolate(t.dashboard.common.search)}
             className="bg-transparent outline-none text-sm w-full"
           />
           <svg
@@ -201,10 +185,10 @@ export default function MeetingRequestPage() {
       <div className="max-w-6xl mx-auto bg-card rounded-3xl px-6 py-10 shadow-xl border border-secondary">
 
         {/* SECTION TITLE */}
-        <p className="text-sm opacity-80 mb-2">Form-based way to request official meetings</p>
+        <p className="text-sm opacity-80 mb-2">{interpolate(t.dashboard.consultations.book.subtitle)}</p>
 
         <p className="text-lg font-semibold text-lemon">
-          Choose meeting type
+          {interpolate(t.dashboard.consultations.book.chooseType)}
         </p>
 
         {/* MEETING TYPE STEPS */}
@@ -215,18 +199,18 @@ export default function MeetingRequestPage() {
 
               <button
                 onClick={() => {
-                  setSelectedType(type);
-                  setAgenda(meetingOverviews[type as keyof typeof meetingOverviews].agenda);
+                  setSelectedType(type.id as keyof typeof meetingOverviews);
+                  setAgenda(meetingOverviews[type.id as keyof typeof meetingOverviews].agenda);
                 }}
                 className={`px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all
                   ${
-                    selectedType === type
+                    selectedType === type.id
                       ? "bg-lemon text-background"
                       : "bg-secondary text-foreground"
                   }
                 `}
               >
-                {type}
+                {type.label}
               </button>
 
               {idx !== meetingTypes.length - 1 && (
@@ -243,15 +227,15 @@ export default function MeetingRequestPage() {
 
         {/* MEETING OVERVIEW */}
         <div className="mt-8 p-6 bg-secondary/30 rounded-xl border border-secondary">
-          <h3 className="text-lg font-semibold text-lemon mb-3">{selectedType} Overview</h3>
+          <h3 className="text-lg font-semibold text-lemon mb-3">{meetingTypes.find(t => t.id === selectedType)?.label} {interpolate(t.dashboard.consultations.book.overview)}</h3>
           <p className="text-foreground opacity-80 leading-relaxed">
-            {meetingOverviews[selectedType as keyof typeof meetingOverviews].overview}
+            {meetingOverviews[selectedType].overview}
           </p>
         </div>
 
         {/* DATE + TIME SECTION */}
         <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-6">
-          Choose Preferred Date And Time
+          {interpolate(t.dashboard.consultations.book.dateTime)}
         </p>
 
         <div className="w-full bg-background p-8 rounded-3xl flex flex-col md:flex-row gap-8 justify-center border border-secondary">
@@ -278,13 +262,13 @@ export default function MeetingRequestPage() {
 
             {/* Days Grid */}
             <div className="grid grid-cols-7 gap-2 text-center text-sm opacity-70 mb-4">
-              <div>Sun</div>
-              <div>Mon</div>
-              <div>Tue</div>
-              <div>Wed</div>
-              <div>Thu</div>
-              <div>Fri</div>
-              <div>Sat</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.sun)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.mon)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.tue)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.wed)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.thu)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.fri)}</div>
+              <div>{interpolate(t.dashboard.consultations.book.days.sat)}</div>
             </div>
 
             {/* Dates */}
@@ -320,14 +304,14 @@ export default function MeetingRequestPage() {
           {/* TIME SELECTION */}
           <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-secondary">
             <h3 className="text-lg font-semibold mb-2">{formatSelectedDate(selectedDate)}</h3>
-            <p className="text-xs text-foreground opacity-50 mb-4">Available weekdays 9:00 AM – 7:00 PM</p>
+            <p className="text-xs text-foreground opacity-50 mb-4">{interpolate(t.dashboard.consultations.book.availableHours)}</p>
 
             <div className="grid grid-cols-2 gap-2 sm:gap-3 max-h-[320px] overflow-y-auto pr-1">
               {(() => {
                 // Filter slots: only weekdays (Mon-Fri), 9AM - 7PM
                 const isWeekday = selectedDate ? selectedDate.getDay() >= 1 && selectedDate.getDay() <= 5 : true;
                 if (selectedDate && !isWeekday) {
-                  return <p className="col-span-2 text-center text-sm text-foreground opacity-60 py-4">No slots available on weekends. Please select a weekday.</p>;
+                  return <p className="col-span-2 text-center text-sm text-foreground opacity-60 py-4">{interpolate(t.dashboard.consultations.book.noSlots)}</p>;
                 }
                 return allTimes.map((time) => (
                   <button
@@ -350,23 +334,23 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* MEETING AGENDA */}
-        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">Standard Agenda</p>
-        <p className="text-center text-sm opacity-70 mb-4">This agenda is pre-filled based on your meeting type and can be customized</p>
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">{interpolate(t.dashboard.consultations.book.agenda)}</p>
+        <p className="text-center text-sm opacity-70 mb-4">{interpolate(t.dashboard.consultations.book.agendaDesc)}</p>
 
         <textarea
           value={agenda}
           onChange={(e) => setAgenda(e.target.value)}
-          placeholder="Meeting agenda will be pre-filled based on meeting type"
+          placeholder={interpolate(t.dashboard.consultations.book.agenda)}
           className="w-full h-40 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50 whitespace-pre-line"
         />
 
         {/* ADDITIONAL NOTES */}
-        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">Additional Notes</p>
+        <p className="text-center text-base sm:text-lg font-semibold mt-8 mb-3">{interpolate(t.dashboard.account.settings.bio)}</p>
 
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Any additional notes or specific topics you'd like to discuss can be provided here..."
+          placeholder={interpolate(t.dashboard.account.settings.placeholders.bio)}
           className="w-full h-32 bg-secondary rounded-xl p-4 outline-none text-sm text-foreground placeholder-foreground/50"
         />
 
@@ -379,7 +363,7 @@ export default function MeetingRequestPage() {
             disabled={isLoading}
             className="px-10 py-2 bg-lemon text-background rounded-full font-semibold text-sm disabled:opacity-50"
           >
-            {isLoading ? 'Submitting...' : 'Submit'}
+            {isLoading ? interpolate(t.dashboard.consultations.book.submitting) : interpolate(t.dashboard.consultations.book.submit)}
           </button>
         </div>
 
