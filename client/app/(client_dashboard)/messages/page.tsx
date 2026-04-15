@@ -39,6 +39,7 @@ interface Ticket {
     };
     company: string;
   };
+  messages_count?: number;
 }
 
 interface Chat {
@@ -60,23 +61,61 @@ export default function MessagesPage() {
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [seenCounts, setSeenCounts] = useState<Record<number, number>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (force = false) => {
+    if (force || !scrollContainerRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    const container = scrollContainerRef.current;
+    const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
+
+    if (isAtBottom) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(false);
   }, [messages]);
 
   useEffect(() => {
-    fetchTickets();
+    const saved = localStorage.getItem("seenMessages");
+    if (saved) setSeenCounts(JSON.parse(saved));
   }, []);
 
-  const fetchTickets = async () => {
+  useEffect(() => {
+    fetchTickets(true);
+
+    // Refresh ticket list every 10 seconds
+    const ticketInterval = setInterval(() => fetchTickets(false), 10000);
+    return () => clearInterval(ticketInterval);
+  }, []);
+
+  useEffect(() => {
+    if (selectedChat) {
+      // Fetch messages immediately when chat changes
+      fetchMessages(selectedChat.id);
+
+      // Force initial scroll
+      setTimeout(() => scrollToBottom(true), 100);
+
+      // Poll for new messages every 2 seconds
+      const messageInterval = setInterval(() => {
+        fetchMessages(selectedChat.id);
+      }, 2000);
+
+      return () => clearInterval(messageInterval);
+    }
+  }, [selectedChat]);
+
+  const fetchTickets = async (isInitial = false) => {
     try {
-      setLoading(true);
+      if (isInitial) setLoading(true);
 
       const response = await api.get("/tickets/");
 
@@ -115,16 +154,23 @@ export default function MessagesPage() {
         }
 
         // Convert tickets to chat format
-        const ticketChats: Chat[] = ticketsArray.map((ticket: any) => {
-          console.log("Processing ticket:", ticket);
-          console.log("Ticket ID:", ticket.id);
+        const sortedTickets = [...ticketsArray].sort((a, b) => {
+          const timeA = new Date(a.last_message_at || a.created_at).getTime();
+          const timeB = new Date(b.last_message_at || b.created_at).getTime();
+          return timeB - timeA;
+        });
+
+        const ticketChats: Chat[] = sortedTickets.map((ticket: any) => {
+          const totalMessages = ticket.messages_count || 0;
+          const seen = seenCounts[ticket.id] || 0;
+          const unread = Math.max(0, totalMessages - seen);
 
           return {
-            id: ticket.id, // Use the actual numeric ID from the API
+            id: ticket.id,
             name: `Support - ${ticket.ticket_id}`,
             lastMessage: ticket.subject || "No subject",
-            timestamp: new Date(ticket.created_at).toLocaleDateString(),
-            unread: 0,
+            timestamp: new Date(ticket.last_message_at || ticket.created_at).toLocaleDateString(),
+            unread: unread,
             avatar: "🎧",
             online: ticket.status !== "resolved",
             ticket,
@@ -153,7 +199,7 @@ export default function MessagesPage() {
     } catch (error) {
       console.error("Failed to fetch tickets:", error);
     } finally {
-      setLoading(false);
+      if (isInitial) setLoading(false);
     }
   };
 
@@ -193,13 +239,57 @@ export default function MessagesPage() {
         } else if (result && result.data && typeof result.data === "object") {
           // Convert object collections into an array of values that look like messages
           messagesArray = (Object.values(result.data) as TicketMessage[]).filter(
-              (item) => item && item.id,
-            );
+            (item) => item && item.id,
+          );
         } else {
           messagesArray = [];
         }
 
         setMessages(messagesArray);
+      } else {
+        console.error(
+          "Failed to fetch messages:",
+          response.status,
+          response.statusText,
+        );
+        // If admin portal fails, try the client endpoint
+        if (response.status === 404) {
+          const token = localStorage.getItem("accessToken");
+          const clientResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${ticketId}/messages/`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          if (clientResponse.ok) {
+            const clientResult = await clientResponse.json();
+            let clientMessages: TicketMessage[] = [];
+            if (Array.isArray(clientResult)) {
+              clientMessages = clientResult;
+            } else if (clientResult && Array.isArray(clientResult.data)) {
+              clientMessages = clientResult.data;
+            } else if (
+              clientResult &&
+              clientResult.data &&
+              typeof clientResult.data === "object"
+            ) {
+              clientMessages = (Object.values(clientResult.data) as TicketMessage[]).filter(
+                (item) => item && item.id,
+              );
+            }
+
+            setMessages(clientMessages);
+          } else {
+            console.error(
+              "Failed to fetch messages from client endpoint:",
+              clientResponse.status,
+            );
+          }
+        }
       }
     } catch (error) {
       console.error("Failed to fetch messages:", error);
@@ -215,8 +305,11 @@ export default function MessagesPage() {
 
         if (response.status === 200 || response.status === 201) {
           setNewMessage("");
-          // Refresh messages
+          // Refresh messages and force scroll
           await fetchMessages(selectedChat.id);
+          scrollToBottom(true);
+          // Refresh ticket list to update last activity and move it to top
+          fetchTickets(false);
         } else {
           console.error(
             "Failed to send message:",
@@ -292,13 +385,16 @@ export default function MessagesPage() {
                 key={chat.id}
                 onClick={() => {
                   setSelectedChat(chat);
-                  fetchMessages(chat.id);
+                  if (chat.unread > 0) {
+                    const newSeen = { ...seenCounts, [chat.id]: chat.ticket?.messages_count || 0 };
+                    setSeenCounts(newSeen);
+                    localStorage.setItem("seenMessages", JSON.stringify(newSeen));
+                  }
                 }}
-                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${
-                  selectedChat?.id === chat.id
+                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${selectedChat?.id === chat.id
                     ? "bg-secondary/30 border-l-4 border-l-primary"
                     : ""
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -314,9 +410,21 @@ export default function MessagesPage() {
                       <h3 className="font-medium text-foreground truncate">
                         {chat.name}
                       </h3>
-                      <span className="text-xs text-foreground opacity-60">
-                        {chat.timestamp}
-                      </span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-xs text-foreground opacity-60">
+                          {chat.timestamp}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {chat.unread > 0 && (
+                            <span className="bg-primary text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                              {chat.unread}
+                            </span>
+                          )}
+                          <span className="text-[10px] text-foreground opacity-40 bg-secondary/50 px-1.5 rounded">
+                            {chat.ticket?.messages_count || 0} msgs
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-sm text-foreground opacity-70 truncate">
@@ -324,13 +432,12 @@ export default function MessagesPage() {
                       </p>
                       {chat.ticket?.status && (
                         <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            chat.ticket.status === "resolved"
+                          className={`text-xs px-2 py-1 rounded ${chat.ticket.status === "resolved"
                               ? "bg-green-500/20 text-green-300"
                               : chat.ticket.status === "new"
                                 ? "bg-blue-500/20 text-blue-300"
                                 : "bg-yellow-500/20 text-yellow-300"
-                          }`}
+                            }`}
                         >
                           {chat.ticket.status}
                         </span>
@@ -391,7 +498,10 @@ export default function MessagesPage() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div
+              ref={scrollContainerRef}
+              className="flex-1 overflow-y-auto p-4 space-y-4"
+            >
               {messages.map((message) => {
                 const isSystemMessage =
                   message.sender_type === "system" ||
@@ -404,26 +514,24 @@ export default function MessagesPage() {
                     className={`flex ${isUserMessage ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                        isUserMessage
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${isUserMessage
                           ? "bg-primary text-black"
                           : isSystemMessage
                             ? "bg-green-500/20 text-green-300 border border-green-500/30"
                             : "bg-secondary text-foreground"
-                      }`}
+                        }`}
                     >
                       {isSystemMessage && (
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs font-semibold">
-                            {interpolate(t.dashboard.support.systemReply)}
+                            🤖 Auto Reply System
                           </span>
                         </div>
                       )}
                       <p className="text-sm">{message.message}</p>
                       <p
-                        className={`text-xs mt-1 ${
-                          isUserMessage ? "text-black/70" : "text-foreground/60"
-                        }`}
+                        className={`text-xs mt-1 ${isUserMessage ? "text-black/70" : "text-foreground/60"
+                          }`}
                       >
                         {formatTime(message.created_at)}
                       </p>
