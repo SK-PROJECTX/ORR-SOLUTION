@@ -10,7 +10,13 @@ import { useLanguage } from "./LanguageProvider";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PackagePreviewSection() {
-  const { t } = useLanguage();
+  const { t, interpolate } = useLanguage();
+  const pricingParams = {
+    currency: t.dashboard.pricing.currency,
+    meetingPrice: t.dashboard.pricing.meetingPrice,
+    reportPrice: t.dashboard.pricing.reportPrice,
+    proData: t.dashboard.pricing.proData,
+  };
   const router = useRouter();
   const titleRef = useRef(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -65,7 +71,7 @@ export default function PackagePreviewSection() {
               <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.meetings.title}</h3>
               <div className="space-y-2">
                 <div className="text-4xl md:text-5xl font-bold">
-                  {t.packagePreview.meetings.price}<span className="text-lg font-normal opacity-50 ml-2">{t.packagePreview.meetings.unit}</span>
+                  {interpolate(t.packagePreview.meetings.price, pricingParams)}<span className="text-lg font-normal opacity-50 ml-2">{interpolate(t.packagePreview.meetings.unit, pricingParams)}</span>
                 </div>
                 <p className="opacity-80 text-lg font-medium leading-relaxed pt-2">
                   {t.packagePreview.meetings.description}
@@ -83,7 +89,7 @@ export default function PackagePreviewSection() {
               <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.report.title}</h3>
               <div className="space-y-2">
                 <div className="text-3xl md:text-4xl font-bold leading-tight">
-                  {t.packagePreview.report.description}
+                  {interpolate(t.packagePreview.report.description, pricingParams)}
                 </div>
                 <p className="opacity-60 text-sm leading-relaxed pt-4 italic font-light">
                   {t.packagePreview.report.notes}

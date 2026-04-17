@@ -9,7 +9,13 @@ import { useLanguage } from "@/app/components/LanguageProvider";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PrivacyPolicy() {
-  const { t } = useLanguage();
+  const { t, interpolate } = useLanguage();
+  const pricingParams = {
+    currency: t.dashboard.pricing.currency,
+    meetingPrice: t.dashboard.pricing.meetingPrice,
+    reportPrice: t.dashboard.pricing.reportPrice,
+    proData: t.dashboard.pricing.proData,
+  };
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef(null);
   const cardRef = useRef(null);
@@ -396,10 +402,10 @@ export default function PrivacyPolicy() {
                   <p className="text-gray-300 leading-relaxed mb-4">{p.s6p1}</p>
 
                   <h3 className="text-xl font-semibold text-white mb-3">{p.s61Title}</h3>
-                  <p className="text-gray-300 leading-relaxed mb-6">{p.s61p1}</p>
+                  <p className="text-gray-300 leading-relaxed mb-6">{interpolate(p.s61p1, pricingParams)}</p>
 
                   <h3 className="text-xl font-semibold text-white mb-3">{p.s62Title}</h3>
-                  <p className="text-gray-300 leading-relaxed mb-2">{p.s62p1}</p>
+                  <p className="text-gray-300 leading-relaxed mb-2">{interpolate(p.s62p1, pricingParams)}</p>
                   <ul className="list-disc ml-6 text-gray-300 leading-relaxed space-y-1 mb-2">
                     <li>{p.s62li1}</li>
                     <li>{p.s62li2}</li>

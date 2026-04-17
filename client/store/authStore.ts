@@ -356,7 +356,7 @@ export const useAuthStore = create<AuthState>()(
         }
 
         try {
-          await api.get("/api/auth/profile/");
+          await api.get("/account/settings/");
           return true;
         } catch (error: unknown) {
           const err = error as AxiosError;

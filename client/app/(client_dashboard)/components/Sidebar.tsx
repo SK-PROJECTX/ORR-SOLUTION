@@ -39,6 +39,12 @@ export default function Sidebar() {
 
   const toggle = (key: keyof OpenState) => setOpen({ ...open, [key]: !open[key] });
   const toggleSub = (key: string) => setSubOpen({ ...subOpen, [key]: !subOpen[key] });
+  const pricingParams = {
+    currency: t.dashboard.pricing.currency,
+    meetingPrice: t.dashboard.pricing.meetingPrice,
+    reportPrice: t.dashboard.pricing.reportPrice,
+    proData: t.dashboard.pricing.proData,
+  };
 
   return (
     <>
@@ -110,7 +116,7 @@ export default function Sidebar() {
                 subItems: [
                     { label: interpolate(t.dashboard.sidebar.items.reports), href: "/document/reports", locked: true },
                     { label: interpolate(t.dashboard.sidebar.items.uploads), href: '/document/uploads', locked: true },
-                    { label: interpolate(t.dashboard.sidebar.items.templates), href: "/document/templates", locked: true, lockTitle: interpolate(t.dashboard.sidebar.lock.premium), lockMessage: interpolate(t.dashboard.sidebar.lock.premiumMsg) },
+                    { label: interpolate(t.dashboard.sidebar.items.templates), href: "/document/templates", locked: true, lockTitle: interpolate(t.dashboard.sidebar.lock.premium), lockMessage: interpolate(t.dashboard.sidebar.lock.premiumMsg, pricingParams) },
                     { label: interpolate(t.dashboard.sidebar.items.contracts), href: "/document/contracts", locked: true },
                     { label: interpolate(t.dashboard.sidebar.items.catalogue), href: "/document/catalogue" }
                 ]

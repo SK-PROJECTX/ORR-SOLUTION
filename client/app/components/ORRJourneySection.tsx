@@ -139,7 +139,7 @@ export default function ORRJourneySection() {
                         meetingPrice: t.dashboard.pricing.meetingPrice,
                         reportPrice: t.dashboard.pricing.reportPrice,
                         hrs: t.dashboard.pricing.hrs,
-                        proRata: t.dashboard.pricing.proRata
+                        proData: t.dashboard.pricing.proData
                       })}
                     </p>
                   </div>

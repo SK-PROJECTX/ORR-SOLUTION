@@ -49,7 +49,7 @@ export default function PricingPage() {
                         <div className="text-6xl font-bold mt-18 mb-8 text-black">
                           <span className="text-gray-400 text-3xl">{interpolate(t.dashboard.pricing.currency)}</span>{interpolate(t.dashboard.pricing.meetingPrice)}<span className="text-3xl font-normal">/{interpolate(t.dashboard.pricing.hrs)}</span>
                         </div>
-                        <p className="text-black text-sm my-12 font-medium">{interpolate(t.dashboard.pricing.proRata)}</p>
+                        <p className="text-black text-sm my-12 font-medium">{interpolate(t.dashboard.pricing.proData)}</p>
                         <button className="w-full bg-[#0EC277] text-white py-4 rounded-full font-semibold text-lg hover:bg-[#2ee889] transition-colors flex items-center justify-center gap-2" style={{ boxShadow: '0 8px 20px rgba(51, 255, 153, 0.4)' }}>
                           <span>🔥</span> {interpolate(t.dashboard.pricing.bookNow)}
                         </button>

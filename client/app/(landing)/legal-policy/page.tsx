@@ -9,7 +9,13 @@ import { useLanguage } from "@/app/components/LanguageProvider";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LegacyPolicy() {
-  const { t } = useLanguage();
+  const { t, interpolate } = useLanguage();
+  const pricingParams = {
+    currency: t.dashboard.pricing.currency,
+    meetingPrice: t.dashboard.pricing.meetingPrice,
+    reportPrice: t.dashboard.pricing.reportPrice,
+    proData: t.dashboard.pricing.proData,
+  };
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef(null);
   const cardRef = useRef(null);
@@ -667,7 +673,7 @@ export default function LegacyPolicy() {
                     {t.legalPolicy.s62Title}
                   </h3>
                   <p className="opacity-80 leading-relaxed mb-3">
-                    {t.legalPolicy.s62p1}
+                    {interpolate(t.legalPolicy.s62p1, pricingParams)}
                   </p>
 
                   <h3 className="text-xl font-semibold text-foreground mb-3">
