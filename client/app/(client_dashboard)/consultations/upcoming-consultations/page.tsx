@@ -76,23 +76,23 @@ function EventSidebar({ items, isLoading }: { items: EventItem[]; isLoading: boo
               {interpolate(t.dashboard.consultations.upcoming.noMeetings)}
             </div>
           ) : (
-            items.map((it) => (
-              <div key={it.id} className="bg-background rounded-md p-3 flex gap-3 items-start">
+            items.map((item) => (
+              <div key={item.id} className="bg-background rounded-md p-3 flex gap-3 items-start">
                 <div className="flex-shrink-0 mt-1">
                   {/* <div className="w-8 h-8 rounded bg-lemon flex items-center justify-center text-black">📅</div> */}
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground">{it.title}</h4>
+                      <h4 className="text-sm font-semibold text-foreground">{item.title}</h4>
                       <p className="text-xs text-foreground/70">{interpolate(t.dashboard.consultations.upcoming.onlineMeeting)}</p>
                     </div>
                     <div className="text-xs text-foreground bg-card px-2 py-1 rounded">
-                      {format(it.start, "h:mm a")} - {format(it.end, "h:mm a")}
+                      {format(item.start, "h:mm a")} - {format(item.end, "h:mm a")}
                     </div>
                   </div>
 
-                 <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(it.start, "EEEE, MMM d, yyyy", { locale: language === 'it' ? it : enUS })}</p>
+                 <p className="text-xs text-foreground/70 mt-3 flex gap-2">  <CalendarCog size={14}/>  {format(item.start, "EEEE, MMM d, yyyy", { locale: language === 'it' ? it : enUS })}</p>
                 </div>
               </div>
             ))

@@ -88,7 +88,7 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
         <div className="relative">
           <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-primary opacity-30"></div>
 
-          {stages.map((stage, index) => {
+          {stages.map((stage: any, index: number) => {
             return (
               <div ref={el => { stagesRef.current[index] = el; }} key={index} className="relative flex items-start mb-8 sm:mb-12 last:mb-0 group">
                 <div className="relative z-10 w-8 sm:w-12 h-8 sm:h-12 bg-primary rounded-full flex items-center justify-center mr-6 sm:mr-8 flex-shrink-0 shadow-[0_0_15px_rgba(14,194,119,0.3)] group-hover:shadow-[0_0_20px_rgba(14,194,119,0.5)] transition-shadow duration-300">

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import { useBillingStore } from "@/store/billingStore";
 import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";

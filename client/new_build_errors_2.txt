@@ -1,0 +1,25 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 24.6s
+   Running TypeScript ...
+Failed to compile.
+
+./app/(client_dashboard)/meeting-request/page.tsx:316:24
+Type error: Cannot find name 'allTimes'.
+
+[0m [90m 314 |[39m                   [36mreturn[39m [33m<[39m[33mp[39m className[33m=[39m[32m"col-span-2 text-center text-sm text-foreground opacity-60 py-4"[39m[33m>[39m{interpolate(t[33m.[39mdashboard[33m.[39mconsultations[33m.[39mbook[33m.[39mnoSlots)}[33m<[39m[33m/[39m[33mp[39m[33m>[39m[33m;[39m
+ [90m 315 |[39m                 }
+[31m[1m>[22m[39m[90m 316 |[39m                 [36mreturn[39m allTimes[33m.[39mmap((time) [33m=>[39m (
+ [90m     |[39m                        [31m[1m^[22m[39m
+ [90m 317 |[39m                   [33m<[39m[33mbutton[39m
+ [90m 318 |[39m                     key[33m=[39m{time}
+ [90m 319 |[39m                     onClick[33m=[39m{() [33m=>[39m setSelectedTime(time)}[0m
+Next.js build worker exited with code: 1 and signal: null

@@ -1,0 +1,25 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 29.1s
+   Running TypeScript ...
+Failed to compile.
+
+./app/components/ORRReportSection.tsx:109:34
+Type error: Parameter 'bullet' implicitly has an 'any' type.
+
+[0m [90m 107 |[39m               [33m<[39m[33m/[39m[33mh3[39m[33m>[39m
+ [90m 108 |[39m               [33m<[39m[33mul[39m className[33m=[39m[32m"space-y-6 lg:ml-6"[39m[33m>[39m
+[31m[1m>[22m[39m[90m 109 |[39m                 {whatItDoes[33m.[39mmap((bullet[33m,[39m idx) [33m=>[39m (
+ [90m     |[39m                                  [31m[1m^[22m[39m
+ [90m 110 |[39m                   [33m<[39m[33mli[39m 
+ [90m 111 |[39m                     key[33m=[39m{[32m`does-${idx}`[39m} 
+ [90m 112 |[39m                     ref[33m=[39m{el [33m=>[39m { listItemsRef[33m.[39mcurrent[idx] [33m=[39m el[33m;[39m }}[0m
+Next.js build worker exited with code: 1 and signal: null

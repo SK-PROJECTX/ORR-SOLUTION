@@ -1,0 +1,25 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 21.9s
+   Running TypeScript ...
+Failed to compile.
+
+./app/components/ORRJourneySection.tsx:28:45
+Type error: Parameter 'step' implicitly has an 'any' type.
+
+[0m [90m 26 |[39m   [36mconst[39m connectorsRef [33m=[39m useRef[33m<[39m([33mHTMLDivElement[39m [33m|[39m [36mnull[39m)[][33m>[39m([])[33m;[39m
+ [90m 27 |[39m
+[31m[1m>[22m[39m[90m 28 |[39m   [36mconst[39m steps [33m=[39m t[33m.[39mjourneySection[33m.[39msteps[33m.[39mmap((step[33m,[39m index) [33m=>[39m ({
+ [90m    |[39m                                             [31m[1m^[22m[39m
+ [90m 29 |[39m     [33m...[39mstep[33m,[39m
+ [90m 30 |[39m     type[33m:[39m index [33m===[39m [35m2[39m [33m?[39m [32m"critical"[39m [33m:[39m index [33m===[39m [35m3[39m [33m?[39m [32m"optional"[39m [33m:[39m [32m"mandatory"[39m
+ [90m 31 |[39m   }))[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

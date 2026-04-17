@@ -106,7 +106,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
                 {t.reportSection.theReport}
               </h3>
               <ul className="space-y-6 lg:ml-6">
-                {whatItDoes.map((bullet, idx) => (
+                {whatItDoes.map((bullet: any, idx: number) => (
                   <li 
                     key={`does-${idx}`} 
                     ref={el => { listItemsRef.current[idx] = el; }}
@@ -130,7 +130,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
                 {t.reportSection.youCan}
               </h3>
               <ul className="space-y-6 lg:ml-6">
-                {whatYouCanDo.map((bullet, idx) => (
+                {whatYouCanDo.map((bullet: any, idx: number) => (
                   <li 
                     key={`can-${idx}`} 
                     ref={el => { listItemsRef.current[whatItDoes.length + idx] = el; }}
@@ -171,7 +171,7 @@ export default function ORRReportSection({ content }: ORRReportSectionProps) {
               </div>
 
               <div className="space-y-10">
-                {reportOutcomes.map((item, idx) => (
+                {reportOutcomes.map((item: any, idx: number) => (
                   <div key={idx} className="flex gap-5 group">
                     <div className="flex-shrink-0 mt-1">
                       <div className="w-12 h-12 rounded-xl bg-primary/5 dark:bg-primary/10 flex items-center justify-center group-hover:bg-primary/10 dark:group-hover:bg-primary/20 group-hover:scale-105 transition-all duration-300 border border-primary/10">

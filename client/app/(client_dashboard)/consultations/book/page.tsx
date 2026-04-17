@@ -8,6 +8,17 @@ import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
+interface EventType {
+  uri: string;
+}
+
+interface TimeSlot {
+  start_time: string;
+  end_time: string;
+  status: string;
+  scheduling_url: string;
+}
+
 export default function MeetingRequestPage() {
   const { t, language: currentLang } = useLanguage();
   

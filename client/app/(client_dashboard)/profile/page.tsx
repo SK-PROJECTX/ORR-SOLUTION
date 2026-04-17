@@ -1,3 +1,5 @@
+"use client";
+
 import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 export default function Profile() {

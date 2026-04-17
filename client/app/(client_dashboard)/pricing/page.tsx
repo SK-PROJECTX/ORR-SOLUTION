@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
