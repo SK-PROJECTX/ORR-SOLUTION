@@ -1,0 +1,26 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 20.4s
+   Running TypeScript ...
+Failed to compile.
+
+./app/(client_dashboard)/consultations/upcoming-consultations/page.tsx:95:145
+Type error: Type 'Locale | EventItem' is not assignable to type 'Pick<Locale, "options" | "localize" | "formatLong"> | undefined'.
+  Type 'EventItem' is missing the following properties from type 'Pick<Locale, "options" | "localize" | "formatLong">': localize, formatLong
+
+[0m [90m 93 |[39m                   [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 94 |[39m
+[31m[1m>[22m[39m[90m 95 |[39m                  [33m<[39m[33mp[39m className[33m=[39m[32m"text-xs text-foreground/70 mt-3 flex gap-2"[39m[33m>[39m  [33m<[39m[33mCalendarCog[39m size[33m=[39m{[35m14[39m}[33m/[39m[33m>[39m  {format(it[33m.[39mstart[33m,[39m [32m"EEEE, MMM d, yyyy"[39m[33m,[39m { locale[33m:[39m language [33m===[39m [32m'it'[39m [33m?[39m it [33m:[39m enUS })}[33m<[39m[33m/[39m[33mp[39m[33m>[39m
+ [90m    |[39m                                                                                                                                                 [31m[1m^[22m[39m
+ [90m 96 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 97 |[39m               [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 98 |[39m             ))[0m
+Next.js build worker exited with code: 1 and signal: null

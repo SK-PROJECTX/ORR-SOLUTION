@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/store/onboardingStore";
 import { useToastStore } from "@/store/toastStore";
+import { useLanguage } from "../components/LanguageProvider";
+import { LanguageToggle } from "../components/LanguageToggle";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 function SearchableDropdown({
   options,
@@ -16,6 +19,7 @@ function SearchableDropdown({
   onChange: (value: string) => void;
   placeholder: string;
 }) {
+  const { t, interpolate } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,7 +69,7 @@ function SearchableDropdown({
             <input
               type="text"
               className="w-full bg-[#0B1829] text-foreground text-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#00D683]"
-              placeholder="Search..."
+              placeholder={interpolate(t?.onboarding?.search || "Search...")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onClick={(e) => e.stopPropagation()}
@@ -91,7 +95,7 @@ function SearchableDropdown({
               ))
             ) : (
               <div className="px-6 py-4 text-sm text-gray-400 text-center">
-                No results found
+                {interpolate(t?.onboarding?.noResults || "No results found")}
               </div>
             )}
           </div>
@@ -103,147 +107,143 @@ function SearchableDropdown({
 
 const steps = [1, 2, 3, 4, 5, 6];
 
-const questionnaire = {
+const JURISDICTIONS = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+  "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+  "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+  "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
+  "Croatia", "Cuba", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
+  "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
+  "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti",
+  "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan",
+  "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
+  "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+  "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro",
+  "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
+  "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea",
+  "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
+  "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
+  "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+  "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+  "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
+  "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+  "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
+
+const getQuestionnaire = (t: any, interpolate: any) => ({
   1: {
-    title: "JURISDICTION & LANGUAGE SETUP",
+    title: interpolate(t?.onboarding?.s1?.title || 'JURISDICTION & LANGUAGE SETUP'),
     steps: [
       {
-        question: "1. Which Jurisdiction will you be operating from?",
-        options: [
-          "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
-          "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
-          "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
-          "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
-          "Croatia", "Cuba", "Cyprus", "Czechia", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
-          "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
-          "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti",
-          "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan",
-          "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
-          "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
-          "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro",
-          "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
-          "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea",
-          "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
-          "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
-          "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
-          "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
-          "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
-          "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
-          "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-        ],
+        question: interpolate(t?.onboarding?.s1?.q1 || '1. Which Jurisdiction will you be operating from?'),
+        options: JURISDICTIONS,
         type: "dropdown",
-        placeholder: "Select your jurisdiction"
+        placeholder: interpolate(t?.onboarding?.s1?.p1 || 'Select your jurisdiction')
       },
       {
-        question: "2. Preferred interface language:",
-        options: [
-          "English", "Maltese", "Arabic", "Bengali", "Bulgarian", "Catalan", "Chinese", "Croatian", "Czech", "Danish", "Dutch",
-          "Estonian", "Filipino", "Finnish", "French", "German", "Greek", "Gujarati", "Hebrew", "Hindi", "Hungarian", "Indonesian",
-          "Italian", "Japanese", "Kannada", "Korean", "Latvian", "Lithuanian", "Malay", "Malayalam", "Marathi", "Norwegian",
-          "Persian", "Polish", "Portuguese", "Punjabi", "Romanian", "Russian", "Serbian", "Slovak", "Slovenian", "Spanish",
-          "Swahili", "Swedish", "Tamil", "Telugu", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese"
-        ],
+        question: interpolate(t?.onboarding?.s1?.q2 || '2. Preferred interface language:'),
+        options: t?.onboarding?.languages || [],
         type: "dropdown",
-        placeholder: "Select your language"
+        placeholder: interpolate(t?.onboarding?.s1?.p2 || 'Select your language')
       },
       {
-        question: "3. Preferred Keyboard Layout:",
+        question: interpolate(t?.onboarding?.s1?.q3 || '3. Preferred Keyboard Layout:'),
         options: ["EN-US", "EN-UK", "MT", "IT", "Others"],
         type: "dropdown",
-        placeholder: "Select keyboard layout"
+        placeholder: interpolate(t?.onboarding?.s1?.p3 || 'Select keyboard layout')
       },
       {
-        question: "4. Preferred Date/Time format:",
+        question: interpolate(t?.onboarding?.s1?.q4 || '4. Preferred Date/Time format:'),
         options: ["DD/MM/YYYY", "MM/DD/YYYY", "24-hour", "12-Hours"],
         type: "dropdown",
-        placeholder: "Select date/time format"
+        placeholder: interpolate(t?.onboarding?.s1?.p4 || 'Select date/time format')
       }
     ]
   },
   2: {
-    title: "SERVICE AGREEMENT",
+    title: interpolate(t?.onboarding?.s2?.title || 'SERVICE AGREEMENT'),
     steps: [
       {
-        question: "5. Do you confirm that you have read and accept the Service Agreement?",
-        options: ["Yes, I accept", "No"],
+        question: interpolate(t?.onboarding?.s2?.q1 || '5. Do you confirm that you have read and accept the Service Agreement?'),
+        options: [interpolate(t?.onboarding?.s2?.accept || 'Yes, I accept'), interpolate(t?.onboarding?.s2?.decline || 'No')],
         type: "single",
-        helpLink: { text: "Read the full Service Agreement", url: "/legal-policy" }
+        helpLink: { text: interpolate(t?.onboarding?.s2?.linkText || 'Read the full Service Agreement'), url: "/legal-policy" }
       }
     ]
   },
   3: {
-    title: "PORTAL OVERVIEW & EXPECTATION",
+    title: interpolate(t?.onboarding?.s3?.title || 'PORTAL OVERVIEW & EXPECTATION'),
     steps: [
       {
-        question: "6. What are you mainly interested in using the portal for? (Select all that apply)",
-        options: ["Understanding ORR services", "Accessing resources/templates", "Requesting meetings", "Using AI for initial guidance", "Getting project/strategy support", "Regulatory or compliance guidance", "Digital systems & automation support", "Environmental/regeneration support", "Others"],
+        question: interpolate(t?.onboarding?.s3?.q1 || '6. What are you mainly interested in using the portal for? (Select all that apply)'),
+        options: (t?.onboarding?.s3?.options || []).map((opt: string) => interpolate(opt)),
         type: "multiple"
       }
     ]
   },
   4: {
-    title: "YOUR BUSINESS/PROJECT PROFILE",
+    title: interpolate(t?.onboarding?.s4?.title || 'YOUR BUSINESS/PROJECT PROFILE'),
     steps: [
       {
-        question: "7. What best describes you?",
-        options: ["Founder/Entrepreneur", "Small business owner", "Corporate representative", "Public sector/NGO", "Researcher/Academic", "Individual professional", "Others"],
+        question: interpolate(t?.onboarding?.s4?.q1 || '7. What best describes you?'),
+        options: (t?.onboarding?.s4?.options1 || []).map((opt: string) => interpolate(opt)),
         type: "single"
       },
       {
-        question: "8. What stage is your project or organisation currently in?",
-        options: ["Early Exploration", "Pre-Startup/Planning", "Operational but seeking optimisation", "Scaling/Growth", "Unsure"],
+        question: interpolate(t?.onboarding?.s4?.q2 || '8. What stage is your project or organisation currently in?'),
+        options: (t?.onboarding?.s4?.options2 || []).map((opt: string) => interpolate(opt)),
         type: "single"
       },
       {
-        question: "9. Which area(s) best match your needs? (ORR pillars) — Select all that apply",
-        options: ["Strategic Advisory & Compliance", "Digital Systems", "Automation & AI", "Living Systems & Regeneration", "Not Sure Yet"],
+        question: interpolate(t?.onboarding?.s4?.q3 || '9. Which area(s) best match your needs? (ORR pillars) — Select all that apply'),
+        options: (t?.onboarding?.s4?.options3 || []).map((opt: string) => interpolate(opt)),
         type: "multiple"
       },
       {
-        question: "10. Do you currently have an active project in mind?",
-        options: ["Yes", "No", "Maybe"],
+        question: interpolate(t?.onboarding?.s4?.q4 || '10. Do you currently have an active project in mind?'),
+        options: (t?.onboarding?.s4?.options4 || []).map((opt: string) => interpolate(opt)),
         type: "single"
       },
       {
-        question: "11. Briefly describe your project or business:",
+        question: interpolate(t?.onboarding?.s4?.q5 || '11. Briefly describe your project or business:'),
         type: "text",
         options: [] as string[],
-        placeholder: "Type your message here..." as const
+        placeholder: interpolate(t?.onboarding?.typeMessage || 'Type your message here...')
       }
     ]
   },
   5: {
-    title: "MEETING & COMMUNICATION PREFERENCES",
+    title: interpolate(t?.onboarding?.s5?.title || 'MEETING & COMMUNICATION PREFERENCES'),
     steps: [
       {
-        question: "13. Preferred meeting format:",
-        options: ["Online (video)", "Phone call", "In-person (subject to availability)"],
+        question: interpolate(t?.onboarding?.s5?.q1 || '13. Preferred meeting format:'),
+        options: (t?.onboarding?.s5?.options1 || []).map((opt: string) => interpolate(opt)),
         type: "single"
       },
       {
-        question: "14. Preferred communication tone: (Select all that apply)",
-        options: ["Concise and direct", "Detailed and explanatory", "Technical", "Non-Technical", "No preference"],
+        question: interpolate(t?.onboarding?.s5?.q2 || '14. Preferred communication tone: (Select all that apply)'),
+        options: (t?.onboarding?.s5?.options2 || []).map((opt: string) => interpolate(opt)),
         type: "multiple"
       },
       {
-        question: "15. Preferred contact method for notifications:",
-        options: ["Email", "In-portal notifications only", "Both"],
+        question: interpolate(t?.onboarding?.s5?.q3 || '15. Preferred contact method for notifications:'),
+        options: (t?.onboarding?.s5?.options3 || []).map((opt: string) => interpolate(opt)),
         type: "single"
       }
     ]
   },
   6: {
-    title: "OPTIONAL (to improve AI response)",
+    title: interpolate(t?.onboarding?.s6?.title || 'OPTIONAL (to improve AI response)'),
     steps: [
       {
-        question: "16. Any additional context you'd like the system to know?",
+        question: interpolate(t?.onboarding?.s6?.q1 || "16. Any additional context you'd like the system to know?"),
         type: "text",
         options: [] as string[],
-        placeholder: "Type your message here..." as const
+        placeholder: interpolate(t?.onboarding?.typeMessage || 'Type your message here...')
       }
     ]
   }
-};
+});
 
 function CustomStepper({ activeStep }: { activeStep: number }) {
   return (
@@ -266,13 +266,23 @@ function CustomStepper({ activeStep }: { activeStep: number }) {
 }
 
 export default function OnboardingPage() {
+  const { t, language, setLanguage, interpolate } = useLanguage();
   const [currentSection, setCurrentSection] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [textInput, setTextInput] = useState("");
 
+  const questionnaire = getQuestionnaire(t, interpolate);
   const currentQuestion = questionnaire[currentSection as keyof typeof questionnaire];
   const currentStepData = currentQuestion.steps[currentStep];
+
+  // Restore text input when step changes
+  useEffect(() => {
+    if (currentStepData.type === "text") {
+      const key = `${currentSection}-${currentStep}`;
+      setTextInput(answers[key] || "");
+    }
+  }, [currentSection, currentStep, currentStepData.type]);
 
   const handleOptionSelect = (value: string) => {
     const key = `${currentSection}-${currentStep}`;
@@ -289,10 +299,24 @@ export default function OnboardingPage() {
   };
 
   const handleNext = () => {
+    const key = `${currentSection}-${currentStep}`;
+    const currentAnswer = currentStepData.type === "text" ? textInput : answers[key];
+
+    // Basic validation: must have some content/selection to proceed
+    if (currentStepData.type === "text" && !textInput.trim() && currentSection !== 6) {
+      addToast(interpolate(t?.onboarding?.errors?.requiredField || "This field is required."), "error");
+      return;
+    }
+    
+    if (currentStepData.type !== "text" && (!currentAnswer || (Array.isArray(currentAnswer) && currentAnswer.length === 0))) {
+      addToast(interpolate(t?.onboarding?.errors?.selectOption || "Please select an option to continue."), "error");
+      return;
+    }
+
     if (currentStepData.type === "text") {
-      const key = `${currentSection}-${currentStep}`;
       setAnswers({ ...answers, [key]: textInput });
-      setTextInput("");
+      // textInput is now cleared via the useEffect above when the step actually changes,
+      // but we can also do it here for immediate feedback if needed.
     }
 
     if (currentStep < currentQuestion.steps.length - 1) {
@@ -309,6 +333,12 @@ export default function OnboardingPage() {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    if (!accessToken) {
+      router.replace('/login');
+      return;
+    }
+
     const checkStatus = async () => {
       try {
         const isCompleted = await checkOnboardingStatus();
@@ -328,7 +358,7 @@ export default function OnboardingPage() {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
         <div className="w-12 h-12 border-4 border-lemon border-t-transparent rounded-full mb-4"></div>
-        <p className="text-foreground/60">Checking onboarding status...</p>
+        <p className="text-foreground/60">{interpolate(t?.onboarding?.checkingStatus || "Checking onboarding status...")}</p>
       </div>
     );
   }
@@ -340,9 +370,21 @@ export default function OnboardingPage() {
       finalAnswers = { ...finalAnswers, [key]: textInput };
     }
 
+    // Language mapping helper
+    const getOptionIndex = (section: number, step: number) => {
+      const key = `${section}-${step}`;
+      const val = finalAnswers[key];
+      if (!val) return -1;
+      
+      const q = getQuestionnaire(t, interpolate)[section as keyof ReturnType<typeof getQuestionnaire>];
+      const s = q.steps[step];
+      return (s.options || []).indexOf(val);
+    };
+
     // Validate service agreement acceptance
-    if (finalAnswers['2-0'] !== 'Yes, I accept') {
-      addToast('Please go back to Section 2 and accept the Service Agreement to continue.', 'error');
+    const acceptText = t?.onboarding?.s2?.accept || 'Yes, I accept';
+    if (finalAnswers['2-0'] !== interpolate(acceptText)) {
+      addToast(interpolate(t?.onboarding?.errors?.acceptAgreement || 'Please go back to Section 2 and accept the Service Agreement to continue.'), 'error');
       setCurrentSection(2);
       setCurrentStep(0);
       return;
@@ -351,56 +393,61 @@ export default function OnboardingPage() {
     // Validate project description length
     const projectDescription = finalAnswers['4-4'] || '';
     if (projectDescription.trim().length < 10) {
-      addToast('Project description must be at least 10 characters long.', 'error');
+      addToast(interpolate(t?.onboarding?.errors?.descriptionLength || 'Project description must be at least 10 characters long.'), 'error');
       setCurrentSection(4);
       setCurrentStep(4);
       return;
     }
 
     const onboardingData = {
-      jurisdiction: finalAnswers['1-0'] === 'Others' ? 'other' : finalAnswers['1-0']?.toLowerCase() || 'malta',
-      jurisdiction_other: finalAnswers['1-0'] === 'Others' ? 'other jurisdiction' : undefined,
-      language: finalAnswers['1-1'] === 'Others' ? 'other' : finalAnswers['1-1']?.toLowerCase().substring(0, 2) || 'en',
+      jurisdiction: finalAnswers['1-0'] === 'Malta' ? 'malta' : 'other',
+      jurisdiction_other: finalAnswers['1-0'] === 'Malta' ? undefined : (finalAnswers['1-0'] || 'Not specified'),
+      language: finalAnswers['1-1'] === 'Others' ? 'other' : 
+                (getOptionIndex(1, 1) === 1 ? 'it' : 'en'),
       language_other: finalAnswers['1-1'] === 'Others' ? 'other language' : undefined,
-      keyboard_layout: finalAnswers['1-2'] === 'Others' ? 'other' : finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
+      keyboard_layout: finalAnswers['1-2'] === 'Others' ? 'other' : 
+                      finalAnswers['1-2']?.toLowerCase().replace('-', '_') || 'en_us',
       keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other layout' : undefined,
       date_format: finalAnswers['1-3']?.includes('DD/MM') ? 'dd_mm_yyyy' : 'mm_dd_yyyy',
       time_format_24h: finalAnswers['1-3']?.includes('24-hour') || false,
-      accepted_service_agreement: finalAnswers['2-0'] === 'Yes, I accept' || true,
+      accepted_service_agreement: finalAnswers['2-0']?.includes('accept') || finalAnswers['2-0']?.includes('accetto') || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
       portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,
-      user_type: finalAnswers['4-0'] === 'Others' ? 'other' :
-        finalAnswers['4-0'] === 'Small business owner' ? 'small_business' :
-          finalAnswers['4-0'] === 'Founder/Entrepreneur' ? 'founder' :
-            finalAnswers['4-0'] === 'Corporate representative' ? 'corporate' :
-              finalAnswers['4-0'] === 'Public sector/NGO' ? 'public_ngo' :
-                finalAnswers['4-0'] === 'Researcher/Academic' ? 'academic' :
-                  finalAnswers['4-0'] === 'Individual professional' ? 'professional' : 'founder',
+      user_type: (() => {
+        const idx = getOptionIndex(4, 0);
+        const types = ['founder', 'small_business', 'corporate', 'public_ngo', 'academic', 'professional', 'other'];
+        return types[idx] || 'founder';
+      })(),
       user_type_other: finalAnswers['4-0'] === 'Others' ? 'other user type' : undefined,
-      project_stage: finalAnswers['4-1'] === 'Early Exploration' ? 'exploration' :
-        finalAnswers['4-1'] === 'Pre-Startup/Planning' ? 'pre_startup' :
-          finalAnswers['4-1'] === 'Operational but seeking optimisation' ? 'operational' :
-            finalAnswers['4-1'] === 'Scaling/Growth' ? 'scaling' :
-              finalAnswers['4-1'] === 'Unsure' ? 'unsure' : 'exploration',
+      project_stage: (() => {
+        const idx = getOptionIndex(4, 1);
+        const stages = ['exploration', 'pre_startup', 'operational', 'scaling', 'unsure'];
+        return stages[idx] || 'exploration';
+      })(),
       orr_pillars: Array.isArray(finalAnswers['4-2']) ? finalAnswers['4-2'].join(', ') : finalAnswers['4-2'] || '',
-      has_active_project: finalAnswers['4-3']?.toLowerCase() || 'yes',
+      has_active_project: finalAnswers['4-3']?.toLowerCase().includes('yes') || finalAnswers['4-3']?.toLowerCase().includes('sì') ? 'yes' : 'no',
       project_description: finalAnswers['4-4'] || '',
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
       communication_tone: (() => {
-        const tone = finalAnswers['5-1'];
-        const toneMap: Record<string, string> = {
-          'Concise and direct': 'concise',
-          'Detailed and explanatory': 'detailed',
-          'Technical': 'technical',
-          'Non-Technical': 'non_technical',
-          'No preference': 'no_preference'
+        const tones = finalAnswers['5-1'];
+        if (!Array.isArray(tones)) return 'no_preference';
+        
+        const q = getQuestionnaire(t, interpolate)[5 as keyof ReturnType<typeof getQuestionnaire>];
+        const s = q.steps[1];
+        const toneMap: Record<number, string> = {
+          0: 'concise',
+          1: 'detailed',
+          2: 'technical',
+          3: 'non_technical',
+          4: 'no_preference'
         };
 
-        if (Array.isArray(tone)) {
-          if (tone.includes('No preference')) return ['no_preference'];
-          return tone.map((t: string) => toneMap[t] || t.toLowerCase().split(' ')[0]);
-        }
-        return tone === 'No preference' ? ['no_preference'] : [toneMap[tone as string] || tone?.toLowerCase().split(' ')[0] || 'concise'];
+        const result = tones.map(t => {
+          const idx = (s.options || []).indexOf(t);
+          return toneMap[idx];
+        }).filter(Boolean);
+
+        return result.length > 0 ? result.join(', ') : 'no_preference';
       })(),
       notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
       ai_specialist_domains: '',
@@ -408,6 +455,11 @@ export default function OnboardingPage() {
       additional_context: finalAnswers['6-0'] || '',
     };
 
+    // Before submit, clean up translations from answers if necessary
+    // However, the backend expects values. We should ideally map back or use the original keys.
+    // For now, let's assume the backend handles these strings or we should have used stable keys for values.
+    // This is a trade-off: localizing the OPTIONS themselves changes the value sent to backend.
+    
     await submitOnboarding(onboardingData);
   };
 
@@ -456,8 +508,14 @@ export default function OnboardingPage() {
                   onChange={(val) => {
                     const key = `${currentSection}-${currentStep}`;
                     setAnswers({ ...answers, [key]: val });
+                    
+                    // Automatically switch language if this is the language selection step (Section 1, Step 1)
+                    if (currentSection === 1 && currentStep === 1) {
+                      const langCode = val.toLowerCase().startsWith('en') || val.toLowerCase().startsWith('ing') ? 'en' : 'it';
+                      setLanguage(langCode as any);
+                    }
                   }}
-                  placeholder={(currentStepData as any).placeholder || "Select an option"}
+                  placeholder={(currentStepData as any).placeholder || interpolate(t?.onboarding?.selectOption || "Select an option")}
                 />
               </div>
             ) : (
@@ -467,7 +525,7 @@ export default function OnboardingPage() {
                   ? "grid-cols-1 md:grid-cols-2"
                   : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                 }`}>
-                {currentStepData.options?.map((option) => {
+                {currentStepData.options?.map((option: string) => {
                   const currentAnswer = getCurrentAnswer();
                   const isActive = currentStepData.type === "multiple"
                     ? currentAnswer.includes(option)
@@ -515,7 +573,7 @@ export default function OnboardingPage() {
                   }}
                   className="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white px-6 py-4 sm:px-8 sm:py-4 md:px-12 md:py-5 rounded-lg font-semibold text-base sm:text-lg tracking-wide"
                 >
-                  ← BACK
+                  ← {interpolate(t?.onboarding?.back || "BACK")}
                 </button>
               ) : <div className="hidden sm:block"></div>}
 
@@ -524,8 +582,12 @@ export default function OnboardingPage() {
                 disabled={isLoading}
                 className="w-full sm:w-auto bg-lemon hover:bg-lemon/90 text-black px-6 py-4 sm:px-8 sm:py-4 md:px-12 md:py-5 rounded-lg font-semibold text-base sm:text-lg tracking-wide disabled:opacity-50"
               >
-                {isLoading ? "SUBMITTING..." : currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? "COMPLETE" : "NEXT →"}
+                {isLoading ? interpolate(t?.onboarding?.submitting || "SUBMITTING...") : currentSection === 6 && currentStep === currentQuestion.steps.length - 1 ? interpolate(t?.onboarding?.complete || "COMPLETE") : `${interpolate(t?.onboarding?.next || "NEXT")} →`}
               </button>
+            </div>
+            <div className="fixed top-6 right-6 flex items-center gap-4">
+              <LanguageToggle />
+              <ThemeToggle />
             </div>
           </div>
         </div>

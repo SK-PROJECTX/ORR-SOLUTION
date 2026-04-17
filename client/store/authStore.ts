@@ -146,7 +146,7 @@ export const useAuthStore = create<AuthState>()(
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await api.post("/login/", {
+          const response = await api.post("/api/auth/login/", {
             email,
             password,
           });
@@ -214,7 +214,7 @@ export const useAuthStore = create<AuthState>()(
       forgotPassword: async (email: string) => {
         set({ isLoading: true, error: null });
         try {
-          await api.post("/forget-password/", { email });
+          await api.post("/api/auth/forget-password/", { email });
           useToastStore
             .getState()
             .addToast("Password reset email sent!", "success");
@@ -261,7 +261,7 @@ export const useAuthStore = create<AuthState>()(
       ) => {
         set({ isLoading: true, error: null });
         try {
-          await api.post(`/verify-reset-password/${uid}/${token}/`, {
+          await api.post(`/api/auth/verify-reset-password/${uid}/${token}/`, {
             uid,
             token,
             new_password: newPassword,
@@ -308,7 +308,7 @@ export const useAuthStore = create<AuthState>()(
       verifyEmail: async (uid: string, token: string, email: string) => {
         set({ isLoading: true, error: null });
         try {
-          await api.post("/verify-email/", { uid, token, email });
+          await api.post("/api/auth/verify-email/", { uid, token, email });
           useToastStore
             .getState()
             .addToast("Email verified successfully!", "success");
@@ -356,7 +356,7 @@ export const useAuthStore = create<AuthState>()(
         }
 
         try {
-          await api.get("/profile/");
+          await api.get("/api/auth/profile/");
           return true;
         } catch (error: unknown) {
           const err = error as AxiosError;

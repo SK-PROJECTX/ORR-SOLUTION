@@ -5,9 +5,12 @@ import Link from "next/link";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { LanguageToggle } from "../components/LanguageToggle";
 import { useAuthStore } from "@/store/authStore";
+import { useLanguage } from "../components/LanguageProvider";
 
 export default function Page() {
+  const { t, language, interpolate } = useLanguage();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -66,15 +69,16 @@ export default function Page() {
           <div className="flex justify-between items-center mb-6">
             <div className="mt-0">
               <h2 className="text-2xl font-extrabold mb-2 md:text-start mr-4 text-center text-[#FFFFFF]">
-                Welcome
+                {interpolate(t.register.welcome)}
               </h2>
               <p className="text-sm font-medium mb-10 text-[#FFFFFF]  md:text-start text-center">
-                Create a new account
+                {interpolate(t.register.createAccount)}
               </p>
             </div>
 
 
-            <div className="mb-8">
+            <div className="mb-8 flex items-center gap-4">
+              <LanguageToggle />
               <ThemeToggle />
             </div>
 
@@ -85,11 +89,10 @@ export default function Page() {
               {error}
             </div>
           )}
-
           <form className="space-y-7" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="First Name"
+              placeholder={interpolate(t.register.firstName)}
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
@@ -98,7 +101,7 @@ export default function Page() {
 
             <input
               type="text"
-              placeholder="Last Name"
+              placeholder={interpolate(t.register.lastName)}
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
@@ -107,7 +110,7 @@ export default function Page() {
 
             <input
               type="email"
-              placeholder="Email"
+              placeholder={interpolate(t.register.email)}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white"
@@ -116,7 +119,7 @@ export default function Page() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={interpolate(t.register.password)}
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
@@ -134,7 +137,7 @@ export default function Page() {
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm Password"
+                placeholder={interpolate(t.register.confirmPassword)}
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 className="w-full border-b-1 border-gray-300 px-6 py-5 focus:outline-none text-white bg-transparent"
@@ -155,11 +158,11 @@ export default function Page() {
               disabled={isLoading || formData.password !== formData.confirmPassword}
               className="w-full bg-[#13BE77] text-white py-5 rounded-lg cursor-pointer mt-4 transition disabled:opacity-50"
             >
-              {isLoading ? "Signing Up..." : "Sign Up"}
+              {isLoading ? interpolate(t.register.signingUp) : interpolate(t.register.signUp)}
             </button>
 
             {formData.password !== formData.confirmPassword && formData.confirmPassword && (
-              <p className="text-red-400 text-sm mt-2">Passwords do not match</p>
+              <p className="text-red-400 text-sm mt-2">{interpolate(t.register.passwordsDoNotMatch)}</p>
             )}
 
             <div className="hidden md:flex items-end  justify-end mt-4 ">
@@ -167,7 +170,7 @@ export default function Page() {
                 href="/login"
                 className="px-6 font-extrabold text-md text-[#FFFFFF] "
               >
-                Already have an account? <span className="text-[#61FD51] underline">Login</span>
+                {interpolate(t.register.alreadyHaveAccount)} <span className="text-[#61FD51] underline">{interpolate(t.register.login)}</span>
               </Link>
             </div>
           </form>
@@ -210,7 +213,7 @@ export default function Page() {
 
           <div className="px-10 mt-18 flex flex-row item-center justify-center text-center">
             <ChevronLeft className="my-0" />
-            <Link href={"/"} className="text-sm font-poppins font-regular">Back to Hompage</Link>
+            <Link href={"/"} className="text-sm font-poppins font-regular">{interpolate(t.common.backToHomepage)}</Link>
           </div>
         </div>
 

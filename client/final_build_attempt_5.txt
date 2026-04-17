@@ -1,0 +1,115 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 25.1s
+   Running TypeScript ...
+   Collecting page data using 7 workers ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (0/78) ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (19/78) 
+   Generating static pages using 7 workers (38/78) 
+   Generating static pages using 7 workers (58/78) 
+ ✓ Generating static pages using 7 workers (78/78) in 1265.5ms
+   Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /account/business-info
+├ ○ /account/personalization
+├ ○ /account/settings
+├ ○ /account/wallet
+├ ○ /admin
+├ ○ /admin/client-management
+├ ○ /admin/content-management
+├ ○ /admin/content-management/homepage
+├ ○ /admin/content-management/new
+├ ○ /admin/login
+├ ○ /admin/payment-management
+├ ○ /admin/project-service-management
+├ ○ /admin/schedule-meetings
+├ ○ /admin/seo-and-analytics
+├ ○ /admin/settings
+├ ○ /analytics
+├ ○ /auth/reset-password
+├ ○ /auth/verify-email
+├ ○ /consultations/book
+├ ○ /consultations/past-consultations
+├ ○ /consultations/upcoming-consultations
+├ ○ /contact
+├ ○ /cookie-policy
+├ ○ /dashboard
+├ ○ /document/catalogue
+├ ○ /document/contracts
+├ ○ /document/generated-reports
+├ ○ /document/reports
+├ ○ /document/templates
+├ ○ /document/uploads
+├ ○ /email-confirmation
+├ ○ /faq
+├ ○ /favourite
+├ ○ /feedback
+├ ○ /forgot-password
+├ ○ /howweoperate
+├ ○ /kanban
+├ ○ /legal-policy
+├ ○ /login
+├ ○ /meeting-request
+├ ○ /messages
+├ ○ /onboarding
+├ ○ /payment/cancel
+├ ○ /payment/success
+├ ○ /pre-meeting
+├ ○ /pricing
+├ ○ /pricing/billing
+├ ○ /pricing/payment
+├ ○ /privacy-policy
+├ ○ /profile
+├ ○ /profile/overview
+├ ○ /progress
+├ ○ /register
+├ ○ /reset-password
+├ ○ /resources
+├ ○ /resources-blogs
+├ ● /resources-blogs/[id]
+│ ├ /resources-blogs/1
+│ ├ /resources-blogs/3
+│ ├ /resources-blogs/4
+│ └ [+2 more paths]
+├ ○ /robots.txt
+├ ○ /scheduling
+├ ○ /services
+├ ○ /services/living-systems-regeneration
+├ ○ /services/operational-systems-infrastructure
+├ ○ /services/strategy-advisory-compliant
+├ ○ /sitemap.xml
+├ ● /studio/[[...index]]
+│ ├ /studio
+│ ├ /studio/index
+│ └ /studio/structure
+├ ○ /support
+├ ○ /support-history
+├ ○ /updates
+└ ○ /users
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+

@@ -12,6 +12,8 @@ import {
   MessageSquare,
   CheckCircle,
 } from "lucide-react";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
+import api from "@/lib/axios";
 
 interface TicketMessage {
   id: number;
@@ -52,6 +54,7 @@ interface Chat {
 }
 
 export default function MessagesPage() {
+  const { t, language: currentLang } = useLanguage();
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<TicketMessage[]>([]);
@@ -87,7 +90,7 @@ export default function MessagesPage() {
 
   useEffect(() => {
     fetchTickets(true);
-    
+
     // Refresh ticket list every 10 seconds
     const ticketInterval = setInterval(() => fetchTickets(false), 10000);
     return () => clearInterval(ticketInterval);
@@ -97,7 +100,7 @@ export default function MessagesPage() {
     if (selectedChat) {
       // Fetch messages immediately when chat changes
       fetchMessages(selectedChat.id);
-      
+
       // Force initial scroll
       setTimeout(() => scrollToBottom(true), 100);
 
@@ -114,30 +117,12 @@ export default function MessagesPage() {
     try {
       if (isInitial) setLoading(true);
 
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        console.error("No authentication token found");
-        setLoading(false);
-        return;
-      }
-
-      console.log("Using token:", token ? "Token exists" : "No token");
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      );
+      const response = await api.get("/tickets/");
 
       console.log("Response status:", response.status);
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const data = response.data;
         console.log("Messages API Response:", data);
 
         // Handle different response formats
@@ -227,26 +212,22 @@ export default function MessagesPage() {
         return;
       }
 
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        console.error("No authentication token found for messages");
-        return;
+      // Try the admin portal endpoint first
+      let response;
+      try {
+        response = await api.get(`/admin-portal/v1/tickets/${ticketId}/messages/`);
+      } catch (adminError: any) {
+        if (adminError.response?.status === 404) {
+          // If admin portal fails, try the client endpoint
+          console.log("Admin endpoint 404, trying client endpoint...");
+          response = await api.get(`/tickets/${ticketId}/messages/`);
+        } else {
+          throw adminError;
+        }
       }
 
-      // Use the correct endpoint format with numeric ID
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/tickets/${ticketId}/messages/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      if (response.ok) {
-        const result = await response.json();
+      if (response && response.status === 200) {
+        const result = response.data;
         // Normalize different API response shapes into an array
         let messagesArray: TicketMessage[] = [];
         if (Array.isArray(result)) {
@@ -258,20 +239,13 @@ export default function MessagesPage() {
         } else if (result && result.data && typeof result.data === "object") {
           // Convert object collections into an array of values that look like messages
           messagesArray = (Object.values(result.data) as TicketMessage[]).filter(
-              (item) => item && item.id,
-            );
+            (item) => item && item.id,
+          );
         } else {
           messagesArray = [];
         }
 
         setMessages(messagesArray);
-
-        // Update seen count if we have more messages now
-        if (messagesArray.length > (seenCounts[ticketId] || 0)) {
-          const newSeen = { ...seenCounts, [ticketId]: messagesArray.length };
-          setSeenCounts(newSeen);
-          localStorage.setItem("seenMessages", JSON.stringify(newSeen));
-        }
       } else {
         console.error(
           "Failed to fetch messages:",
@@ -280,6 +254,7 @@ export default function MessagesPage() {
         );
         // If admin portal fails, try the client endpoint
         if (response.status === 404) {
+          const token = localStorage.getItem("accessToken");
           const clientResponse = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${ticketId}/messages/`,
             {
@@ -324,26 +299,11 @@ export default function MessagesPage() {
   const handleSendMessage = async () => {
     if (newMessage.trim() && selectedChat) {
       try {
-        const token = localStorage.getItem("accessToken");
+        const response = await api.post(`/tickets/${selectedChat.id}/send-message/`, {
+          message: newMessage,
+        });
 
-        if (!token) {
-          console.error("No authentication token found for sending message");
-          return;
-        }
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${selectedChat.id}/send-message/`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: newMessage }),
-          },
-        );
-
-        if (response.ok) {
+        if (response.status === 200 || response.status === 201) {
           setNewMessage("");
           // Refresh messages and force scroll
           await fetchMessages(selectedChat.id);
@@ -364,7 +324,7 @@ export default function MessagesPage() {
   };
 
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString("en-US", {
+    return new Date(dateString).toLocaleTimeString(currentLang === 'it' ? 'it-IT' : 'en-US', {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
@@ -387,7 +347,7 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div className="h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground">Loading your messages...</div>
+        <div className="text-foreground">{interpolate(t.dashboard.support.loading)}</div>
       </div>
     );
   }
@@ -399,13 +359,13 @@ export default function MessagesPage() {
         {/* Header */}
         <div className="p-4 border-b border-secondary">
           <h1 className="text-xl font-semibold text-foreground mb-4">
-            Support Messages
+            {interpolate(t.dashboard.support.sidebarTitle)}
           </h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground opacity-40 w-4 h-4" />
             <input
               type="text"
-              placeholder="Search conversations..."
+              placeholder={interpolate(t.dashboard.support.searchConversations)}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-secondary border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none"
@@ -417,7 +377,7 @@ export default function MessagesPage() {
         <div className="flex-1 overflow-y-auto">
           {filteredChats.length === 0 ? (
             <div className="p-4 text-center text-foreground/60">
-              No support tickets found
+              {interpolate(t.dashboard.support.noTicketsFound)}
             </div>
           ) : (
             filteredChats.map((chat) => (
@@ -431,11 +391,10 @@ export default function MessagesPage() {
                     localStorage.setItem("seenMessages", JSON.stringify(newSeen));
                   }
                 }}
-                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${
-                  selectedChat?.id === chat.id
+                className={`p-4 border-b border-secondary cursor-pointer hover:bg-secondary/50 transition-colors ${selectedChat?.id === chat.id
                     ? "bg-secondary/30 border-l-4 border-l-primary"
                     : ""
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -473,13 +432,12 @@ export default function MessagesPage() {
                       </p>
                       {chat.ticket?.status && (
                         <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            chat.ticket.status === "resolved"
+                          className={`text-xs px-2 py-1 rounded ${chat.ticket.status === "resolved"
                               ? "bg-green-500/20 text-green-300"
                               : chat.ticket.status === "new"
                                 ? "bg-blue-500/20 text-blue-300"
                                 : "bg-yellow-500/20 text-yellow-300"
-                          }`}
+                            }`}
                         >
                           {chat.ticket.status}
                         </span>
@@ -514,12 +472,12 @@ export default function MessagesPage() {
                   </h2>
                   <div className="flex items-center gap-2">
                     <p className="text-xs text-foreground opacity-60">
-                      {selectedChat.online ? "Active" : "Resolved"}
+                      {selectedChat.online ? interpolate(t.dashboard.support.active) : interpolate(t.dashboard.support.resolved)}
                     </p>
                     {hasAutoReply && (
                       <span className="text-xs px-2 py-1 rounded bg-green-500/20 text-green-300 flex items-center gap-1">
                         <CheckCircle size={10} />
-                        Auto-replied
+                        {interpolate(t.dashboard.support.autoReplied)}
                       </span>
                     )}
                   </div>
@@ -540,7 +498,7 @@ export default function MessagesPage() {
             </div>
 
             {/* Messages */}
-            <div 
+            <div
               ref={scrollContainerRef}
               className="flex-1 overflow-y-auto p-4 space-y-4"
             >
@@ -555,30 +513,28 @@ export default function MessagesPage() {
                     key={message.id}
                     className={`flex ${isUserMessage ? "justify-end" : "justify-start"}`}
                   >
-                    <div className={`flex flex-col ${isUserMessage ? "items-end" : "items-start"} max-w-[80%]`}>
-                      <span className="text-[10px] font-bold text-foreground/50 mb-1 px-1 uppercase tracking-wider">
-                        {isSystemMessage ? "🤖 System" : `${message.sender_name} • ${isUserMessage ? "YOU" : "ADMIN"}`}
-                      </span>
-                      <div
-                        className={`px-4 py-2.5 rounded-2xl shadow-sm ${
-                          isUserMessage
-                            ? "bg-primary text-black rounded-tr-none"
-                            : isSystemMessage
-                              ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                              : "bg-secondary text-foreground rounded-tl-none border border-white/5"
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${isUserMessage
+                          ? "bg-primary text-black"
+                          : isSystemMessage
+                            ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                            : "bg-secondary text-foreground"
                         }`}
-                      >
-                        <p className="text-sm leading-relaxed">{message.message}</p>
-                        <div className="flex items-center justify-end gap-1 mt-1">
-                          <p
-                            className={`text-[10px] ${
-                              isUserMessage ? "text-black/60" : "text-foreground/40"
-                            }`}
-                          >
-                            {formatTime(message.created_at)}
-                          </p>
+                    >
+                      {isSystemMessage && (
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-semibold">
+                            🤖 Auto Reply System
+                          </span>
                         </div>
-                      </div>
+                      )}
+                      <p className="text-sm">{message.message}</p>
+                      <p
+                        className={`text-xs mt-1 ${isUserMessage ? "text-black/70" : "text-foreground/60"
+                          }`}
+                      >
+                        {formatTime(message.created_at)}
+                      </p>
                     </div>
                   </div>
                 );
@@ -599,7 +555,7 @@ export default function MessagesPage() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                    placeholder="Type a message..."
+                    placeholder={interpolate(t.dashboard.support.typeMessage)}
                     className="w-full px-4 py-3 bg-secondary border border-secondary rounded-lg text-foreground placeholder:opacity-60 focus:border-primary outline-none pr-12"
                   />
                   <button className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-secondary/80 transition-colors">
@@ -621,7 +577,7 @@ export default function MessagesPage() {
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center text-foreground/60">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-40" />
-              <p>Select a conversation to start messaging</p>
+              <p>{interpolate(t.dashboard.support.selectToStart)}</p>
             </div>
           </div>
         )}

@@ -1,0 +1,25 @@
+npm warn Unknown project config "allow-scripts". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> client@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 29.2s
+   Running TypeScript ...
+Failed to compile.
+
+./app/components/ORRJourneySection.tsx:89:23
+Type error: Parameter 'step' implicitly has an 'any' type.
+
+[0m [90m 87 |[39m         {[90m/* Steps Container */[39m}
+ [90m 88 |[39m         [33m<[39m[33mdiv[39m className[33m=[39m[32m"relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 lg:gap-8 items-start"[39m[33m>[39m
+[31m[1m>[22m[39m[90m 89 |[39m           {steps[33m.[39mmap((step[33m,[39m index) [33m=>[39m (
+ [90m    |[39m                       [31m[1m^[22m[39m
+ [90m 90 |[39m             [33m<[39m[33mdiv[39m key[33m=[39m{index} className[33m=[39m[32m"relative group"[39m[33m>[39m
+ [90m 91 |[39m               {[90m/* Connector (Desktop Only) */[39m}
+ [90m 92 |[39m               {index [33m<[39m steps[33m.[39mlength [33m-[39m [35m1[39m [33m&&[39m ([0m
+Next.js build worker exited with code: 1 and signal: null

@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { useWalletStore } from "@/store/walletStore";
 import { useToastStore } from "@/store/toastStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 import PaymentMethodModal from "@/components/wallet/PaymentMethodModal";
 import PaymentCardModal from "@/components/wallet/PaymentCardModal";
 
 export default function PlansBillingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useLanguage();
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isPlanDropdownOpen, setIsPlanDropdownOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -44,19 +46,53 @@ export default function PlansBillingPage() {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isPlanDropdownOpen]);
+
+  const pricingParams = {
+    currency: t.dashboard.pricing.currency,
+    meetingPrice: t.dashboard.pricing.meetingPrice,
+    reportPrice: t.dashboard.pricing.reportPrice,
+    hrs: t.dashboard.pricing.hrs,
+    proData: t.dashboard.pricing.proData
+  };
+
+  const getLocalizedPlanInfo = (plan: any) => {
+    // Determine which localization key to use based on the plan amount or identifier
+    if (plan.amount === 45 || plan.name?.toLowerCase().includes('meeting')) {
+      return {
+        name: interpolate(t.dashboard.pricing.meetings),
+        description: interpolate(t.midClientJourney.steps.s1.sub, pricingParams)
+      };
+    }
+    if (plan.amount === 220 || plan.name?.toLowerCase().includes('report')) {
+      return {
+        name: interpolate(t.dashboard.pricing.reportFee),
+        description: interpolate(t.dashboard.pricing.feeDepends)
+      };
+    }
+    return { name: plan.name, description: plan.description };
+  };
   return (
     <div className="min-h-screen w-full text-white px-4 py-10 flex flex-col items-center">
       <div className="w-full max-w-6xl">
         {/* Page Title */}
-        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">My Wallet</h1>
+        <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">{interpolate(t.dashboard.page.wallet.title)}</h1>
 
         {/* Two Top Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
 
-          {/* Basic Plan Card */}
           <div className="bg-card border border-[#1E3A4B] rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-[#22C55E] mb-2">{selectedPlan?.name || 'Basic plan'}</h3>
-            <p className="text-sm text-gray-300 mb-6">{selectedPlan?.description || 'Our most popular plan for small teams.'}</p>
+            {(() => {
+              const localized = selectedPlan ? getLocalizedPlanInfo(selectedPlan) : {
+                name: interpolate(t.dashboard.billing.basicPlan.title),
+                description: interpolate(t.dashboard.billing.basicPlan.desc)
+              };
+              return (
+                <>
+                  <h3 className="text-xl font-semibold text-[#22C55E] mb-2">{localized.name}</h3>
+                  <p className="text-sm text-gray-300 mb-6">{localized.description}</p>
+                </>
+              );
+            })()}
 
             {/* Avatars */}
             <div className="flex -space-x-2 mb-6">
@@ -68,10 +104,21 @@ export default function PlansBillingPage() {
             </div>
 
             <div className="flex items-end justify-between">
-              <p className="text-3xl font-bold text-[#22C55E]">
-                ${selectedPlan?.amount || 20}
-                <span className="text-sm text-gray-300">per {selectedPlan?.billing_type === 'monthly' ? 'month' : selectedPlan?.billing_type || 'month'}</span>
-              </p>
+              {selectedPlan?.amount === 45 ? (
+                <div className="flex flex-col">
+                  <p className="text-3xl font-bold text-[#22C55E]">
+                    {interpolate(t.dashboard.pricing.currency)}{selectedPlan?.amount}
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    {interpolate(t.dashboard.pricing.perHour)}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-3xl font-bold text-[#22C55E]">
+                  {interpolate(t.dashboard.pricing.currency)}{selectedPlan?.amount || 20}
+                  <span className="text-sm text-gray-300"> {interpolate(t.dashboard.billing.basicPlan.price, { amount: '', period: selectedPlan?.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : selectedPlan?.billing_type || interpolate(t.dashboard.billing.perMonth) })}</span>
+                </p>
+              )}
               <div className="relative">
                 <button
                   onClick={(e) => {
@@ -80,7 +127,7 @@ export default function PlansBillingPage() {
                   }}
                   className="text-[#22C55E] text-sm flex items-center gap-1 hover:text-[#22C55E]/80"
                 >
-                  Change plan <ChevronDown className="w-4 h-4" />
+                  {interpolate(t.dashboard.common.edit)} <ChevronDown className="w-4 h-4" />
                 </button>
 
                 {isPlanDropdownOpen && (
@@ -101,12 +148,32 @@ export default function PlansBillingPage() {
                       >
                         <div className="flex justify-between items-center">
                           <div>
-                            <div className="font-medium text-[#22C55E]">{plan.name}</div>
-                            <div className="text-sm text-gray-300">${plan.amount}/{plan.billing_type === 'monthly' ? 'month' : plan.billing_type}</div>
-                            <div className="text-xs text-gray-400">{plan.description}</div>
+                            {(() => {
+                              const localized = getLocalizedPlanInfo(plan);
+                              if (plan.amount === 45) {
+                                return (
+                                  <>
+                                    <div className="font-medium text-[#22C55E]">{localized.name}</div>
+                                    <div className="text-xs text-gray-400 my-1">{localized.description}</div>
+                                    <div className="text-sm text-white font-bold">
+                                      {interpolate(t.dashboard.pricing.currency)}{plan.amount} {interpolate(t.dashboard.pricing.perHour)}
+                                    </div>
+                                  </>
+                                );
+                              }
+                              return (
+                                <>
+                                  <div className="font-medium text-[#22C55E]">{localized.name}</div>
+                                  <div className="text-sm text-gray-300">
+                                    {interpolate(t.dashboard.pricing.currency)}{plan.amount}/{plan.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : plan.billing_type}
+                                  </div>
+                                  <div className="text-xs text-gray-400">{localized.description}</div>
+                                </>
+                              );
+                            })()}
                           </div>
                           {plan.amount === 220 && subscriptionStatus?.is_subscribed && (
-                            <span className="text-xs bg-[#22C55E] text-black px-2 py-1 rounded">Subscribed</span>
+                            <span className="text-xs bg-[#22C55E] text-black px-2 py-1 rounded">{interpolate(t.dashboard.billing.subscribed)}</span>
                           )}
                         </div>
                       </button>
@@ -138,10 +205,10 @@ export default function PlansBillingPage() {
                   }`}
               >
                 {(((selectedPlan?.name?.toLowerCase().includes('report')) || (selectedPlan?.amount === 220)) && subscriptionStatus?.is_subscribed)
-                  ? 'Subscribed'
+                  ? interpolate(t.dashboard.billing.subscribed)
                   : checkoutLoading
-                    ? 'Processing...'
-                    : `Checkout - $${selectedPlan?.amount || 20}`
+                    ? interpolate(t.dashboard.billing.processing)
+                    : interpolate(t.dashboard.billing.checkout, { amount: String(selectedPlan?.amount || 20) })
                 }
               </button>
             </div>
@@ -151,8 +218,8 @@ export default function PlansBillingPage() {
           <div className="bg-card border border-[#1E3A4B] rounded-xl p-6">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h3 className="text-xl font-semibold text-[#22C55E] mb-1">Payment method</h3>
-                <p className="text-sm text-gray-300">Change how you pay for your plan.</p>
+                <h3 className="text-xl font-semibold text-[#22C55E] mb-1">{interpolate(t.dashboard.pricing.payment)}</h3>
+                <p className="text-sm text-gray-300">{interpolate(t.dashboard.account.personalization.desc)}</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -166,13 +233,13 @@ export default function PlansBillingPage() {
                   }}
                   className="text-[#22C55E] text-sm hover:text-[#22C55E]/80"
                 >
-                  🔄 Refresh
+                  🔄 {interpolate(t.dashboard.billing.paymentMethod.refresh)}
                 </button>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="text-[#22C55E] text-sm hover:text-[#22C55E]/80"
                 >
-                  + Add Card
+                  + {interpolate(t.dashboard.billing.paymentMethod.addCard)}
                 </button>
               </div>
             </div>
@@ -208,15 +275,15 @@ export default function PlansBillingPage() {
                           <span className={`text-xl font-bold ${getCardColor(method.brand)}`}>{method.brand.toUpperCase()}</span>
                         </div>
                         <div>
-                          <p className="font-semibold text-sm">{method.brand} ending in {method.last4}</p>
-                          <span className="text-xs text-black">Expiry {method.exp_month.toString().padStart(2, '0')}/{method.exp_year}</span>
+                          <p className="font-semibold text-sm">{interpolate(t.dashboard.billing.paymentMethod.endingIn, { brand: method.brand, digits: method.last4 })}</p>
+                          <span className="text-xs text-black">{interpolate(t.dashboard.billing.paymentMethod.expiry, { date: `${method.exp_month.toString().padStart(2, '0')}/${method.exp_year}` })}</span>
                         </div>
                       </div>
                       <button
                         onClick={() => setIsModalOpen(true)}
                         className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm hover:bg-[#22C55E]/90"
                       >
-                        Edit
+                        {interpolate(t.dashboard.common.edit)}
                       </button>
                     </div>
                   );
@@ -224,12 +291,12 @@ export default function PlansBillingPage() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-400 mb-4">No payment methods added</p>
+                <p className="text-gray-400 mb-4">{interpolate(t.dashboard.billing.paymentMethod.none)}</p>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm hover:bg-[#22C55E]/90"
                 >
-                  Add Payment Method
+                  {interpolate(t.dashboard.billing.paymentMethod.add)}
                 </button>
               </div>
             )}
@@ -240,10 +307,10 @@ export default function PlansBillingPage() {
         <div className="bg-card border border-[#1E3A4B] rounded-xl p-6 mb-20">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h3 className="text-xl font-semibold text-[#22C55E] mb-1">Billing history</h3>
-              <p className="text-sm text-gray-300">Download your previous plan receipts and usage details.</p>
+              <h3 className="text-xl font-semibold text-[#22C55E] mb-1">{interpolate(t.dashboard.billing.history.title)}</h3>
+              <p className="text-sm text-gray-300">{interpolate(t.dashboard.billing.history.desc)}</p>
             </div>
-            <button className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm">Download all</button>
+            <button className="bg-[#22C55E] text-black font-semibold px-6 py-2 rounded-md text-sm">{interpolate(t.dashboard.billing.history.downloadAll)}</button>
           </div>
 
           {/* Billing Table */}
@@ -251,11 +318,11 @@ export default function PlansBillingPage() {
             <table className="w-full text-sm text-left">
               <thead>
                 <tr className="text-gray-300 border-b border-[#1E3A4B]">
-                  <th className="py-3">Billing</th>
-                  <th>Billing Date</th>
-                  <th>Amount</th>
-                  <th>Plan</th>
-                  <th>Users</th>
+                  <th className="py-3">{interpolate(t.dashboard.billing.history.table.billing)}</th>
+                  <th>{interpolate(t.dashboard.billing.history.table.date)}</th>
+                  <th>{interpolate(t.dashboard.billing.history.table.amount)}</th>
+                  <th>{interpolate(t.dashboard.billing.history.table.plan)}</th>
+                  <th>{interpolate(t.dashboard.billing.history.table.users)}</th>
                   <th></th>
                 </tr>
               </thead>
@@ -269,12 +336,12 @@ export default function PlansBillingPage() {
                           : 'border-yellow-500 bg-yellow-500'
                           }`}></div>
                         <span className="text-[#22C55E]">{bill.billing_title}</span>
-                        <span className="text-gray-400">{bill.status}</span>
+                        <span className="text-gray-400">{bill.status.toLowerCase() === 'paid' ? interpolate(t.dashboard.billing.history.item.paid) : interpolate(t.dashboard.billing.history.item.pending)}</span>
                       </td>
                       <td>{new Date(bill.transaction_date).toLocaleDateString()}</td>
                       <td>{bill.currency} ${Math.abs(parseFloat(bill.amount)).toFixed(2)}</td>
                       <td>{bill.plan}</td>
-                      <td>{bill.users} Users</td>
+                      <td>{interpolate(t.dashboard.billing.history.item.users, { count: String(bill.users) })}</td>
                       <td>
                         {bill.hosted_invoice_url && (
                           <a
@@ -292,7 +359,7 @@ export default function PlansBillingPage() {
                 ) : (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-gray-400">
-                      No billing history found
+                      {interpolate(t.dashboard.billing.history.noHistory)}
                     </td>
                   </tr>
                 )}

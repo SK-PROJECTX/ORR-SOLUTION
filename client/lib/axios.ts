@@ -55,21 +55,18 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      const errorData = error.response?.data;
-      // Check if it's a token validation error
-      if (errorData?.data?.code === "token_not_valid") {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
-        return Promise.reject(error);
-      }
-
-      // Only logout for authentication endpoints for other 401 errors
       const url = error.config?.url || "";
-      if (url.includes("/register")) {
+      const errorData = error.response?.data;
+      // Check if it's a token validation error or a general unauthorized error for private pages
+      if (errorData?.data?.code === "token_not_valid" || !url.includes("/login")) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
+        
+        // Only redirect if not already on an auth page
+        if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);

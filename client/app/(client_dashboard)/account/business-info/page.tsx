@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Save, Edit, Building, MapPin, Phone, Mail, Globe, Users, Calendar, DollarSign, FileText, Camera, Check, X, Plus, Trash2 } from 'lucide-react';
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 interface BusinessInfo {
   companyName: string;
@@ -96,23 +97,24 @@ const initialBusinessInfo: BusinessInfo = {
 };
 
 const industries = [
-  'Management Consulting',
-  'Technology',
-  'Healthcare',
-  'Finance',
-  'Manufacturing',
-  'Retail',
-  'Education',
-  'Real Estate',
-  'Other'
+  'management',
+  'technology',
+  'healthcare',
+  'finance',
+  'manufacturing',
+  'retail',
+  'education',
+  'realEstate',
+  'other'
 ];
 
-const businessTypes = ['LLC', 'Corporation', 'Partnership', 'Sole Proprietorship', 'Non-Profit'];
+const businessTypes = ['llc', 'corporation', 'partnership', 'soleProprietorship', 'nonProfit'];
 const employeeCounts = ['1-10', '11-25', '26-50', '51-100', '101-500', '500+'];
 const revenueRanges = ['<$100K', '$100K-$500K', '$500K-$1M', '$1M-$5M', '$5M-$10M', '$10M+'];
 
 export default function BusinessInfoPage() {
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo>(initialBusinessInfo);
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [activeSection, setActiveSection] = useState('basic');
   const [hasChanges, setHasChanges] = useState(false);
@@ -211,17 +213,17 @@ export default function BusinessInfoPage() {
   };
 
   const sections = [
-    { id: 'basic', label: 'Basic Information', icon: Building },
-    { id: 'contact', label: 'Contact Details', icon: Phone },
-    { id: 'personnel', label: 'Key Personnel', icon: Users },
-    { id: 'certifications', label: 'Certifications', icon: FileText }
+    { id: 'basic', label: interpolate(t.dashboard.account.business.sections.basic), icon: Building },
+    { id: 'contact', label: interpolate(t.dashboard.account.business.sections.contact), icon: Phone },
+    { id: 'personnel', label: interpolate(t.dashboard.account.business.sections.personnel), icon: Users },
+    { id: 'certifications', label: interpolate(t.dashboard.account.business.sections.certifications), icon: FileText }
   ];
 
   const renderBasicInfo = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Company Name *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.companyName)} *</label>
           <input
             type="text"
             value={businessInfo.companyName}
@@ -232,7 +234,7 @@ export default function BusinessInfoPage() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Legal Name *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.legalName)} *</label>
           <input
             type="text"
             value={businessInfo.legalName}
@@ -245,7 +247,7 @@ export default function BusinessInfoPage() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Industry *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.industry)} *</label>
           <select
             value={businessInfo.industry}
             onChange={(e) => handleInputChange('industry', e.target.value)}
@@ -253,13 +255,13 @@ export default function BusinessInfoPage() {
             className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none disabled:opacity-60"
           >
             {industries.map(industry => (
-              <option key={industry} value={industry}>{industry}</option>
+              <option key={industry} value={industry}>{interpolate(t.dashboard.account.business.industries[industry] || industry)}</option>
             ))}
           </select>
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Business Type *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.businessType)} *</label>
           <select
             value={businessInfo.businessType}
             onChange={(e) => handleInputChange('businessType', e.target.value)}
@@ -267,7 +269,7 @@ export default function BusinessInfoPage() {
             className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none disabled:opacity-60"
           >
             {businessTypes.map(type => (
-              <option key={type} value={type}>{type}</option>
+              <option key={type} value={type}>{interpolate(t.dashboard.account.business.types[type] || type)}</option>
             ))}
           </select>
         </div>
@@ -275,7 +277,7 @@ export default function BusinessInfoPage() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Founded Year</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.foundedYear)}</label>
           <input
             type="text"
             value={businessInfo.foundedYear}
@@ -286,7 +288,7 @@ export default function BusinessInfoPage() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Employee Count</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.employeeCount)}</label>
           <select
             value={businessInfo.employeeCount}
             onChange={(e) => handleInputChange('employeeCount', e.target.value)}
@@ -300,7 +302,7 @@ export default function BusinessInfoPage() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Annual Revenue</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.annualRevenue)}</label>
           <select
             value={businessInfo.annualRevenue}
             onChange={(e) => handleInputChange('annualRevenue', e.target.value)}
@@ -315,14 +317,14 @@ export default function BusinessInfoPage() {
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Company Description</label>
+        <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.description)}</label>
         <textarea
           value={businessInfo.description}
           onChange={(e) => handleInputChange('description', e.target.value)}
           disabled={!isEditing}
           rows={4}
           className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none disabled:opacity-60 resize-none"
-          placeholder="Describe your business, services, and mission..."
+          placeholder={interpolate(t.dashboard.account.settings.placeholders.bio)}
         />
       </div>
     </div>
@@ -332,7 +334,7 @@ export default function BusinessInfoPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Business Email *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.email)} *</label>
           <input
             type="email"
             value={businessInfo.email}
@@ -343,7 +345,7 @@ export default function BusinessInfoPage() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Phone Number *</label>
+          <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.phone)} *</label>
           <input
             type="tel"
             value={businessInfo.phone}
@@ -355,7 +357,7 @@ export default function BusinessInfoPage() {
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Website</label>
+        <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.website)}</label>
         <input
           type="url"
           value={businessInfo.website}
@@ -366,10 +368,10 @@ export default function BusinessInfoPage() {
       </div>
       
       <div>
-        <h4 className="text-lg font-semibold text-foreground mb-4">Business Address</h4>
+        <h4 className="text-lg font-semibold text-foreground mb-4">{interpolate(t.dashboard.account.business.fields.address)}</h4>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Street Address *</label>
+            <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.street)} *</label>
             <input
               type="text"
               value={businessInfo.address.street}
@@ -381,7 +383,7 @@ export default function BusinessInfoPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">City *</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.city)} *</label>
               <input
                 type="text"
                 value={businessInfo.address.city}
@@ -392,7 +394,7 @@ export default function BusinessInfoPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">State *</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.state)} *</label>
               <input
                 type="text"
                 value={businessInfo.address.state}
@@ -403,7 +405,7 @@ export default function BusinessInfoPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">ZIP Code *</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.zip)} *</label>
               <input
                 type="text"
                 value={businessInfo.address.zipCode}
@@ -414,7 +416,7 @@ export default function BusinessInfoPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Country *</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.country)} *</label>
               <input
                 type="text"
                 value={businessInfo.address.country}
@@ -428,7 +430,7 @@ export default function BusinessInfoPage() {
       </div>
       
       <div>
-        <h4 className="text-lg font-semibold text-foreground mb-4">Social Media</h4>
+        <h4 className="text-lg font-semibold text-foreground mb-4">{interpolate(t.dashboard.account.business.fields.social)}</h4>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">LinkedIn</label>
@@ -470,14 +472,14 @@ export default function BusinessInfoPage() {
   const renderPersonnel = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h4 className="text-lg font-semibold text-foreground">Key Personnel</h4>
+        <h4 className="text-lg font-semibold text-foreground">{interpolate(t.dashboard.account.business.sections.personnel)}</h4>
         {isEditing && (
           <button
             onClick={addKeyPersonnel}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
           >
             <Plus className="w-4 h-4" />
-            Add Person
+            {interpolate(t.dashboard.account.business.actions.addPerson)}
           </button>
         )}
       </div>
@@ -487,7 +489,7 @@ export default function BusinessInfoPage() {
           <div key={person.id} className="bg-card border border-secondary rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Name</label>
+                <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.fullName)}</label>
                 <input
                   type="text"
                   value={person.name}
@@ -498,7 +500,7 @@ export default function BusinessInfoPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Position</label>
+                <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.position)}</label>
                 <input
                   type="text"
                   value={person.position}
@@ -510,7 +512,7 @@ export default function BusinessInfoPage() {
               
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-foreground mb-2">Email</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.email)}</label>
                   <input
                     type="email"
                     value={person.email}
@@ -540,14 +542,14 @@ export default function BusinessInfoPage() {
   const renderCertifications = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h4 className="text-lg font-semibold text-foreground">Certifications & Credentials</h4>
+        <h4 className="text-lg font-semibold text-foreground">{interpolate(t.dashboard.account.business.sections.certifications)}</h4>
         {isEditing && (
           <button
             onClick={addCertification}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
           >
             <Plus className="w-4 h-4" />
-            Add Certification
+            {interpolate(t.dashboard.account.business.actions.addCert)}
           </button>
         )}
       </div>
@@ -557,7 +559,7 @@ export default function BusinessInfoPage() {
           <div key={cert.id} className="bg-card border border-secondary rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Certification Name</label>
+                <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.certificationName)}</label>
                 <input
                   type="text"
                   value={cert.name}
@@ -568,7 +570,7 @@ export default function BusinessInfoPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Issuing Organization</label>
+                <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.issuingOrg)}</label>
                 <input
                   type="text"
                   value={cert.issuer}
@@ -580,7 +582,7 @@ export default function BusinessInfoPage() {
               
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-foreground mb-2">Date Obtained</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.account.business.fields.dateObtained)}</label>
                   <input
                     type="date"
                     value={cert.date}
@@ -623,8 +625,8 @@ export default function BusinessInfoPage() {
         {/* Header */}
         <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Business Information</h1>
-            <p className="text-foreground/60 mt-1">Manage your company profile and business details</p>
+            <h1 className="text-3xl font-bold text-foreground">{interpolate(t.dashboard.account.business.title)}</h1>
+            <p className="text-foreground/60 mt-1">{interpolate(t.dashboard.account.business.desc)}</p>
           </div>
           
           <div className="flex gap-2">
@@ -635,7 +637,7 @@ export default function BusinessInfoPage() {
                   className="flex items-center gap-2 px-4 py-2 border border-secondary rounded-lg hover:border-red-400 hover:bg-red-400/10 transition-colors"
                 >
                   <X className="w-4 h-4" />
-                  Cancel
+                  {interpolate(t.dashboard.account.business.actions.cancel)}
                 </button>
                 <button
                   onClick={handleSave}
@@ -643,7 +645,7 @@ export default function BusinessInfoPage() {
                   className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="w-4 h-4" />
-                  Save Changes
+                  {interpolate(t.dashboard.account.business.actions.save)}
                 </button>
               </>
             ) : (
@@ -652,7 +654,7 @@ export default function BusinessInfoPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
               >
                 <Edit className="w-4 h-4" />
-                Edit Information
+                {interpolate(t.dashboard.account.business.actions.edit)}
               </button>
             )}
           </div>
@@ -661,7 +663,7 @@ export default function BusinessInfoPage() {
         {hasChanges && (
           <div className="bg-yellow-400/20 border border-yellow-400/30 rounded-lg p-4">
             <p className="text-yellow-400 text-sm">
-              You have unsaved changes. Don't forget to save your updates.
+              {interpolate(t.dashboard.account.business.actions.unsaved)}
             </p>
           </div>
         )}

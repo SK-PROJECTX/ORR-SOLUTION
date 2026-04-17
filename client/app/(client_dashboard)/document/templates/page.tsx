@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Filter, Download, Eye, Star, FileText, Calendar, Users, Briefcase, PlusCircle, Grid, List } from 'lucide-react';
+import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 
 interface Template {
   id: string;
@@ -71,6 +72,7 @@ const categories = ['All', 'Strategy', 'Consultation', 'Proposals', 'Risk Manage
 const types = ['All', 'document', 'form', 'report'];
 
 export default function TemplatesPage() {
+  const { t, language: currentLang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedType, setSelectedType] = useState('All');
@@ -139,18 +141,18 @@ export default function TemplatesPage() {
         ))}
       </div>
       
-      {/* <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
-        <span>{template.downloads} downloads</span>
-        <span>Updated {new Date(template.lastUpdated).toLocaleDateString()}</span>
+      <div className="flex items-center justify-between text-sm text-foreground/60 mb-4">
+        <span>{template.downloads} {interpolate(t.dashboard.templates.downloadsLabel)}</span>
+        <span>{interpolate(t.dashboard.templates.updated, { date: new Date(template.lastUpdated).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US') })}</span>
       </div>
-       */}
+      
       <div className="flex gap-2">
         <button 
           onClick={() => handleDownload(template)}
           className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
         >
           <Download className="w-4 h-4" />
-          Download
+          {interpolate(t.dashboard.templates.download)}
         </button>
         <button className="p-2 border border-secondary rounded-lg hover:border-primary hover:bg-primary/10 transition-colors">
           <Eye className="w-4 h-4 text-foreground" />
@@ -175,12 +177,12 @@ export default function TemplatesPage() {
           </div>
           <p className="text-foreground/70 text-sm truncate">{template.description}</p>
           <div className="flex items-center gap-4 mt-2 text-xs text-foreground/60">
-            <span>{template.downloads} downloads</span>
+            <span>{template.downloads} {interpolate(t.dashboard.templates.downloadsLabel)}</span>
             <div className="flex items-center gap-1 text-yellow-400">
               <Star className="w-3 h-3 fill-current" />
               <span>{template.rating}</span>
             </div>
-            <span>Updated {new Date(template.lastUpdated).toLocaleDateString()}</span>
+            <span>{interpolate(t.dashboard.templates.updated, { date: new Date(template.lastUpdated).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US') })}</span>
           </div>
         </div>
         
@@ -190,7 +192,7 @@ export default function TemplatesPage() {
             className="flex items-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
           >
             <Download className="w-4 h-4" />
-            Download
+            {interpolate(t.dashboard.templates.download)}
           </button>
           <button className="p-2 border border-secondary rounded-lg hover:border-primary hover:bg-primary/10 transition-colors">
             <Eye className="w-4 h-4 text-foreground" />
@@ -206,13 +208,13 @@ export default function TemplatesPage() {
         {/* Header */}
         <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">ORR's Templates</h1>
-            <p className="text-foreground/60 mt-1">Professional templates to streamline your workflow</p>
+            <h1 className="text-3xl font-bold text-foreground">{interpolate(t.dashboard.templates.title)}</h1>
+            <p className="text-foreground/60 mt-1">{interpolate(t.dashboard.templates.subtitle)}</p>
           </div>
           
           <button className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium w-fit">
             <PlusCircle className="w-4 h-4" />
-            Request Template
+            {interpolate(t.dashboard.templates.request)}
           </button>
         </header>
 
@@ -223,7 +225,7 @@ export default function TemplatesPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search templates, categories, or tags..."
+                placeholder={interpolate(t.dashboard.templates.searchPlace)}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-background border border-secondary rounded-lg text-foreground placeholder:text-foreground/40 focus:border-primary outline-none"
@@ -238,7 +240,7 @@ export default function TemplatesPage() {
                 }`}
               >
                 <Filter className="w-4 h-4" />
-                Filters
+                {interpolate(t.dashboard.templates.filters)}
               </button>
               
               <div className="flex border border-secondary rounded-lg overflow-hidden">
@@ -266,14 +268,14 @@ export default function TemplatesPage() {
             <div className="mt-4 pt-4 border-t border-secondary">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Category</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.templates.category)}</label>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none"
                   >
                     {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                      <option key={category} value={category}>{interpolate(t.dashboard.templates.categories[category.toLowerCase()] || category)}</option>
                     ))}
                   </select>
                 </div>
@@ -287,7 +289,7 @@ export default function TemplatesPage() {
                   >
                     {types.map(type => (
                       <option key={type} value={type}>
-                        {type === 'All' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
+                        {type === 'All' ? interpolate(t.dashboard.templates.allTypes) : interpolate(t.dashboard.templates.types[type.toLowerCase()] || type)}
                       </option>
                     ))}
                   </select>
@@ -300,18 +302,18 @@ export default function TemplatesPage() {
         {/* Results Summary */}
         <div className="flex items-center justify-between">
           <p className="text-foreground/60">
-            Showing {filteredTemplates.length} of {templates.length} templates
+            {interpolate(t.dashboard.templates.resultsCount, { count: filteredTemplates.length, total: templates.length })}
           </p>
           
           <div className="flex gap-2">
             {selectedCategory !== 'All' && (
               <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
-                {selectedCategory}
+                {interpolate(t.dashboard.templates.categories[selectedCategory.toLowerCase()] || selectedCategory)}
               </span>
             )}
             {selectedType !== 'All' && (
               <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
-                {selectedType}
+                {interpolate(t.dashboard.templates.types[selectedType.toLowerCase()] || selectedType)}
               </span>
             )}
           </div>
@@ -335,10 +337,10 @@ export default function TemplatesPage() {
         {filteredTemplates.length === 0 && (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-foreground/20 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No templates found</h3>
-            <p className="text-foreground/60 mb-4">Try adjusting your search criteria or filters</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">{interpolate(t.dashboard.templates.noResults)}</h3>
+            <p className="text-foreground/60 mb-4">{interpolate(t.dashboard.templates.tryAdjust)}</p>
             <button className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
-              Clear Filters
+              {interpolate(t.dashboard.templates.clearFilters)}
             </button>
           </div>
         )}

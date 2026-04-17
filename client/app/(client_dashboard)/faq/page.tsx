@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FiSearch, FiMoreHorizontal, FiPlus } from "react-icons/fi";
 import { Plus, X } from 'lucide-react';
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 /**
  * Notes:
@@ -20,41 +21,18 @@ const resources = Array.from({ length: 9 }).map((_, i) => ({
   date: "20.06.22",
 }));
 
-  const faqs = [
-    {
-      question: "What does it mean that ORR is a “business GP”?",
-      answer: "We operate like the general practitioner of your organisation. We listen first, diagnose the underlying causes, and coordinate the right mix of interventions and specialists."
-    },
-    {
-      question: "What does ORR actually do?",
-      answer: "ORR integrates advisory, compliance, digital systems, automation, AI, and living-system expertise into one coordinated method. We diagnose and design solutions through our five-stage model: Discover → Diagnose → Design → Deploy → Grow."
-    },
-    {
-      question: "What makes ORR different from traditional consulting?",
-      answer: "We shorten the discovery phase, give clarity early, and avoid tool-first thinking. The result: faster diagnosis, lower cost, and actionable outcomes from the very start."
-    },
-    {
-      question: "Are you only focused on tech?",
-      answer: "No. Technology is a later step. We start with people, decisions, and processes — then choose tools that support them."
-    },
-    {
-      question: "Do you replace our existing consultants or IT providers?",
-      answer: "Not unless you want us to. ORR acts as the coordination layer, aligning all specialists around one coherent plan."
-    },
-    {
-      question: "Is the ORR method the same for every client?",
-      answer: "The structure is fixed; the application is tailored. You move through the same stages, but the pace, depth, and interventions are customised."
-    },
-    {
-      question: "Can ORR support urgent or crisis situations?",
-      answer: "Yes. For time-critical issues, we prioritise rapid assessment and stabilisation before re-entering structured work."
-    },
-
-  ];
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 export default function FrequentlyAskQuestionsPage() {
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
-    const [openFAQ, setOpenFAQ] = useState(0);
+  const [openFAQ, setOpenFAQ] = useState(0);
+
+  const faqs = t.dashboard.faq.items || [];
+
 
   const filtered = resources.filter((r) => r.title.toLowerCase().includes(query.toLowerCase()));
 
@@ -69,11 +47,11 @@ export default function FrequentlyAskQuestionsPage() {
       <div className="relative z-10 max-w-4xl mx-auto">
 
             <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center">
-          Frequently <span className="text-[#33FF99]">Asked Questions</span>
+          {interpolate(t.dashboard.faq.title)} <span className="text-[#33FF99]">{interpolate(t.dashboard.faq.titleHighlight)}</span>
         </h2>
         
         <div className="space-y-4">
-          {faqs.map((faq, index) => (
+          {(faqs as FAQItem[]).map((faq, index) => (
             <div key={index} className={` rounded-2xl overflow-hidden border border-[#2a4a6b] ${openFAQ === index ? 'bg-primary' : 'bg-[#2a4a6b]'}`}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === index ? -1 : index)}

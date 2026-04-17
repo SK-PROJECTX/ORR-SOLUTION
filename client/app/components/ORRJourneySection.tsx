@@ -18,14 +18,14 @@ interface ORRJourneySectionProps {
 }
 
 export default function ORRJourneySection() {
-  const { t } = useLanguage();
+  const { t, interpolate } = useLanguage();
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
   const connectorsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const steps = t.journeySection.steps.map((step, index) => ({
+  const steps = t.journeySection.steps.map((step: any, index: number) => ({
     ...step,
     type: index === 2 ? "critical" : index === 3 ? "optional" : "mandatory"
   }));
@@ -86,7 +86,7 @@ export default function ORRJourneySection() {
 
         {/* Steps Container */}
         <div className="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 lg:gap-8 items-start">
-          {steps.map((step, index) => (
+          {steps.map((step: any, index: number) => (
             <div key={index} className="relative group">
               {/* Connector (Desktop Only) */}
               {index < steps.length - 1 && (
@@ -131,10 +131,16 @@ export default function ORRJourneySection() {
                   </div>
                 </div>
 
-                {step.subtext && (
+                {(step as any).subtext && (
                   <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
                     <p className="text-primary font-bold text-lg md:text-xl">
-                      {step.subtext}
+                      {interpolate(step.subtext, { 
+                        currency: t.dashboard.pricing.currency,
+                        meetingPrice: t.dashboard.pricing.meetingPrice,
+                        reportPrice: t.dashboard.pricing.reportPrice,
+                        hrs: t.dashboard.pricing.hrs,
+                        proRata: t.dashboard.pricing.proRata
+                      })}
                     </p>
                   </div>
                 )}

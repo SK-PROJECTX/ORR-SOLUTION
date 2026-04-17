@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
@@ -440,7 +442,7 @@ export default function PrivacyPolicy() {
                         </tr>
                       </thead>
                       <tbody>
-                        {p.tableRows.map((row, idx) => (
+                        {p.tableRows.map((row: any, idx: number) => (
                           <tr key={idx}>
                             <td className="border border-gray-600 px-4 py-2 text-gray-300">{row.category}</td>
                             <td className="border border-gray-600 px-4 py-2 text-gray-300">{row.retention}</td>

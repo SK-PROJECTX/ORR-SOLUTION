@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useProfileStore } from "@/store/profileStore";
 import { useAuthStore } from "@/store/authStore";
+import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 
 interface Country {
   name: { common: string };
@@ -11,6 +12,7 @@ interface Country {
 export default function AccountSettingsPage() {
   const { profile, isLoading, isEditing, updateProfile, setEditing, fetchProfile } = useProfileStore();
   const { user } = useAuthStore();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState(profile);
   const [countries, setCountries] = useState<Country[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(true);
@@ -72,12 +74,12 @@ export default function AccountSettingsPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 mb-6">
-          <h1 className="text-2xl sm:text-3xl font-semibold text-primary">Account Settings</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-primary">{interpolate(t.dashboard.account.settings.title)}</h1>
           <div className="w-full lg:w-auto lg:max-w-xl">
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search anything here..."
+                placeholder={interpolate(t.dashboard.common.search)}
                 className="w-full bg-card border border-secondary rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none text-foreground"
               />
               <button className="absolute right-4 top-1/2 -translate-y-1/2 text-primary">🔍</button>
@@ -88,19 +90,23 @@ export default function AccountSettingsPage() {
         {/* Title and Actions */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-8">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold mb-2">Setting Details</h2>
-            <p className="text-sm text-gray-300">Update your photo and personal details here.</p>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-2">{interpolate(t.dashboard.account.settings.details)}</h2>
+            <p className="text-sm text-gray-300">{interpolate(t.dashboard.account.settings.desc)}</p>
           </div>
           <div className="flex gap-3">
             {isEditing ? (
               <>
-                <button onClick={handleCancel} className="px-4 sm:px-6 py-2 border border-gray-400 rounded-md text-sm sm:text-base">Cancel</button>
+                <button onClick={handleCancel} className="px-4 sm:px-6 py-2 border border-gray-400 rounded-md text-sm sm:text-base">
+                  {interpolate(t.dashboard.common.cancel)}
+                </button>
                 <button onClick={handleSave} disabled={isLoading} className="px-4 sm:px-6 py-2 bg-primary text-black rounded-md font-semibold disabled:opacity-50 text-sm sm:text-base">
-                  {isLoading ? 'Saving...' : 'Save'}
+                  {isLoading ? interpolate(t.dashboard.account.settings.saving) : interpolate(t.dashboard.common.save)}
                 </button>
               </>
             ) : (
-              <button onClick={handleEdit} className="px-4 sm:px-6 py-2 bg-primary text-black rounded-md font-semibold text-sm sm:text-base">Edit</button>
+              <button onClick={handleEdit} className="px-4 sm:px-6 py-2 bg-primary text-black rounded-md font-semibold text-sm sm:text-base">
+                {interpolate(t.dashboard.common.edit)}
+              </button>
             )}
           </div>
         </div>
@@ -108,113 +114,113 @@ export default function AccountSettingsPage() {
         {/* Main Content */}
         <div className="flex flex-col xl:flex-row w-full gap-6 lg:gap-8">
           <div className="bg-card p-4 sm:p-6 rounded-xl border border-secondary flex-1">
-            <h3 className="text-lg font-semibold mb-6">Personal information</h3>
+            <h3 className="text-lg font-semibold mb-6">{interpolate(t.dashboard.account.settings.personalInfo)}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm mb-2">First Name</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.firstName)}</label>
                 <input
                   value={formData.first_name}
                   onChange={(e) => setFormData({...formData, first_name: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter first name"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.firstName)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Last Name</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.lastName)}</label>
                 <input
                   value={formData.last_name}
                   onChange={(e) => setFormData({...formData, last_name: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter last name"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.lastName)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Username</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.username)}</label>
                 <input
                   value={formData.username}
                   onChange={(e) => setFormData({...formData, username: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter username"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.username)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Email</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.email)}</label>
                 <input
                   value={user?.email || ''}
                   disabled={true}
                   className="w-full bg-card border border-secondary rounded-md px-4 py-3 text-sm focus:outline-none opacity-50 text-foreground cursor-not-allowed"
-                  placeholder="Email address"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.email)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Country</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.country)}</label>
                 <select
                   value={formData.country}
                   onChange={(e) => setFormData({...formData, country: e.target.value})}
                   disabled={!isEditing || loadingCountries}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
                 >
-                  <option value="">{loadingCountries ? 'Loading countries...' : 'Select a country'}</option>
+                  <option value="">{loadingCountries ? interpolate(t.dashboard.account.settings.placeholders.loadingCountries) : interpolate(t.dashboard.account.settings.placeholders.country)}</option>
                   {countries.map((country) => (
                     <option key={country.cca2} value={country.name.common}>{country.name.common}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm mb-2">City</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.city)}</label>
                 <input
                   value={formData.city}
                   onChange={(e) => setFormData({...formData, city: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter city"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.city)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Zip Code</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.zipCode)}</label>
                 <input
                   value={formData.zip_code}
                   onChange={(e) => setFormData({...formData, zip_code: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter zip code"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.zipCode)}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-2">Phone Number</label>
+                <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.phoneNumber)}</label>
                 <input
                   value={formData.phone_number}
                   onChange={(e) => setFormData({...formData, phone_number: e.target.value})}
                   disabled={!isEditing}
                   className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
-                  placeholder="Enter phone number"
+                  placeholder={interpolate(t.dashboard.account.settings.placeholders.phoneNumber)}
                 />
               </div>
             </div>
 
             <div className="mt-6">
-              <label className="block text-sm mb-2">Bio</label>
+              <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.bio)}</label>
               <textarea
                 value={formData.bio_text}
                 onChange={(e) => setFormData({...formData, bio_text: e.target.value})}
                 disabled={!isEditing}
                 className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground min-h-[100px]"
-                placeholder="Write your bio..."
+                placeholder={interpolate(t.dashboard.account.settings.placeholders.bio)}
               />
             </div>
 
             <div className="mt-6">
-              <label className="block text-sm mb-2">Timezone</label>
+              <label className="block text-sm mb-2">{interpolate(t.dashboard.account.settings.timezone)}</label>
               <select
                 value={formData.timezone}
                 onChange={(e) => setFormData({...formData, timezone: e.target.value})}
                 disabled={!isEditing}
                 className="w-full bg-card border border-primary rounded-md px-4 py-3 text-sm focus:outline-none disabled:opacity-50 text-foreground"
               >
-                <option value="">Select timezone</option>
+                <option value="">{interpolate(t.dashboard.account.settings.placeholders.timezone)}</option>
                 <option value="UTC+00:00">UTC+00:00 (London, Dublin)</option>
                 <option value="UTC+01:00">UTC+01:00 (Central European Time)</option>
                 <option value="UTC+02:00">UTC+02:00 (Eastern European Time)</option>
@@ -227,7 +233,7 @@ export default function AccountSettingsPage() {
           {/* Photo Upload Section */}
           <div className="w-full xl:w-80 xl:flex-shrink-0">
             <div className="bg-card p-4 sm:p-6 rounded-xl border border-secondary">
-              <h3 className="text-lg font-semibold mb-4">Your Photo</h3>
+              <h3 className="text-lg font-semibold mb-4">{interpolate(t.dashboard.account.settings.photo.title)}</h3>
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gray-400 flex-shrink-0">
                   {formData.profile_pic ? (
@@ -239,14 +245,14 @@ export default function AccountSettingsPage() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm">Edit your photo</p>
+                  <p className="text-sm">{interpolate(t.dashboard.account.settings.photo.edit)}</p>
                   {formData.profile_pic && (
                     <button 
                       onClick={() => setFormData({...formData, profile_pic: ''})}
                       disabled={!isEditing}
                       className="text-red-400 text-xs hover:text-red-300 disabled:opacity-50 mt-1"
                     >
-                      Delete
+                      {interpolate(t.dashboard.account.settings.photo.delete)}
                     </button>
                   )}
                 </div>
@@ -269,9 +275,9 @@ export default function AccountSettingsPage() {
                   <>
                     <span className="text-primary text-2xl sm:text-3xl mb-2">⬆</span>
                     <p className="text-xs sm:text-sm text-gray-300">
-                      Click to upload or drag and drop<br />
-                      SVG, PNG, JPG or GIF<br />
-                      <span className="hidden sm:inline">(max, 800×400px)</span>
+                      {interpolate(t.dashboard.account.settings.photo.upload)}<br />
+                      {interpolate(t.dashboard.account.settings.photo.formats)}<br />
+                      <span className="hidden sm:inline">{interpolate(t.dashboard.account.settings.photo.maxSize)}</span>
                     </p>
                   </>
                 )}

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Filter, Download, Eye, Edit, FileText, Calendar, Clock, CheckCircle, AlertCircle, XCircle, Plus, MoreHorizontal, User, Building } from 'lucide-react';
+import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 
 interface Contract {
   id: string;
@@ -96,22 +97,23 @@ const contracts: Contract[] = [
 ];
 
 const statusConfig = {
-  draft: { icon: Edit, color: 'text-gray-400', bg: 'bg-gray-400/20', label: 'Draft' },
-  pending: { icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-400/20', label: 'Pending' },
-  active: { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-400/20', label: 'Active' },
-  completed: { icon: CheckCircle, color: 'text-blue-400', bg: 'bg-blue-400/20', label: 'Completed' },
-  expired: { icon: AlertCircle, color: 'text-orange-400', bg: 'bg-orange-400/20', label: 'Expired' },
-  cancelled: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-400/20', label: 'Cancelled' }
+  draft: { icon: Edit, color: 'text-gray-400', bg: 'bg-gray-400/20', key: 'draft' },
+  pending: { icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-400/20', key: 'pending' },
+  active: { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-400/20', key: 'active' },
+  completed: { icon: CheckCircle, color: 'text-blue-400', bg: 'bg-blue-400/20', key: 'completed' },
+  expired: { icon: AlertCircle, color: 'text-orange-400', bg: 'bg-orange-400/20', key: 'expired' },
+  cancelled: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-400/20', key: 'cancelled' }
 };
 
 const typeConfig = {
-  service: { label: 'Service Agreement', icon: FileText },
-  consulting: { label: 'Consulting', icon: User },
-  retainer: { label: 'Retainer', icon: Calendar },
-  project: { label: 'Project Contract', icon: Building }
+  service: { key: 'service', icon: FileText },
+  consulting: { key: 'consulting', icon: User },
+  retainer: { key: 'retainer', icon: Calendar },
+  project: { key: 'project', icon: Building }
 };
 
 export default function ContractsPage() {
+  const { t, language: currentLang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -157,7 +159,7 @@ export default function ContractsPage() {
     return (
       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}`}>
         <Icon className="w-3 h-3" />
-        {config.label}
+        {interpolate(t.dashboard.contracts.statusLabels[config.key])}
       </span>
     );
   };
@@ -185,19 +187,19 @@ export default function ContractsPage() {
       
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <p className="text-xs text-foreground/50 mb-1">Contract Value</p>
+          <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.card.value)}</p>
           <p className="font-semibold text-primary">${contract.value.toLocaleString()}</p>
         </div>
         <div>
-          <p className="text-xs text-foreground/50 mb-1">Type</p>
-          <p className="text-sm text-foreground">{typeConfig[contract.type].label}</p>
+          <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.card.type)}</p>
+          <p className="text-sm text-foreground">{interpolate(t.dashboard.contracts.typeLabels[contract.type])}</p>
         </div>
       </div>
       
       {contract.progress !== undefined && (
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-foreground/50">Progress</span>
+            <span className="text-xs text-foreground/50">{interpolate(t.dashboard.contracts.card.progress)}</span>
             <span className="text-xs font-medium text-foreground">{contract.progress}%</span>
           </div>
           <div className="w-full bg-secondary/30 rounded-full h-2">
@@ -210,14 +212,14 @@ export default function ContractsPage() {
       )}
       
       <div className="flex items-center justify-between text-xs text-foreground/50 mb-4">
-        <span>Start: {new Date(contract.startDate).toLocaleDateString()}</span>
-        <span>End: {new Date(contract.endDate).toLocaleDateString()}</span>
+        <span>{interpolate(t.dashboard.contracts.card.start)}: {new Date(contract.startDate).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}</span>
+        <span>{interpolate(t.dashboard.contracts.card.end)}: {new Date(contract.endDate).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}</span>
       </div>
       
       <div className="flex gap-2">
         <button className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium">
           <Eye className="w-4 h-4" />
-          View
+          {interpolate(t.dashboard.contracts.card.view)}
         </button>
         <button className="flex items-center justify-center gap-2 py-2 px-4 border border-secondary rounded-lg hover:border-primary hover:bg-primary/10 transition-colors">
           <Download className="w-4 h-4 text-foreground" />
@@ -235,40 +237,40 @@ export default function ContractsPage() {
         {/* Header */}
         <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Contracts</h1>
-            <p className="text-foreground/60 mt-1">Manage and track all your business contracts</p>
+            <h1 className="text-3xl font-bold text-foreground">{interpolate(t.dashboard.contracts.title)}</h1>
+            <p className="text-foreground/60 mt-1">{interpolate(t.dashboard.contracts.subtitle)}</p>
           </div>
           
           <button className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium w-fit">
             <Plus className="w-4 h-4" />
-            New Contract
+            {interpolate(t.dashboard.contracts.new)}
           </button>
         </header>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Total Contracts</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.total)}</p>
             <p className="text-2xl font-bold text-foreground">{stats.total}</p>
           </div>
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Active</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.active)}</p>
             <p className="text-2xl font-bold text-green-400">{stats.active}</p>
           </div>
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Pending</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.pending)}</p>
             <p className="text-2xl font-bold text-yellow-400">{stats.pending}</p>
           </div>
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Completed</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.completed)}</p>
             <p className="text-2xl font-bold text-blue-400">{stats.completed}</p>
           </div>
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Draft</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.draft)}</p>
             <p className="text-2xl font-bold text-gray-400">{stats.draft}</p>
           </div>
           <div className="bg-card border border-secondary rounded-xl p-4">
-            <p className="text-xs text-foreground/50 mb-1">Total Value</p>
+            <p className="text-xs text-foreground/50 mb-1">{interpolate(t.dashboard.contracts.stats.totalValue)}</p>
             <p className="text-xl font-bold text-primary">${totalValue.toLocaleString()}</p>
           </div>
         </div>
@@ -280,7 +282,7 @@ export default function ContractsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search contracts, clients, or contract IDs..."
+                placeholder={interpolate(t.dashboard.contracts.searchPlace)}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-background border border-secondary rounded-lg text-foreground placeholder:text-foreground/40 focus:border-primary outline-none"
@@ -295,7 +297,7 @@ export default function ContractsPage() {
                 }`}
               >
                 <Filter className="w-4 h-4" />
-                Filters
+                {interpolate(t.dashboard.contracts.filters)}
               </button>
               
               <select
@@ -303,9 +305,9 @@ export default function ContractsPage() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="px-4 py-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none"
               >
-                <option value="lastModified">Last Modified</option>
-                <option value="startDate">Start Date</option>
-                <option value="value">Contract Value</option>
+                <option value="lastModified">{interpolate(t.dashboard.contracts.sortBy.lastModified)}</option>
+                <option value="startDate">{interpolate(t.dashboard.contracts.sortBy.startDate)}</option>
+                <option value="value">{interpolate(t.dashboard.contracts.sortBy.value)}</option>
               </select>
             </div>
           </div>
@@ -314,29 +316,29 @@ export default function ContractsPage() {
             <div className="mt-4 pt-4 border-t border-secondary">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Status</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.contracts.status)}</label>
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
                     className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none"
                   >
-                    <option value="all">All Statuses</option>
+                    <option value="all">{interpolate(t.dashboard.contracts.allStatus)}</option>
                     {Object.entries(statusConfig).map(([key, config]) => (
-                      <option key={key} value={key}>{config.label}</option>
+                      <option key={key} value={key}>{interpolate(t.dashboard.contracts.statusLabels[config.key])}</option>
                     ))}
                   </select>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Type</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">{interpolate(t.dashboard.contracts.type)}</label>
                   <select
                     value={selectedType}
                     onChange={(e) => setSelectedType(e.target.value)}
                     className="w-full p-3 bg-background border border-secondary rounded-lg text-foreground focus:border-primary outline-none"
                   >
-                    <option value="all">All Types</option>
+                    <option value="all">{interpolate(t.dashboard.contracts.allTypes)}</option>
                     {Object.entries(typeConfig).map(([key, config]) => (
-                      <option key={key} value={key}>{config.label}</option>
+                      <option key={key} value={key}>{interpolate(t.dashboard.contracts.typeLabels[config.key])}</option>
                     ))}
                   </select>
                 </div>
@@ -348,7 +350,7 @@ export default function ContractsPage() {
         {/* Results Summary */}
         <div className="flex items-center justify-between">
           <p className="text-foreground/60">
-            Showing {filteredContracts.length} of {contracts.length} contracts
+            {interpolate(t.dashboard.contracts.showing, { count: filteredContracts.length, total: contracts.length })}
           </p>
           
           <div className="flex gap-2">
@@ -357,7 +359,7 @@ export default function ContractsPage() {
             )}
             {selectedType !== 'all' && (
               <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
-                {typeConfig[selectedType as keyof typeof typeConfig].label}
+                {interpolate(t.dashboard.contracts.typeLabels[selectedType as keyof typeof typeConfig])}
               </span>
             )}
           </div>
@@ -373,8 +375,8 @@ export default function ContractsPage() {
         {filteredContracts.length === 0 && (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-foreground/20 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No contracts found</h3>
-            <p className="text-foreground/60 mb-4">Try adjusting your search criteria or filters</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">{interpolate(t.dashboard.contracts.noResults.title)}</h3>
+            <p className="text-foreground/60 mb-4">{interpolate(t.dashboard.contracts.noResults.desc)}</p>
             <button 
               onClick={() => {
                 setSearchTerm('');
@@ -383,7 +385,7 @@ export default function ContractsPage() {
               }}
               className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/90 transition-colors font-medium"
             >
-              Clear Filters
+              {interpolate(t.dashboard.contracts.noResults.clear)}
             </button>
           </div>
         )}

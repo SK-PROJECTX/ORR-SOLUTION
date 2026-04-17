@@ -133,7 +133,7 @@ export default function BusinessSystemSection({ content, onUpdate }: BusinessSys
 
       {/* Business System Cards Grid */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
-        {cardsToDisplay.map((card, index) => (
+        {cardsToDisplay.map((card: any, index: number) => (
           <div key={card.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-700/50 hover:border-emerald-400/50 hover:scale-105 hover:rotate-1 transition-all duration-500 cursor-pointer">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-blue-400/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
             <div className="relative z-10">

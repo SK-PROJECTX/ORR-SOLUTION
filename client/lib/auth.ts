@@ -34,7 +34,7 @@ export class AuthService {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('access_token');
+      this.token = localStorage.getItem('accessToken');
       const userData = localStorage.getItem('user_data');
       if (userData) {
         try {
@@ -78,8 +78,8 @@ export class AuthService {
     console.log('🔑 Permissions:', data.user.permissions);
 
     if (typeof window !== 'undefined') {
-      localStorage.setItem('access_token', data.access);
-      localStorage.setItem('refresh_token', data.refresh);
+      localStorage.setItem('accessToken', data.access);
+      localStorage.setItem('refreshToken', data.refresh);
       localStorage.setItem('user_data', JSON.stringify(data.user));
     }
 
@@ -90,8 +90,8 @@ export class AuthService {
     this.token = null;
     this.user = null;
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('user_data');
     }
   }
@@ -173,7 +173,7 @@ export class AuthService {
   }
 
   async refreshToken(): Promise<boolean> {
-    const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+    const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refreshToken') : null;
     if (!refreshToken) {
       return false;
     }
@@ -191,7 +191,7 @@ export class AuthService {
         const data = await response.json();
         this.token = data.access;
         if (typeof window !== 'undefined') {
-          localStorage.setItem('access_token', data.access);
+          localStorage.setItem('accessToken', data.access);
         }
         return true;
       }
