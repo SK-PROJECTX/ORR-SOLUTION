@@ -15,7 +15,7 @@ export default function MidClientJourneySection() {
     meetingPrice: t.dashboard.pricing.meetingPrice,
     reportPrice: t.dashboard.pricing.reportPrice,
     hrs: t.dashboard.pricing.hrs,
-    proRata: t.dashboard.pricing.proRata
+    proData: t.dashboard.pricing.proData
   };
   
   const titleRef = useRef(null);
