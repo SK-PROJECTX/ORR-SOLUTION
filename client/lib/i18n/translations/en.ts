@@ -30,6 +30,8 @@ export const en = {
     login: 'Login',
     newHere: 'New here?',
     register: 'Register',
+    continueWithGoogle: 'Continue with Google',
+    googleComingSoon: 'Google login is coming soon! Our backend is still in the works.',
   },
 
   // ── Register Page ──────────────────────────────────────────
@@ -46,6 +48,8 @@ export const en = {
     passwordsDoNotMatch: 'Passwords do not match',
     alreadyHaveAccount: 'Already have an account?',
     login: 'Login',
+    continueWithGoogle: 'Continue with Google',
+    googleComingSoon: 'Google sign up is coming soon! Our backend is still in the works.',
   },
 
   // ── Onboarding Page ────────────────────────────────────────

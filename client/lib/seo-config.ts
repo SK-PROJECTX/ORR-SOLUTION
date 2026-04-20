@@ -9,7 +9,7 @@ export interface PageSEO {
   ogDescription?: string;
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://orr.solutions/';
 
 export const seoConfig: Record<string, PageSEO> = {
   '/': {

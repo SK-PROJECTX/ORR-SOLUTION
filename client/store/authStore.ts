@@ -375,7 +375,12 @@ export const useAuthStore = create<AuthState>()(
         localStorage.removeItem("refreshToken");
         set({ user: null, accessToken: null, refreshToken: null });
         useToastStore.getState().addToast("Logged out successfully", "info");
-        window.location.href = "/login";
+        
+        const redirectUrl =
+          typeof window !== "undefined" && window.location.hostname === "localhost"
+            ? "/login/"
+            : "http://orr.solutions/login/";
+        window.location.href = redirectUrl;
       },
 
       clearError: () => {

@@ -23,9 +23,20 @@ const getCSRFToken = (): string | null => {
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    const url = config.url || "";
+    const publicEndpoints = [
+      "/api/auth/login/",
+      "/client/register/",
+      "/api/auth/forget-password/",
+      "/api/auth/verify-reset-password/",
+      "/api/auth/verify-email/",
+    ];
+
+    const isPublicEndpoint = publicEndpoints.some(endpoint => url.includes(endpoint));
+
     // Always check localStorage for accessToken
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
+    if (accessToken && !isPublicEndpoint) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
@@ -64,7 +75,11 @@ api.interceptors.response.use(
         
         // Only redirect if not already on an auth page
         if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
-          window.location.href = "/login";
+          const redirectUrl =
+            window.location.hostname === "localhost"
+              ? "/login/"
+              : "http://orr.solutions/login/";
+          window.location.href = redirectUrl;
         }
         return Promise.reject(error);
       }

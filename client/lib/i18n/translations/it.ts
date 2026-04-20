@@ -30,6 +30,8 @@ export const it = {
     login: 'Accedi',
     newHere: 'Nuovo qui?',
     register: 'Registrati',
+    continueWithGoogle: 'Continua con Google',
+    googleComingSoon: 'L\'accesso con Google sarà disponibile a breve! Il nostro backend è ancora in fase di sviluppo.',
   },
 
   // ── Register Page ──────────────────────────────────────────
@@ -46,6 +48,8 @@ export const it = {
     passwordsDoNotMatch: 'Le password non corrispondono',
     alreadyHaveAccount: 'Hai già un account?',
     login: 'Accedi',
+    continueWithGoogle: 'Continua con Google',
+    googleComingSoon: 'La registrazione con Google sarà disponibile a breve! Il nostro backend è ancora in fase di sviluppo.',
   },
 
   // ── Onboarding Page ────────────────────────────────────────

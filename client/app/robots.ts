@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 
 export const revalidate = false;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://orr.solutions/';
 
 export default function robots(): MetadataRoute.Robots {
   return {

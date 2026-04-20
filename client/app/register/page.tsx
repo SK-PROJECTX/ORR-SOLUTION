@@ -8,6 +8,9 @@ import { ThemeToggle } from "../components/ThemeToggle";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { useAuthStore } from "@/store/authStore";
 import { useLanguage } from "../components/LanguageProvider";
+import { GoogleButton } from "../components/ui/GoogleButton";
+import { Separator } from "../components/ui/Separator";
+import { useToastStore } from "@/store/toastStore";
 
 export default function Page() {
   const { t, language, interpolate } = useLanguage();
@@ -174,6 +177,18 @@ export default function Page() {
               </Link>
             </div>
           </form>
+
+          <div className="mt-8">
+            <Separator text="OR" />
+            <div className="mt-6">
+              <GoogleButton 
+                text={interpolate(t.register.continueWithGoogle || "Continue with Google")}
+                onClick={() => {
+                  useToastStore.getState().addToast(interpolate(t.register.googleComingSoon), "info");
+                }} 
+              />
+            </div>
+          </div>
 
         </div>
 
