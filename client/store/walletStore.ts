@@ -229,9 +229,12 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
 
   createCheckoutSession: async (priceId: string, paymentMethodId: string) => {
     try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
       const response = await api.post('/payments/create-checkout/', {
         price_id: priceId,
-        payment_method_id: paymentMethodId
+        payment_method_id: paymentMethodId,
+        success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/payment/cancel`,
       });
       
       const checkoutData = response.data?.data || response.data;
