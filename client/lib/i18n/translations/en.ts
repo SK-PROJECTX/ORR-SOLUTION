@@ -181,6 +181,7 @@ export const en = {
         personalization: 'Personalization',
         businessInfo: 'Business Info',
         myWallet: 'My Wallet',
+        myInvoices: 'My Invoices',
         bookMeeting: 'Book a Meeting',
         upcomingConsultations: 'Upcoming Consultations',
         pastConsultations: 'Past Consultations',
@@ -406,6 +407,46 @@ export const en = {
           partnership: 'Partnership',
           soleProprietorship: 'Sole Proprietorship',
           nonProfit: 'Non-Profit',
+        },
+      },
+      wallet: {
+        title: 'My Wallet',
+        balance: 'Current Balance',
+        topUp: 'Top Up Wallet',
+        guidedTopUp: 'Guided Top-Up',
+        transactions: {
+          title: 'Transaction History',
+          date: 'Date',
+          type: 'Type',
+          amount: 'Amount',
+          status: 'Status',
+          download: 'Download Receipt',
+          filter: 'Filter Transactions',
+          allTypes: 'All Types',
+          allStatus: 'All Status',
+          types: {
+            top_up: 'Top Up',
+            payment: 'Payment',
+            refund: 'Refund',
+            deduction: 'Deduction',
+          }
+        },
+        modals: {
+          topUp: {
+            title: 'Top Up Wallet',
+            amount: 'Select Amount',
+            paymentMethod: 'Select Payment Method',
+            confirm: 'Confirm Top-Up',
+            processing: 'Processing Payment...',
+            success: 'Top-up Successful',
+            error: 'Top-up Failed',
+          }
+        },
+        settlement: {
+          payWithWallet: 'Pay with Wallet',
+          insufficientFunds: 'Insufficient wallet balance. Please top up.',
+          confirmPayment: 'Confirm payment of {amount} from your wallet?',
+          success: 'Invoice paid successfully!',
         }
       },
     },

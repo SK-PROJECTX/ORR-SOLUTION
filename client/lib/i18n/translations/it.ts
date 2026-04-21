@@ -181,6 +181,7 @@ export const it = {
         personalization: 'Personalizzazione',
         businessInfo: 'Informazioni Aziendali',
         myWallet: 'Il Mio Portafoglio',
+        myInvoices: 'Le Mie Fatture',
         bookMeeting: 'Prenota un Incontro',
         upcomingConsultations: 'Consulenze In Arrivo',
         pastConsultations: 'Consulenze Passate',
@@ -406,6 +407,46 @@ export const it = {
           partnership: 'Società di Persone',
           soleProprietorship: 'Ditta Individuale',
           nonProfit: 'No-Profit',
+        },
+      },
+      wallet: {
+        title: 'Il Mio Portafoglio',
+        balance: 'Saldo Attuale',
+        topUp: 'Ricarica Portafoglio',
+        guidedTopUp: 'Ricarica Guidata',
+        transactions: {
+          title: 'Cronologia Transazioni',
+          date: 'Data',
+          type: 'Tipo',
+          amount: 'Importo',
+          status: 'Stato',
+          download: 'Scarica Ricevuta',
+          filter: 'Filtra Transazioni',
+          allTypes: 'Tutti i Tipi',
+          allStatus: 'Tutti gli Stati',
+          types: {
+            top_up: 'Ricarica',
+            payment: 'Pagamento',
+            refund: 'Rimborsare',
+            deduction: 'Deduzione',
+          }
+        },
+        modals: {
+          topUp: {
+            title: 'Ricarica Portafoglio',
+            amount: 'Seleziona Importo',
+            paymentMethod: 'Seleziona Metodo di Pagamento',
+            confirm: 'Conferma Ricarica',
+            processing: 'Elaborazione Pagamento...',
+            success: 'Ricarica completata con successo',
+            error: 'Ricarica fallita',
+          }
+        },
+        settlement: {
+          payWithWallet: 'Paga con il Portafoglio',
+          insufficientFunds: 'Saldo insufficiente. Per favore ricarica.',
+          confirmPayment: 'Confermare il pagamento di {amount} dal tuo portafoglio?',
+          success: 'Fattura pagata con successo!',
         }
       },
     },

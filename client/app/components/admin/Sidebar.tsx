@@ -36,6 +36,12 @@ const navigationItems: ItemType[] = [
     value: "payment-management",
   },
   {
+    icon: FileText,
+    label: "Invoices",
+    active: false,
+    value: "payment-management/invoices",
+  },
+  {
     icon: Settings,
     label: "Project Service",
     active: false,

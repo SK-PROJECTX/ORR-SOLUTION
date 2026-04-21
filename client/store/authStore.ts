@@ -205,6 +205,18 @@ export const useAuthStore = create<AuthState>()(
               .join(" | ");
           }
 
+          if (err.message === "Network Error") {
+            errorMessage = "Network Error: Could not reach the server. Please check if the backend is running.";
+          }
+
+          console.error("Login Error Details:", {
+            message: err.message,
+            url: err.config?.url,
+            baseURL: err.config?.baseURL,
+            status: err.response?.status,
+            data: errorData,
+          });
+
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, "error");
           throw error;

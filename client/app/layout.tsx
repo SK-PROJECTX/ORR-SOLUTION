@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteURL = process.env.NEXT_PUBLIC_SITE_URL || 'http://orr.solutions/';
+const siteURL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
 
 export const metadata: Metadata = {
   title: {

@@ -2,6 +2,8 @@ import { Studio } from './Studio'
 
 export { metadata, viewport } from 'next-sanity/studio'
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return [
     { index: [''] },

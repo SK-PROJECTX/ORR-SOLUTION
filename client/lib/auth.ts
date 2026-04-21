@@ -1,4 +1,4 @@
-const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}`;
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}`;
 
 export interface User {
   id: number;
@@ -168,7 +168,7 @@ export class AuthService {
         const redirectUrl =
           typeof window !== 'undefined' && window.location.hostname === "localhost"
             ? "/login/"
-            : "http://orr.solutions/login/";
+            : "https://orr.solutions/login/";
         window.location.href = redirectUrl;
       }
     }

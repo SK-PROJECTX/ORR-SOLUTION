@@ -24,6 +24,18 @@ interface PaymentMethod {
   exp_year: number;
 }
 
+interface Transaction {
+  id: string;
+  type: 'top_up' | 'payment' | 'refund' | 'deduction';
+  amount: number;
+  currency: string;
+  status: 'completed' | 'pending' | 'failed';
+  date: string;
+  description: string;
+  reference_id?: string;
+  receipt_url?: string;
+}
+
 interface BillingHistory {
   id: number;
   reference_id: string;
@@ -43,15 +55,22 @@ interface BillingHistory {
 
 interface WalletState {
   isLoading: boolean;
+  walletBalance: number;
+  currency: string;
   pricingPlans: PricingPlan[];
   paymentMethods: PaymentMethod[];
   billingHistory: BillingHistory[];
+  transactions: Transaction[];
   selectedPlan: PricingPlan | null;
   stripeCustomerId: string | null;
   subscriptionStatus: SubscriptionStatus | null;
+  
+  // Actions
+  fetchWalletBalance: () => Promise<void>;
   fetchPricingPlans: () => Promise<void>;
   fetchPaymentMethods: () => Promise<void>;
   fetchBillingHistory: () => Promise<void>;
+  fetchTransactions: (params?: { page?: number; type?: string; status?: string }) => Promise<void>;
   fetchSubscriptionStatus: () => Promise<void>;
   createStripeCustomer: () => Promise<string | null>;
   createSetupIntent: () => Promise<{clientSecret: string, customerId: string} | null>;
@@ -60,16 +79,36 @@ interface WalletState {
   setSelectedPlan: (plan: PricingPlan) => void;
   subscribeToPlan: (planId: number, paymentMethodId: string) => Promise<boolean>;
   createCheckoutSession: (priceId: string, paymentMethodId: string) => Promise<string | null>;
+  initiateTopUp: (amount: number, paymentMethodId?: string) => Promise<string | null>;
+  settleInvoiceWithWallet: (invoiceId: string, amount: number) => Promise<boolean>;
+  healthCheck: () => Promise<boolean>;
 }
 
 export const useWalletStore = create<WalletState>()((set, get) => ({
   isLoading: false,
+  walletBalance: 0,
+  currency: 'USD',
   pricingPlans: [],
   paymentMethods: [],
   billingHistory: [],
+  transactions: [],
   selectedPlan: null,
   stripeCustomerId: null,
   subscriptionStatus: null,
+
+  fetchWalletBalance: async () => {
+    try {
+      const response = await api.get('/wallet/balance/');
+      set({ 
+        walletBalance: response.data.data?.balance || 0,
+        currency: response.data.data?.currency || 'USD'
+      });
+    } catch (error) {
+      console.error('Failed to fetch wallet balance:', error);
+      // Fallback to 0 if endpoint doesn't exist
+      set({ walletBalance: 0 });
+    }
+  },
 
   fetchPricingPlans: async () => {
     set({ isLoading: true });
@@ -116,6 +155,8 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       set({ paymentMethods: methods });
     } catch (error: any) {
       console.error('Failed to fetch payment methods:', error);
+      const errorMessage = error.response?.data?.message || 'Failed to fetch payment methods. Please check if your account is fully set up.';
+      useToastStore.getState().addToast(errorMessage, 'error');
       set({ paymentMethods: [] });
     }
   },
@@ -132,15 +173,48 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     }
   },
 
-  createStripeCustomer: async () => {
+  fetchTransactions: async (params = {}) => {
+    set({ isLoading: true });
     try {
+      const response = await api.get('/wallet/transactions/', { params });
+      set({ 
+        transactions: response.data.data?.results || response.data.data || [],
+        isLoading: false 
+      });
+    } catch (error) {
+      console.error('Failed to fetch transactions:', error);
+      set({ isLoading: false, transactions: [] });
+    }
+  },
+
+  createStripeCustomer: async () => {
+    // Reuse existing ID if we already have it
+    const currentId = get().stripeCustomerId;
+    if (currentId) {
+      console.log('✅ Reusing existing Stripe Customer ID:', currentId);
+      return currentId;
+    }
+
+    try {
+      console.log('🚀 Attempting to create/ensure Stripe customer on backend...');
       const response = await api.post('/user/create-stripe-customer/');
       const customerId = response.data.customer_id;
+      
+      console.log('✅ Stripe Customer Ensured:', customerId);
       set({ stripeCustomerId: customerId });
       return customerId;
-    } catch (error) {
-      console.error('Failed to create Stripe customer:', error);
-      useToastStore.getState().addToast('Failed to create customer', 'error');
+    } catch (error: any) {
+      console.error('❌ Failed to create Stripe customer:', error);
+      
+      const status = error.response?.status;
+      const statusText = error.response?.statusText || '';
+      const serverMessage = error.response?.data?.message || error.response?.data?.error || '';
+      
+      let displayMessage = `Billing Error (${status}): ${statusText}`;
+      if (serverMessage) displayMessage += ` - ${serverMessage}`;
+      if (status === 500) displayMessage += ' (Check backend Stripe keys)';
+
+      useToastStore.getState().addToast(displayMessage, 'error');
       return null;
     }
   },
@@ -180,10 +254,10 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       return true;
     } catch (error: any) {
       console.error('❌ Failed to add payment method:', error);
-      console.error('Error response:', error.response?.data);
-      console.error('Error status:', error.response?.status);
-      const errorMessage = error.response?.data?.message || 'Failed to add payment method';
-      useToastStore.getState().addToast(errorMessage, 'error');
+      const status = error.response?.status;
+      const serverMessage = error.response?.data?.message || 'Failed to add payment method';
+      
+      useToastStore.getState().addToast(`Error (${status}): ${serverMessage}`, 'error');
       return false;
     }
   },
@@ -233,8 +307,12 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       const response = await api.post('/payments/create-checkout/', {
         price_id: priceId,
         payment_method_id: paymentMethodId,
+        // Multiple variants for compatibility
         success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/payment/cancel`,
+        successUrl: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${origin}/payment/cancel`,
+        site_url: origin,
       });
       
       const checkoutData = response.data?.data || response.data;
@@ -250,6 +328,67 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       const errorMessage = error.response?.data?.message || 'Failed to create checkout session';
       useToastStore.getState().addToast(errorMessage, 'error');
       return null;
+    }
+  },
+
+  initiateTopUp: async (amount: number, paymentMethodId?: string) => {
+    try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
+      const response = await api.post('/wallet/topup/', {
+        amount,
+        payment_method_id: paymentMethodId,
+        success_url: `${origin}/account/wallet?success=true`,
+        cancel_url: `${origin}/account/wallet?canceled=true`,
+      });
+      
+      const data = response.data?.data || response.data;
+      if (data?.checkout_url) {
+        return data.checkout_url;
+      }
+      
+      // If immediate success (e.g. using saved card on backend)
+      await get().fetchWalletBalance();
+      useToastStore.getState().addToast('Top-up successful', 'success');
+      return null;
+    } catch (error: any) {
+      console.error('Failed to initiate top-up:', error);
+      const errorMessage = error.response?.data?.message || 'Failed to initiate top-up';
+      useToastStore.getState().addToast(errorMessage, 'error');
+      return null;
+    }
+  },
+
+  settleInvoiceWithWallet: async (invoiceId: string, amount: number) => {
+    try {
+      await api.post('/wallet/pay-invoice/', {
+        invoice_id: invoiceId,
+        amount
+      });
+      
+      await get().fetchWalletBalance();
+      useToastStore.getState().addToast('Invoice settled using wallet balance', 'success');
+      return true;
+    } catch (error: any) {
+      console.error('Failed to settle invoice:', error);
+      const errorMessage = error.response?.data?.message || 'Insufficient wallet balance';
+      useToastStore.getState().addToast(errorMessage, 'error');
+      return false;
+    }
+  },
+
+  healthCheck: async () => {
+    try {
+      console.log('🚀 Running Backend Health Check...');
+      const response = await api.get('/pricing-plans/');
+      console.log('✅ Health Check (Public Endpoint) Success:', response.data);
+      return true;
+    } catch (error: any) {
+      console.error('❌ Health Check Failed:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        url: error.config?.url
+      });
+      return false;
     }
   },
 }));

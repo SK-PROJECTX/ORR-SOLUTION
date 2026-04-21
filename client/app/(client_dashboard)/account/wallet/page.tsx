@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Wallet, CreditCard as CreditCardIcon } from "lucide-react";
 import { useWalletStore } from "@/store/walletStore";
 import { useToastStore } from "@/store/toastStore";
 import { useLanguage, interpolate } from "@/lib/i18n/LanguageContext";
 import PaymentMethodModal from "@/components/wallet/PaymentMethodModal";
 import PaymentCardModal from "@/components/wallet/PaymentCardModal";
+import { motion } from "framer-motion";
+import WalletDashboard from "./WalletDashboard";
 
 export default function PlansBillingPage() {
+  const [activeTab, setActiveTab] = useState<'wallet' | 'billing'>('wallet');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useLanguage();
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
@@ -77,8 +80,41 @@ export default function PlansBillingPage() {
         {/* Page Title */}
         <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">{interpolate(t.dashboard.page.wallet.title)}</h1>
 
-        {/* Two Top Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        {/* Tabs */}
+        <div className="flex items-center gap-6 mb-10 border-b border-[#1E3A4B]">
+          <button
+            onClick={() => setActiveTab('wallet')}
+            className={`pb-4 px-2 text-sm font-bold transition-all relative ${
+              activeTab === 'wallet' ? 'text-[#22C55E]' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Wallet size={18} />
+              {interpolate(t.dashboard.account.wallet.title)}
+            </div>
+            {activeTab === 'wallet' && <motion.div layoutId="tab-active" className="absolute bottom-0 left-0 right-0 h-1 bg-[#22C55E]" />}
+          </button>
+          <button
+            onClick={() => setActiveTab('billing')}
+            className={`pb-4 px-2 text-sm font-bold transition-all relative ${
+              activeTab === 'billing' ? 'text-[#22C55E]' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <CreditCardIcon size={18} />
+              {interpolate(t.dashboard.billing.title)}
+            </div>
+            {activeTab === 'billing' && <motion.div layoutId="tab-active" className="absolute bottom-0 left-0 right-0 h-1 bg-[#22C55E]" />}
+          </button>
+        </div>
+
+        {activeTab === 'wallet' ? (
+          <WalletDashboard />
+        ) : (
+          <>
+            {/* Two Top Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+              {/* Existing Plans and Payment Methods content... */}
 
           <div className="bg-card border border-[#1E3A4B] rounded-xl p-6">
             {(() => {
@@ -366,7 +402,9 @@ export default function PlansBillingPage() {
               </tbody>
             </table>
           </div>
-        </div>
+            </div>
+          </>
+        )}
       </div>
 
       <PaymentMethodModal
