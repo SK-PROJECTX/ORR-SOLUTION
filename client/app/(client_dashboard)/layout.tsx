@@ -12,7 +12,7 @@ export default function ClientDashboardLayout({
     <ProtectedRoute>
       <div className="h-screen bg-background flex relative">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto pt-16 lg:pt-0">
+        <main id="dashboard-main" className="flex-1 overflow-y-auto pt-16 lg:pt-0 print:overflow-visible print:h-auto print:static">
           {children}
         </main>
       </div>

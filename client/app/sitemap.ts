@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 export const revalidate = false;
 
 // Define your site URL - update this to your production domain
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://orr.solutions/';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://orr.solutions/';
 
 // Page configuration with keywords and priority
 const pages: Array<{

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}`,
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
@@ -52,6 +52,9 @@ api.interceptors.request.use(
       }
     }
 
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+    }
     return config;
   },
   (error) => {
@@ -78,11 +81,26 @@ api.interceptors.response.use(
           const redirectUrl =
             window.location.hostname === "localhost"
               ? "/login/"
-              : "http://orr.solutions/login/";
+              : "https://orr.solutions/login/";
           window.location.href = redirectUrl;
         }
         return Promise.reject(error);
       }
+    } else if (error.response?.status && error.response.status >= 500) {
+      console.error(`🚨 FORENSIC API ERROR (${error.response.status}) 🚨`);
+      console.log('URL:', error.config?.url);
+      console.log('Method:', error.config?.method?.toUpperCase());
+      console.log('Status Text:', error.response.statusText);
+      console.log('Response Type:', typeof error.response.data);
+      console.log('Data:', error.response.data);
+      
+      const authHeader = error.config?.headers?.Authorization;
+      console.log('Auth Present:', !!authHeader);
+      if (authHeader && typeof authHeader === 'string') {
+        console.log('Auth Start:', authHeader.substring(0, 15) + '...');
+      }
+
+      console.dir(error.response);
     }
     return Promise.reject(error);
   },

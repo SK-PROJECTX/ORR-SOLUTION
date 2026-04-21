@@ -67,7 +67,7 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside className={`w-64 h-screen bg-card text-foreground flex flex-col justify-between p-4 flex-shrink-0 overflow-y-auto transition-transform duration-300 ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 fixed lg:relative z-50 lg:z-auto`}>
+      } lg:translate-x-0 fixed lg:relative z-50 lg:z-auto print:hidden`}>
       <div>
         <div className="flex items-center px-2 mb-8">
           <img src="/images/logo.svg" alt="Logo" className="w-fit h-auto" />
@@ -100,6 +100,7 @@ export default function Sidebar() {
                   { label: interpolate(t.dashboard.sidebar.items.personalization), href: "/account/personalization" },
                   { label: interpolate(t.dashboard.sidebar.items.businessInfo), href: "/account/business-info" },
                   { label: interpolate(t.dashboard.sidebar.items.myWallet), href: "/account/wallet" },
+                  { label: interpolate(t.dashboard.sidebar.items.myInvoices), href: "/account/invoices" },
                 ]
               },
               {
