@@ -54,7 +54,7 @@ export default function Contact() {
       try {
         console.log("🔄 Fetching Contact data from backend...");
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/contact-content/`,
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/contact-content/`,
         );
         console.log("✅ Contact API Response:", response.data);
         if (response.data.success) {

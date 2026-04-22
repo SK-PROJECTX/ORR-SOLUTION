@@ -1,4 +1,4 @@
-const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}`;
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}`;
 
 export interface HomepageContent {
   homepage: {
@@ -93,19 +93,19 @@ export interface HomepageContent {
 export async function fetchHomepageContent(): Promise<HomepageContent> {
   const endpoint = `${API_BASE_URL}/api/cms/homepage/`;
   console.log('🏠 Homepage fetching data from endpoint:', endpoint);
-  
+
   const response = await fetch(endpoint);
   if (!response.ok) {
     console.error('❌ Homepage fetch failed:', response.status, response.statusText);
     throw new Error('Failed to fetch homepage content');
   }
-  
+
   const result = await response.json();
   console.log('📊 Homepage data received:', result);
-  
+
   // Extract data from the wrapped response
   const finalData = result.data || result;
   console.log('✅ Homepage final processed data:', finalData);
-  
+
   return finalData;
 }
