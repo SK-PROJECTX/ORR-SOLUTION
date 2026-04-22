@@ -59,7 +59,7 @@ export default function StickyScrollSplit() {
 
   const { data, loading } = useCachedData<HowWeOperateData>(
     'orr_how_we_operate_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
     (data) => data
   );
 

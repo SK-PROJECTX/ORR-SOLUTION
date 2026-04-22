@@ -126,7 +126,7 @@ const DEFAULT_SETTINGS: InvoiceSettings = {
   companyName: 'ORR Solutions',
   companyAddress: 'Rabat, Malta',
   companyEmail: 'Info@orr.solutions',
-  companyPhone: '+44 20 1234 5678',
+  companyPhone: '+356 9935 3618',
   taxId: 'GB123456789',
   logoUrl: '/images/logo.svg'
 };

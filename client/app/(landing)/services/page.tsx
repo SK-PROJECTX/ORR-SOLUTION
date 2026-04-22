@@ -106,7 +106,7 @@ export default function Services() {
 
   const { data, loading } = useCachedData<ServicesData>(
     'orr_services_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/services-content/`,
     (data) => data
   );
 

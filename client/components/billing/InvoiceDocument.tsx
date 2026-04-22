@@ -10,123 +10,111 @@ interface InvoiceDocumentProps {
 
 export default function InvoiceDocument({ invoice, settings }: InvoiceDocumentProps) {
   return (
-    <div className="bg-white text-black p-8 md:p-12 shadow-2xl rounded-sm max-w-4xl mx-auto font-sans min-h-[1000px] print:min-h-0 flex flex-col">
-      {/* Header */}
-      <div className="flex justify-between items-start border-b-4 border-primary pb-8 mb-10">
+    <div className="bg-white dark:bg-[#111827] text-slate-900 dark:text-[#F5F5F5] p-6 md:p-10 max-w-4xl mx-auto font-sans min-h-screen print:min-h-0 flex flex-col border border-slate-200 dark:border-white/5 overflow-hidden transition-colors duration-300">
+      {/* 1. Header (Logo + Company Info) */}
+      <div className="flex justify-between items-start border-b border-slate-200 dark:border-white/10 pb-6 mb-6">
         <div className="space-y-4">
-          <img src={settings.logoUrl || '/images/logo.svg'} alt="Logo" className="h-16 w-auto" />
-          <div className="space-y-1">
-            <h1 className="text-4xl font-black uppercase tracking-tighter text-primary">Invoice</h1>
-            <p className="text-xl font-bold text-gray-400">#{invoice.invoiceNumber}</p>
-          </div>
+          <img src={settings.logoUrl || '/images/logo.svg'} alt="Logo" className="h-12 w-auto dark:brightness-0 dark:invert" />
+          <h1 className="text-4xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Invoice</h1>
         </div>
-        
-        <div className="text-right space-y-2">
-          <h2 className="text-2xl font-black text-gray-900">{settings.companyName}</h2>
-          <div className="text-sm text-gray-500 space-y-1">
-            <p className="flex items-center justify-end gap-2"><MapPin className="w-3 h-3" /> {settings.companyAddress}</p>
-            <p className="flex items-center justify-end gap-2"><Mail className="w-3 h-3" /> {settings.companyEmail}</p>
-            <p className="flex items-center justify-end gap-2"><Phone className="w-3 h-3" /> {settings.companyPhone}</p>
-            {settings.taxId && <p className="font-bold text-gray-700 mt-2">Tax ID: {settings.taxId}</p>}
+
+        <div className="text-right space-y-1">
+          <h2 className="text-xl font-black text-slate-900 dark:text-white">{settings.companyName}</h2>
+          <div className="text-xs text-slate-500 dark:text-[#9CA3AF] space-y-0.5 leading-tight">
+            <p className="flex items-center justify-end gap-2"><MapPin className="w-3 h-3 text-primary" /> {settings.companyAddress}</p>
+            <p className="flex items-center justify-end gap-2"><Mail className="w-3 h-3 text-primary" /> {settings.companyEmail}</p>
+            <p className="flex items-center justify-end gap-2"><Phone className="w-3 h-3 text-primary" /> {settings.companyPhone}</p>
           </div>
         </div>
       </div>
 
-      {/* Bill To & Details */}
-      <div className="grid grid-cols-2 gap-12 mb-12">
-        <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-widest text-primary border-b border-gray-100 pb-2">Bill To</h3>
-          <div className="space-y-1">
-            <p className="text-xl font-bold text-gray-900">{invoice.clientName}</p>
-            <p className="text-gray-500">{invoice.clientEmail}</p>
+      {/* 2 & 3. Client details & Invoice Metadata */}
+      <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="bg-slate-50 dark:bg-[#1F2937]/50 rounded-xl p-4 border border-slate-200 dark:border-white/5 space-y-2">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-primary">Bill To</h3>
+          <div className="space-y-0.5">
+            <p className="text-xl font-black text-slate-900 dark:text-white">{invoice.clientName}</p>
+            <p className="text-sm text-slate-600 dark:text-[#D1D5DB]">{invoice.clientEmail}</p>
           </div>
         </div>
-        
-        <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-widest text-primary border-b border-gray-100 pb-2">Invoice Details</h3>
-          <div className="grid grid-cols-2 gap-y-2 text-sm">
-            <span className="text-gray-400 font-bold">Issue Date:</span>
-            <span className="text-gray-900 font-bold text-right">{invoice.issueDate}</span>
-            <span className="text-gray-400 font-bold">Due Date:</span>
-            <span className="text-gray-900 font-bold text-right">{invoice.dueDate}</span>
-            <span className="text-gray-400 font-bold">Status:</span>
-            <span className={`text-right font-black uppercase ${invoice.status === 'paid' ? 'text-green-600' : 'text-red-600'}`}>
-              {invoice.status}
-            </span>
-            {invoice.paymentDate && (
-              <>
-                <span className="text-gray-400 font-bold">Payment Date:</span>
-                <span className="text-gray-900 font-bold text-right">{invoice.paymentDate}</span>
-              </>
-            )}
+
+        <div className="bg-slate-50 dark:bg-[#1F2937]/50 rounded-xl p-4 border border-slate-200 dark:border-white/5 space-y-2">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-primary">Details</h3>
+          <div className="grid grid-cols-2 gap-y-1 text-xs leading-none">
+            <span className="text-slate-500 dark:text-[#9CA3AF] font-bold">Invoice ID:</span>
+            <span className="text-slate-900 dark:text-white font-black text-right">#{invoice.invoiceNumber}</span>
+            <span className="text-slate-500 dark:text-[#9CA3AF] font-bold">Issue Date:</span>
+            <span className="text-slate-900 dark:text-white font-black text-right">{invoice.issueDate}</span>
+            <span className="text-slate-500 dark:text-[#9CA3AF] font-bold">Due Date:</span>
+            <span className="text-slate-900 dark:text-white font-black text-right">{invoice.dueDate}</span>
           </div>
         </div>
       </div>
 
-      {/* Line Items Table */}
-      <div className="flex-1">
-        <table className="w-full mb-8 border-collapse">
-          <thead>
-            <tr className="bg-gray-50 text-gray-400 text-[10px] font-black uppercase tracking-widest">
-              <th className="px-4 py-3 text-left">Description</th>
-              <th className="px-4 py-3 text-center w-24">Qty</th>
-              <th className="px-4 py-3 text-right w-32">Unit Price</th>
-              <th className="px-4 py-3 text-right w-32">Amount</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {invoice.lineItems.map((item, index) => (
-              <tr key={index} className="text-sm">
-                <td className="px-4 py-6 text-gray-900 font-medium">
-                  {item.description}
-                </td>
-                <td className="px-4 py-6 text-center text-gray-500 font-bold">{item.quantity}</td>
-                <td className="px-4 py-6 text-right text-gray-500 font-bold">${item.unitPrice.toLocaleString()}</td>
-                <td className="px-4 py-6 text-right text-gray-900 font-black">${item.amount.toLocaleString()}</td>
+      {/* 4. Itemized billing table */}
+      <div className="flex-1 min-h-0">
+        <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-white/5 mb-6">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-slate-100 dark:bg-[#1F2937] text-slate-500 dark:text-[#9CA3AF] text-[10px] font-black uppercase tracking-widest border-b border-slate-200 dark:border-white/5">
+                <th className="px-4 py-3 text-left">Description</th>
+                <th className="px-4 py-3 text-center w-16">Qty</th>
+                <th className="px-4 py-3 text-right w-24">Unit Price</th>
+                <th className="px-4 py-3 text-right w-24">Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-white/5 bg-white dark:bg-[#111827]">
+              {invoice.lineItems.map((item, index) => (
+                <tr key={index} className="text-xs hover:bg-slate-50 dark:hover:bg-white/[0.01] transition-colors">
+                  <td className="px-4 py-4 text-slate-900 dark:text-white font-bold leading-relaxed">
+                    {item.description}
+                  </td>
+                  <td className="px-4 py-4 text-center text-slate-600 dark:text-[#D1D5DB] font-black">{item.quantity}</td>
+                  <td className="px-4 py-4 text-right text-slate-600 dark:text-[#D1D5DB] font-black">${item.unitPrice.toLocaleString()}</td>
+                  <td className="px-4 py-4 text-right text-slate-900 dark:text-white font-black text-sm">${item.amount.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Summary Section */}
-      <div className="border-t-2 border-gray-100 pt-8 mt-auto">
-        <div className="flex justify-end">
-          <div className="w-full max-w-xs space-y-3">
-            <div className="flex justify-between text-sm font-bold">
-              <span className="text-gray-400">Subtotal</span>
-              <span className="text-gray-900">${invoice.subtotal.toLocaleString()}</span>
+      {/* 5. Total summary */}
+      <div className="pt-6 border-t border-slate-200 dark:border-white/10 mb-8">
+        <div className="flex justify-between items-end">
+          <div className="space-y-4 max-w-md">
+            {/* 6. Notes section */}
+            <div className="space-y-2">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-primary">Notes & Terms</h4>
+              <p className="text-[11px] text-slate-500 dark:text-[#9CA3AF] leading-relaxed italic">
+                {invoice.notes || "Please include the invoice number in your wire transfer. All payments must be made within 15 days of the issue date. For any billing inquiries, please contact our financial department."}
+              </p>
             </div>
-            <div className="flex justify-between text-sm font-bold">
-              <span className="text-gray-400">Tax ({invoice.taxRate * 100}%)</span>
-              <span className="text-gray-900">${invoice.taxAmount.toLocaleString()}</span>
+          </div>
+
+          <div className="w-full max-w-[240px] space-y-2">
+            <div className="flex justify-between text-xs font-bold px-2">
+              <span className="text-slate-500 dark:text-[#9CA3AF]">Subtotal</span>
+              <span className="text-slate-900 dark:text-white">${invoice.subtotal.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between items-center bg-primary text-white p-4 rounded-sm">
-              <span className="text-xs font-black uppercase tracking-widest">Total Due</span>
-              <span className="text-2xl font-black">{invoice.currency} ${invoice.totalAmount.toLocaleString()}</span>
+            <div className="flex justify-between text-xs font-bold px-2">
+              <span className="text-slate-500 dark:text-[#9CA3AF]">Tax ({invoice.taxRate * 100}%)</span>
+              <span className="text-slate-900 dark:text-white">${invoice.taxAmount.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center bg-primary text-white p-4 rounded-xl shadow-lg shadow-primary/10">
+              <span className="text-[10px] font-black uppercase tracking-widest">Total Due</span>
+              <span className="text-xl font-black">{invoice.currency} ${invoice.totalAmount.toLocaleString()}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="mt-16 pt-8 border-t border-gray-100 grid grid-cols-2 gap-8 items-end">
-        <div className="space-y-3">
-          <h4 className="text-[10px] font-black uppercase tracking-widest text-primary">Notes & Terms</h4>
-          <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
-            {invoice.notes || "Please include the invoice number in your wire transfer. All payments must be made within 15 days of the issue date. For any billing inquiries, please contact our financial department."}
-          </p>
+      {/* Branding Footer */}
+      <div className="mt-auto pt-6 border-t border-slate-200 dark:border-white/5 flex justify-between items-center opacity-40 grayscale transition-opacity">
+        <div className="flex items-center gap-2 text-slate-900 dark:text-white font-black uppercase tracking-tighter italic text-sm">
+          <Globe className="w-4 h-4 text-primary" /> ORR Solutions
         </div>
-        
-        <div className="text-right space-y-4">
-          <div className="inline-block border-2 border-primary/20 p-4 rounded-xl">
-             <div className="flex items-center gap-2 text-primary font-black uppercase tracking-tighter italic text-xl">
-               <Globe className="w-5 h-5" /> ORR Solutions
-             </div>
-             <p className="text-[10px] font-bold text-gray-400">Operational & Resilience Consulting</p>
-          </div>
-          <p className="text-[10px] text-gray-300 font-bold uppercase tracking-widest">Thank you for your business</p>
-        </div>
+        <p className="text-[10px] text-slate-600 dark:text-[#D1D5DB] font-black uppercase tracking-[0.2em]">Thank you for your business</p>
       </div>
     </div>
   );

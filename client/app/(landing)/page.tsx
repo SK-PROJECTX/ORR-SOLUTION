@@ -20,6 +20,7 @@ import { useHomepageContent } from "../../hooks/useHomepageContent";
 import MidClientJourneySection from "../components/MidClientJourneySection";
 import ORRJourneySection from "../components/ORRJourneySection";
 import PackagePreviewSection from "../components/PackagePreviewSection";
+import LatestBlogsSection from "../components/LatestBlogsSection";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
 
 import Spinner from "../../components/ui/Spinner";
@@ -95,6 +96,9 @@ export default function LandingPage() {
 
       <div className="scroll-section" id="pricing-section">
         <PackagePreviewSection />
+      </div>
+      <div className="scroll-section">
+        <LatestBlogsSection />
       </div>
       <div className="scroll-section" id="faq-section">
         <FAQSection

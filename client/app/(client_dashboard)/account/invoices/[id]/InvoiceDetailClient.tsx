@@ -140,7 +140,7 @@ export default function InvoiceDetailClient({ id }: InvoiceDetailClientProps) {
         </div>
 
         {/* Visualization Area */}
-        <div className="bg-[#0A1A2F] border border-white/5 rounded-3xl p-4 md:p-12 shadow-2xl relative overflow-hidden print:overflow-visible print:p-0 print:border-0 print:bg-white print:rounded-none">
+        <div id="printable-document-wrapper" className="bg-slate-50 dark:bg-[#0A1A2F] border border-slate-200 dark:border-white/5 rounded-3xl p-4 md:p-12 shadow-2xl relative overflow-hidden print:overflow-visible print:p-0 print:border-0 print:bg-white print:rounded-none transition-colors duration-300">
           <div id="printable-document" className="print:block">
             {view === 'invoice' ? (
               <InvoiceDocument invoice={invoice} settings={settings} />
@@ -173,7 +173,7 @@ export default function InvoiceDetailClient({ id }: InvoiceDetailClientProps) {
                 </p>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => router.push('/document/reports')}
               className="w-full py-2 bg-[#22C55E]/10 hover:bg-[#22C55E]/20 text-[#22C55E] text-xs font-bold rounded-lg transition-all"
             >
@@ -204,10 +204,10 @@ export default function InvoiceDetailClient({ id }: InvoiceDetailClientProps) {
 
           /* 3. Reset high-level layout containers to allow content flow without clipping */
           html, body {
-            background: #020810 !important; /* Keep the dashboard background */
-            color: white !important;
+            background: #020810 !important;
+            color: #F5F5F5 !important;
             height: 100% !important;
-            overflow: hidden !important;
+            overflow: visible !important;
             margin: 0 !important;
             padding: 0 !important;
           }
@@ -226,26 +226,16 @@ export default function InvoiceDetailClient({ id }: InvoiceDetailClientProps) {
             display: block !important;
             width: 100% !important;
             max-width: 100% !important;
-            height: 100% !important;
             margin: 0 !important;
-            padding: 0 !important;
-            transform-origin: top center;
-            /* Scale slightly if needed to ensure 1-page fit (A4 height is ~1120px) */
-            transform: scale(0.95); 
-          }
-
-          /* Keep the dark card look */
-          .bg-\\[\\#0A1A2F\\] {
-            background: #0A1A2F !important;
-            border: 1px solid rgba(255, 255, 255, 0.05) !important;
-            border-radius: 24px !important;
-            padding: 40px !important;
-            box-shadow: none !important;
+            padding: 20px !important; /* Reduced padding for single page fit */
+            background: #020810 !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
           }
 
           @page {
             size: A4;
-            margin: 0;
+            margin: 0.5cm; /* Small margin for professional look */
           }
         }
       `}</style>
