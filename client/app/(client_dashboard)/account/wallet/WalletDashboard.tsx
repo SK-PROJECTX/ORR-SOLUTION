@@ -7,7 +7,9 @@ import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 import TopUpModal from '@/components/wallet/TopUpModal';
 import WalletReceiptDocument from '@/components/wallet/WalletReceiptDocument';
 import { useAuthStore } from '@/store/authStore';
+import { useOnboardingStore } from '@/store/onboardingStore';
 import { motion } from 'framer-motion';
+import CurrencySelectionModal from '@/components/wallet/CurrencySelectionModal';
 
 export default function WalletDashboard() {
   const { t } = useLanguage();
@@ -18,20 +20,40 @@ export default function WalletDashboard() {
     fetchWalletBalance, 
     fetchTransactions,
     fetchPaymentMethods,
+    updateCurrency,
     isLoading 
   } = useWalletStore();
+
+  const { onboardingStatus, checkOnboardingStatus } = useOnboardingStore();
   
   const { user } = useAuthStore();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [filterType, setFilterType] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [printingTransaction, setPrintingTransaction] = useState<any>(null);
+  const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+  const [isCurrencyUpdating, setIsCurrencyUpdating] = useState(false);
 
   useEffect(() => {
     fetchWalletBalance();
     fetchTransactions();
     fetchPaymentMethods();
+    checkOnboardingStatus();
   }, []);
+
+  useEffect(() => {
+    // Show currency selection modal if user is onboarded but currency preference is missing
+    // We only show it if the currency from wallet balance is the default 'USD' 
+    // AND onboarding status confirms it hasn't been set specifically yet.
+    if (onboardingStatus && onboardingStatus.is_completed && !onboardingStatus.currency) {
+      // Check if we already showed it in this session to avoid being too intrusive
+      const hasPrompted = sessionStorage.getItem('orr-currency-prompted');
+      if (!hasPrompted) {
+        setIsCurrencyModalOpen(true);
+        sessionStorage.setItem('orr-currency-prompted', 'true');
+      }
+    }
+  }, [onboardingStatus]);
 
   const handlePrint = (tx: any) => {
     setPrintingTransaction(tx);
@@ -82,7 +104,7 @@ export default function WalletDashboard() {
                 <span>{interpolate(t.dashboard.account.wallet.balance)}</span>
               </div>
               <div className="text-5xl font-extrabold text-white tracking-tight flex items-baseline gap-2">
-                <span className="text-3xl text-[#22C55E] opacity-80">{currency}</span>
+                <span className="text-3xl text-[#22C55E] opacity-80">{interpolate(t.dashboard.pricing.currency)}</span>
                 {walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-gray-400 flex items-center gap-1.5 pt-2">
@@ -182,7 +204,7 @@ export default function WalletDashboard() {
                       {tx.reference_id && <span className="block text-[10px] opacity-50 font-mono mt-1">Ref: {tx.reference_id}</span>}
                     </td>
                     <td className={`px-8 py-5 text-sm font-bold text-right ${tx.type === 'top_up' || tx.type === 'refund' ? 'text-green-400' : 'text-white'}`}>
-                      {tx.type === 'top_up' || tx.type === 'refund' ? '+' : '-'} {tx.currency} {tx.amount.toFixed(2)}
+                      {tx.type === 'top_up' || tx.type === 'refund' ? '+' : '-'} {interpolate(t.dashboard.pricing.currency)}{tx.amount.toFixed(2)}
                     </td>
                     <td className="px-8 py-5 text-center">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(tx.status)}`}>
@@ -236,6 +258,20 @@ export default function WalletDashboard() {
       <TopUpModal 
         isOpen={isTopUpOpen} 
         onClose={() => setIsTopUpOpen(false)} 
+      />
+
+      <CurrencySelectionModal
+        isOpen={isCurrencyModalOpen}
+        onClose={() => setIsCurrencyModalOpen(false)}
+        isLoading={isCurrencyUpdating}
+        onSelect={async (newCurrency) => {
+          setIsCurrencyUpdating(true);
+          const success = await updateCurrency(newCurrency);
+          if (success) {
+            setIsCurrencyModalOpen(false);
+          }
+          setIsCurrencyUpdating(false);
+        }}
       />
 
       {/* Hidden Print Section */}

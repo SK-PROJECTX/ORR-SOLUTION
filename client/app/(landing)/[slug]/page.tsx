@@ -3,14 +3,14 @@ import { engagementPageQuery, engagementPagesSlugQuery } from "@/sanity/lib/quer
 import EngagementPageClient from "./EngagementPageClient";
 import { notFound } from "next/navigation";
 
-export const dynamicParams = false;
+export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
   try {
     const pages = await client.fetch(engagementPagesSlugQuery);
-    if (!Array.isArray(pages)) {
-      console.warn("Engagement pages slug query did not return an array:", pages);
-      return [];
+    if (!Array.isArray(pages) || pages.length === 0) {
+      // output:export requires at least one path — return placeholder when CMS is empty
+      return [{ slug: '__placeholder' }];
     }
     return pages
       .filter((page: any) => page && page.slug)
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
       }));
   } catch (error) {
     console.error("Error in generateStaticParams for Engagement Page:", error);
-    return [];
+    return [{ slug: '__placeholder' }];
   }
 }
 

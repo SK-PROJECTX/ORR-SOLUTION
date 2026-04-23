@@ -375,7 +375,7 @@ export default function PlansBillingPage() {
                         <span className="text-gray-400">{bill.status.toLowerCase() === 'paid' ? interpolate(t.dashboard.billing.history.item.paid) : interpolate(t.dashboard.billing.history.item.pending)}</span>
                       </td>
                       <td>{new Date(bill.transaction_date).toLocaleDateString()}</td>
-                      <td>{bill.currency} ${Math.abs(parseFloat(bill.amount)).toFixed(2)}</td>
+                      <td>{bill.currency} {interpolate(t.dashboard.pricing.currency)}{Math.abs(parseFloat(bill.amount)).toFixed(2)}</td>
                       <td>{bill.plan}</td>
                       <td>{interpolate(t.dashboard.billing.history.item.users, { count: String(bill.users) })}</td>
                       <td>

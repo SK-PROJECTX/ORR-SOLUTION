@@ -64,6 +64,7 @@ export const it = {
     complete: 'COMPLETA',
     submitting: 'INVIO IN CORSO...',
     languages: ['Inglese', 'Italiano'],
+    currencies: ['USD ($)', 'EUR (€)'],
     errors: {
       acceptAgreement: 'Per favore, torna alla Sezione 2 e accetta l\'Accordo di Servizio per continuare.',
       descriptionLength: 'La descrizione del progetto deve essere lunga almeno 10 caratteri.',
@@ -81,6 +82,8 @@ export const it = {
       p3: 'Seleziona il layout della tastiera',
       q4: '4. Formato Data/Ora preferito:',
       p4: 'Seleziona il formato data/ora',
+      q5: '5. Valuta preferita:',
+      p5: 'Seleziona valuta',
     },
     s2: {
       title: 'ACCORDO DI SERVIZIO',

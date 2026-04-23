@@ -11,6 +11,7 @@ interface OnboardingData {
   keyboard_other?: string;
   date_format: string;
   time_format_24h: boolean;
+  currency: string;
   accepted_service_agreement: boolean;
   portal_interests: string;
   portal_interests_other?: string;
@@ -43,6 +44,7 @@ interface OnboardingStatus {
   keyboard_other?: string;
   date_format?: string;
   time_format_24h?: boolean;
+  currency?: string;
   accepted_service_agreement?: boolean;
   portal_interests?: string;
   portal_interests_other?: string;

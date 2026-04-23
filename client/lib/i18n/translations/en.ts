@@ -64,6 +64,7 @@ export const en = {
     complete: 'COMPLETE',
     submitting: 'SUBMITTING...',
     languages: ['English', 'Italian'],
+    currencies: ['USD ($)', 'EUR (€)'],
     errors: {
       acceptAgreement: 'Please go back to Section 2 and accept the Service Agreement to continue.',
       descriptionLength: 'Project description must be at least 10 characters long.',
@@ -81,6 +82,8 @@ export const en = {
       p3: 'Select keyboard layout',
       q4: '4. Preferred Date/Time format:',
       p4: 'Select date/time format',
+      q5: '5. Preferred currency:',
+      p5: 'Select currency',
     },
     s2: {
       title: 'SERVICE AGREEMENT',

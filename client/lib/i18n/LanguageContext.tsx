@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useCallback, useEffect, type ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useMemo, type ReactNode } from 'react';
 import { useLanguageStore } from '@/store/languageStore';
+import { useWalletStore } from '@/store/walletStore';
 import { getTranslations, type Language } from '@/lib/i18n';
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -52,7 +53,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setHasHydrated 
   } = useLanguageStore();
 
-  const t = getTranslations(language);
+  const { currency } = useWalletStore();
+
+  const t = useMemo(() => {
+    const baseT = getTranslations(language);
+    // Create a shallow copy and then deep copy only the necessary nested path
+    // to avoid expensive full JSON serialization if possible, 
+    // but for simplicity and safety against mutation of the base translation:
+    const modifiedT = JSON.parse(JSON.stringify(baseT));
+    if (modifiedT.dashboard?.pricing) {
+      modifiedT.dashboard.pricing.currency = currency === 'EUR' ? '€' : '$';
+    }
+    return modifiedT;
+  }, [language, currency]);
 
   // Apply language preference and update DOM
   const applyLanguage = useCallback(

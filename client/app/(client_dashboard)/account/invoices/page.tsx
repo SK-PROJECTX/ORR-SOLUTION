@@ -118,7 +118,7 @@ export default function ClientInvoicesPage() {
               <div className="flex flex-col md:items-end w-full md:w-auto gap-1">
                 <span className="text-xs text-foreground/40 font-bold uppercase tracking-widest text-left md:text-right">Total Amount</span>
                 <p className="text-2xl font-bold text-white leading-none">
-                  {invoice.currency} ${invoice.totalAmount.toLocaleString()}
+                  {invoice.currency} {interpolate(t.dashboard.pricing.currency)}{invoice.totalAmount.toLocaleString()}
                 </p>
               </div>
 

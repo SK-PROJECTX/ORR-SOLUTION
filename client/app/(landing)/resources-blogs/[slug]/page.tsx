@@ -3,14 +3,14 @@ import { postBySlugQuery, postsSlugQuery } from "@/sanity/lib/queries";
 import BlogDetailClient from "./BlogDetailClient";
 import { notFound } from "next/navigation";
 
-export const dynamicParams = false;
+export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
   try {
     const posts = await client.fetch(postsSlugQuery);
-    if (!Array.isArray(posts)) {
-      console.warn("Posts slug query did not return an array:", posts);
-      return [];
+    if (!Array.isArray(posts) || posts.length === 0) {
+      // output:export requires at least one path — return placeholder when CMS is empty
+      return [{ slug: '__placeholder' }];
     }
     return posts
       .filter((post: any) => post && post.slug)
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
       }));
   } catch (error) {
     console.error("Error in generateStaticParams for Blog Detail Page:", error);
-    return [];
+    return [{ slug: '__placeholder' }];
   }
 }
 
