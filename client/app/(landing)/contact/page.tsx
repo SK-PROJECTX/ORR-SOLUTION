@@ -47,14 +47,19 @@ export default function Contact() {
   const formFieldsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [data, setData] = useState<ContactPageData | null>(null);
   const [loading, setLoading] = useState(true);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("🔄 Fetching Contact data from backend...");
+        console.log(`🔄 Fetching Contact data for language: ${language}`);
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/contact-content/`,
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/contact-content/?lang=${language}`,
+          {
+            headers: {
+              'Accept-Language': language
+            }
+          }
         );
         console.log("✅ Contact API Response:", response.data);
         if (response.data.success) {

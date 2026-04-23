@@ -1206,9 +1206,9 @@ export const it = {
 
   resources: {
     heroTitle: 'Risorse & Portale Clienti',
-    description1: 'Caricamento contenuti...',
-    description2: 'Caricamento contenuti...',
-    description3: 'Caricamento contenuti...',
+    description1: 'Il tuo quartier generale digitale per la chiarezza aziendale, le timeline e lo stato in tempo reale. Questo non è un blog tradizionale.',
+    description2: 'Le nostre risorse sono organizzate attorno al portale clienti ORR — una dashboard dove puoi leggere le FAQ, scaricare materiali, richiedere incontri e chattare con un operatore o consulente dal vivo.',
+    description3: 'Invece di articoli sparsi, ricevi una guida strutturata che segue il nostro progetto dal vivo — i blog contengono approfondimenti, guide pratiche e avvisi in tempo reale. Tutto è organizzato intorno al project management e all\'implementazione dell\'IA.',
     button1: 'Richiedi Accesso',
     button2: 'Scopri di Più',
     requestAccess: 'Richiedi Accesso',

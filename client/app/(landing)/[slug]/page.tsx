@@ -3,23 +3,24 @@ import { engagementPageQuery, engagementPagesSlugQuery } from "@/sanity/lib/quer
 import EngagementPageClient from "./EngagementPageClient";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-static';
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   try {
     const pages = await client.fetch(engagementPagesSlugQuery);
-    if (!Array.isArray(pages)) {
-      console.warn("Engagement pages slug query did not return an array:", pages);
-      return [];
+    const staticPaths = Array.isArray(pages) 
+      ? pages.filter((page: any) => page && page.slug).map((page: any) => ({ slug: page.slug }))
+      : [];
+    
+    // Ensure we always return at least one path to satisfy Next.js static export if fetch fails
+    if (staticPaths.length === 0) {
+      return [{ slug: 'general' }];
     }
-    return pages
-      .filter((page: any) => page && page.slug)
-      .map((page: any) => ({
-        slug: page.slug,
-      }));
+    return staticPaths;
   } catch (error) {
     console.error("Error in generateStaticParams for Engagement Page:", error);
-    return [];
+    return [{ slug: 'general' }];
   }
 }
 

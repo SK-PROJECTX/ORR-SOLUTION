@@ -27,7 +27,11 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
     { prefix: t.fiveStages.stages[2].prefix, titleData: processSection?.stage_3_title, fallbackTitle: interpolate(t.fiveStages.stages[2].title), description: processSection?.stage_3_description, fallbackDesc: interpolate(t.fiveStages.stages[2].description) },
     { prefix: t.fiveStages.stages[3].prefix, titleData: processSection?.stage_4_title, fallbackTitle: interpolate(t.fiveStages.stages[3].title), description: processSection?.stage_4_description, fallbackDesc: interpolate(t.fiveStages.stages[3].description) },
     { prefix: t.fiveStages.stages[4].prefix, titleData: processSection?.stage_5_title, fallbackTitle: interpolate(t.fiveStages.stages[4].title), description: processSection?.stage_5_description, fallbackDesc: interpolate(t.fiveStages.stages[4].description) }
-  ];
+  ].map(stage => ({
+    ...stage,
+    titleContent: getRichTextContent(stage.titleData, language),
+    descContent: getRichTextContent(stage.description, language)
+  }));
 
   const cleanTitle = (data: any, prefix: string) => {
     if (!data) return data;
@@ -98,12 +102,12 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
                 <div className="flex-1 pt-1">
                   <h3 className="flex flex-col mb-2 sm:mb-3">
                     <span className="text-primary text-xl sm:text-2xl font-semibold">
-                      <SafeHTMLRenderer data={cleanTitle(stage.titleData, stage.prefix)} fallback={stage.fallbackTitle} />
+                      <SafeHTMLRenderer data={cleanTitle(stage.titleContent, stage.prefix)} fallback={stage.fallbackTitle} />
                     </span>
                   </h3>
                   <p className="opacity-70 text-sm sm:text-base leading-relaxed max-w-2xl">
                     <SafeHTMLRenderer
-                      data={stage.description}
+                      data={stage.descContent}
                       fallback={stage.fallbackDesc}
                     />
                   </p>

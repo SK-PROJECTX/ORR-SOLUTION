@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Wallet, Plus, Filter, Download, ChevronLeft, ChevronRight, ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react';
 import { useWalletStore } from '@/store/walletStore';
 import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
+import Skeleton from '@/components/ui/Skeleton';
 import TopUpModal from '@/components/wallet/TopUpModal';
 import WalletReceiptDocument from '@/components/wallet/WalletReceiptDocument';
 import { useAuthStore } from '@/store/authStore';
@@ -83,7 +84,11 @@ export default function WalletDashboard() {
               </div>
               <div className="text-5xl font-extrabold text-white tracking-tight flex items-baseline gap-2">
                 <span className="text-3xl text-[#22C55E] opacity-80">{currency}</span>
-                {walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                {isLoading ? (
+                  <Skeleton width={120} height={40} className="mt-1" />
+                ) : (
+                  walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })
+                )}
               </div>
               <p className="text-xs text-gray-400 flex items-center gap-1.5 pt-2">
                 <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
@@ -161,11 +166,40 @@ export default function WalletDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1E3A4B]">
-              {filteredTransactions.length > 0 ? (
+              {isLoading ? (
+                // Skeleton Rows
+                [...Array(5)].map((_, i) => (
+                  <tr key={`skeleton-${i}`}>
+                    <td className="px-8 py-5">
+                      <Skeleton width={100} height={16} className="mb-1" />
+                      <Skeleton width={60} height={10} />
+                    </td>
+                    <td className="px-8 py-5">
+                      <div className="flex items-center gap-3">
+                        <Skeleton variant="circle" width={32} height={32} />
+                        <Skeleton width={80} height={16} />
+                      </div>
+                    </td>
+                    <td className="px-8 py-5">
+                      <Skeleton width={200} height={16} />
+                    </td>
+                    <td className="px-8 py-5">
+                      <Skeleton width={80} height={16} className="ml-auto" />
+                    </td>
+                    <td className="px-8 py-5">
+                      <Skeleton width={70} height={24} className="mx-auto rounded-full" />
+                    </td>
+                    <td className="px-8 py-5 text-center">
+                      <Skeleton width={32} height={32} className="mx-auto" />
+                    </td>
+                  </tr>
+                ))
+              ) : filteredTransactions.length > 0 ? (
                 filteredTransactions.map((tx) => (
                   <tr key={tx.id} className="hover:bg-white/5 transition-colors group">
                     <td className="px-8 py-5 text-sm text-gray-300">
-                      {new Date(tx.date).toLocaleDateString()}
+                      <div className="font-bold">{new Date(tx.date).toLocaleDateString()}</div>
+                      <div className="text-[10px] text-gray-500 uppercase">{new Date(tx.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </td>
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-3">
@@ -178,11 +212,11 @@ export default function WalletDashboard() {
                       </div>
                     </td>
                     <td className="px-8 py-5 text-sm text-gray-400">
-                      {tx.description}
-                      {tx.reference_id && <span className="block text-[10px] opacity-50 font-mono mt-1">Ref: {tx.reference_id}</span>}
+                      <div className="line-clamp-1">{tx.description}</div>
+                      {(tx.reference_id || tx.id) && <span className="block text-[10px] opacity-50 font-mono mt-1">Ref: {tx.reference_id || tx.id}</span>}
                     </td>
                     <td className={`px-8 py-5 text-sm font-bold text-right ${tx.type === 'top_up' || tx.type === 'refund' ? 'text-green-400' : 'text-white'}`}>
-                      {tx.type === 'top_up' || tx.type === 'refund' ? '+' : '-'} {tx.currency} {tx.amount.toFixed(2)}
+                      {tx.type === 'top_up' || tx.type === 'refund' ? '+' : '-'} {tx.currency} {Number(tx.amount).toFixed(2)}
                     </td>
                     <td className="px-8 py-5 text-center">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(tx.status)}`}>

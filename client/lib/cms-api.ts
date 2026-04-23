@@ -133,9 +133,10 @@ export class CMSService {
     }
   }
 
-  async getHomepage(): Promise<any> {
+  async getHomepage(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/homepage/`
+      `${API_BASE_URL}/admin-portal/v1/cms/homepage/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -146,9 +147,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getApproachSection(): Promise<any> {
+  async getApproachSection(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/approach-section/`
+      `${API_BASE_URL}/admin-portal/v1/cms/approach-section/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -159,9 +161,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getBusinessSystemSection(): Promise<any> {
+  async getBusinessSystemSection(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/business-system-section/`
+      `${API_BASE_URL}/admin-portal/v1/cms/business-system-section/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -172,9 +175,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getORRRoleSection(): Promise<any> {
+  async getORRRoleSection(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/orr-role-section/`
+      `${API_BASE_URL}/admin-portal/v1/cms/orr-role-section/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -185,9 +189,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getMessageStrip(): Promise<any> {
+  async getMessageStrip(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/message-strip/`
+      `${API_BASE_URL}/admin-portal/v1/cms/message-strip/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -198,9 +203,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getProcessSection(): Promise<any> {
+  async getProcessSection(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/process-section/`
+      `${API_BASE_URL}/admin-portal/v1/cms/process-section/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -211,9 +217,10 @@ export class CMSService {
     return result.data || result;
   }
 
-  async getORRReportSection(): Promise<any> {
+  async getORRReportSection(lang: string = 'en'): Promise<any> {
     const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/orr-report-section/`
+      `${API_BASE_URL}/admin-portal/v1/cms/orr-report-section/?lang=${lang}`,
+      { headers: { 'Accept-Language': lang } }
     );
 
     if (!response.ok) {
@@ -241,11 +248,13 @@ export class CMSService {
   }
 
   // Service Pillar Pages
-  async getStrategicAdvisoryContent(): Promise<any> {
-    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`);
-    const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`
-    );
+  async getStrategicAdvisoryContent(lang?: string): Promise<any> {
+    const url = lang 
+      ? `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/?lang=${lang}`
+      : `${API_BASE_URL}/admin-portal/v1/cms/strategic-advisory/`;
+      
+    console.log('🌐 Making API call to:', url);
+    const response = await fetch(url);
 
     console.log('📊 Strategic Advisory Response Status:', response.status);
     console.log('📊 Strategic Advisory Response OK:', response.ok);
@@ -274,11 +283,13 @@ export class CMSService {
     }
   }
 
-  async getOperationalSystemsContent(): Promise<any> {
-    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`);
-    const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`
-    );
+  async getOperationalSystemsContent(lang?: string): Promise<any> {
+    const url = lang 
+      ? `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/?lang=${lang}`
+      : `${API_BASE_URL}/admin-portal/v1/cms/operational-systems/`;
+      
+    console.log('🌐 Making API call to:', url);
+    const response = await fetch(url);
 
     console.log('📊 Operational Systems Response Status:', response.status);
     console.log('📊 Operational Systems Response OK:', response.ok);
@@ -307,11 +318,13 @@ export class CMSService {
     }
   }
 
-  async getLivingSystemsContent(): Promise<any> {
-    console.log('🌐 Making API call to:', `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`);
-    const response = await fetch(
-      `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`
-    );
+  async getLivingSystemsContent(lang?: string): Promise<any> {
+    const url = lang 
+      ? `${API_BASE_URL}/admin-portal/v1/cms/living-systems/?lang=${lang}`
+      : `${API_BASE_URL}/admin-portal/v1/cms/living-systems/`;
+      
+    console.log('🌐 Making API call to:', url);
+    const response = await fetch(url);
 
     console.log('📊 Living Systems Response Status:', response.status);
     console.log('📊 Living Systems Response OK:', response.ok);

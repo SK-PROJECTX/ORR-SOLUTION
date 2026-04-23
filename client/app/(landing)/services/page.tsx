@@ -14,45 +14,7 @@ const PILLAR_ROUTES: Record<number, string> = {
   2: '/services/living-systems-regeneration',
 };
 
-// Helper function to decode HTML entities and format content
-const decodeAndFormatContent = (content: any): string => {
-  if (!content) return '';
-
-  let processedContent = content;
-
-  // Handle the database format: {&#39;format&#39;: &#39;html&#39;, &#39;content&#39;: &#39;...&#39;}
-  if (typeof content === 'string' && content.includes('&#39;')) {
-    // First decode the HTML entities in the structure
-    processedContent = content
-      .replace(/&#39;/g, "'")
-      .replace(/&quot;/g, '"')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&');
-
-    // Extract content from the format object using regex that handles multiline content
-    const contentMatch = processedContent.match(/'content':\s*'([\s\S]*?)(?:'\s*}\s*$|'\s*,)/);
-    if (contentMatch) {
-      processedContent = contentMatch[1]
-        .replace(/\\'/g, "'")
-        .replace(/\\r\\n/g, '')
-        .replace(/\\n/g, '')
-        .replace(/\\r/g, '');
-    }
-  }
-
-  // If it's already an object, extract content
-  if (typeof content === 'object' && content.content) {
-    processedContent = content.content;
-  }
-
-  // Add line breaks after list items
-  if (processedContent && processedContent.includes('</li>')) {
-    processedContent = processedContent.replace(/<\/li>/g, '</li><br>');
-  }
-
-  return processedContent || '';
-};
+// decodeAndFormatContent removed - use getRichTextContent instead
 
 interface ServiceStage {
   id: number;
@@ -102,11 +64,11 @@ const processData = (data: any) => data;
 
 export default function Services() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
-  const { t } = useLanguage();
+  const { t, language, interpolate } = useLanguage();
 
   const { data, loading } = useCachedData<ServicesData>(
-    'orr_services_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/`,
+    `orr_services_content_${language}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/?lang=${language}`,
     (data) => data
   );
 
@@ -169,10 +131,10 @@ export default function Services() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-foreground">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_title) || t.services.heroTitle }} />
+            <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.hero_title, language) || interpolate(t.services.heroTitle) }} />
           </h1>
           <p className="text-lg md:text-xl opacity-70 max-w-3xl mx-auto leading-relaxed text-foreground">
-            <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.hero_subtitle) || t.services.heroSubtitle }} />
+            <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.hero_subtitle, language) || interpolate(t.services.heroSubtitle) }} />
           </p>
         </div>
       </section>
@@ -192,19 +154,19 @@ export default function Services() {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.title) || t.services.stageTitle }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(stage.title, language) || interpolate(t.services.stageTitle) }} />
                 </h2>
                 <h3 className="text-lg font-semibold mb-4">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.subtitle) || t.services.stageSubtitle }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(stage.subtitle, language) || interpolate(t.services.stageSubtitle) }} />
                 </h3>
                 <p className="opacity-70 text-sm mb-6">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.description) || t.services.stageDescription }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(stage.description, language) || interpolate(t.services.stageDescription) }} />
                 </p>
                 <div className="opacity-70 text-sm mb-8 flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.focus_content) || t.services.focusContent }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(stage.focus_content, language) || interpolate(t.services.focusContent) }} />
                 </div>
                 <Link href="/contact" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-auto cursor-pointer block text-center">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(stage.button_text) || t.services.learnMore }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(stage.button_text, language) || interpolate(t.services.learnMore) }} />
                 </Link>
               </div>
             ))}
@@ -219,19 +181,19 @@ export default function Services() {
                 </svg>
               </div>
               <h2 className="text-xl font-bold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].title) || t.services.stageTitle }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.stages[4].title, language) || interpolate(t.services.stageTitle) }} />
               </h2>
               <h3 className="text-lg font-semibold mb-4">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].subtitle) || t.services.stageSubtitle }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.stages[4].subtitle, language) || interpolate(t.services.stageSubtitle) }} />
               </h3>
               <p className="opacity-70 text-sm mb-6">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].description) || t.services.stageDescription }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.stages[4].description, language) || interpolate(t.services.stageDescription) }} />
               </p>
               <div className="opacity-70 text-sm mb-8">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].focus_content) || t.services.focusContent }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.stages[4].focus_content, language) || interpolate(t.services.focusContent) }} />
               </div>
               <Link href="/register" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors cursor-pointer block text-center">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.stages[4].button_text) || t.services.learnMore }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.stages[4].button_text, language) || interpolate(t.services.learnMore) }} />
               </Link>
             </div>
           )}
@@ -246,23 +208,23 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">
-              <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.pillars_title) || t.services.pillarsTitle }} />
+              <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.pillars_title, language) || t.services.pillarsTitle }} />
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {data.pillars.map((pillar, index) => (
               <div key={pillar.id} className="glass-panel rounded-2xl px-8 py-12 text-foreground flex flex-col min-h-[300px] transition-colors duration-300">
                 <h3 className="text-3xl font-bold mb-8 text-center text-foreground">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.title) || "Pillar Title" }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(pillar.title, language) || "Pillar Title" }} />
                 </h3>
                 <p className="opacity-70 text-xl mb-8 text-center flex-grow">
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.description) || "Pillar Description" }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(pillar.description, language) || "Pillar Description" }} />
                 </p>
                 <Link
                   href={PILLAR_ROUTES[index] || '/services'}
                   className="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl hover:bg-lemon transition-colors mt-8 cursor-pointer block text-center"
                 >
-                  <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(pillar.button_text) || t.services.learnMore }} />
+                  <span dangerouslySetInnerHTML={{ __html: getRichTextContent(pillar.button_text, language) || t.services.learnMore }} />
                 </Link>
               </div>
             ))}
@@ -279,16 +241,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-foreground mb-6">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_title) || t.services.businessGpTitle }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.business_gp_title, language) || t.services.businessGpTitle }} />
               </h2>
               <h3 className="text-4xl font-bold mb-8 text-foreground">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_subtitle) || t.services.businessGpSubtitle }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.business_gp_subtitle, language) || t.services.businessGpSubtitle }} />
               </h3>
               <p className="opacity-70 text-xl mb-8 text-foreground">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_description) || t.services.businessGpDescription }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.business_gp_description, language) || t.services.businessGpDescription }} />
               </p>
               <Link href="/contact" className="inline-block bg-primary text-white px-12 py-4 rounded-lg text-lg font-bold hover:bg-lemon transition-colors">
-                <span dangerouslySetInnerHTML={{ __html: decodeAndFormatContent(data.page.business_gp_button_text) || t.services.contactUs }} />
+                <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.business_gp_button_text, language) || t.services.contactUs }} />
               </Link>
             </div>
             <div>

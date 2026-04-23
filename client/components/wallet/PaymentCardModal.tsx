@@ -17,6 +17,8 @@ interface PaymentCardModalProps {
   paymentMethods: PaymentMethod[];
   onSelectCard: (paymentMethodId: string) => void;
   isLoading?: boolean;
+  walletBalance?: number;
+  currency?: string;
 }
 
 export default function PaymentCardModal({ 
@@ -24,7 +26,9 @@ export default function PaymentCardModal({
   onClose, 
   paymentMethods, 
   onSelectCard,
-  isLoading = false 
+  isLoading = false,
+  walletBalance = 0,
+  currency = 'USD'
 }: PaymentCardModalProps) {
   if (!isOpen) return null;
 
@@ -60,6 +64,37 @@ export default function PaymentCardModal({
             <X className="w-6 h-6" />
           </button>
         </div>
+        <div className="space-y-4">
+          {/* Wallet Option */}
+          <button
+            onClick={() => onSelectCard('wallet')}
+            disabled={isLoading}
+            className="w-full bg-[#22C55E]/10 border border-[#22C55E]/20 text-white rounded-lg p-4 flex items-center justify-between shadow hover:bg-[#22C55E]/20 transition-colors disabled:opacity-50"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-[#22C55E]/20 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">💰</span>
+              </div>
+              <div className="text-left">
+                <p className="font-bold text-[#22C55E]">Wallet Balance</p>
+                <span className="text-xs text-gray-400">
+                  Available: {currency} {walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+            <div className="text-[#22C55E] font-bold">
+              Pay with Wallet
+            </div>
+          </button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+              <div className="w-full border-t border-[#1E3A4B]"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-[#071626] px-2 text-gray-500">Or use a card</span>
+            </div>
+          </div>
 
         {paymentMethods.length > 0 ? (
           <div className="space-y-3">
@@ -96,6 +131,7 @@ export default function PaymentCardModal({
             <p className="text-sm text-black">Please add a payment method first</p>
           </div>
         )}
+        </div>
 
         <div className="mt-6 flex gap-3">
           <button

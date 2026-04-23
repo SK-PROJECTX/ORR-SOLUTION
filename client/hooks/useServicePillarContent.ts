@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cmsApi } from '@/lib/cms-api';
+import { useLanguage } from '@/app/components/LanguageProvider';
 
 interface StrategicAdvisoryContent {
   id: number;
@@ -57,6 +58,7 @@ interface StrategicAdvisoryContent {
 }
 
 export function useStrategicAdvisoryContent() {
+  const { language } = useLanguage();
   const [content, setContent] = useState<StrategicAdvisoryContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,9 +66,9 @@ export function useStrategicAdvisoryContent() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        console.log('🔄 Fetching Strategic Advisory content...');
+        console.log(`🔄 Fetching Strategic Advisory content for language: ${language}`);
         setLoading(true);
-        const response = await cmsApi.getStrategicAdvisoryContent();
+        const response = await cmsApi.getStrategicAdvisoryContent(language);
         console.log('✅ Strategic Advisory API Response:', response);
         console.log('📊 Strategic Advisory Data:', response.data);
         setContent(response.data);
@@ -79,12 +81,13 @@ export function useStrategicAdvisoryContent() {
     };
 
     fetchContent();
-  }, []);
+  }, [language]);
 
   return { content, loading, error };
 }
 
 export function useOperationalSystemsContent() {
+  const { language } = useLanguage();
   const [content, setContent] = useState<StrategicAdvisoryContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -92,9 +95,9 @@ export function useOperationalSystemsContent() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        console.log('🔄 Fetching Operational Systems content...');
+        console.log(`🔄 Fetching Operational Systems content for language: ${language}`);
         setLoading(true);
-        const response = await cmsApi.getOperationalSystemsContent();
+        const response = await cmsApi.getOperationalSystemsContent(language);
         console.log('✅ Operational Systems API Response:', response);
         console.log('📊 Operational Systems Data:', response.data);
         setContent(response.data);
@@ -107,12 +110,13 @@ export function useOperationalSystemsContent() {
     };
 
     fetchContent();
-  }, []);
+  }, [language]);
 
   return { content, loading, error };
 }
 
 export function useLivingSystemsContent() {
+  const { language } = useLanguage();
   const [content, setContent] = useState<StrategicAdvisoryContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,9 +124,9 @@ export function useLivingSystemsContent() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        console.log('🔄 Fetching Living Systems content...');
+        console.log(`🔄 Fetching Living Systems content for language: ${language}`);
         setLoading(true);
-        const response = await cmsApi.getLivingSystemsContent();
+        const response = await cmsApi.getLivingSystemsContent(language);
         console.log('✅ Living Systems API Response:', response);
         console.log('📊 Living Systems Data:', response.data);
         setContent(response.data);
@@ -135,7 +139,7 @@ export function useLivingSystemsContent() {
     };
 
     fetchContent();
-  }, []);
+  }, [language]);
 
   return { content, loading, error };
 }

@@ -3,23 +3,23 @@ import { postBySlugQuery, postsSlugQuery } from "@/sanity/lib/queries";
 import BlogDetailClient from "./BlogDetailClient";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-static';
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   try {
     const posts = await client.fetch(postsSlugQuery);
-    if (!Array.isArray(posts)) {
-      console.warn("Posts slug query did not return an array:", posts);
-      return [];
+    const staticPaths = Array.isArray(posts)
+      ? posts.filter((post: any) => post && post.slug).map((post: any) => ({ slug: post.slug }))
+      : [];
+      
+    if (staticPaths.length === 0) {
+      return [{ slug: 'latest' }];
     }
-    return posts
-      .filter((post: any) => post && post.slug)
-      .map((post: any) => ({
-        slug: post.slug,
-      }));
+    return staticPaths;
   } catch (error) {
     console.error("Error in generateStaticParams for Blog Detail Page:", error);
-    return [];
+    return [{ slug: 'latest' }];
   }
 }
 
