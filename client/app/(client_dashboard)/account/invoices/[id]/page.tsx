@@ -1,6 +1,7 @@
 import React from 'react';
 import InvoiceDetailClient from './InvoiceDetailClient';
 
+export const dynamic = 'force-static';
 export const dynamicParams = false;
 
 export function generateStaticParams() {

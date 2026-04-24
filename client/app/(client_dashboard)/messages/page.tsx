@@ -256,7 +256,7 @@ export default function MessagesPage() {
         if (response.status === 404) {
           const token = localStorage.getItem("accessToken");
           const clientResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/tickets/${ticketId}/messages/`,
+            `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/tickets/${ticketId}/messages/`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

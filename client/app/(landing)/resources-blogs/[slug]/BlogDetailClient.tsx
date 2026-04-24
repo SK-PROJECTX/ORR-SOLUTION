@@ -6,22 +6,31 @@ import gsap from "gsap";
 import SanityImage from "@/components/SanityImage";
 import PortableTextRenderer from "@/components/PortableTextRenderer";
 
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+
 interface Post {
   _id: string;
-  title: string;
+  title: any;
   slug: string;
-  badge: string;
+  badge: any;
   mainImage: any;
   publishedAt: string;
-  body: any[];
-  button1Text?: string;
-  button2Text?: string;
+  body: any;
+  button1Text?: any;
+  button2Text?: any;
 }
 
 export default function BlogDetailClient({ post }: { post: Post }) {
+  const { language } = useLanguage();
   const contentRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+
+  const title = post.title?.[language] || post.title?.en || "";
+  const badge = post.badge?.[language] || post.badge?.en || "";
+  const body = post.body?.[language] || post.body?.en || [];
+  const button1Text = post.button1Text?.[language] || post.button1Text?.en || "";
+  const button2Text = post.button2Text?.[language] || post.button2Text?.en || "";
 
   useEffect(() => {
     if (post) {
@@ -66,37 +75,37 @@ export default function BlogDetailClient({ post }: { post: Post }) {
       <main className="pt-32 pb-24 px-6">
         <article className="max-w-4xl mx-auto">
           <header ref={headerRef} className="text-center mb-16">
-            {post.badge && (
+            {badge && (
               <span className="inline-block bg-green-400/10 text-green-400 text-xs font-black px-4 py-2 rounded-full uppercase tracking-[0.2em] mb-8 border border-green-400/20">
-                {post.badge}
+                {badge}
               </span>
             )}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-[1.1] tracking-tighter">
-              {post.title}
+              {title}
             </h1>
           </header>
 
           <div ref={imageRef} className="relative aspect-[21/9] rounded-[2.5rem] overflow-hidden mb-20 border border-white/10 shadow-2xl">
             <SanityImage 
               asset={post.mainImage} 
-              alt={post.title} 
+              alt={title} 
               className="w-full h-full object-cover"
             />
           </div>
 
           <div ref={contentRef} className="space-y-8">
-            <PortableTextRenderer value={post.body} />
+            <PortableTextRenderer value={body} />
 
-            {(post.button1Text || post.button2Text) && (
+            {(button1Text || button2Text) && (
               <div className="mt-20 pt-12 border-t border-white/10 flex flex-wrap gap-6 justify-center">
-                {post.button1Text && (
+                {button1Text && (
                   <button className="bg-white text-black px-10 py-5 rounded-full font-black uppercase text-sm tracking-widest hover:scale-105 transition-transform">
-                    {post.button1Text}
+                    {button1Text}
                   </button>
                 )}
-                {post.button2Text && (
+                {button2Text && (
                   <button className="border border-white/20 hover:border-white bg-white/5 px-10 py-5 rounded-full font-black uppercase text-sm tracking-widest hover:bg-white/10 transition-all">
-                    {post.button2Text}
+                    {button2Text}
                   </button>
                 )}
               </div>

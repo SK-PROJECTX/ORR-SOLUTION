@@ -12,17 +12,20 @@ import { getRichTextContent } from "@/lib/rich-text-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import BlogCard from "../../components/BlogCard";
+import LatestBlogsSection from "../../components/LatestBlogsSection";
+
 interface Post {
   _id: string;
-  title: string;
+  title: any;
   slug: string;
-  badge: string;
+  badge: any;
   mainImage: any;
   featured: boolean;
   publishedAt: string;
-  body: any[];
-  button1Text?: string;
-  button2Text?: string;
+  body: any;
+  button1Text?: any;
+  button2Text?: any;
 }
 
 interface PageData {
@@ -41,12 +44,15 @@ export default function ResourcesBlogsClient({
   posts: Post[], 
   pageData: PageData 
 }) {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   useScrollSplit();
 
   return (
     <div className="min-h-screen text-white ">
       <HeroSection data={pageData} />
+      <div className="scroll-section">
+        <LatestBlogsSection initialPosts={posts.slice(0, 3)} />
+      </div>
       <div className="scroll-section">
         <ContentSection posts={posts} />
       </div>
@@ -151,7 +157,7 @@ function ContentSection({ posts }: { posts: Post[] }) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
               {otherPosts.map((post, index) => (
-                <ContentCardComponent
+                <BlogCard
                   key={post._id}
                   post={post}
                   className={index % 5 === 0 ? 'lg:col-span-2' : ''}
@@ -168,6 +174,10 @@ function ContentSection({ posts }: { posts: Post[] }) {
 function FeaturedCardComponent({ post }: { post: Post }) {
   const { t, language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
+
+  const title = post.title?.[language] || post.title?.en || "";
+  const badge = post.badge?.[language] || post.badge?.en || "";
+  const body = post.body?.[language] || post.body?.en || [];
 
   useEffect(() => {
     if (!cardRef.current) return;
@@ -197,24 +207,24 @@ function FeaturedCardComponent({ post }: { post: Post }) {
           <div className="absolute inset-0 bg-[#0A1016]/40 z-10 mix-blend-multiply group-hover:bg-transparent transition-all duration-500" />
           <SanityImage
             asset={post.mainImage}
-            alt={getRichTextContent(post.title, language)}
+            alt={title}
             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div className="absolute top-6 left-6 z-20">
             <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wider shadow-xl">
-              {getRichTextContent(post.badge, language) || t.resources.featured}
+              {badge || t.resources.featured}
             </span>
           </div>
         </div>
 
         <div className="relative z-20 w-full lg:w-1/2 p-8 md:p-14 flex flex-col justify-center">
           <h3 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight group-hover:text-green-400 transition-colors duration-300">
-            {getRichTextContent(post.title, language)}
+            {title}
           </h3>
 
           <div className="text-gray-300 text-lg leading-relaxed font-light">
             <div className="line-clamp-4 overflow-hidden">
-              <PortableText value={post.body} />
+              <PortableText value={body} />
             </div>
             <div className="mt-8 flex items-center text-green-400 font-semibold group/btn w-fit">
               {t.resources.readArticle}
@@ -225,68 +235,6 @@ function FeaturedCardComponent({ post }: { post: Post }) {
           </div>
         </div>
       </div>
-    </Link>
-  );
-}
-
-function ContentCardComponent({ post, className = '' }: { post: Post, className?: string }) {
-  const { language } = useLanguage();
-  const cardRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (!cardRef.current) return;
-    gsap.fromTo(cardRef.current,
-      { opacity: 0, scale: 0.95, y: 30 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 85%",
-        }
-      }
-    );
-  }, []);
-
-  return (
-    <Link
-      href={`/resources-blogs/${post.slug}`}
-      ref={cardRef}
-      className={`group relative bg-[#131E2A]/80 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white/5 cursor-pointer transition-all duration-500 hover:bg-[#1A2938] hover:border-white/20 hover:shadow-2xl hover:-translate-y-1 h-full block ${className}`}
-    >
-      <div className="flex flex-col h-full">
-        <div className="mb-6 relative overflow-hidden rounded-2xl shrink-0">
-          <SanityImage
-            asset={post.mainImage}
-            alt={getRichTextContent(post.title, language)}
-            className="w-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out h-56"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </div>
-
-        <div className="flex flex-col flex-grow">
-          <div className="mb-4">
-            <span className="inline-block bg-white/10 text-white/90 text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10 group-hover:bg-green-400 group-hover:text-black group-hover:border-green-400 transition-colors duration-300">
-              {getRichTextContent(post.badge, language)}
-            </span>
-          </div>
-
-          <h3 className="font-bold mb-4 text-white group-hover:text-green-300 transition-colors duration-300 text-xl md:text-2xl leading-tight">
-            {getRichTextContent(post.title, language)}
-          </h3>
-
-          <div className="text-gray-400 text-base leading-relaxed font-light mt-auto">
-            <div className="relative line-clamp-3">
-              <PortableText value={post.body} />
-              <div className="absolute bottom-0 right-0 w-1/3 h-6 bg-gradient-to-l from-[#131E2A]/80 to-transparent group-hover:from-[#1A2938] transition-colors" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-white/20 group-hover:bg-green-400 group-hover:shadow-[0_0_10px_#4ade80] transition-all duration-300" />
     </Link>
   );
 }

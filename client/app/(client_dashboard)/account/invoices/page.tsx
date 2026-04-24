@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect } from 'react';
-import { 
-  FileText, 
-  Download, 
-  ChevronRight, 
-  CheckCircle, 
-  Clock, 
+import {
+  FileText,
+  Download,
+  ChevronRight,
+  CheckCircle,
+  Clock,
   AlertCircle,
   Wallet,
   Search
@@ -42,7 +42,7 @@ export default function ClientInvoicesPage() {
   const clientViewInvoices = invoices.filter(inv => inv.status !== 'draft');
 
   return (
-    <div className="min-h-screen text-white p-4 md:p-8 flex justify-center">
+    <div className="min-h-screen text-slate-900 dark:text-white p-4 md:p-8 flex justify-center transition-colors duration-300">
       <div className="w-full max-w-6xl space-y-10">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -71,8 +71,8 @@ export default function ClientInvoicesPage() {
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-card/40 backdrop-blur-md p-4 rounded-2xl border border-white/5 shadow-inner">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Search by invoice number or date..."
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-primary transition-all"
             />
@@ -90,13 +90,13 @@ export default function ClientInvoicesPage() {
         {/* Invoices List */}
         <div className="grid grid-cols-1 gap-4">
           {clientViewInvoices.map((invoice) => (
-            <Link 
+            <Link
               key={invoice.id}
               href={`/account/invoices/${invoice.id}`}
               className="group relative bg-[#0A1A2F]/60 hover:bg-[#0E2441]/80 backdrop-blur-sm border border-white/5 hover:border-primary/30 p-6 rounded-2xl transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl hover:shadow-primary/5 cursor-pointer overflow-hidden"
             >
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-primary transition-all" />
-              
+
               <div className="flex items-center gap-6 w-full md:w-auto">
                 <div className={`p-4 rounded-2xl flex flex-col items-center justify-center gap-1 ${invoice.status === 'paid' ? 'bg-[#22C55E]/10' : 'bg-primary/10'}`}>
                   <FileText className={`w-6 h-6 ${invoice.status === 'paid' ? 'text-[#22C55E]' : 'text-primary'}`} />

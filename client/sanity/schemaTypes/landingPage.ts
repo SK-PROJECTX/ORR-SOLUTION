@@ -8,31 +8,46 @@ export const landingPage = defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'localizedString',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
+      options: {source: 'title.en'},
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'heroHeading',
       title: 'Hero Heading',
-      type: 'string',
+      type: 'localizedString',
     }),
     defineField({
       name: 'heroText',
       title: 'Hero Text',
-      type: 'text',
+      type: 'localizedText',
     }),
     defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',
       options: {hotspot: true},
+    }),
+    defineField({
+      name: 'showLatestBlogs',
+      title: 'Show Latest Blogs Section',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'latestBlogsHeading',
+      title: 'Latest Blogs Heading',
+      type: 'localizedString',
+      initialValue: {
+        en: 'Latest from our blog',
+        it: 'Ultime dal nostro blog'
+      }
     }),
   ],
 })

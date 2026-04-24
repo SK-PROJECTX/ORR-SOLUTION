@@ -2,13 +2,13 @@ import { Studio } from './Studio'
 
 export { metadata, viewport } from 'next-sanity/studio'
 
-export const dynamicParams = false;
+export const dynamic = 'force-static'
+export const dynamicParams = false
 
 export function generateStaticParams() {
   return [
-    { index: [''] },
     { index: ['index'] },
-    { index: ['structure'] }
+    { index: ['structure'] },
   ]
 }
 

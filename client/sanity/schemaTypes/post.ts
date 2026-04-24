@@ -8,20 +8,20 @@ export const post = defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'localizedString',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
+      options: {source: 'title.en'},
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'badge',
       title: 'Badge',
-      type: 'string',
+      type: 'localizedString',
       description: 'e.g. STRATEGY, OPERATIONS, INNOVATION',
     }),
     defineField({
@@ -33,18 +33,17 @@ export const post = defineType({
     defineField({
       name: 'body',
       title: 'Body',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'localizedBlock',
     }),
     defineField({
       name: 'button1Text',
       title: 'Button 1 Text',
-      type: 'string',
+      type: 'localizedString',
     }),
     defineField({
       name: 'button2Text',
       title: 'Button 2 Text',
-      type: 'string',
+      type: 'localizedString',
     }),
     defineField({
       name: 'featured',
