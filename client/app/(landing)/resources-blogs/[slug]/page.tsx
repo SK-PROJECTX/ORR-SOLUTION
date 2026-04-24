@@ -9,14 +9,15 @@ export const dynamicParams = false;
 export async function generateStaticParams() {
   try {
     const posts = await client.fetch(postsSlugQuery);
-    const staticPaths = Array.isArray(posts)
-      ? posts.filter((post: any) => post && post.slug).map((post: any) => ({ slug: post.slug }))
-      : [];
-      
-    if (staticPaths.length === 0) {
-      return [{ slug: 'latest' }];
+    if (!Array.isArray(posts)) {
+      console.warn("Posts slug query did not return an array:", posts);
+      return [];
     }
-    return staticPaths;
+    return posts
+      .filter((post: any) => post && post.slug)
+      .map((post: any) => ({
+        slug: post.slug,
+      }));
   } catch (error) {
     console.error("Error in generateStaticParams for Blog Detail Page:", error);
     return [{ slug: 'latest' }];
@@ -29,7 +30,7 @@ interface PageProps {
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  
+
   const post = await client.fetch(postBySlugQuery, { slug });
 
   if (!post) {

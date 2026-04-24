@@ -157,6 +157,12 @@ const getQuestionnaire = (t: any, interpolate: any) => ({
         options: ["DD/MM/YYYY", "MM/DD/YYYY", "24-hour", "12-Hours"],
         type: "dropdown",
         placeholder: interpolate(t?.onboarding?.s1?.p4 || 'Select date/time format')
+      },
+      {
+        question: interpolate(t?.onboarding?.s1?.q5 || '5. Preferred currency:'),
+        options: t?.onboarding?.currencies || ["USD ($)", "EUR (€)"],
+        type: "dropdown",
+        placeholder: interpolate(t?.onboarding?.s1?.p5 || 'Select currency')
       }
     ]
   },
@@ -410,6 +416,7 @@ export default function OnboardingPage() {
       keyboard_other: finalAnswers['1-2'] === 'Others' ? 'other layout' : undefined,
       date_format: finalAnswers['1-3']?.includes('DD/MM') ? 'dd_mm_yyyy' : 'mm_dd_yyyy',
       time_format_24h: finalAnswers['1-3']?.includes('24-hour') || false,
+      currency: finalAnswers['1-4']?.includes('EUR') ? 'EUR' : 'USD',
       accepted_service_agreement: finalAnswers['2-0']?.includes('accept') || finalAnswers['2-0']?.includes('accetto') || true,
       portal_interests: Array.isArray(finalAnswers['3-0']) ? finalAnswers['3-0'].join(', ') : finalAnswers['3-0'] || '',
       portal_interests_other: finalAnswers['3-0']?.includes('Others') ? 'other interests' : undefined,

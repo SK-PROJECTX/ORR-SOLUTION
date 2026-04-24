@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import api from '@/lib/axios';
 import { useToastStore } from './toastStore';
+import { useOnboardingStore } from './onboardingStore';
 
 interface PricingPlan {
   id: number;
@@ -81,6 +82,7 @@ interface WalletState {
   createCheckoutSession: (priceId: string, paymentMethodId: string) => Promise<string | null>;
   initiateTopUp: (amount: number, paymentMethodId?: string) => Promise<string | null>;
   settleInvoiceWithWallet: (invoiceId: string, amount: number) => Promise<boolean>;
+  updateCurrency: (currency: 'USD' | 'EUR') => Promise<boolean>;
   healthCheck: () => Promise<boolean>;
 }
 
@@ -470,6 +472,41 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       console.error('Failed to settle invoice:', error);
       const errorMessage = error.response?.data?.message || 'Insufficient wallet balance';
       useToastStore.getState().addToast(errorMessage, 'error');
+      return false;
+    }
+  },
+
+  updateCurrency: async (newCurrency: 'USD' | 'EUR') => {
+    set({ isLoading: true });
+    try {
+      // Get the current onboarding status to preserve existing preferences
+      // This prevents 500 errors caused by missing required fields in the backend
+      const { onboardingStatus } = useOnboardingStore.getState();
+      
+      const payload = {
+        ...onboardingStatus,
+        currency: newCurrency,
+        is_completed: true
+      };
+
+      // Remove internal metadata fields that shouldn't be sent back
+      delete (payload as any).id;
+      delete (payload as any).created_at;
+      delete (payload as any).updated_at;
+
+      await api.post('/onboarding/submit/', payload);
+      
+      // Update local state
+      set({ currency: newCurrency, isLoading: false });
+      
+      // Refresh balance to ensure consistency
+      await get().fetchWalletBalance();
+      
+      useToastStore.getState().addToast('Currency updated successfully', 'success');
+      return true;
+    } catch (error: any) {
+      console.error('Failed to update currency:', error);
+      set({ isLoading: false });
       return false;
     }
   },

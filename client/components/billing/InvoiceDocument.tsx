@@ -2,6 +2,7 @@
 import React from 'react';
 import { Invoice, InvoiceSettings } from '@/store/invoiceStore';
 import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 
 interface InvoiceDocumentProps {
   invoice: Invoice;
@@ -9,6 +10,9 @@ interface InvoiceDocumentProps {
 }
 
 export default function InvoiceDocument({ invoice, settings }: InvoiceDocumentProps) {
+  const { t } = useLanguage();
+  const currencySymbol = interpolate(t.dashboard.pricing.currency);
+
   return (
     <div className="bg-white dark:bg-[#111827] text-slate-900 dark:text-[#F5F5F5] p-6 md:p-10 max-w-4xl mx-auto font-sans min-h-screen print:min-h-0 flex flex-col border border-slate-200 dark:border-white/5 overflow-hidden transition-colors duration-300">
       {/* 1. Header (Logo + Company Info) */}
@@ -70,8 +74,8 @@ export default function InvoiceDocument({ invoice, settings }: InvoiceDocumentPr
                     {item.description}
                   </td>
                   <td className="px-4 py-4 text-center text-slate-600 dark:text-[#D1D5DB] font-black">{item.quantity}</td>
-                  <td className="px-4 py-4 text-right text-slate-600 dark:text-[#D1D5DB] font-black">${item.unitPrice.toLocaleString()}</td>
-                  <td className="px-4 py-4 text-right text-slate-900 dark:text-white font-black text-sm">${item.amount.toLocaleString()}</td>
+                  <td className="px-4 py-4 text-right text-slate-600 dark:text-[#D1D5DB] font-black">{currencySymbol}{item.unitPrice.toLocaleString()}</td>
+                  <td className="px-4 py-4 text-right text-slate-900 dark:text-white font-black text-sm">{currencySymbol}{item.amount.toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -95,15 +99,15 @@ export default function InvoiceDocument({ invoice, settings }: InvoiceDocumentPr
           <div className="w-full max-w-[240px] space-y-2">
             <div className="flex justify-between text-xs font-bold px-2">
               <span className="text-slate-500 dark:text-[#9CA3AF]">Subtotal</span>
-              <span className="text-slate-900 dark:text-white">${invoice.subtotal.toLocaleString()}</span>
+              <span className="text-slate-900 dark:text-white">{currencySymbol}{invoice.subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-xs font-bold px-2">
               <span className="text-slate-500 dark:text-[#9CA3AF]">Tax ({invoice.taxRate * 100}%)</span>
-              <span className="text-slate-900 dark:text-white">${invoice.taxAmount.toLocaleString()}</span>
+              <span className="text-slate-900 dark:text-white">{currencySymbol}{invoice.taxAmount.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center bg-primary text-white p-4 rounded-xl shadow-lg shadow-primary/10">
               <span className="text-[10px] font-black uppercase tracking-widest">Total Due</span>
-              <span className="text-xl font-black">{invoice.currency} ${invoice.totalAmount.toLocaleString()}</span>
+              <span className="text-xl font-black">{invoice.currency} {currencySymbol}{invoice.totalAmount.toLocaleString()}</span>
             </div>
           </div>
         </div>

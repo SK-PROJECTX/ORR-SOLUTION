@@ -8,31 +8,53 @@ import Skeleton from '@/components/ui/Skeleton';
 import TopUpModal from '@/components/wallet/TopUpModal';
 import WalletReceiptDocument from '@/components/wallet/WalletReceiptDocument';
 import { useAuthStore } from '@/store/authStore';
+import { useOnboardingStore } from '@/store/onboardingStore';
 import { motion } from 'framer-motion';
+import CurrencySelectionModal from '@/components/wallet/CurrencySelectionModal';
 
 export default function WalletDashboard() {
   const { t } = useLanguage();
-  const { 
-    walletBalance, 
-    currency, 
-    transactions, 
-    fetchWalletBalance, 
+  const {
+    walletBalance,
+    currency,
+    transactions,
+    fetchWalletBalance,
     fetchTransactions,
     fetchPaymentMethods,
-    isLoading 
+    updateCurrency,
+    isLoading
   } = useWalletStore();
-  
+
+  const { onboardingStatus, checkOnboardingStatus } = useOnboardingStore();
+
   const { user } = useAuthStore();
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [filterType, setFilterType] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [printingTransaction, setPrintingTransaction] = useState<any>(null);
+  const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+  const [isCurrencyUpdating, setIsCurrencyUpdating] = useState(false);
 
   useEffect(() => {
     fetchWalletBalance();
     fetchTransactions();
     fetchPaymentMethods();
+    checkOnboardingStatus();
   }, []);
+
+  useEffect(() => {
+    // Show currency selection modal if user is onboarded but currency preference is missing
+    // We only show it if the currency from wallet balance is the default 'USD' 
+    // AND onboarding status confirms it hasn't been set specifically yet.
+    if (onboardingStatus && onboardingStatus.is_completed && !onboardingStatus.currency) {
+      // Check if we already showed it in this session to avoid being too intrusive
+      const hasPrompted = sessionStorage.getItem('orr-currency-prompted');
+      if (!hasPrompted) {
+        setIsCurrencyModalOpen(true);
+        sessionStorage.setItem('orr-currency-prompted', 'true');
+      }
+    }
+  }, [onboardingStatus]);
 
   const handlePrint = (tx: any) => {
     setPrintingTransaction(tx);
@@ -75,7 +97,7 @@ export default function WalletDashboard() {
         <div className="lg:col-span-2 bg-gradient-to-br from-[#0A243A] to-[#071626] border border-[#1E3A4B] rounded-3xl p-8 relative overflow-hidden group shadow-2xl">
           {/* Decorative background element */}
           <div className="absolute top-[-50%] right-[-10%] w-[300px] h-[300px] bg-[#22C55E]/10 blur-[100px] rounded-full group-hover:bg-[#22C55E]/20 transition-all duration-700"></div>
-          
+
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
@@ -95,8 +117,8 @@ export default function WalletDashboard() {
                 Real-time synchronized with Stripe
               </p>
             </div>
-            
-            <button 
+
+            <button
               onClick={() => setIsTopUpOpen(true)}
               className="bg-[#22C55E] text-black font-bold px-8 py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-[#16A34A] transition-all transform hover:scale-105 active:scale-95 shadow-[0_10px_30px_-10px_rgba(34,197,94,0.5)]"
             >
@@ -124,11 +146,11 @@ export default function WalletDashboard() {
               {transactions.length} Total
             </span>
           </h3>
-          
+
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-4 py-2 bg-[#0A1F30] border border-[#1E3A4B] rounded-xl">
               <Filter size={16} className="text-[#22C55E]" />
-              <select 
+              <select
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
                 className="bg-transparent border-none text-sm text-white outline-none cursor-pointer"
@@ -139,8 +161,8 @@ export default function WalletDashboard() {
                 <option value="deduction">Deduction</option>
               </select>
             </div>
-            
-            <select 
+
+            <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="bg-[#0A1F30] border border-[#1E3A4B] rounded-xl px-4 py-2 text-sm text-white outline-none cursor-pointer"
@@ -224,7 +246,7 @@ export default function WalletDashboard() {
                       </span>
                     </td>
                     <td className="px-8 py-5 text-center">
-                      <button 
+                      <button
                         onClick={() => handlePrint(tx)}
                         className="p-2 text-gray-400 hover:text-[#22C55E] transition-colors bg-[#1E3A4B]/50 rounded-lg group-hover:bg-[#22C55E]/10"
                       >
@@ -267,20 +289,34 @@ export default function WalletDashboard() {
         </div>
       </div>
 
-      <TopUpModal 
-        isOpen={isTopUpOpen} 
-        onClose={() => setIsTopUpOpen(false)} 
+      <TopUpModal
+        isOpen={isTopUpOpen}
+        onClose={() => setIsTopUpOpen(false)}
+      />
+
+      <CurrencySelectionModal
+        isOpen={isCurrencyModalOpen}
+        onClose={() => setIsCurrencyModalOpen(false)}
+        isLoading={isCurrencyUpdating}
+        onSelect={async (newCurrency) => {
+          setIsCurrencyUpdating(true);
+          const success = await updateCurrency(newCurrency);
+          if (success) {
+            setIsCurrencyModalOpen(false);
+          }
+          setIsCurrencyUpdating(false);
+        }}
       />
 
       {/* Hidden Print Section */}
       <div className="hidden print:block fixed inset-0 z-[9999] bg-white">
         {printingTransaction && (
-          <WalletReceiptDocument 
-            transaction={printingTransaction} 
-            user={{ 
-              name: `${user?.username || 'Client'}`, 
-              email: user?.email || '' 
-            }} 
+          <WalletReceiptDocument
+            transaction={printingTransaction}
+            user={{
+              name: `${user?.username || 'Client'}`,
+              email: user?.email || ''
+            }}
           />
         )}
       </div>

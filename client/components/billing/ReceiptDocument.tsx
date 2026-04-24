@@ -2,6 +2,7 @@
 import React from 'react';
 import { Invoice, InvoiceSettings } from '@/store/invoiceStore';
 import { CheckCircle, Mail, Phone, MapPin } from 'lucide-react';
+import { useLanguage, interpolate } from '@/lib/i18n/LanguageContext';
 
 interface ReceiptDocumentProps {
   invoice: Invoice;
@@ -9,6 +10,9 @@ interface ReceiptDocumentProps {
 }
 
 export default function ReceiptDocument({ invoice, settings }: ReceiptDocumentProps) {
+  const { t } = useLanguage();
+  const currencySymbol = interpolate(t.dashboard.pricing.currency);
+
   return (
     <div className="bg-white dark:bg-[#111827] text-slate-900 dark:text-[#F5F5F5] p-6 md:p-10 max-w-4xl mx-auto font-sans min-h-screen print:min-h-0 flex flex-col border border-slate-200 dark:border-white/5 relative overflow-hidden transition-colors duration-300">
       {/* Paid Stamp (Subtle) */}
@@ -73,11 +77,11 @@ export default function ReceiptDocument({ invoice, settings }: ReceiptDocumentPr
           <div className="w-full max-w-[280px] space-y-3">
             <div className="flex justify-between text-sm font-bold px-2">
               <span className="text-slate-500 dark:text-[#9CA3AF]">Invoice Total</span>
-              <span className="text-slate-900 dark:text-white">${invoice.totalAmount.toLocaleString()}</span>
+              <span className="text-slate-900 dark:text-white">{currencySymbol}{invoice.totalAmount.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center bg-green-600 dark:bg-green-500 text-white dark:text-black p-5 rounded-xl shadow-lg shadow-green-500/10">
               <span className="text-[10px] font-black uppercase tracking-widest">Amount Paid</span>
-              <span className="text-3xl font-black">{invoice.currency} ${invoice.totalAmount.toLocaleString()}</span>
+              <span className="text-3xl font-black">{invoice.currency} {currencySymbol}{invoice.totalAmount.toLocaleString()}</span>
             </div>
           </div>
         </div>

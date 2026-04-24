@@ -54,7 +54,7 @@ export default function InvoiceDetailClient({ id }: InvoiceDetailClientProps) {
       return;
     }
 
-    if (!confirm(interpolate(t.dashboard.account.wallet.settlement.confirmPayment, { amount: `${invoice.currency} ${invoice.totalAmount}` }))) {
+    if (!confirm(interpolate(t.dashboard.account.wallet.settlement.confirmPayment, { amount: `${invoice.currency} ${interpolate(t.dashboard.pricing.currency)}${invoice.totalAmount}` }))) {
       return;
     }
 
