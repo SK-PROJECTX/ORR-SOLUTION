@@ -29,8 +29,8 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
     { prefix: t.fiveStages.stages[4].prefix, titleData: processSection?.stage_5_title, fallbackTitle: interpolate(t.fiveStages.stages[4].title), description: processSection?.stage_5_description, fallbackDesc: interpolate(t.fiveStages.stages[4].description) }
   ].map(stage => ({
     ...stage,
-    titleContent: getRichTextContent(stage.titleData, language),
-    descContent: getRichTextContent(stage.description, language)
+    titleContent: language === 'it' ? stage.fallbackTitle : (getRichTextContent(stage.titleData, language) || stage.fallbackTitle),
+    descContent: language === 'it' ? stage.fallbackDesc : (getRichTextContent(stage.description, language) || stage.fallbackDesc)
   }));
 
   const cleanTitle = (data: any, prefix: string) => {
@@ -82,11 +82,11 @@ export default function FiveStagesSection({ content, onUpdate }: FiveStagesSecti
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">
-          <SafeHTMLRenderer data={processSection?.title} fallback={t.fiveStages.title} />
+          <SafeHTMLRenderer data={language === 'it' ? t.fiveStages.title : (processSection?.title || t.fiveStages.title)} fallback={t.fiveStages.title} />
         </h2>
 
         <p ref={subtitleRef} className="opacity-70 text-center mb-12 sm:mb-16">
-          <SafeHTMLRenderer data={processSection?.subtitle} fallback={t.fiveStages.subtitle} />
+          <SafeHTMLRenderer data={language === 'it' ? t.fiveStages.subtitle : (processSection?.subtitle || t.fiveStages.subtitle)} fallback={t.fiveStages.subtitle} />
         </p>
 
         <div className="relative">

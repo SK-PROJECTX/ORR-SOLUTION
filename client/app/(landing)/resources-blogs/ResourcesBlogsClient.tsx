@@ -55,7 +55,7 @@ export default function ResourcesBlogsClient({
 }
 
 function HeroSection({ data }: { data: PageData }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const p1Ref = useRef<HTMLParagraphElement>(null);
   const p2Ref = useRef<HTMLParagraphElement>(null);
@@ -102,28 +102,28 @@ function HeroSection({ data }: { data: PageData }) {
 
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
         <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/60">
-          {getRichTextContent(data?.heroTitle) || t.resources.heroTitle}
+          {language === 'it' ? t.resources.heroTitle : (getRichTextContent(data?.heroTitle, language) || t.resources.heroTitle)}
         </h1>
 
         <div className="space-y-6 max-w-3xl mb-12">
           <p ref={p1Ref} className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-            {getRichTextContent(data?.heroDescription1)}
+            {language === 'it' ? t.resources.description1 : (getRichTextContent(data?.heroDescription1, language) || t.resources.description1)}
           </p>
           <p ref={p2Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            {getRichTextContent(data?.heroDescription2)}
+            {language === 'it' ? t.resources.description2 : (getRichTextContent(data?.heroDescription2, language) || t.resources.description2)}
           </p>
           <p ref={p3Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            {getRichTextContent(data?.heroDescription3)}
+            {language === 'it' ? t.resources.description3 : (getRichTextContent(data?.heroDescription3, language) || t.resources.description3)}
           </p>
         </div>
 
         <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link href='/register' className="group relative inline-flex items-center justify-center bg-white text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase overflow-hidden hover:scale-105 transition-transform duration-300">
-            <span className="relative z-10">{data?.heroButton1Text || t.resources.requestAccess}</span>
+            <span className="relative z-10">{language === 'it' ? t.resources.requestAccess : (data?.heroButton1Text || t.resources.requestAccess)}</span>
             <div className="absolute inset-0 bg-green-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
           </Link>
           <Link href='/services' className="inline-flex items-center justify-center border hover:border-white border-white/20 bg-white/5 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase hover:bg-white/10 transition-all duration-300">
-            <span>{data?.heroButton2Text || t.resources.learnMore}</span>
+            <span>{language === 'it' ? t.resources.learnMore : (data?.heroButton2Text || t.resources.learnMore)}</span>
           </Link>
         </div>
       </div>
@@ -166,7 +166,7 @@ function ContentSection({ posts }: { posts: Post[] }) {
 }
 
 function FeaturedCardComponent({ post }: { post: Post }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -197,19 +197,19 @@ function FeaturedCardComponent({ post }: { post: Post }) {
           <div className="absolute inset-0 bg-[#0A1016]/40 z-10 mix-blend-multiply group-hover:bg-transparent transition-all duration-500" />
           <SanityImage
             asset={post.mainImage}
-            alt={getRichTextContent(post.title)}
+            alt={getRichTextContent(post.title, language)}
             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div className="absolute top-6 left-6 z-20">
             <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wider shadow-xl">
-              {getRichTextContent(post.badge) || t.resources.featured}
+              {getRichTextContent(post.badge, language) || t.resources.featured}
             </span>
           </div>
         </div>
 
         <div className="relative z-20 w-full lg:w-1/2 p-8 md:p-14 flex flex-col justify-center">
           <h3 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight group-hover:text-green-400 transition-colors duration-300">
-            {getRichTextContent(post.title)}
+            {getRichTextContent(post.title, language)}
           </h3>
 
           <div className="text-gray-300 text-lg leading-relaxed font-light">
@@ -230,6 +230,7 @@ function FeaturedCardComponent({ post }: { post: Post }) {
 }
 
 function ContentCardComponent({ post, className = '' }: { post: Post, className?: string }) {
+  const { language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -260,7 +261,7 @@ function ContentCardComponent({ post, className = '' }: { post: Post, className?
         <div className="mb-6 relative overflow-hidden rounded-2xl shrink-0">
           <SanityImage
             asset={post.mainImage}
-            alt={getRichTextContent(post.title)}
+            alt={getRichTextContent(post.title, language)}
             className="w-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out h-56"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -269,12 +270,12 @@ function ContentCardComponent({ post, className = '' }: { post: Post, className?
         <div className="flex flex-col flex-grow">
           <div className="mb-4">
             <span className="inline-block bg-white/10 text-white/90 text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10 group-hover:bg-green-400 group-hover:text-black group-hover:border-green-400 transition-colors duration-300">
-              {getRichTextContent(post.badge)}
+              {getRichTextContent(post.badge, language)}
             </span>
           </div>
 
           <h3 className="font-bold mb-4 text-white group-hover:text-green-300 transition-colors duration-300 text-xl md:text-2xl leading-tight">
-            {getRichTextContent(post.title)}
+            {getRichTextContent(post.title, language)}
           </h3>
 
           <div className="text-gray-400 text-base leading-relaxed font-light mt-auto">

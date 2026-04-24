@@ -179,7 +179,7 @@ export default function StickyScrollSplit() {
                   {card.description3 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description3, language) }} /></p>}
                   {card.description4 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description4, language) }} /></p>}
 
-                  {card.button_text && (
+                  {index === 9 && card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
                       <Link href='/contact' className="bg-emerald-400 text-black px-6 text-center sm:px-8 py-2 sm:py-3 rounded-full font-semibold  cursor-pointer hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
                         <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.button_text, language) }} />
