@@ -1209,9 +1209,9 @@ export const it = {
 
   resources: {
     heroTitle: 'Risorse & Portale Clienti',
-    description1: 'Caricamento contenuti...',
-    description2: 'Caricamento contenuti...',
-    description3: 'Caricamento contenuti...',
+    description1: 'Il tuo quartier generale digitale per la chiarezza aziendale, le timeline e lo stato in tempo reale. Questo non è un blog tradizionale.',
+    description2: 'Le nostre risorse sono organizzate attorno al portale clienti ORR — una dashboard dove puoi leggere le FAQ, scaricare materiali, richiedere incontri e chattare con un operatore o consulente dal vivo.',
+    description3: 'Invece di articoli sparsi, ricevi una guida strutturata che segue il nostro progetto dal vivo — i blog contengono approfondimenti, guide pratiche e avvisi in tempo reale. Tutto è organizzato intorno al project management e all\'implementazione dell\'IA.',
     button1: 'Richiedi Accesso',
     button2: 'Scopri di Più',
     requestAccess: 'Richiedi Accesso',
@@ -1694,6 +1694,28 @@ export const it = {
   faq: {
     title: 'Domande',
     titleAccent: 'Frequenti',
+    items: [
+      {
+        question: 'Cosa significa che ORR è un Medico di Medicina Generale (GP) aziendale?',
+        answer: 'Così come un medico cura l\'intero corpo, non solo i sintomi, ORR valuta l\'interconnessione della tua organizzazione (operazioni, comunicazioni, personale) per mantenerla sana e prospera. Identifichiamo le vere cause dei punti critici e realizziamo soluzioni personalizzate in cui ogni parte supporta il successo complessivo.'
+      },
+      {
+        question: 'Cosa succede nel primo incontro?',
+        answer: 'A differenza delle consultazioni tipiche, non vendiamo un pacchetto predefinito. Questa è una vera e propria Sessione di Scoperta e Mappatura. Ci sediamo, poniamo le domande giuste per comprendere il tuo attuale stato aziendale (stress, colli di bottiglia o obiettivi) e iniziamo a identificare l\'Approccio Giusto o la Soluzione di Sistema ideale per te. Inoltre, facciamo il Test di Compatibilità Culturale con te, per assicurarci di condividere gli intenti, in caso contrario preferiamo non essere un disservizio per te.'
+      },
+      {
+        question: "Cos'è il rapporto ORR?",
+        answer: 'Il rapporto ORR è un\'analisi completa che ti forniamo dopo il nostro primo incontro. Delinea i problemi chiave che affliggono la tua attività, propone soluzioni rapide e miglioramenti a lungo termine e mostra dove il nostro lavoro di consulenza, sistemi digitali o sistemi viventi avrà il maggiore impatto sulla tua organizzazione.'
+      },
+      {
+        question: 'Quanto costano gli incontri e il rapporto?',
+        answer: 'Il costo dell\'incontro iniziale di mappatura ti viene comunicato dopo la compilazione del form nel portale clienti. Il costo copre il tempo, la competenza e lo strumento diagnostico proprietario di ORR. Include anche il follow-up della Mappatura del Rapporto Diagnostico e un follow-up di 30 minuti senza impegno per spiegarti i passaggi che devi intraprendere — che tu assuma noi o te ne occupi internamente.'
+      },
+      {
+         question: 'Devo continuare a lavorare con ORR dopo il rapporto?',
+         answer: 'No. Il rapporto ORR appartiene a te. Ti forniamo informazioni dettagliate e soluzioni strategiche che hanno un valore eccezionale a prescindere. Molti clienti scelgono di continuare a fare sistema con noi perché amano il nostro approccio e l\'esecuzione, ma tu sei completamente libero di portare la nostra mappa stradale a un fornitore diverso o gestirla con il tuo team interno.'
+      }
+    ]
   },
 
   // ── ORR Report Section ───────────────────────────────────────

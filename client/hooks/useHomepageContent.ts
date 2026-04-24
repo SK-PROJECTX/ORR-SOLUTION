@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { CMSService } from '../lib/cms-api';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export interface HomepageContentData {
   homepage: any;
@@ -20,6 +21,7 @@ export function useHomepageContent() {
   const [content, setContent] = useState<HomepageContentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
   
   const cmsService = new CMSService();
 
@@ -28,10 +30,14 @@ export function useHomepageContent() {
       setLoading(true);
       setError(null);
 
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/all-content/`;
+      const endpoint = `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/all-content/?lang=${language}`;
       console.log('🏠 Homepage fetching data from endpoint:', endpoint);
       
-      const response = await fetch(endpoint);
+      const response = await fetch(endpoint, {
+        headers: {
+          'Accept-Language': language
+        }
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch content');
@@ -59,32 +65,40 @@ export function useHomepageContent() {
       
       // Cache the content
       if (typeof window !== 'undefined') {
-        localStorage.setItem('orr_homepage_content', JSON.stringify(processedContent));
+        localStorage.setItem(`orr_homepage_content_${language}`, JSON.stringify(processedContent));
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch content');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     // Try to load from cache first for immediate display
     if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('orr_homepage_content');
+      const cacheKey = `orr_homepage_content_${language}`;
+      const cached = localStorage.getItem(cacheKey);
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
+          console.log(`📦 Found cached content for ${language}, showing immediately while fetching fresh data...`);
           setContent(parsed);
-          setLoading(false); // We have cached content, so we can stop showing full page spinner
+          // We still keep loading = true to show a subtle progress indicator if needed, 
+          // or just show the cached data. Let's keep it false for instant feel.
+          setLoading(false);
         } catch (e) {
           console.error('Failed to parse cached content', e);
+          setLoading(true);
         }
+      } else {
+        setLoading(true);
       }
     }
     
+    console.log(`🔄 Triggering fresh fetch for language: ${language}`);
     fetchAllContent();
-  }, [fetchAllContent]);
+  }, [fetchAllContent, language]);
 
   const updateHomepage = useCallback(async (data: any) => {
     try {

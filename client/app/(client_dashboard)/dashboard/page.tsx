@@ -10,6 +10,7 @@ import { useDocumentStore } from '@/store/documentStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import api from '@/lib/axios';
 import { useLanguage } from '@/app/components/LanguageProvider';
+import Skeleton from '@/components/ui/Skeleton';
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -35,7 +36,7 @@ const StatCard: React.FC<StatCardProps> = ({ icon, title, value, loading, change
       </div>
       <h3 className="text-sm font-medium text-foreground opacity-70 mb-1">{title}</h3>
       {loading ? (
-        <div className="h-8 w-16 bg-secondary/50 rounded animate-pulse"></div>
+        <Skeleton width={64} height={32} />
       ) : (
         <p className="text-2xl font-bold text-foreground">{value}</p>
       )}
@@ -67,7 +68,7 @@ export default function Dashboard() {
         const response = await api.get('/subscription/status/');
         const data = response.data?.data;
         if (data?.is_subscribed) {
-          setWalletBalance('Active');
+          setWalletBalance(data.plan_name || 'Active');
         } else {
           setWalletBalance('No Plan');
         }
@@ -302,7 +303,7 @@ export default function Dashboard() {
               </div>
               <p className="text-sm text-foreground opacity-60 mb-2">{interpolate(t.dashboard.page.wallet.status)}</p>
               {walletLoading ? (
-                <div className="h-10 w-24 bg-secondary/50 rounded animate-pulse mb-4"></div>
+                <Skeleton width={100} height={40} className="mb-4" />
               ) : (
                 <p className={`text-2xl font-bold mb-4 ${walletBalance === 'Active' ? 'text-green-400' : 'text-primary'}`}>
                   {walletBalance}

@@ -9,6 +9,7 @@ interface NetworkCard {
   title: string;
   description: string;
   icon: string;
+  ctaText?: string;
 }
 
 interface NetworkAdvantageItem {

@@ -99,16 +99,18 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
   subscriptionStatus: null,
 
   fetchWalletBalance: async () => {
+    set({ isLoading: true });
     try {
       const response = await api.get('/wallet/balance/');
       set({ 
-        walletBalance: response.data.data?.balance || 0,
-        currency: response.data.data?.currency || 'USD'
+        walletBalance: Number(response.data.data?.balance || 0),
+        currency: response.data.data?.currency || 'USD',
+        isLoading: false
       });
     } catch (error) {
       console.error('Failed to fetch wallet balance:', error);
       // Fallback to 0 if endpoint doesn't exist
-      set({ walletBalance: 0 });
+      set({ walletBalance: 0, isLoading: false });
     }
   },
 
@@ -121,11 +123,17 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       ]);
       
       const isSubscribed = statusResponse.data.data?.is_subscribed || false;
-      const plans = plansResponse.data.data.map((plan: any) => ({
+      const subPlanName = statusResponse.data.data?.plan_name || '';
+      
+      const rawPlans = plansResponse.data.data || plansResponse.data || [];
+      const plans = Array.isArray(rawPlans) ? rawPlans.map((plan: any) => ({
         ...plan,
-        amount: plan.amount / 100,
-        is_active: isSubscribed && (plan.amount === 220 || plan.name.toLowerCase().includes('report'))
-      }));
+        amount: Number(plan.amount) / 100,
+        is_active: isSubscribed && (
+          plan.name === subPlanName || 
+          (subPlanName.toLowerCase().includes('meeting') && plan.name.toLowerCase().includes('meeting'))
+        )
+      })) : [];
       
       set({ 
         pricingPlans: plans, 
@@ -140,38 +148,43 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
   },
 
   fetchSubscriptionStatus: async () => {
+    set({ isLoading: true });
     try {
       const response = await api.get('/subscription/status/');
-      set({ subscriptionStatus: response.data.data });
+      set({ subscriptionStatus: response.data.data, isLoading: false });
     } catch (error) {
       console.error('Failed to fetch subscription status:', error);
-      set({ subscriptionStatus: { is_subscribed: false } });
+      set({ subscriptionStatus: { is_subscribed: false }, isLoading: false });
     }
   },
 
   fetchPaymentMethods: async () => {
+    set({ isLoading: true });
     try {
       const response = await api.get('/user/payment-methods/');
       console.log('Fetched payment methods:', response.data);
-      const methods = response.data.data || response.data || [];
-      set({ paymentMethods: methods });
+      const responseData = response.data.data || response.data || [];
+      const methods = Array.isArray(responseData) ? responseData : [];
+      set({ paymentMethods: methods, isLoading: false });
     } catch (error: any) {
       console.error('Failed to fetch payment methods:', error);
-      const errorMessage = error.response?.data?.message || 'Failed to fetch payment methods. Please check if your account is fully set up.';
+      const errorMessage = error.response?.data?.message || 'Failed to fetch payment methods.';
       useToastStore.getState().addToast(errorMessage, 'error');
-      set({ paymentMethods: [] });
+      set({ paymentMethods: [], isLoading: false });
     }
   },
 
   fetchBillingHistory: async () => {
+    set({ isLoading: true });
     try {
       const response = await api.get('/billing-history/');
       console.log('Fetched billing history:', response.data);
-      const history = response.data.data || response.data || [];
-      set({ billingHistory: history });
+      const responseData = response.data.data || response.data || [];
+      const history = Array.isArray(responseData) ? responseData : [];
+      set({ billingHistory: history, isLoading: false });
     } catch (error: any) {
       console.error('Failed to fetch billing history:', error);
-      set({ billingHistory: [] });
+      set({ billingHistory: [], isLoading: false });
     }
   },
 
@@ -179,8 +192,15 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     set({ isLoading: true });
     try {
       const response = await api.get('/wallet/transactions/', { params });
+      const responseData = response.data.data?.results || response.data.data || response.data || [];
+      const transactions = Array.isArray(responseData) ? responseData.map((tx: any) => ({
+        ...tx,
+        amount: Number(tx.amount || 0),
+        type: tx.transaction_type // Standardize type field
+      })) : [];
+      
       set({ 
-        transactions: response.data.data?.results || response.data.data || [],
+        transactions,
         isLoading: false 
       });
     } catch (error) {
@@ -200,7 +220,9 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     try {
       console.log('🚀 Attempting to create/ensure Stripe customer on backend...');
       const response = await api.post('/user/create-stripe-customer/');
-      const customerId = response.data.customer_id;
+      
+      // Use stripe_customer_id inside the 'data' envelope returned by CustomJSONRenderer
+      const customerId = response.data.data?.stripe_customer_id || response.data.data?.customer_id;
       
       console.log('✅ Stripe Customer Ensured:', customerId);
       set({ stripeCustomerId: customerId });
@@ -225,7 +247,9 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     try {
       const response = await api.post('/setup-intent/');
       console.log('Setup intent created:', response.data);
-      const { client_secret, customer_id } = response.data.data;
+      
+      // Handle response format from backend CreateSetupIntent view inside the 'data' envelope
+      const { client_secret, customer_id } = response.data.data || response.data;
       set({ stripeCustomerId: customer_id });
       return { clientSecret: client_secret, customerId: customer_id };
     } catch (error: any) {
@@ -295,9 +319,10 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       useToastStore.getState().addToast(message, 'success');
       set({ isLoading: false });
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to subscribe to plan:', error);
-      useToastStore.getState().addToast('Failed to subscribe to plan', 'error');
+      const errorMessage = error.response?.data?.message || 'Failed to subscribe to plan';
+      useToastStore.getState().addToast(errorMessage, 'error');
       set({ isLoading: false });
       return false;
     }
@@ -309,26 +334,58 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       const response = await api.post('/payments/create-checkout/', {
         price_id: priceId,
         payment_method_id: paymentMethodId,
-        // Multiple variants for compatibility
         success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/payment/cancel`,
-        successUrl: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${origin}/payment/cancel`,
-        site_url: origin,
       });
       
-      const checkoutData = response.data?.data || response.data;
-      const message = response.data?.message || 'Redirecting to checkout...';
-      useToastStore.getState().addToast(message, 'success');
-
-      if (checkoutData?.checkout_url) {
-        return checkoutData.checkout_url;
+      const data = response.data?.data || response.data;
+      
+      // Handle Direct Success
+      if (data?.status === 'success') {
+        useToastStore.getState().addToast('Subscription/Payment successful!', 'success');
+        // Refresh local state immediately
+        await Promise.all([
+          get().fetchSubscriptionStatus(),
+          get().fetchBillingHistory(),
+          get().fetchWalletBalance(),
+          get().fetchPricingPlans()
+        ]);
+        return null;
       }
+
+      // Handle 3D Secure / Action Required
+      if (data?.status === 'requires_action' && data?.client_secret) {
+        const { loadStripe } = await import('@stripe/stripe-js');
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+        
+        if (!stripe) throw new Error('Stripe failed to load');
+        
+        useToastStore.getState().addToast('Authentication required. Opening payment verification...', 'info');
+        
+        const { error, paymentIntent } = await stripe.confirmCardPayment(data.client_secret);
+        
+        if (error) {
+          throw new Error(error.message);
+        }
+        
+        useToastStore.getState().addToast('Payment verified successfully!', 'success');
+        return null;
+      }
+
+      // Handle Checkout URL (Fallback or guest)
+      if (data?.checkout_url) {
+        useToastStore.getState().addToast('Redirecting to checkout...', 'success');
+        return data.checkout_url;
+      }
+
       return null;
     } catch (error: any) {
       console.error('Failed to create checkout session:', error);
-      const errorMessage = error.response?.data?.message || 'Failed to create checkout session';
-      useToastStore.getState().addToast(errorMessage, 'error');
+      const status = error.response?.status;
+      const serverError = error.response?.data?.error || error.response?.data?.message || error.response?.data;
+      const errorMessage = typeof serverError === 'string' ? serverError : JSON.stringify(serverError) || error.message || 'Failed to create checkout session';
+      
+      useToastStore.getState().addToast(`Error (${status || 'Unknown'}): ${errorMessage}`, 'error');
       return null;
     }
   },
@@ -344,18 +401,59 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
       });
       
       const data = response.data?.data || response.data;
+
+      // Handle Direct Success
+      if (data?.status === 'success') {
+        // Small delay to ensure DB commit is visible to the next GET request
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await Promise.all([
+          get().fetchWalletBalance(),
+          get().fetchTransactions()
+        ]);
+        useToastStore.getState().addToast('Top-up successful', 'success');
+        return null;
+      }
+
+      // Handle 3D Secure / Action Required
+      if (data?.status === 'requires_action' && data?.client_secret) {
+        const { loadStripe } = await import('@stripe/stripe-js');
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+        
+        if (!stripe) throw new Error('Stripe failed to load');
+
+        useToastStore.getState().addToast('Authentication required. Opening verification...', 'info');
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(data.client_secret);
+        
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (paymentIntent?.status === 'succeeded') {
+          // Small delay to ensure DB commit is visible to the next GET request
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await Promise.all([
+            get().fetchWalletBalance(),
+            get().fetchTransactions()
+          ]);
+          useToastStore.getState().addToast('Top-up completed successfully!', 'success');
+          return null;
+        }
+      }
+      
+      // Handle Checkout URL (Guest/Fallback)
       if (data?.checkout_url) {
         return data.checkout_url;
       }
       
-      // If immediate success (e.g. using saved card on backend)
-      await get().fetchWalletBalance();
-      useToastStore.getState().addToast('Top-up successful', 'success');
       return null;
     } catch (error: any) {
       console.error('Failed to initiate top-up:', error);
-      const errorMessage = error.response?.data?.message || 'Failed to initiate top-up';
-      useToastStore.getState().addToast(errorMessage, 'error');
+      const status = error.response?.status;
+      const serverError = error.response?.data?.error || error.response?.data?.message || error.response?.data;
+      const errorMessage = typeof serverError === 'string' ? serverError : JSON.stringify(serverError) || error.message || 'Failed to initiate top-up';
+      
+      useToastStore.getState().addToast(`Error (${status || 'Unknown'}): ${errorMessage}`, 'error');
       return null;
     }
   },

@@ -23,7 +23,15 @@ export function useCachedData<T>(
       if (!isSilent) setLoading(true);
       setError(null);
 
-      const response = await fetch(fetchUrlRef.current);
+      // Extract lang from URL if present to set Accept-Language header
+      const url = new URL(fetchUrlRef.current);
+      const lang = url.searchParams.get('lang') || 'en';
+
+      const response = await fetch(fetchUrlRef.current, {
+        headers: {
+          'Accept-Language': lang
+        }
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch from ${fetchUrlRef.current}`);
       }
@@ -57,14 +65,19 @@ export function useCachedData<T>(
           setData(parsed);
           setLoading(false); // Stop showing full-page loading if we have cache
           hasCache = true;
+          console.log(`📦 [useCachedData] Loaded cached data for key: ${cacheKey}`);
         } catch (e) {
           console.error(`Failed to parse cached ${cacheKey}`, e);
         }
+      } else {
+        // If no cache for this specific key, ensure we show loading
+        setLoading(true);
       }
     }
     
+    console.log(`🔄 [useCachedData] Fetching fresh data for key: ${cacheKey}`);
     fetchData(hasCache); // Silent fetch if we already have data from cache
-  }, [cacheKey, fetchData]);
+  }, [cacheKey, fetchUrl, fetchData]);
 
   return { data, loading, error, refetch: fetchData };
 }

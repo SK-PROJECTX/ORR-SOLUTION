@@ -4,22 +4,23 @@ import EngagementPageClient from "./EngagementPageClient";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-static';
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   try {
     const pages = await client.fetch(engagementPagesSlugQuery);
-    if (!Array.isArray(pages) || pages.length === 0) {
-      // output:export requires at least one path — return placeholder when CMS is empty
-      return [{ slug: '__placeholder' }];
+    const staticPaths = Array.isArray(pages)
+      ? pages.filter((page: any) => page && page.slug).map((page: any) => ({ slug: page.slug }))
+      : [];
+
+    // Ensure we always return at least one path to satisfy Next.js static export if fetch fails
+    if (staticPaths.length === 0) {
+      return [{ slug: 'general' }];
     }
-    return pages
-      .filter((page: any) => page && page.slug)
-      .map((page: any) => ({
-        slug: page.slug,
-      }));
+    return staticPaths;
   } catch (error) {
     console.error("Error in generateStaticParams for Engagement Page:", error);
-    return [{ slug: '__placeholder' }];
+    return [{ slug: 'general' }];
   }
 }
 
@@ -29,7 +30,7 @@ interface PageProps {
 
 export default async function DynamicEngagementPage({ params }: PageProps) {
   const { slug } = await params;
-  
+
   const page = await client.fetch(engagementPageQuery, { slug });
 
   if (!page) {

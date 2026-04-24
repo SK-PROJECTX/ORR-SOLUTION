@@ -137,24 +137,53 @@ export default function OperationalSystemsPage() {
           description={getRichTextContent(content?.process_description, language) || interpolate(t.services.opDescription)}
           sections={[
             {
-              title: getRichTextContent(content?.process_step_1_title, language) || interpolate(t.services.opStep1),
-              content: [
-                getRichTextContent(content?.process_step_1, language) || ""
+              title: language === 'it' ? "Ascolta e Segnala (Scoperta del Sito e del Sistema)" : "Listen & Report (Site & System Discovery)",
+              content: language === 'it' ? [
+                "Iniziamo con una valutazione completa del sito e un'analisi del sistema per comprendere le attuali condizioni ecologiche, i flussi di risorse e il potenziale rigenerativo.",
+                "Il nostro team conduce indagini ecologiche dettagliate, valutazioni della salute del suolo, inventari della biodiversità e valutazioni dei sistemi idrici.",
+                "Analizziamo i modelli di utilizzo del suolo esistenti, identifichiamo le aree degradate e valutiamo le opportunità di ripristino e rigenerazione.",
+                "A seguito della valutazione, sviluppiamo un rapporto di rigenerazione dettagliato che mappa le condizioni attuali e le opportunità di ripristino.",
+                "Coinvolgiamo specialisti della nostra rete - ecologisti, scienziati del suolo, idrologi - per convalidare scoperte e raccomandazioni.",
+                "Un incontro di revisione presenta i risultati, affronta le domande e perfeziona le raccomandazioni in base ai tuoi feedback e alle tue priorità.",
+                "Il rapporto finale fornisce approfondimenti attuabili e propone una chiara tabella di marcia per la rigenerazione con strategie immediate e a lungo termine."
+              ] : [
+                "We begin with comprehensive site assessment and system analysis to understand current ecological conditions, resource flows, and regenerative potential.",
+                "Our team conducts detailed ecological surveys, soil health assessments, biodiversity inventories, and water system evaluations.",
+                "We analyze existing land use patterns, identify degraded areas, and assess opportunities for restoration and regeneration.",
+                "Following assessment, we develop a detailed regeneration report mapping current conditions and restoration opportunities.",
+                "We engage specialists from our network - ecologists, soil scientists, hydrologists - to validate findings and recommendations.",
+                "A review meeting presents findings, addresses questions, and refines recommendations based on your feedback and priorities.",
+                "The final report provides actionable insights and proposes a clear regeneration roadmap with immediate and long-term strategies."
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_2_title, language) || interpolate(t.services.opStep2),
-              content: [
-                getRichTextContent(content?.process_step_2, language) || ""
+              title: language === 'it' ? "Decidi: Documento o Partnership" : "Decide: Document or Partnership",
+              content: language === 'it' ? [
+                "Una volta ricevuto il rapporto di rigenerazione, scegli il tuo percorso:",
+                "• Usa il rapporto in modo indipendente per guidare gli sforzi di rigenerazione interna",
+                "• Coinvolgi ORR per un supporto continuo all'implementazione attraverso una partnership su misura"
+              ] : [
+                "Once you receive the regeneration report, you choose your path forward:",
+                "• Use the report independently to guide internal regeneration efforts",
+                "• Engage ORR for ongoing implementation support through tailored partnership"
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_3_title, language) || interpolate(t.services.opStep3),
-              content: [
-                getRichTextContent(content?.process_step_3, language) || ""
+              title: language === 'it' ? "Gestisci ed Evolvi (Per i Clienti che Continuano)" : "Steward & Evolve (For Clients Who Continue)",
+              content: language === 'it' ? [
+                "Per le partnership in corso, passiamo alle fasi di implementazione e gestione.",
+                "Eseguiamo soluzioni rigenerative, costruiamo infrastrutture ecologiche e stabiliamo sistemi di monitoraggio.",
+                "Il monitoraggio continuo assicura che i sistemi rigenerativi creino un impatto positivo duraturo e si adattino alle mutevoli condizioni.",
+                "Forniamo supporto continuo per l'evoluzione del sistema, aiutandoti a scalare interventi di successo e affinare gli approcci basati sui risultati."
+              ] : [
+                "For ongoing partnerships, we move into implementation and stewardship phases.",
+                "We execute regenerative solutions, build ecological infrastructure, and establish monitoring systems.",
+                "Continuous monitoring ensures regenerative systems create lasting positive impact and adapt to changing conditions.",
+                "We provide ongoing support for system evolution, helping you scale successful interventions and refine approaches based on results."
               ]
             }
           ]}
+          layout="grid"
         />
       </div>
       <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
