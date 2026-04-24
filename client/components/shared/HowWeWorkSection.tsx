@@ -43,7 +43,7 @@ export default function HowWeWorkSection({ title, subtitle, description, section
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-[#0A1B2E] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16 z-30">
+    <section className="relative min-h-screen bg-[var(--color-surface)] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24 py-16 z-30">
       <style jsx>{`
         .animate-fade-up {
           animation: fadeUp 0.8s ease-out forwards;
@@ -120,11 +120,11 @@ export default function HowWeWorkSection({ title, subtitle, description, section
         </div>
 
         <div ref={contentRef} className="max-w-7xl mx-auto fade-animate">
-          <div className="bg-gradient-to-br from-[#2A4A6B] to-[#1E3A5F] rounded-3xl p-1 hover:scale-[1.02] transition-transform duration-500">
-            <div className="bg-[#1E3A5F]/90 rounded-3xl p-8">
+          <div className="bg-gradient-to-br from-[var(--color-card)] to-[var(--color-surface)] rounded-3xl p-1 hover:scale-[1.02] transition-transform duration-500">
+            <div className="bg-[var(--color-card)]/90 rounded-3xl p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-6 lg:gap-8">
                 {/* Listen & Report - spans full left side */}
-                <div className="lg:row-span-2 bg-[#1E3A5F]/60 p-8 lg:border-r border-[#47ff4c]/30 lg:mr-4">
+                <div className="lg:row-span-2 bg-[var(--color-surface)]/60 p-8 lg:border-r border-[#47ff4c]/30 lg:mr-4">
                   <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
                     <span dangerouslySetInnerHTML={getHTML(sections[0]?.title)} />
                   </h3>
@@ -144,7 +144,7 @@ export default function HowWeWorkSection({ title, subtitle, description, section
 
                 {/* Decide section - top right */}
                 {sections[1] && (
-                  <div className="bg-[#1E3A5F]/60 rounded-2xl p-8">
+                  <div className="bg-[var(--color-surface)]/60 rounded-2xl p-8">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
                       <span dangerouslySetInnerHTML={getHTML(sections[1].title)} />
                     </h3>
@@ -165,7 +165,7 @@ export default function HowWeWorkSection({ title, subtitle, description, section
 
                 {/* Optimize section - bottom right */}
                 {sections[2] && (
-                  <div className="bg-[#1E3A5F]/60 rounded-2xl p-8 ">
+                  <div className="bg-[var(--color-surface)]/60 rounded-2xl p-8">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white mb-6 animate-title-glow">
                       <span dangerouslySetInnerHTML={getHTML(sections[2].title)} />
                     </h3>

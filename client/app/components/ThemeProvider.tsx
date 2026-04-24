@@ -15,41 +15,51 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
-  const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>('light');
+  // App is dark-first — default to 'dark' to prevent flash of light mode
+  const [theme, setThemeState] = useState<Theme>('dark');
+  const [effectiveTheme, setEffectiveTheme] = useState<EffectiveTheme>('dark');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme') as Theme;
-    if (stored) {
+    setMounted(true);
+    const stored = localStorage.getItem('theme') as Theme | null;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) {
       setThemeState(stored);
     }
+    // No stored preference → keep 'dark' default
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     let newEffectiveTheme: EffectiveTheme;
-    
+
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       newEffectiveTheme = mediaQuery.matches ? 'dark' : 'light';
-      
+
       const handleChange = (e: MediaQueryListEvent) => {
-        setEffectiveTheme(e.matches ? 'dark' : 'light');
+        const resolved: EffectiveTheme = e.matches ? 'dark' : 'light';
+        setEffectiveTheme(resolved);
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(resolved);
       };
-      
+
       mediaQuery.addEventListener('change', handleChange);
-      
       return () => mediaQuery.removeEventListener('change', handleChange);
     } else {
-      newEffectiveTheme = theme;
+      newEffectiveTheme = theme as EffectiveTheme;
     }
-    
+
     setEffectiveTheme(newEffectiveTheme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   useEffect(() => {
-    document.documentElement.className = effectiveTheme;
+    if (!mounted) return;
+    // Use classList instead of className= so we don't wipe font/other classes on <html>
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(effectiveTheme);
     localStorage.setItem('theme', theme);
-  }, [theme, effectiveTheme]);
+  }, [theme, effectiveTheme, mounted]);
 
   const toggleTheme = () => {
     setThemeState(prev => prev === 'light' ? 'dark' : 'light');

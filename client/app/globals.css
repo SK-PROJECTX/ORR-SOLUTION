@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Default = dark navy (the app's primary design) */
   --color-background: #0d223c;
   --color-foreground: #ffffff;
   --color-primary: #0EC277;
@@ -10,9 +11,14 @@
   --color-card: #204460;
   --color-card-light: #2D597D;
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
+  --color-border: rgba(30, 58, 75, 0.8);
+  --color-input-bg: #0A1F30;
+  --color-surface: #071626;
+  --color-surface-hover: #0E2441;
 }
 
 .dark {
+  /* Darker charcoal variant */
   --color-background: #191919;
   --color-foreground: #ffffff;
   --color-primary: #0ec277;
@@ -20,14 +26,35 @@
   --color-lemon: #13be77;
   --color-green: #0ec277;
   --color-card: #2c2c2c;
+  --color-card-light: #3a3a3a;
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-input-bg: #262626;
+  --color-surface: #1a1a1a;
+  --color-surface-hover: #222222;
+}
 
+.light {
+  /* Light = original navy dark theme (the app's primary design) */
+  --color-background: #0d223c;
+  --color-foreground: #ffffff;
+  --color-primary: #0EC277;
+  --color-secondary: #35536b;
+  --color-lemon: #13be77;
+  --color-green: #0ec277;
+  --color-card: #204460;
+  --color-card-light: #2D597D;
+  --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
+  --color-border: rgba(30, 58, 75, 0.8);
+  --color-input-bg: #0A1F30;
+  --color-surface: #071626;
+  --color-surface-hover: #0E2441;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .star {
@@ -99,7 +126,6 @@ body {
   background-image: var(--gradient-primary);
 }
 
-/* Glassmorphism utility */
 .glass-panel {
   background-color: var(--color-card);
   backdrop-filter: blur(16px);
@@ -111,6 +137,12 @@ body {
 .dark .glass-panel {
   background-color: rgba(44, 44, 44, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.light .glass-panel {
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Glowing border effect matching SVG color */

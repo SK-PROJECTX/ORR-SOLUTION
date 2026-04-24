@@ -94,7 +94,7 @@ export default function WalletDashboard() {
     <div className="w-full max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header & Balance Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-gradient-to-br from-[#0A243A] to-[#071626] border border-[#1E3A4B] rounded-3xl p-8 relative overflow-hidden group shadow-2xl">
+        <div className="lg:col-span-2 bg-gradient-to-br from-[var(--color-card)] to-[var(--color-surface)] border border-[var(--color-border)] rounded-3xl p-8 relative overflow-hidden group shadow-2xl">
           {/* Decorative background element */}
           <div className="absolute top-[-50%] right-[-10%] w-[300px] h-[300px] bg-[#22C55E]/10 blur-[100px] rounded-full group-hover:bg-[#22C55E]/20 transition-all duration-700"></div>
 
@@ -128,7 +128,7 @@ export default function WalletDashboard() {
           </div>
         </div>
 
-        <div className="bg-[#071626] border border-[#1E3A4B] rounded-3xl p-8 flex flex-col justify-center items-center text-center space-y-4">
+        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-3xl p-8 flex flex-col justify-center items-center text-center space-y-4">
           <div className="w-16 h-16 bg-[#1E3A4B] rounded-2xl flex items-center justify-center mb-2">
             <Clock className="w-8 h-8 text-[#22C55E]" />
           </div>
@@ -138,8 +138,8 @@ export default function WalletDashboard() {
       </div>
 
       {/* Transaction History Section */}
-      <div className="bg-card/30 backdrop-blur-md border border-[#1E3A4B] rounded-3xl overflow-hidden shadow-xl">
-        <div className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1E3A4B]">
+      <div className="bg-card/30 backdrop-blur-md border border-[var(--color-border)] rounded-3xl overflow-hidden shadow-xl">
+        <div className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--color-border)]">
           <h3 className="text-xl font-bold text-white flex items-center gap-3">
             {interpolate(t.dashboard.account.wallet.transactions.title)}
             <span className="text-xs bg-[#1E3A4B] px-2 py-1 rounded-lg text-gray-400 font-normal">
@@ -148,7 +148,7 @@ export default function WalletDashboard() {
           </h3>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-[#0A1F30] border border-[#1E3A4B] rounded-xl">
+            <div className="flex items-center gap-2 px-4 py-2 bg-[var(--color-input-bg)] border border-[var(--color-border)] rounded-xl">
               <Filter size={16} className="text-[#22C55E]" />
               <select
                 value={filterType}
@@ -165,7 +165,7 @@ export default function WalletDashboard() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-[#0A1F30] border border-[#1E3A4B] rounded-xl px-4 py-2 text-sm text-white outline-none cursor-pointer"
+              className="bg-[var(--color-input-bg)] border border-[var(--color-border)] rounded-xl px-4 py-2 text-sm text-foreground outline-none cursor-pointer"
             >
               <option value="all">All Status</option>
               <option value="completed">Completed</option>
@@ -178,7 +178,7 @@ export default function WalletDashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-[#1E3A4B]">
+              <tr className="text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-[var(--color-border)]">
                 <th className="px-8 py-4">{interpolate(t.dashboard.account.wallet.transactions.date)}</th>
                 <th className="px-8 py-4">{interpolate(t.dashboard.account.wallet.transactions.type)}</th>
                 <th className="px-8 py-4">Description</th>
@@ -225,7 +225,7 @@ export default function WalletDashboard() {
                     </td>
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#1E3A4B] flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-lg bg-[var(--color-card)] flex items-center justify-center">
                           {getTransactionIcon(tx.type)}
                         </div>
                         <span className="text-sm font-semibold text-white capitalize">
@@ -270,19 +270,19 @@ export default function WalletDashboard() {
         </div>
 
         {/* Pagination */}
-        <div className="p-8 border-t border-[#1E3A4B] flex items-center justify-between">
+        <div className="p-8 border-t border-[var(--color-border)] flex items-center justify-between">
           <p className="text-xs text-gray-400 font-medium">
             Showing {filteredTransactions.length} results
           </p>
           <div className="flex items-center gap-2">
-            <button className="p-2 bg-[#0A1F30] border border-[#1E3A4B] rounded-xl text-gray-500 hover:text-white transition-colors">
+            <button className="p-2 bg-[var(--color-input-bg)] border border-[var(--color-border)] rounded-xl text-gray-500 hover:text-white transition-colors">
               <ChevronLeft size={20} />
             </button>
             <div className="flex items-center gap-1">
               <button className="w-10 h-10 rounded-xl bg-[#22C55E] text-black font-bold text-sm">1</button>
-              <button className="w-10 h-10 rounded-xl hover:bg-[#1E3A4B] text-white text-sm transition-colors">2</button>
+              <button className="w-10 h-10 rounded-xl hover:bg-[var(--color-card)] text-foreground text-sm transition-colors">2</button>
             </div>
-            <button className="p-2 bg-[#0A1F30] border border-[#1E3A4B] rounded-xl text-gray-500 hover:text-white transition-colors">
+            <button className="p-2 bg-[var(--color-input-bg)] border border-[var(--color-border)] rounded-xl text-gray-500 hover:text-white transition-colors">
               <ChevronRight size={20} />
             </button>
           </div>

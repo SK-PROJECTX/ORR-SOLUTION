@@ -42,7 +42,7 @@ export default function ClientInvoicesPage() {
   const clientViewInvoices = invoices.filter(inv => inv.status !== 'draft');
 
   return (
-    <div className="min-h-screen text-slate-900 dark:text-white p-4 md:p-8 flex justify-center transition-colors duration-300">
+    <div className="min-h-screen text-foreground p-4 md:p-8 flex justify-center transition-colors duration-300">
       <div className="w-full max-w-6xl space-y-10">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -93,7 +93,7 @@ export default function ClientInvoicesPage() {
             <Link
               key={invoice.id}
               href={`/account/invoices/${invoice.id}`}
-              className="group relative bg-[#0A1A2F]/60 hover:bg-[#0E2441]/80 backdrop-blur-sm border border-white/5 hover:border-primary/30 p-6 rounded-2xl transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl hover:shadow-primary/5 cursor-pointer overflow-hidden"
+              className="group relative bg-[var(--color-surface)]/60 hover:bg-[var(--color-surface-hover)]/80 backdrop-blur-sm border border-[var(--color-border)] hover:border-primary/30 p-6 rounded-2xl transition-all duration-300 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl hover:shadow-primary/5 cursor-pointer overflow-hidden"
             >
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-primary transition-all" />
 

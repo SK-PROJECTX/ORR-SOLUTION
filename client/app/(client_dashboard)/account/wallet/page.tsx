@@ -84,7 +84,7 @@ export default function PlansBillingPage() {
         <h1 className="text-3xl font-semibold text-[#22C55E] mb-6">{interpolate(t.dashboard.page.wallet.title)}</h1>
 
         {/* Tabs */}
-        <div className="flex items-center gap-6 mb-10 border-b border-[#1E3A4B]">
+        <div className="flex items-center gap-6 mb-10 border-b border-[var(--color-border)]">
           <button
             onClick={() => setActiveTab('wallet')}
             className={`pb-4 px-2 text-sm font-bold transition-all relative ${activeTab === 'wallet' ? 'text-[#22C55E]' : 'text-gray-400 hover:text-white'
@@ -117,7 +117,7 @@ export default function PlansBillingPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
               {/* Existing Plans and Payment Methods content... */}
 
-              <div className="bg-card border border-[#1E3A4B] rounded-xl p-6">
+              <div className="bg-card border border-[var(--color-border)] rounded-xl p-6">
                 {isLoading ? (
                   <div className="space-y-4">
                     <Skeleton width={200} height={28} className="mb-2" />
@@ -181,7 +181,7 @@ export default function PlansBillingPage() {
                         </button>
 
                         {isPlanDropdownOpen && (
-                          <div className="absolute right-0 top-full mt-2 w-64 bg-[#071626] border border-[#1E3A4B] rounded-lg shadow-lg z-10">
+                          <div className="absolute right-0 top-full mt-2 w-64 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg shadow-lg z-10">
                             {pricingPlans.map((plan) => (
                               <button
                                 key={plan.id}
@@ -193,7 +193,7 @@ export default function PlansBillingPage() {
                                   }
                                 }}
                                 disabled={plan.amount === 220 && subscriptionStatus?.is_subscribed}
-                                className={`w-full text-left p-3 hover:bg-[#1E3A4B] first:rounded-t-lg last:rounded-b-lg ${plan.amount === 220 && subscriptionStatus?.is_subscribed ? 'opacity-50 cursor-not-allowed' : ''
+                                className={`w-full text-left p-3 hover:bg-[var(--color-input-bg)] first:rounded-t-lg last:rounded-b-lg ${plan.amount === 220 && subscriptionStatus?.is_subscribed ? 'opacity-50 cursor-not-allowed' : ''
                                   }`}
                               >
                                 <div className="flex justify-between items-center">
@@ -206,7 +206,7 @@ export default function PlansBillingPage() {
                                             <div className="font-medium text-[#22C55E]">{localized.name}</div>
                                             <div className="text-xs text-gray-400 my-1">{localized.description}</div>
                                             <div className="text-sm text-white font-bold">
-                                              {interpolate(t.dashboard.pricing.currency)}{plan.amount} {interpolate(t.dashboard.pricing.perHour)}
+                                              {currency}{plan.amount} {interpolate(t.dashboard.pricing.perHour)}
                                             </div>
                                           </>
                                         );
@@ -215,7 +215,7 @@ export default function PlansBillingPage() {
                                         <>
                                           <div className="font-medium text-[#22C55E]">{localized.name}</div>
                                           <div className="text-sm text-gray-300">
-                                            {interpolate(t.dashboard.pricing.currency)}{plan.amount}/{plan.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : plan.billing_type}
+                                            {currency}{plan.amount}/{plan.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : plan.billing_type}
                                           </div>
                                           <div className="text-xs text-gray-400">{localized.description}</div>
                                         </>
@@ -267,7 +267,7 @@ export default function PlansBillingPage() {
               </div>
 
               {/* Payment Method Card */}
-              <div className="bg-card border border-[#1E3A4B] rounded-xl p-6">
+              <div className="bg-card border border-[var(--color-border)] rounded-xl p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-xl font-semibold text-[#22C55E] mb-1">{interpolate(t.dashboard.pricing.payment)}</h3>
@@ -362,7 +362,7 @@ export default function PlansBillingPage() {
             </div>
 
             {/* Billing History */}
-            <div className="bg-card border border-[#1E3A4B] rounded-xl p-6 mb-20">
+            <div className="bg-card border border-[var(--color-border)] rounded-xl p-6 mb-20">
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="text-xl font-semibold text-[#22C55E] mb-1">{interpolate(t.dashboard.billing.history.title)}</h3>
@@ -375,7 +375,7 @@ export default function PlansBillingPage() {
               <div className="w-full overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead>
-                    <tr className="text-gray-300 border-b border-[#1E3A4B]">
+                    <tr className="text-gray-300 border-b border-[var(--color-border)]">
                       <th className="py-3">{interpolate(t.dashboard.billing.history.table.billing)}</th>
                       <th>{interpolate(t.dashboard.billing.history.table.date)}</th>
                       <th>{interpolate(t.dashboard.billing.history.table.amount)}</th>
@@ -398,7 +398,7 @@ export default function PlansBillingPage() {
                       ))
                     ) : billingHistory.length > 0 ? (
                       billingHistory.map((bill) => (
-                        <tr key={bill.id} className="border-b border-[#1E3A4B] text-gray-200 text-nowrap">
+                        <tr key={bill.id} className="border-b border-[var(--color-border)] text-foreground text-nowrap">
                           <td className="py-4 flex items-center gap-3">
                             <div className={`w-4 h-4 border rounded-sm ${bill.status.toLowerCase() === 'paid'
                               ? 'border-[#22C55E] bg-[#22C55E]'

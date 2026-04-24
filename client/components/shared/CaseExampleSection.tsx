@@ -45,7 +45,7 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
   }, []);
 
   return (
-    <section className="relative z-30 py-16 bg-gradient-to-br from-slate-700 to-slate-900">
+    <section className="relative z-30 py-16 bg-[var(--color-surface)]">
       <style jsx>{`
         .animate-fade-in {
           animation: fadeIn 0.8s ease-out forwards;
@@ -101,18 +101,18 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
             </h2>
           
             {/* Three Cards */}
-            <div ref={cardsRef} className="bg-white p-6 grid grid-cols-1 md:grid-cols-3 gap-6 fade-animate hover:scale-[1.02] transition-transform duration-300">
+            <div ref={cardsRef} className="bg-card border border-[var(--color-border)] p-6 grid grid-cols-1 md:grid-cols-3 gap-6 fade-animate hover:scale-[1.02] transition-transform duration-300 rounded-2xl">
               {/* Challenge Card */}
               <div className="text-left">
                 <div className="w-12 h-12 mb-4 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2L2 7L12 12L22 7L12 2M2 17L12 22L22 17M2 12L12 17L22 12"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 animate-card-title">
+                <h3 className="text-lg font-bold text-foreground mb-3 animate-card-title">
                   Challenge
                 </h3>
-                <p className="text-black text-sm leading-relaxed animate-card-text">
+                <p className="text-foreground/80 text-sm leading-relaxed animate-card-text">
                   <span dangerouslySetInnerHTML={getHTML(caseExample.challenge)} />
                 </p>
               </div>
@@ -120,14 +120,14 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
               {/* Solution Card */}
               <div className="text-left">
                 <div className="w-12 h-12 mb-4 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9 21C9 22.1 9.9 23 11 23H13C14.1 23 15 22.1 15 21V20H9V21M12 2A7 7 0 0 0 5 9C5 11.38 6.19 13.47 8 14.74V17A1 1 0 0 0 9 18H15A1 1 0 0 0 16 17V14.74C17.81 13.47 19 11.38 19 9A7 7 0 0 0 12 2Z"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 animate-card-title" style={{animationDelay: '0.2s'}}>
+                <h3 className="text-lg font-bold text-foreground mb-3 animate-card-title" style={{animationDelay: '0.2s'}}>
                   Solution
                 </h3>
-                <p className="text-black text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.3s'}}>
+                <p className="text-foreground/80 text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.3s'}}>
                   <span dangerouslySetInnerHTML={getHTML(caseExample.solution)} />
                 </p>
               </div>
@@ -135,14 +135,14 @@ export default function CaseExampleSection({ caseExample, imageAlt }: CaseExampl
               {/* Result Card */}
               <div className="text-left">
                 <div className="w-12 h-12 mb-4 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M16 6L18.29 8.29L13.41 13.17L9.41 9.17L2 16.59L3.41 18L9.41 12L13.41 16L20.71 8.71L23 11V6H16Z"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 animate-card-title" style={{animationDelay: '0.4s'}}>
+                <h3 className="text-lg font-bold text-foreground mb-3 animate-card-title" style={{animationDelay: '0.4s'}}>
                   Result
                 </h3>
-                <p className="text-black text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.5s'}}>
+                <p className="text-foreground/80 text-sm leading-relaxed animate-card-text" style={{animationDelay: '0.5s'}}>
                   <span dangerouslySetInnerHTML={getHTML(caseExample.result)} />
                 </p>
               </div>

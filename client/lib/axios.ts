@@ -87,20 +87,12 @@ api.interceptors.response.use(
         return Promise.reject(error);
       }
     } else if (error.response?.status && error.response.status >= 500) {
-      console.error(`🚨 FORENSIC API ERROR (${error.response.status}) 🚨`);
-      console.log('URL:', error.config?.url);
-      console.log('Method:', error.config?.method?.toUpperCase());
-      console.log('Status Text:', error.response.statusText);
-      console.log('Response Type:', typeof error.response.data);
-      console.log('Data:', error.response.data);
-      
-      const authHeader = error.config?.headers?.Authorization;
-      console.log('Auth Present:', !!authHeader);
-      if (authHeader && typeof authHeader === 'string') {
-        console.log('Auth Start:', authHeader.substring(0, 15) + '...');
+      // Endpoints that are known to fail due to backend config (handled gracefully by the store)
+      const suppressedEndpoints = ['/user/payment-methods/'];
+      const isSuppressed = suppressedEndpoints.some(ep => error.config?.url?.includes(ep));
+      if (!isSuppressed && process.env.NODE_ENV === 'development') {
+        console.error(`🚨 API ${error.response.status} — ${error.config?.method?.toUpperCase()} ${error.config?.url}`, error.response.data);
       }
-
-      console.dir(error.response);
     }
     return Promise.reject(error);
   },
