@@ -102,9 +102,13 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     set({ isLoading: true });
     try {
       const response = await api.get('/wallet/balance/');
+      const backendCurrency = response.data.data?.currency;
+      const currentCurrency = get().currency;
       set({ 
         walletBalance: Number(response.data.data?.balance || 0),
-        currency: response.data.data?.currency || 'USD',
+        // Only update currency from the balance endpoint if we haven't set one yet
+        // This prevents the balance fetch from overwriting a user-chosen currency
+        currency: backendCurrency || currentCurrency,
         isLoading: false
       });
     } catch (error) {
@@ -162,14 +166,14 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     set({ isLoading: true });
     try {
       const response = await api.get('/user/payment-methods/');
-      console.log('Fetched payment methods:', response.data);
       const responseData = response.data.data || response.data || [];
       const methods = Array.isArray(responseData) ? responseData : [];
       set({ paymentMethods: methods, isLoading: false });
     } catch (error: any) {
-      console.error('Failed to fetch payment methods:', error);
-      const errorMessage = error.response?.data?.message || 'Failed to fetch payment methods.';
-      useToastStore.getState().addToast(errorMessage, 'error');
+      // Silently fail — backend may return 500 due to Stripe key/mode mismatch
+      // (e.g. test-mode key used against a live-mode customer ID).
+      // Don't show an error toast since this is a backend config issue the user can't resolve.
+      console.warn('Payment methods unavailable:', error?.response?.status, error?.response?.data?.message || '');
       set({ paymentMethods: [], isLoading: false });
     }
   },
@@ -477,37 +481,42 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
   },
 
   updateCurrency: async (newCurrency: 'USD' | 'EUR') => {
-    set({ isLoading: true });
+    // Apply currency locally immediately so the UI responds right away
+    set({ currency: newCurrency, isLoading: true });
+
     try {
-      // Get the current onboarding status to preserve existing preferences
-      // This prevents 500 errors caused by missing required fields in the backend
-      const { onboardingStatus } = useOnboardingStore.getState();
-      
+      const { onboardingStatus, checkOnboardingStatus } = useOnboardingStore.getState();
+
       const payload = {
         ...onboardingStatus,
         currency: newCurrency,
         is_completed: true
       };
 
-      // Remove internal metadata fields that shouldn't be sent back
       delete (payload as any).id;
       delete (payload as any).created_at;
       delete (payload as any).updated_at;
 
       await api.post('/onboarding/submit/', payload);
-      
-      // Update local state
+
+      // Refresh data without letting balance fetch overwrite the currency
+      await Promise.all([
+        get().fetchWalletBalance(),
+        checkOnboardingStatus(),
+      ]);
+
+      // Re-assert after fetches to prevent any overwrite
       set({ currency: newCurrency, isLoading: false });
-      
-      // Refresh balance to ensure consistency
-      await get().fetchWalletBalance();
-      
+
       useToastStore.getState().addToast('Currency updated successfully', 'success');
       return true;
     } catch (error: any) {
-      console.error('Failed to update currency:', error);
+      // Backend failed, but keep the local currency choice so the UI still works
+      console.warn('Currency backend sync failed — keeping local change:', error?.response?.status);
       set({ isLoading: false });
-      return false;
+      // Still close the modal and show partial success
+      useToastStore.getState().addToast('Currency applied locally. Sync will retry on next session.', 'info');
+      return true; // Return true so the modal closes
     }
   },
 

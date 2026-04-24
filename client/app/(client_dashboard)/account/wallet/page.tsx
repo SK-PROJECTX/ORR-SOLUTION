@@ -206,7 +206,7 @@ export default function PlansBillingPage() {
                                             <div className="font-medium text-[#22C55E]">{localized.name}</div>
                                             <div className="text-xs text-gray-400 my-1">{localized.description}</div>
                                             <div className="text-sm text-white font-bold">
-                                              {interpolate(t.dashboard.pricing.currency)}{plan.amount} {interpolate(t.dashboard.pricing.perHour)}
+                                              {currency}{plan.amount} {interpolate(t.dashboard.pricing.perHour)}
                                             </div>
                                           </>
                                         );
@@ -215,7 +215,7 @@ export default function PlansBillingPage() {
                                         <>
                                           <div className="font-medium text-[#22C55E]">{localized.name}</div>
                                           <div className="text-sm text-gray-300">
-                                            {interpolate(t.dashboard.pricing.currency)}{plan.amount}/{plan.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : plan.billing_type}
+                                            {currency}{plan.amount}/{plan.billing_type === 'monthly' ? interpolate(t.dashboard.billing.perMonth) : plan.billing_type}
                                           </div>
                                           <div className="text-xs text-gray-400">{localized.description}</div>
                                         </>
