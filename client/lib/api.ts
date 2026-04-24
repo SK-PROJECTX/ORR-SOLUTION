@@ -90,11 +90,14 @@ export interface HomepageContent {
   };
 }
 
-export async function fetchHomepageContent(): Promise<HomepageContent> {
-  const endpoint = `${API_BASE_URL}/api/cms/homepage/`;
+export async function fetchHomepageContent(lang: string = 'en'): Promise<HomepageContent> {
+  const endpoint = `${API_BASE_URL}/api/cms/homepage/?lang=${lang}`;
   console.log('🏠 Homepage fetching data from endpoint:', endpoint);
-
-  const response = await fetch(endpoint);
+  const response = await fetch(endpoint, {
+    headers: {
+      'Accept-Language': lang,
+    }
+  });
   if (!response.ok) {
     console.error('❌ Homepage fetch failed:', response.status, response.statusText);
     throw new Error('Failed to fetch homepage content');

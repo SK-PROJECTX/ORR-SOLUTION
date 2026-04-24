@@ -53,10 +53,10 @@ export default function ORRRoleSection({ content, onUpdate }: ORRRoleSectionProp
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mt-40 mb-12 text-center">
-          <SafeHTMLRenderer data={orrRoleSection?.title} fallback={t.orrRole.title} />
+          <SafeHTMLRenderer data={language === 'it' ? t.orrRole.title : (orrRoleSection?.title || t.orrRole.title)} fallback={t.orrRole.title} />
         </h2>
         <p ref={textRef} className="text-gray-300 text-center text-2xl mb-16 max-w-4xl mx-auto">
-          <SafeHTMLRenderer data={orrRoleSection?.description} fallback={t.orrRole.description} />
+          <SafeHTMLRenderer data={language === 'it' ? t.orrRole.description : (orrRoleSection?.description || t.orrRole.description)} fallback={t.orrRole.description} />
         </p>
       </div>
     </section>

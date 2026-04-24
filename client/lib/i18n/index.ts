@@ -1,10 +1,11 @@
 import { en } from './translations/en';
 import { it } from './translations/it';
+import { ar } from './translations/ar';
 
 
-export type Language = 'en' | 'it';
+export type Language = 'en' | 'it' | 'ar';
 
-export const translations = { en, it, } as const;
+export const translations = { en, it, ar } as const;
 
 /**
  * Returns the full translation dictionary for the given language.

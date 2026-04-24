@@ -33,7 +33,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  let message1 = getRichTextContent(messageStrip?.message, language) || t.journey.messages[0];
+  let message1 = language === 'it' ? t.journey.messages[0] : (getRichTextContent(messageStrip?.message, language) || t.journey.messages[0]);
   if (typeof message1 === 'string') {
     // Automatically convert *text* or **text** into <b>text</b>
     message1 = message1.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<b>$1</b>');
@@ -94,7 +94,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
 
       <div className="relative z-10 flex flex-col items-center text-center">
         <h2 ref={titleRef} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-10">
-          <SafeHTMLRenderer data={messageStrip?.title} fallback="Message Strip" />
+          <SafeHTMLRenderer data={language === 'it' ? t.journey.title : (messageStrip?.title || t.journey.title)} fallback={t.journey.title || "Message Strip"} />
         </h2>
 
         <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-primary/20 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none -z-10"></div>

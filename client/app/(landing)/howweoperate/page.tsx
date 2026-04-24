@@ -53,13 +53,13 @@ interface HowWeOperateData {
 const processData = (data: any) => data;
 
 export default function StickyScrollSplit() {
-  const { t, language } = useLanguage();
+  const { t, language, interpolate } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data, loading } = useCachedData<HowWeOperateData>(
-    'orr_how_we_operate_content',
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
+    `orr_how_we_operate_content_${language}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
     (data) => data
   );
 
@@ -101,7 +101,7 @@ export default function StickyScrollSplit() {
       <div className="relative w-full py-20 pt-32 text-foreground">
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24">
           <h1 className="text-center text-primary text-5xl md:text-6xl font-bold mb-12">
-            <span dangerouslySetInnerHTML={getRichTextHTML(data.page.hero_title || t.howWeOperate.heroTitle)} />
+            <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.page.hero_title, language) || interpolate(t.howWeOperate.heroTitle) }} />
           </h1>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function StickyScrollSplit() {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div className="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(card.step_number)} />
+                      <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.step_number, language) }} />
                     </div>
                     <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-2xl">+</span>
@@ -146,52 +146,52 @@ export default function StickyScrollSplit() {
                   </div>
 
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3">
-                    <span dangerouslySetInnerHTML={getRichTextHTML(card.title)} />
+                    <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.title, language) }} />
                   </h2>
 
                   {card.subtitle && (
                     <h3 className="text-base sm:text-lg font-semibold text-primary mb-4">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(card.subtitle)} />
+                      <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.subtitle, language) }} />
                     </h3>
                   )}
 
                   {card.description && (
                     <p className="text-sm sm:text-base text-foreground mb-4">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(card.description)} />
+                      <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description, language) }} />
                     </p>
                   )}
 
                   <div className="space-y-2">
-                    {card.bullet1 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet1)} /></p>}
-                    {card.bullet2 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet2)} /></p>}
-                    {card.wordbreak && <p className="text-foreground text-base sm:text-lg font-bold text-center my-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.wordbreak)} /></p>}
-                    {card.bullet3 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet3)} /></p>}
-                    {card.bullet4 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet4)} /></p>}
-                    {card.bullet5 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet5)} /></p>}
-                    {card.bullet6 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet6)} /></p>}
-                    {card.bullet7 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet7)} /></p>}
-                    {card.bullet8 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet8)} /></p>}
-                    {card.bullet9 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={getRichTextHTML(card.bullet9)} /></p>}
+                    {card.bullet1 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet1, language) }} /></p>}
+                    {card.bullet2 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet2, language) }} /></p>}
+                    {card.wordbreak && <p className="text-foreground text-base sm:text-lg font-bold text-center my-4"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.wordbreak, language) }} /></p>}
+                    {card.bullet3 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet3, language) }} /></p>}
+                    {card.bullet4 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet4, language) }} /></p>}
+                    {card.bullet5 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet5, language) }} /></p>}
+                    {card.bullet6 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet6, language) }} /></p>}
+                    {card.bullet7 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet7, language) }} /></p>}
+                    {card.bullet8 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet8, language) }} /></p>}
+                    {card.bullet9 && <p className="opacity-80 text-sm sm:text-base"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.bullet9, language) }} /></p>}
                   </div>
 
-                  {card.description1 && <p className="opacity-80 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={getRichTextHTML(card.description1)} /></p>}
-                  {card.description2 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description2)} /></p>}
-                  {card.description3 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description3)} /></p>}
-                  {card.description4 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={getRichTextHTML(card.description4)} /></p>}
+                  {card.description1 && <p className="opacity-80 text-sm sm:text-base mt-4"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description1, language) }} /></p>}
+                  {card.description2 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description2, language) }} /></p>}
+                  {card.description3 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description3, language) }} /></p>}
+                  {card.description4 && <p className="opacity-80 text-sm sm:text-base mt-2"><span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.description4, language) }} /></p>}
 
-                  {card.button_text && (
+                  {index === 9 && card.button_text && (
                     <div className="flex flex-col gap-3 mt-6">
                       <Link href='/contact' className="bg-emerald-400 text-black px-6 text-center sm:px-8 py-2 sm:py-3 rounded-full font-semibold  cursor-pointer hover:bg-emerald-300 transition-all hover:scale-105 text-sm sm:text-base">
-                        <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text)} />
+                        <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.button_text, language) }} />
                       </Link>
                       {card.button_text2 && (
                         <Link href='/services' className="border border-emerald-400  text-center text-primary px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text2)} />
+                          <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.button_text2, language) }} />
                         </Link>
                       )}
                       {card.button_text3 && (
                         <Link href='/login' className="border border-emerald-400 text-center text-primary px-6 sm:px-8 py-2 sm:py-3 rounded-full cursor-pointer font-semibold hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 text-sm sm:text-base">
-                          <span dangerouslySetInnerHTML={getRichTextHTML(card.button_text3)} />
+                          <span dangerouslySetInnerHTML={{ __html: getRichTextContent(card.button_text3, language) }} />
                         </Link>
                       )}
                     </div>
@@ -219,10 +219,10 @@ export default function StickyScrollSplit() {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                   <div className="absolute bottom-2 lg:bottom-8 left-2 lg:left-8 right-2 lg:right-8">
                     <div className="text-primary text-sm lg:text-xl font-bold mb-1 lg:mb-2">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.step_number)} />
+                      <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.steps[activeIndex]?.step_number, language) }} />
                     </div>
                     <div className="text-foreground text-sm lg:text-2xl xl:text-3xl font-bold">
-                      <span dangerouslySetInnerHTML={getRichTextHTML(data.steps[activeIndex]?.title)} />
+                      <span dangerouslySetInnerHTML={{ __html: getRichTextContent(data.steps[activeIndex]?.title, language) }} />
                     </div>
                   </div>
                 </div>

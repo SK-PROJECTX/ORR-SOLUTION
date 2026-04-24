@@ -18,7 +18,7 @@ interface FAQSectionProps {
 }
 
 export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const faqs = content || [];
   
   const [openFAQ, setOpenFAQ] = useState(-1);
@@ -51,6 +51,9 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
     return () => ctx.revert();
   }, []);
 
+  // Determine which items to render
+  const itemsToRender = (language === 'it' && t.faq?.items) ? t.faq.items : faqs;
+
   return (
     <section className="w-full text-foreground bg-background px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins transition-colors duration-300">
       
@@ -61,7 +64,7 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
         </h2>
 
         <div className="space-y-4">
-          {faqs.map((faq: any, index: number) => (
+          {itemsToRender.map((faq: any, index: number) => (
             <div ref={el => { faqsRef.current[index] = el; }} key={index} className={`rounded-2xl overflow-hidden border border-gray-100 dark:border-white/10 transition-all duration-300 ${openFAQ === index ? 'bg-primary text-white' : 'glass-panel'}`}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === index ? -1 : index)}

@@ -130,38 +130,96 @@ export default function StrategyAdvisoryPage() {
       </div>
       <div ref={el => { sectionsRef.current[2] = el; }} className="section-animate">
         <HowWeWorkSection
-          title={getRichTextContent(content?.process_title, language) || ""}
+          title={getRichTextContent(content?.process_title, language) || interpolate(t.services.howWeWork || "Our Strategic Process")}
           subtitle={getRichTextContent(content?.process_subtitle, language) || ""}
           description={getRichTextContent(content?.process_description, language) || ""}
           sections={[
             {
-              title: getRichTextContent(content?.process_step_1_title, language) || "",
-              subtitle: getRichTextContent(content?.process_step_1_subtitle, language) || "",
-              content: [
-                getRichTextContent(content?.process_step_1, language) || ""
+              title: language === 'it' ? "Ascolta e Segnala (Scoperta del Sito e del Sistema)" : "Listen & Report (Site & System Discovery)",
+              content: language === 'it' ? [
+                "Iniziamo con una valutazione completa del sito e un'analisi del sistema per comprendere le attuali condizioni ecologiche, i flussi di risorse e il potenziale rigenerativo.",
+                "Il nostro team conduce indagini ecologiche dettagliate, valutazioni della salute del suolo, inventari della biodiversità e valutazioni dei sistemi idrici.",
+                "Analizziamo i modelli di utilizzo del suolo esistenti, identifichiamo le aree degradate e valutiamo le opportunità di ripristino e rigenerazione.",
+                "A seguito della valutazione, sviluppiamo un rapporto di rigenerazione dettagliato che mappa le condizioni attuali e le opportunità di ripristino.",
+                "Coinvolgiamo specialisti della nostra rete - ecologisti, scienziati del suolo, idrologi - per convalidare scoperte e raccomandazioni.",
+                "Un incontro di revisione presenta i risultati, affronta le domande e perfeziona le raccomandazioni in base ai tuoi feedback e alle tue priorità.",
+                "Il rapporto finale fornisce approfondimenti attuabili e propone una chiara tabella di marcia per la rigenerazione con strategie immediate e a lungo termine."
+              ] : [
+                "We begin with comprehensive site assessment and system analysis to understand current ecological conditions, resource flows, and regenerative potential.",
+                "Our team conducts detailed ecological surveys, soil health assessments, biodiversity inventories, and water system evaluations.",
+                "We analyze existing land use patterns, identify degraded areas, and assess opportunities for restoration and regeneration.",
+                "Following assessment, we develop a detailed regeneration report mapping current conditions and restoration opportunities.",
+                "We engage specialists from our network - ecologists, soil scientists, hydrologists - to validate findings and recommendations.",
+                "A review meeting presents findings, addresses questions, and refines recommendations based on your feedback and priorities.",
+                "The final report provides actionable insights and proposes a clear regeneration roadmap with immediate and long-term strategies."
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_2_title, language) || "",
-              content: [
-                getRichTextContent(content?.process_step_2, language) || ""
+              title: language === 'it' ? "Decidi: Documento o Partnership" : "Decide: Document or Partnership",
+              content: language === 'it' ? [
+                "Una volta ricevuto il rapporto di rigenerazione, scegli il tuo percorso:",
+                "• Usa il rapporto in modo indipendente per guidare gli sforzi di rigenerazione interna",
+                "• Coinvolgi ORR per un supporto continuo all'implementazione attraverso una partnership su misura"
+              ] : [
+                "Once you receive the regeneration report, you choose your path forward:",
+                "• Use the report independently to guide internal regeneration efforts",
+                "• Engage ORR for ongoing implementation support through tailored partnership"
               ]
             },
             {
-              title: getRichTextContent(content?.process_step_3_title, language) || "",
-              content: [
-                getRichTextContent(content?.process_step_3, language) || ""
+              title: language === 'it' ? "Gestisci ed Evolvi (Per i Clienti che Continuano)" : "Steward & Evolve (For Clients Who Continue)",
+              content: language === 'it' ? [
+                "Per le partnership in corso, passiamo alle fasi di implementazione e gestione.",
+                "Eseguiamo soluzioni rigenerative, costruiamo infrastrutture ecologiche e stabiliamo sistemi di monitoraggio.",
+                "Il monitoraggio continuo assicura che i sistemi rigenerativi creino un impatto positivo duraturo e si adattino alle mutevoli condizioni.",
+                "Forniamo supporto continuo per l'evoluzione del sistema, aiutandoti a scalare interventi di successo e affinare gli approcci basati sui risultati."
+              ] : [
+                "For ongoing partnerships, we move into implementation and stewardship phases.",
+                "We execute regenerative solutions, build ecological infrastructure, and establish monitoring systems.",
+                "Continuous monitoring ensures regenerative systems create lasting positive impact and adapt to changing conditions.",
+                "We provide ongoing support for system evolution, helping you scale successful interventions and refine approaches based on results."
               ]
             }
           ]}
-          layout="single"
+          layout="grid"
         />
       </div>
       <div ref={el => { sectionsRef.current[3] = el; }} className="section-animate">
         <NetworkAdvantageSection
-          title={getRichTextContent(content?.network_title, language) || ""}
-          description={getRichTextContent(content?.network_description, language) || ""}
-          networkCards={content?.network_cards || []}
+          title={getRichTextContent(content?.network_title, language) || interpolate(t.services.networkAdvantage || "The ORR Network Advantage")}
+          description={getRichTextContent(content?.network_description, language) || "Complex compliance challenges require diverse expertise. We activate global specialists to deliver results."}
+          networkCards={[
+            {
+              title: interpolate(t.services.legalRegistry || "Legal & Regulatory Experts"),
+              description: interpolate(t.services.legalDesc || "Specialized attorneys and compliance professionals across multiple jurisdictions"),
+              icon: "M12 3c-1.1 0-2 .9-2 2v2H7c-1.1 0-2 .9-2 2v2h14v-2c0-1.1-.9-2-2-2h-3V5c0-1.1-.9-2-2-2zm0 2h-1v2h2V5h-1zm9 6H3v2h18v-2zm-9 3c-2.8 0-5 2.2-5 5v3h10v-3c0-2.8-2.2-5-5-5z",
+              ctaText: interpolate(t.services.applyLegal || "Apply as Legal Expert")
+            },
+            {
+              title: interpolate(t.services.scientificAdvisors || "Scientific Advisors"),
+              description: interpolate(t.services.scientificDesc || "PhDs and researchers in biotechnology, environmental and computer science, and related fields"),
+              icon: "M10 2v2h4V2h-4z M12 5c-3.9 0-7 3.1-7 7v7H3v2h18v-2h-2v-7c0-3.9-3.1-7-7-7z M12 18c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z",
+              ctaText: interpolate(t.services.applyScientific || "Join as Scientific Advisor")
+            },
+            {
+              title: interpolate(t.services.industrySpecialists || "Industry Specialists"),
+              description: interpolate(t.services.industryDesc || "Sector-specific consultants with deep regulatory knowledge"),
+              icon: "M22 10v12H2V10l7-5 4 3 6-5 3 3zM12 17v5h4v-5h-4z M4 12v2h2v-2H4z M4 16v2h2v-2H4z",
+              ctaText: interpolate(t.services.applyIndustry || "Become an Industry Specialist")
+            },
+            {
+              title: interpolate(t.services.techAuditors || "Technical Auditors"),
+              description: interpolate(t.services.techAuditorsDesc || "Certification professionals for ISO, GMP, and other standards"),
+              icon: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm0-4H7v-2h2v2zm0-4H7V7h2v2zm8 8h-6v-2h6v2zm0-4h-6v-2h6v2zm0-4h-6V7h6v2z",
+              ctaText: interpolate(t.services.applyAuditor || "Collaborate as an Auditor")
+            },
+            {
+              title: interpolate(t.services.esgConsultants || "ESG Consultants"),
+              description: interpolate(t.services.esgDesc || "Sustainability experts and carbon accounting specialists"),
+              icon: "M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7.5 13.5 12.5 13.5 15.5 13.5C15.5 13.5 16 13.75 16 14.25C16 14.75 15.5 15 15.5 15C12.5 15 7.5 15 3.75 18.75C3.75 18.75 5.25 20.5 8 20.5C11.5 20.5 17 16 17 8Z",
+              ctaText: interpolate(t.services.applyEsg || "Partner as ESG Consultant")
+            }
+          ]}
         />
       </div>
       <div ref={el => { sectionsRef.current[4] = el; }} className="section-animate">

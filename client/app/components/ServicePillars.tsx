@@ -38,19 +38,10 @@ export default function ServicePillar({ content, onUpdate }: ServicePillarProps)
           const value = obj[key];
           if (value === null || value === undefined) {
             converted[key] = '';
-          } else if (typeof value === 'string') {
-            converted[key] = interpolate(value);
-          } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-            // Check for language-specific fields or generic content
-            let val = '';
-            if (value[language] && typeof value[language] === 'string') {
-              val = value[language];
-            } else if (value.content && typeof value.content === 'string') {
-              val = value.content;
-            }
-            converted[key] = interpolate(val);
           } else {
-            converted[key] = interpolate(String(value));
+            // Use the utility to extract content safely for current language
+            const text = getRichTextContent(value, language);
+            converted[key] = interpolate(text || '');
           }
         });
         return converted;

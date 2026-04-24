@@ -33,6 +33,7 @@ const PaymentForm = ({ onClose }: { onClose: () => void }) => {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const { fetchPaymentMethods, healthCheck } = useWalletStore();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -86,9 +87,12 @@ const PaymentForm = ({ onClose }: { onClose: () => void }) => {
         console.log('Param:', (err as any).param);
         console.log('---------------------');
         
+        setErrorMessage(err.message || 'Failed to create payment method');
         useToastStore.getState().addToast(err.message || 'Failed to create payment method', 'error');
         return;
       }
+
+      setErrorMessage(null); // Clear any previous errors on success
 
       console.log('✅ RAW STRIPE RESULT:', result);
       const paymentMethod = result.paymentMethod;
@@ -138,6 +142,18 @@ const PaymentForm = ({ onClose }: { onClose: () => void }) => {
           }}
         />
       </div>
+
+      {isLoading && (
+        <div className="text-sm text-gray-400 animate-pulse text-center">
+          Verifying card with Stripe...
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+          {errorMessage}
+        </div>
+      )}
 
       <div className="flex gap-3 justify-end">
         <button

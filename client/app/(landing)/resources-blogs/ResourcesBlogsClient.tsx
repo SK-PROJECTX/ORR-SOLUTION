@@ -8,6 +8,7 @@ import { useLanguage } from "../../components/LanguageProvider";
 import { useScrollSplit } from "@/hooks/useScrollSplit";
 import SanityImage from "@/components/SanityImage";
 import { PortableText } from "@portabletext/react";
+import { getRichTextContent } from "@/lib/rich-text-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,7 +61,7 @@ export default function ResourcesBlogsClient({
 }
 
 function HeroSection({ data }: { data: PageData }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const p1Ref = useRef<HTMLParagraphElement>(null);
   const p2Ref = useRef<HTMLParagraphElement>(null);
@@ -107,28 +108,28 @@ function HeroSection({ data }: { data: PageData }) {
 
       <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
         <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/60">
-          {data?.heroTitle || t.resources.heroTitle}
+          {language === 'it' ? t.resources.heroTitle : (getRichTextContent(data?.heroTitle, language) || t.resources.heroTitle)}
         </h1>
 
         <div className="space-y-6 max-w-3xl mb-12">
           <p ref={p1Ref} className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-            {data?.heroDescription1}
+            {language === 'it' ? t.resources.description1 : (getRichTextContent(data?.heroDescription1, language) || t.resources.description1)}
           </p>
           <p ref={p2Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            {data?.heroDescription2}
+            {language === 'it' ? t.resources.description2 : (getRichTextContent(data?.heroDescription2, language) || t.resources.description2)}
           </p>
           <p ref={p3Ref} className="text-gray-400 text-base md:text-lg leading-relaxed font-light">
-            {data?.heroDescription3}
+            {language === 'it' ? t.resources.description3 : (getRichTextContent(data?.heroDescription3, language) || t.resources.description3)}
           </p>
         </div>
 
         <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link href='/register' className="group relative inline-flex items-center justify-center bg-white text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase overflow-hidden hover:scale-105 transition-transform duration-300">
-            <span className="relative z-10">{data?.heroButton1Text || t.resources.requestAccess}</span>
+            <span className="relative z-10">{language === 'it' ? t.resources.requestAccess : (data?.heroButton1Text || t.resources.requestAccess)}</span>
             <div className="absolute inset-0 bg-green-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
           </Link>
           <Link href='/services' className="inline-flex items-center justify-center border hover:border-white border-white/20 bg-white/5 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide uppercase hover:bg-white/10 transition-all duration-300">
-            <span>{data?.heroButton2Text || t.resources.learnMore}</span>
+            <span>{language === 'it' ? t.resources.learnMore : (data?.heroButton2Text || t.resources.learnMore)}</span>
           </Link>
         </div>
       </div>
@@ -171,7 +172,7 @@ function ContentSection({ posts }: { posts: Post[] }) {
 }
 
 function FeaturedCardComponent({ post }: { post: Post }) {
-  const { language, t } = useLanguage();
+  const { t, language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
 
   const title = post.title?.[language] || post.title?.en || "";

@@ -35,7 +35,7 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
           <img src="/images/logo.svg" alt="Logo" className="h-16 w-auto" />
           <div className="space-y-1">
             <h1 className="text-4xl font-black uppercase tracking-tighter text-[#22C55E]">Wallet Receipt</h1>
-            <p className="text-xl font-bold text-gray-400">#TXN-{transaction.id.substring(0, 8).toUpperCase()}</p>
+            <p className="text-xl font-bold text-gray-400">#TXN-{String(transaction.id).substring(0, 8).toUpperCase()}</p>
           </div>
         </div>
         
@@ -74,11 +74,13 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
           <h3 className="text-xs font-black uppercase tracking-widest text-[#22C55E] border-b border-gray-100 pb-2">Transaction Details</h3>
           <div className="grid grid-cols-2 gap-y-2 text-sm">
             <span className="text-gray-400 font-bold">Transaction Date:</span>
-            <span className="text-gray-900 font-bold text-right">{new Date(transaction.date).toLocaleDateString()}</span>
+            <span className="text-gray-900 font-bold text-right">
+              {new Date(transaction.date).toLocaleDateString()} {new Date(transaction.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
             <span className="text-gray-400 font-bold">Method:</span>
             <span className="text-gray-900 font-bold text-right">Stripe Gateway</span>
             <span className="text-gray-400 font-bold">Ref ID:</span>
-            <span className="text-gray-900 font-mono text-right">{transaction.reference_id || 'N/A'}</span>
+            <span className="text-gray-900 font-mono text-right truncate pl-4">{transaction.reference_id || transaction.id || 'N/A'}</span>
           </div>
         </div>
       </div>
