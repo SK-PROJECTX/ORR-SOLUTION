@@ -21,8 +21,8 @@ function OfferCard({ title, description, icon }: OfferCard) {
   return (
     <div className="relative group w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] max-w-sm card-animate hover:-translate-y-2 transition-transform duration-300">
       <div className="absolute inset-0 bg-secondary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative h-full bg-[#112240] border border-slate-700/50 p-8 rounded-2xl hover:border-secondary/50 transition-colors duration-300 flex flex-col items-center text-center">
-        <div className="w-16 h-16 mb-6 rounded-full bg-[#0a192f] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-slate-700 group-hover:border-secondary/50">
+      <div className="relative h-full bg-card border border-[var(--color-border)] p-8 rounded-2xl hover:border-secondary/50 transition-colors duration-300 flex flex-col items-center text-center">
+        <div className="w-16 h-16 mb-6 rounded-full bg-[var(--color-surface)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-[var(--color-border)] group-hover:border-secondary/50">
           <svg className="w-8 h-8 text-secondary" viewBox="0 0 24 24" fill="currentColor">
             <path d={icon} />
           </svg>
