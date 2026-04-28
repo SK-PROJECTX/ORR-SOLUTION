@@ -8,6 +8,7 @@ import { useMeetingStore } from '@/store/meetingStore';
 import { useBillingStore } from '@/store/billingStore';
 import { useDocumentStore } from '@/store/documentStore';
 import { useNotificationStore } from '@/store/notificationStore';
+import { useWalletStore } from '@/store/walletStore';
 import api from '@/lib/axios';
 import { useLanguage } from '@/app/components/LanguageProvider';
 import Skeleton from '@/components/ui/Skeleton';
@@ -51,8 +52,17 @@ export default function Dashboard() {
   const { fetchBillingHistory, billingHistory, isLoading: billingLoading } = useBillingStore();
   const { fetchDocuments, documents, isLoading: docsLoading } = useDocumentStore();
   const { fetchNotifications, notifications } = useNotificationStore();
-  const [walletBalance, setWalletBalance] = useState<string>('--');
-  const [walletLoading, setWalletLoading] = useState(true);
+  const { 
+    walletBalance, 
+    currency, 
+    fetchWalletBalance, 
+    billingHistory: walletBillingHistory,
+    fetchBillingHistory: fetchWalletBillingHistory,
+    transactions,
+    fetchTransactions,
+    isLoading: walletLoadingStore
+  } = useWalletStore();
+
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
 
@@ -61,25 +71,10 @@ export default function Dashboard() {
     fetchBillingHistory();
     fetchDocuments();
     fetchNotifications();
-
-    // Fetch wallet/subscription balance
-    const fetchWalletBalance = async () => {
-      try {
-        const response = await api.get('/subscription/status/');
-        const data = response.data?.data;
-        if (data?.is_subscribed) {
-          setWalletBalance(data.plan_name || 'Active');
-        } else {
-          setWalletBalance('No Plan');
-        }
-      } catch {
-        setWalletBalance('--');
-      } finally {
-        setWalletLoading(false);
-      }
-    };
     fetchWalletBalance();
-  }, [fetchMyMeetings, fetchBillingHistory, fetchDocuments, fetchNotifications]);
+    fetchWalletBillingHistory();
+    fetchTransactions();
+  }, [fetchMyMeetings, fetchBillingHistory, fetchDocuments, fetchNotifications, fetchWalletBalance, fetchWalletBillingHistory, fetchTransactions]);
 
   const upcomingMeetings = getUpcomingMeetings();
   const unreadNotifications = notifications.filter(n => !n.is_read).length;
@@ -200,8 +195,11 @@ export default function Dashboard() {
           <StatCard 
             icon={<DollarSign className="w-6 h-6 text-white" />}
             title={interpolate(t.dashboard.page.stats.totalInvoices)}
-            value={String(Array.isArray(billingHistory) ? billingHistory.length : 0)}
-            loading={billingLoading}
+            value={String(Math.max(
+              Array.isArray(billingHistory) ? billingHistory.length : 0,
+              (Array.isArray(walletBillingHistory) ? walletBillingHistory.length : 0) + (Array.isArray(transactions) ? transactions.length : 0)
+            ))}
+            loading={billingLoading || walletLoadingStore}
           />
           <StatCard 
             icon={<FileText className="w-6 h-6 text-white" />}
@@ -225,21 +223,6 @@ export default function Dashboard() {
                   <p className="text-foreground opacity-60">{interpolate(t.dashboard.page.welcome.goals)}</p>
                 </div>
               </div>
-
-              {/* <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-secondary/30 rounded-lg">
-                  <div className="text-2xl font-bold text-primary">12</div>
-                  <p className="text-sm text-foreground opacity-70">Active Projects</p>
-                </div>
-                <div className="text-center p-4 bg-secondary/30 rounded-lg">
-                  <div className="text-2xl font-bold text-primary">8</div>
-                  <p className="text-sm text-foreground opacity-70">Completed This Month</p>
-                </div>
-                <div className="text-center p-4 bg-secondary/30 rounded-lg">
-                  <div className="text-2xl font-bold text-primary">95%</div>
-                  <p className="text-sm text-foreground opacity-70">Success Rate</p>
-                </div>
-              </div> */}
             </div>
 
             {/* Performance Chart */}
@@ -302,11 +285,11 @@ export default function Dashboard() {
                 <h4 className="font-semibold text-foreground">{interpolate(t.dashboard.page.wallet.title)}</h4>
               </div>
               <p className="text-sm text-foreground opacity-60 mb-2">{interpolate(t.dashboard.page.wallet.status)}</p>
-              {walletLoading ? (
+              {walletLoadingStore ? (
                 <Skeleton width={100} height={40} className="mb-4" />
               ) : (
-                <p className={`text-2xl font-bold mb-4 ${walletBalance === 'Active' ? 'text-green-400' : 'text-primary'}`}>
-                  {walletBalance}
+                <p className="text-2xl font-bold mb-4 text-primary">
+                  {currency === 'EUR' ? '€' : '$'} {walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               )}
               <button 

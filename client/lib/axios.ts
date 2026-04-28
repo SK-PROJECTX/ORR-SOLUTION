@@ -78,11 +78,7 @@ api.interceptors.response.use(
         
         // Only redirect if not already on an auth page
         if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
-          const redirectUrl =
-            window.location.hostname === "localhost"
-              ? "/login/"
-              : "https://orr.solutions/login/";
-          window.location.href = redirectUrl;
+          window.location.href = "/login/";
         }
         return Promise.reject(error);
       }

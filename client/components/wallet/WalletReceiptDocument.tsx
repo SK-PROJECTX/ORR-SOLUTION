@@ -34,7 +34,9 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
         <div className="space-y-4">
           <img src="/images/logo.svg" alt="Logo" className="h-16 w-auto" />
           <div className="space-y-1">
-            <h1 className="text-4xl font-black uppercase tracking-tighter text-[#22C55E]">Wallet Receipt</h1>
+            <h1 className="text-4xl font-black uppercase tracking-tighter text-[#22C55E]">
+              {interpolate(t.dashboard.account.receipt.title)}
+            </h1>
             <p className="text-xl font-bold text-gray-400">#TXN-{String(transaction.id).substring(0, 8).toUpperCase()}</p>
           </div>
         </div>
@@ -55,15 +57,23 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
           <CheckCircle className="w-8 h-8" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-green-900">Top-Up Successful</h3>
-          <p className="text-green-700">This receipt confirms that <span className="font-bold">{transaction.currency} {transaction.amount.toFixed(2)}</span> has been added to your wallet balance.</p>
+          <h3 className="text-xl font-bold text-green-900">
+            {interpolate(t.dashboard.account.receipt.status)}
+          </h3>
+          <p className="text-green-700">
+            {interpolate(t.dashboard.account.receipt.confirmation, { 
+              amount: `${transaction.currency} ${transaction.amount.toFixed(2)}` 
+            })}
+          </p>
         </div>
       </div>
 
       {/* Details Grid */}
       <div className="grid grid-cols-2 gap-12 mb-12">
         <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-widest text-[#22C55E] border-b border-gray-100 pb-2">Client</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-[#22C55E] border-b border-gray-100 pb-2">
+            {interpolate(t.dashboard.account.receipt.client)}
+          </h3>
           <div className="space-y-1">
             <p className="text-xl font-bold text-gray-900">{user.name}</p>
             <p className="text-gray-500">{user.email}</p>
@@ -71,15 +81,17 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
         </div>
         
         <div className="space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-widest text-[#22C55E] border-b border-gray-100 pb-2">Transaction Details</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-[#22C55E] border-b border-gray-100 pb-2">
+            {interpolate(t.dashboard.account.receipt.transactionDetails)}
+          </h3>
           <div className="grid grid-cols-2 gap-y-2 text-sm">
-            <span className="text-gray-400 font-bold">Transaction Date:</span>
+            <span className="text-gray-400 font-bold">{interpolate(t.dashboard.account.receipt.date)}:</span>
             <span className="text-gray-900 font-bold text-right">
               {new Date(transaction.date).toLocaleDateString()} {new Date(transaction.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
-            <span className="text-gray-400 font-bold">Method:</span>
+            <span className="text-gray-400 font-bold">{interpolate(t.dashboard.account.receipt.method)}:</span>
             <span className="text-gray-900 font-bold text-right">Stripe Gateway</span>
-            <span className="text-gray-400 font-bold">Ref ID:</span>
+            <span className="text-gray-400 font-bold">{interpolate(t.dashboard.account.receipt.reference)}:</span>
             <span className="text-gray-900 font-mono text-right truncate pl-4">{transaction.reference_id || transaction.id || 'N/A'}</span>
           </div>
         </div>
@@ -90,11 +102,13 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
         <div className="flex justify-end">
           <div className="w-full max-w-xs space-y-3">
             <div className="flex justify-between text-sm font-bold">
-              <span className="text-gray-400">Transaction Type</span>
+              <span className="text-gray-400">{interpolate(t.dashboard.account.receipt.type)}</span>
               <span className="text-gray-900">Wallet Credit</span>
             </div>
             <div className="flex justify-between items-center bg-[#22C55E] text-black p-4 rounded-sm">
-              <span className="text-xs font-black uppercase tracking-widest">Total Added</span>
+              <span className="text-xs font-black uppercase tracking-widest">
+                {interpolate(t.dashboard.account.receipt.totalAdded)}
+              </span>
               <span className="text-2xl font-black">{transaction.currency} {transaction.amount.toFixed(2)}</span>
             </div>
           </div>
@@ -104,10 +118,10 @@ export default function WalletReceiptDocument({ transaction, user }: WalletRecei
       {/* Footer */}
       <div className="mt-16 text-center space-y-4">
         <p className="text-xs text-gray-400 max-w-md mx-auto">
-          Thank you for choosing ORR Solutions. This credit is immediately available for settling invoices or purchasing services within the portal.
+          {interpolate(t.dashboard.account.receipt.footer)}
         </p>
         <div className="text-[10px] font-black text-[#22C55E] uppercase tracking-[0.2em]">
-          Electronic Receipt - Automatically Generated
+          {interpolate(t.dashboard.account.receipt.electronic)}
         </div>
       </div>
     </div>
