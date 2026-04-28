@@ -183,7 +183,7 @@ export const useWalletStore = create<WalletState>()((set, get) => ({
     try {
       const response = await api.get('/billing-history/');
       console.log('Fetched billing history:', response.data);
-      const responseData = response.data.data || response.data || [];
+      const responseData = response.data.data?.results || response.data.data || response.data || [];
       const history = Array.isArray(responseData) ? responseData : [];
       set({ billingHistory: history, isLoading: false });
     } catch (error: any) {

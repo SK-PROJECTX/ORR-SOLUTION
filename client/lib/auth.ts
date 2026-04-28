@@ -165,11 +165,7 @@ export class AuthService {
       } else {
         // Refresh failed, logout user
         this.logout();
-        const redirectUrl =
-          typeof window !== 'undefined' && window.location.hostname === "localhost"
-            ? "/login/"
-            : "https://orr.solutions/login/";
-        window.location.href = redirectUrl;
+        window.location.href = "/login/";
       }
     }
 

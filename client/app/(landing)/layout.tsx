@@ -2,7 +2,7 @@ import { LandingHeader } from "../components/LandingHeader";
 import { LandingFooter } from "../components/LandingFooter";
 import AnimatedBackground from "../../components/AnimatedBackground";
 import { CookieConsent } from "../components/CookieConsent";
-import ScrollToTop from "../../components/shared/ScrollToTop";
+import { ScrollToTop } from "../components/ScrollToTop";
 import { FloatingLanguageToggle } from "../components/FloatingLanguageToggle";
 
 export default function LandingLayout({

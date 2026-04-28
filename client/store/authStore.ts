@@ -76,7 +76,9 @@ export const useAuthStore = create<AuthState>()(
             last_name: lastName,
           });
 
-          const { user, accessToken } = response.data.data;
+          const data = response.data.data;
+          const user = data.user;
+          const accessToken = data.access || data.accessToken;
           localStorage.setItem("accessToken", accessToken);
           set({ user, accessToken, isLoading: false });
 
@@ -152,7 +154,11 @@ export const useAuthStore = create<AuthState>()(
           });
 
           if (response.status === 200 || response.status === 201) {
-            const { user, accessToken, refreshToken } = response.data.data;
+            const data = response.data.data;
+            const user = data.user;
+            const accessToken = data.access || data.accessToken;
+            const refreshToken = data.refresh || data.refreshToken;
+
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             set({
@@ -388,11 +394,7 @@ export const useAuthStore = create<AuthState>()(
         set({ user: null, accessToken: null, refreshToken: null });
         useToastStore.getState().addToast("Logged out successfully", "info");
         
-        const redirectUrl =
-          typeof window !== "undefined" && window.location.hostname === "localhost"
-            ? "/login/"
-            : "http://orr.solutions/login/";
-        window.location.href = redirectUrl;
+        window.location.href = "/login/";
       },
 
       clearError: () => {

@@ -28,7 +28,7 @@ export const useBillingStore = create<BillingState>()((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await api.get('/billing-history');
-      const billingData = response.data?.data || response.data || [];
+      const billingData = response.data?.data?.results || response.data?.data || response.data || [];
       set({ billingHistory: Array.isArray(billingData) ? billingData : [], isLoading: false });
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Failed to fetch billing history';
