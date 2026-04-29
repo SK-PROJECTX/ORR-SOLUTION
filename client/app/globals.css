@@ -30,8 +30,8 @@
   --gradient-primary: linear-gradient(135deg, #28b026, #03f6ca);
   --color-border: rgba(255, 255, 255, 0.08);
   --color-input-bg: #262626;
-  --color-surface: #1a1a1a;
-  --color-surface-hover: #222222;
+  --color-surface: #121212;
+  --color-surface-hover: #1e1e1e;
 }
 
 .light {
@@ -106,8 +106,16 @@ body {
   border: var(--color-lemon);
 }
 
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.border-surface {
+  border-color: var(--color-surface);
+}
+
 .border-secondary {
-  border: var(--color-secondary);
+  border-color: var(--color-secondary);
 }
 
 .text-foreground {

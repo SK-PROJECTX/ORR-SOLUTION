@@ -84,7 +84,7 @@ export default function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside className={`h-screen bg-[#212121] text-white flex flex-col justify-between p-6 flex-shrink-0 overflow-y-auto overflow-x-hidden transition-all duration-300 ease-in-out ${isMinimized ? 'w-20' : 'w-[300px]'
+      <aside className={`h-screen bg-card text-white flex flex-col justify-between p-6 flex-shrink-0 overflow-y-auto overflow-x-hidden transition-all duration-300 ease-in-out ${isMinimized ? 'w-20' : 'w-[300px]'
         } ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 fixed lg:relative z-50 lg:z-auto print:hidden`}>
 
