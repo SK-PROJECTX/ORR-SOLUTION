@@ -148,9 +148,9 @@ export default function SupportHistory() {
                         </div>
                         <h3 className="text-lg font-semibold mb-2">{ticket.subject || 'No Subject'}</h3>
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm opacity-90 mb-2">
-                          <p><span className="font-medium">{interpolate(t.dashboard.account.overview.profile.business.priority)}:</span> {ticket.priority}</p>
+                          <p><span className="font-medium">Priority:</span> {ticket.priority}</p>
                           <p><span className="font-medium">{interpolate(t.dashboard.support.sourceLabel)}:</span> {ticket.source}</p>
-                          <p><span className="font-medium">{interpolate(t.dashboard.account.billing.history.date)}:</span> {new Date(ticket.created_at).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}</p>
+                          <p><span className="font-medium">{interpolate(t.dashboard.billing.history.table.date)}:</span> {new Date(ticket.created_at).toLocaleDateString(currentLang === 'it' ? 'it-IT' : 'en-US')}</p>
                           {messages.length > 0 && (
                             <p><span className="font-medium">{interpolate(t.dashboard.support.messagesLabel)}:</span> {messages.length}</p>
                           )}

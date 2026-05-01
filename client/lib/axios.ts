@@ -71,8 +71,17 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       const url = error.config?.url || "";
       const errorData = error.response?.data;
-      // Check if it's a token validation error or a general unauthorized error for private pages
-      if (errorData?.data?.code === "token_not_valid" || !url.includes("/login")) {
+      // Only clear tokens and redirect on explicit token invalidity errors.
+      // Do NOT redirect on 401s from the login endpoint itself (wrong password, etc.)
+      // or from public/onboarding endpoints that may legitimately return 401.
+      const isLoginEndpoint = url.includes("/auth/login/") || url.includes("/login/");
+      const isTokenInvalid =
+        errorData?.data?.code === "token_not_valid" ||
+        errorData?.code === "token_not_valid" ||
+        errorData?.detail === "Given token not valid for any token type" ||
+        (typeof errorData?.detail === "string" && errorData.detail.toLowerCase().includes("token"));
+
+      if (!isLoginEndpoint && isTokenInvalid) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         
