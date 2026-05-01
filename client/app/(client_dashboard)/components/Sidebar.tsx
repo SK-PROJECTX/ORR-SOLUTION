@@ -173,10 +173,10 @@ export default function Sidebar() {
                   href: "/document",
                   hasSub: true,
                   subItems: [
-                    { label: interpolate(t.dashboard.sidebar.items.reports), href: "/document/reports", locked: true },
-                    { label: interpolate(t.dashboard.sidebar.items.uploads), href: '/document/uploads', locked: true },
-                    { label: interpolate(t.dashboard.sidebar.items.templates), href: "/document/templates", locked: true },
-                    { label: interpolate(t.dashboard.sidebar.items.contracts), href: "/document/contracts", locked: true },
+                    { label: "My Workspace", href: "/document" },
+                    // { label: interpolate(t.dashboard.sidebar.items.reports), href: "/document/reports" },
+                    // { label: interpolate(t.dashboard.sidebar.items.uploads), href: '/document/uploads' },
+                    { label: "Activity Log", href: "/document/activity" },
                     { label: interpolate(t.dashboard.sidebar.items.catalogue), href: "/document/catalogue" }
                   ]
                 },
