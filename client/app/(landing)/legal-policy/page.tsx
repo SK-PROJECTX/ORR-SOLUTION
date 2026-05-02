@@ -178,7 +178,7 @@ export default function LegacyPolicy() {
     <div ref={containerRef} className="min-h-screen text-foreground bg-background star selection:bg-primary/30 transition-colors duration-300">
       {/* Scroll Progress Indicator */}
       <div className="fixed top-0 left-0 w-full h-[2px] z-50">
-        <div 
+        <div
           ref={progressRef}
           className="h-full bg-gradient-to-r from-primary via-blue-500 to-primary origin-left scale-x-0"
         />
@@ -202,7 +202,7 @@ export default function LegacyPolicy() {
         <div className="max-w-4xl mx-auto">
           <div
             ref={cardRef}
-            className="glass-panel p-4 relative overflow-hidden rounded-3xl shadow-2xl transition-colors duration-300"
+            className="bg-card p-4 relative overflow-hidden rounded-3xl shadow-2xl transition-colors duration-300"
           >
             <Image
               ref={bgImageRef}

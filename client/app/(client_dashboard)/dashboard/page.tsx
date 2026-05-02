@@ -1,4 +1,5 @@
 "use client";
+import clsx from 'clsx';
 
 import React, { useEffect, useState, useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip } from 'recharts';
@@ -20,26 +21,30 @@ interface StatCardProps {
   loading?: boolean;
   change?: string;
   trend?: 'up' | 'down';
+  className?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ icon, title, value, loading, change, trend }) => {
+const StatCard: React.FC<StatCardProps> = ({ icon, title, value, loading, change, trend, className }) => {
   return (
-    <div className="bg-card border border-secondary rounded-xl p-6 hover:shadow-lg transition-shadow">
+    <div className={clsx(
+      "bg-card backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/5 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 group",
+      className
+    )}>
       <div className="flex items-center justify-between mb-4">
-        <div className="w-12 h-12 rounded-lg bg-gradient-primary flex items-center justify-center">
+        <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
           {icon}
         </div>
         {change && (
-          <span className={`text-xs px-2 py-1 rounded-full ${trend === 'up' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+          <span className={`text-xs px-3 py-1 rounded-full font-bold ${trend === 'up' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
             {change}
           </span>
         )}
       </div>
-      <h3 className="text-sm font-medium text-foreground opacity-70 mb-1">{title}</h3>
+      <h3 className="text-xs font-black uppercase tracking-widest text-white/40 mb-1">{title}</h3>
       {loading ? (
         <Skeleton width={64} height={32} />
       ) : (
-        <p className="text-2xl font-bold text-foreground">{value}</p>
+        <p className="text-2xl font-black text-white">{value}</p>
       )}
     </div>
   );
@@ -52,10 +57,10 @@ export default function Dashboard() {
   const { fetchBillingHistory, billingHistory, isLoading: billingLoading } = useBillingStore();
   const { fetchDocuments, documents, isLoading: docsLoading } = useDocumentStore();
   const { fetchNotifications, notifications } = useNotificationStore();
-  const { 
-    walletBalance, 
-    currency, 
-    fetchWalletBalance, 
+  const {
+    walletBalance,
+    currency,
+    fetchWalletBalance,
     billingHistory: walletBillingHistory,
     fetchBillingHistory: fetchWalletBillingHistory,
     transactions,
@@ -115,7 +120,7 @@ export default function Dashboard() {
 
           <div className="flex items-center gap-4">
             <div className="relative" ref={notifRef}>
-              <button 
+              <button
                 onClick={() => setNotifOpen(!notifOpen)}
                 className="relative p-3 rounded-lg bg-card border border-secondary hover:bg-secondary transition-colors"
               >
@@ -180,19 +185,19 @@ export default function Dashboard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard 
+          <StatCard
             icon={<Users className="w-6 h-6 text-white" />}
             title={interpolate(t.dashboard.page.stats.totalMeetings)}
             value={String(Array.isArray(meetings) ? meetings.length : 0)}
             loading={isLoading}
           />
-          <StatCard 
-            icon={<MousePointer className="w-6 h-6 text-white" />}
+          <StatCard
+            icon={<MousePointer className=" w-6 h-6 text-white" />}
             title={interpolate(t.dashboard.page.stats.upcomingMeetings)}
             value={String(upcomingMeetings.length)}
             loading={isLoading}
           />
-          <StatCard 
+          <StatCard
             icon={<DollarSign className="w-6 h-6 text-white" />}
             title={interpolate(t.dashboard.page.stats.totalInvoices)}
             value={String(Math.max(
@@ -201,7 +206,7 @@ export default function Dashboard() {
             ))}
             loading={billingLoading || walletLoadingStore}
           />
-          <StatCard 
+          <StatCard
             icon={<FileText className="w-6 h-6 text-white" />}
             title={interpolate(t.dashboard.page.stats.documents)}
             value={String(Array.isArray(documents) ? documents.length : 0)}
@@ -238,7 +243,7 @@ export default function Dashboard() {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={(() => {
-                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     const now = new Date();
                     const chartData = [];
                     for (let i = 5; i >= 0; i--) {
@@ -256,16 +261,16 @@ export default function Dashboard() {
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-secondary)" />
                     <XAxis dataKey="month" stroke="var(--color-foreground)" opacity={0.6} />
                     <YAxis stroke="var(--color-foreground)" opacity={0.6} allowDecimals={false} />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'var(--color-card)', 
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'var(--color-card)',
                         border: '1px solid var(--color-secondary)',
                         borderRadius: '8px'
                       }}
                     />
-                    <Bar 
-                      dataKey="meetings" 
-                      fill="var(--color-primary)" 
+                    <Bar
+                      dataKey="meetings"
+                      fill="var(--color-primary)"
                       radius={[4, 4, 0, 0]}
                     />
                   </BarChart>
@@ -292,7 +297,7 @@ export default function Dashboard() {
                   {currency === 'EUR' ? '€' : '$'} {walletBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               )}
-              <button 
+              <button
                 onClick={() => router.push('/account/wallet')}
                 className="w-full py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition-colors"
               >
@@ -323,7 +328,7 @@ export default function Dashboard() {
                     </div>
                     <div className="text-primary group-hover:translate-x-1 transition-transform">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                   </button>
@@ -336,7 +341,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between mb-4">
                 <h6 className="font-semibold text-foreground">{interpolate(t.dashboard.page.upcomingConsultations.title)}</h6>
                 {upcomingMeetings.length > 0 && (
-                  <button 
+                  <button
                     onClick={() => router.push('/consultations/upcoming-consultations')}
                     className="text-xs text-primary hover:text-primary/80 transition-colors"
                   >
@@ -354,7 +359,7 @@ export default function Dashboard() {
                     const { date, day, time } = formatMeetingDate(meeting.requested_datetime);
                     return (
                       <div key={meeting.id} className="flex items-start gap-3 p-3 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors cursor-pointer"
-                           onClick={() => router.push('/consultations/upcoming-consultations')}>
+                        onClick={() => router.push('/consultations/upcoming-consultations')}>
                         <div className="text-center min-w-[45px] flex-shrink-0">
                           <div className="text-lg font-bold text-primary">{date}</div>
                           <div className="text-xs text-foreground opacity-60">{day}</div>
@@ -371,7 +376,7 @@ export default function Dashboard() {
                   <div className="text-center py-8">
                     <Calendar className="w-12 h-12 text-foreground opacity-30 mx-auto mb-3" />
                     <p className="text-foreground opacity-60 text-sm">{interpolate(t.dashboard.page.upcomingConsultations.noMeetings)}</p>
-                    <button 
+                    <button
                       onClick={() => router.push('/meeting-request')}
                       className="text-xs text-primary hover:text-primary/80 transition-colors mt-2"
                     >

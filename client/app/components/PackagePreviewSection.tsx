@@ -49,7 +49,7 @@ export default function PackagePreviewSection() {
 
   return (
     <section className="w-full py-24 px-6 relative overflow-hidden bg-background text-foreground transition-colors duration-300" >
-      
+
 
       <div className="relative z-10 max-w-5xl mx-auto">
         <div ref={titleRef} className="text-center mb-20 space-y-4">
@@ -65,7 +65,7 @@ export default function PackagePreviewSection() {
           {/* Meetings Block */}
           <div
             ref={el => { cardsRef.current[0] = el; }}
-            className="glass-panel border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
+            className="border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
           >
             <div className="space-y-6">
               <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.meetings.title}</h3>
@@ -83,7 +83,7 @@ export default function PackagePreviewSection() {
           {/* Report Block */}
           <div
             ref={el => { cardsRef.current[1] = el; }}
-            className="glass-panel border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
+            className=" border border-gray-200 dark:border-white/10 p-10 md:p-12 rounded-[40px] flex flex-col justify-between hover:border-primary/30 transition-colors duration-500 shadow-sm dark:shadow-none"
           >
             <div className="space-y-6">
               <h3 className="text-primary font-bold text-xs uppercase tracking-[0.3em]">{t.packagePreview.report.title}</h3>

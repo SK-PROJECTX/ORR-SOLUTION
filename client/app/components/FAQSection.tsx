@@ -20,7 +20,7 @@ interface FAQSectionProps {
 export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
   const { t, language } = useLanguage();
   const faqs = content || [];
-  
+
   const [openFAQ, setOpenFAQ] = useState(-1);
   const titleRef = useRef(null);
   const faqsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -56,7 +56,7 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
 
   return (
     <section className="w-full text-foreground bg-background px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden font-poppins transition-colors duration-300">
-      
+
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-16 text-center">
@@ -65,7 +65,7 @@ export default function FAQSection({ content, onUpdate }: FAQSectionProps) {
 
         <div className="space-y-4">
           {itemsToRender.map((faq: any, index: number) => (
-            <div ref={el => { faqsRef.current[index] = el; }} key={index} className={`rounded-2xl overflow-hidden border border-gray-100 dark:border-white/10 transition-all duration-300 ${openFAQ === index ? 'bg-primary text-white' : 'glass-panel'}`}>
+            <div ref={el => { faqsRef.current[index] = el; }} key={index} className={`rounded-2xl overflow-hidden border border-gray-100 dark:border-white/10 transition-all duration-300 ${openFAQ === index ? 'bg-primary text-white' : 'bg-card'}`}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === index ? -1 : index)}
                 className={`w-full p-6 text-left flex items-center justify-between transition-colors ${openFAQ === index ? 'hover:bg-primary/90' : 'hover:bg-primary/10'}`}

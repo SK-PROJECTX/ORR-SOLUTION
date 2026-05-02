@@ -79,11 +79,16 @@ body {
 }
 
 .bg-card {
-  background-color: var(--color-card);
+  background-color: color-mix(in srgb, var(--color-card), transparent 20%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .bg-card-light {
-  background-color: var(--color-card-light);
+  background-color: color-mix(in srgb, var(--color-card-light), transparent 30%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bg-primary {
@@ -135,9 +140,9 @@ body {
 }
 
 .glass-panel {
-  background-color: var(--color-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: color-mix(in srgb, var(--color-card), transparent 40%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }

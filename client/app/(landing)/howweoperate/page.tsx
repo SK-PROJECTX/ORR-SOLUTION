@@ -59,7 +59,7 @@ export default function StickyScrollSplit() {
 
   const { data, loading } = useCachedData<HowWeOperateData>(
     `orr_how_we_operate_content_${language}`,
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/how-we-operate/?lang=${language}`,
     (data) => data
   );
 
@@ -123,7 +123,7 @@ export default function StickyScrollSplit() {
                 }}
               >
                 <div
-                  className="glass-panel backdrop-blur-xl rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
+                  className="bg-card backdrop-blur-xl rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10 w-full transition-all duration-700 ease-out"
                   style={{
                     transform: activeIndex === index
                       ? 'scale(1) rotateY(0deg)'

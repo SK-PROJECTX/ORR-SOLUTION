@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, 
-  Clock, 
-  MessageSquare, 
-  Sparkles, 
-  History, 
-  Download, 
-  Share2, 
+import {
+  ChevronLeft,
+  Clock,
+  MessageSquare,
+  Sparkles,
+  History,
+  Download,
+  Share2,
   Maximize2,
   Send,
   Loader2,
@@ -128,8 +128,8 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
             <button className="p-2 text-white/40 hover:text-white transition-all"><Share2 size={18} /></button>
             <button className="p-2 text-white/40 hover:text-white transition-all"><Maximize2 size={18} /></button>
           </div>
-          
-          <button 
+
+          <button
             onClick={accessStatus === 'idle' ? handleRequestAccess : undefined}
             disabled={accessStatus !== 'idle'}
             className={clsx(
@@ -167,7 +167,7 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
           </button>
 
           <div className="w-px h-8 bg-white/10 mx-2" />
-          <button 
+          <button
             onClick={() => setShowAiPanel(!showAiPanel)}
             className={clsx(
               "flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all",
@@ -187,7 +187,7 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
           {/* Read-only Banner */}
           <AnimatePresence>
             {accessStatus !== 'granted' && (
-              <motion.div 
+              <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
@@ -202,7 +202,7 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
                   </span>
                 </div>
                 {accessStatus === 'idle' && (
-                  <button 
+                  <button
                     onClick={handleRequestAccess}
                     className="text-[10px] font-black uppercase tracking-widest text-orange-400 hover:text-orange-300 transition-colors"
                   >
@@ -215,7 +215,7 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
 
           <div className="flex-1 relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20 p-20 text-center">
-              <iframe 
+              <iframe
                 src={config.url}
                 className="w-full h-full border-none"
                 title={`${config.label} Editor`}
@@ -227,7 +227,7 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
         {/* Side Panels */}
         <AnimatePresence>
           {showAiPanel && (
-            <motion.aside 
+            <motion.aside
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 400, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
@@ -302,15 +302,15 @@ export default function DocumentViewerClient({ id, type, name }: { id: string, t
               {activeTab === 'ai' && (
                 <div className="p-6 bg-white/5 border-t border-white/10">
                   <div className="relative">
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                       placeholder="Ask Gemini about this doc..."
                       className="w-full bg-background border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white text-sm focus:border-primary/50 outline-none transition-all"
                     />
-                    <button 
+                    <button
                       onClick={handleSendMessage}
                       className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-all"
                     >

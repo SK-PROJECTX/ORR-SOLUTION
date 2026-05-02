@@ -32,7 +32,7 @@ export function HeroSection() {
 
     const footer = document.querySelector('footer');
     let footerObserver: IntersectionObserver | null = null;
-    
+
     if (footer) {
       footerObserver = new IntersectionObserver(
         ([entry]) => setIsFooterVisible(entry.isIntersecting),
@@ -79,12 +79,12 @@ export function HeroSection() {
           y: (!isVisible || (isMinimized && isFooterVisible)) ? 100 : 0,
         }}
         transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 25,
-          mass: 1
+          type: "tween",
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1],
         }}
-        className="overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] glass-panel aspect-video"
+        className="overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-card aspect-video will-change-transform"
+        style={{ transform: "translateZ(0)" }}
       >
         <video
           ref={videoRef}
@@ -104,7 +104,7 @@ export function HeroSection() {
 
         <AnimatePresence>
           {isVideoEnded && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}

@@ -26,7 +26,7 @@ interface MiniClientJourneyProps {
 export default function MiniClientJourney({ content, onUpdate }: MiniClientJourneyProps) {
   const messageStrip = content;
   const { t, language, interpolate } = useLanguage();
-  
+
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
@@ -99,7 +99,7 @@ export default function MiniClientJourney({ content, onUpdate }: MiniClientJourn
 
         <div className="absolute top-16 sm:top-20 w-60 h-60 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] bg-primary/20 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none -z-10"></div>
 
-        <div ref={cardRef} className="relative glass-panel max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-2xl border border-gray-200 dark:border-white/20 overflow-hidden min-h-[220px] sm:min-h-[260px] md:min-h-[300px] flex flex-col justify-center">
+        <div ref={cardRef} className="relative bg-card max-w-3xl w-full py-6 sm:py-8 md:py-10 px-6 sm:px-8 md:px-12 rounded-[20px] sm:rounded-[30px] shadow-2xl border border-gray-200 dark:border-white/20 overflow-hidden min-h-[220px] sm:min-h-[260px] md:min-h-[300px] flex flex-col justify-center">
 
           <div className="relative w-full h-full">
             <AnimatePresence mode="wait">

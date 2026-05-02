@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import axios from "axios";
+import api from "@/lib/axios";
 import Spinner from "../../../components/ui/Spinner";
 import { useLanguage } from "../../../app/components/LanguageProvider";
 
@@ -53,8 +53,8 @@ export default function Contact() {
     const fetchData = async () => {
       try {
         console.log(`🔄 Fetching Contact data for language: ${language}`);
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/contact-content/?lang=${language}`,
+        const response = await api.get(
+          `/admin-portal/v1/cms/contact-content/?lang=${language}`,
           {
             headers: {
               'Accept-Language': language
@@ -206,7 +206,7 @@ export default function Contact() {
 
       {/* Contact Form and Details Section */}
       <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 glass-panel p-3 sm:p-4 rounded-2xl">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 bg-card p-3 sm:p-4 rounded-2xl">
           {/* Contact Information Card - Left */}
           <div
             ref={infoCardRef}
@@ -284,7 +284,7 @@ export default function Contact() {
           {/* Contact Form - Right */}
           <div
             ref={formCardRef}
-            className="glass-panel rounded-2xl p-4 sm:p-6 lg:p-8"
+            className="bg-card rounded-2xl p-4 sm:p-6 lg:p-8"
           >
             <form className="space-y-4 sm:space-y-6">
               {/* First Name and Last Name Row */}
