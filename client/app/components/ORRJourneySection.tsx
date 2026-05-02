@@ -74,7 +74,7 @@ export default function ORRJourneySection() {
   return (
     <section ref={sectionRef} className="w-full py-24 px-6 relative overflow-hidden font-poppins bg-background text-foreground transition-colors duration-300">
       {/* Global Background Integration */}
-            <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div ref={headerRef} className="text-center mb-20 space-y-6">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
             {t.journeySection.title}
@@ -103,8 +103,8 @@ export default function ORRJourneySection() {
                   ${step.type === 'critical'
                     ? 'bg-primary/10 border-primary shadow-[0_0_30px_rgba(14,194,119,0.1)] group-hover:border-primary/60'
                     : step.type === 'optional'
-                      ? 'glass-panel border-gray-200 dark:border-white/5 opacity-80 hover:opacity-100 group-hover:border-gray-300 dark:group-hover:border-white/10'
-                      : 'glass-panel border-gray-200 dark:border-white/10 group-hover:border-primary/30'}
+                      ? 'bg-card border-gray-200 dark:border-white/5 opacity-80 hover:opacity-100 group-hover:border-gray-300 dark:group-hover:border-white/10'
+                      : 'bg-card border-gray-200 dark:border-white/10 group-hover:border-primary/30'}
                 `}
               >
                 <div className="space-y-6 flex-grow">
@@ -134,7 +134,7 @@ export default function ORRJourneySection() {
                 {(step as any).subtext && (
                   <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
                     <p className="text-primary font-bold text-lg md:text-xl">
-                      {interpolate(step.subtext, { 
+                      {interpolate(step.subtext, {
                         currency: t.dashboard.pricing.currency,
                         meetingPrice: t.dashboard.pricing.meetingPrice,
                         reportPrice: t.dashboard.pricing.reportPrice,

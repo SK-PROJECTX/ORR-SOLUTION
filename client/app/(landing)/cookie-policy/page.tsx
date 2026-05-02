@@ -165,7 +165,7 @@ export default function CookiePolicy() {
     <div ref={containerRef} className="min-h-screen bg-background text-foreground transition-colors duration-300 star selection:bg-primary/30">
       {/* Scroll Progress Indicator */}
       <div className="fixed top-0 left-0 w-full h-[2px] z-50">
-        <div 
+        <div
           ref={progressRef}
           className="h-full bg-gradient-to-r from-primary via-blue-500 to-primary origin-left scale-x-0"
         />
@@ -189,7 +189,7 @@ export default function CookiePolicy() {
         <div className="max-w-4xl mx-auto">
           <div
             ref={cardRef}
-            className="glass-panel p-4 relative overflow-hidden rounded-3xl shadow-2xl"
+            className="bg-card p-4 relative overflow-hidden rounded-3xl shadow-2xl"
           >
             <Image
               ref={bgImageRef}
@@ -200,7 +200,7 @@ export default function CookiePolicy() {
               className="absolute top-1/2 left-1/2 scale-[3] -translate-x-1/2 -translate-y-1/2 rotate-20 opacity-40"
             />
 
-            <div className="glass-panel rounded-[2rem] p-8 md:p-12 relative border border-white/5">
+            <div className="bg-card rounded-[2rem] p-8 md:p-12 relative border border-white/5">
               {/* Section 1: Introduction */}
               <div
                 ref={(el) => {

@@ -68,7 +68,7 @@ export default function Services() {
 
   const { data, loading } = useCachedData<ServicesData>(
     `orr_services_content_${language}`,
-    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend.orr.solutions'}/admin-portal/v1/cms/services-content/?lang=${language}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'https://orr-backend-105825824472.asia-southeast2.run.app'}/admin-portal/v1/cms/services-content/?lang=${language}`,
     (data) => data
   );
 
@@ -147,7 +147,7 @@ export default function Services() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 md:grid-rows-2">
             {data.stages.slice(0, 4).map((stage, index) => (
-              <div key={stage.id} className="glass-panel rounded-2xl p-8 text-foreground flex flex-col transition-colors duration-300">
+              <div key={stage.id} className="bg-card rounded-2xl p-8 text-foreground flex flex-col transition-colors duration-300">
                 <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
                   <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -174,7 +174,7 @@ export default function Services() {
 
           {/* Stage 5 - Grow (Full Width) */}
           {data.stages[4] && (
-            <div className="glass-panel rounded-2xl p-8 text-foreground max-w-[600px] mx-auto transition-colors duration-300">
+            <div className="bg-card rounded-2xl p-8 text-foreground max-w-[600px] mx-auto transition-colors duration-300">
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -213,7 +213,7 @@ export default function Services() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {data.pillars.map((pillar, index) => (
-              <div key={pillar.id} className="glass-panel rounded-2xl px-8 py-12 text-foreground flex flex-col min-h-[300px] transition-colors duration-300">
+              <div key={pillar.id} className="bg-card rounded-2xl px-8 py-12 text-foreground flex flex-col min-h-[300px] transition-colors duration-300">
                 <h3 className="text-3xl font-bold mb-8 text-center text-foreground">
                   <span dangerouslySetInnerHTML={{ __html: getRichTextContent(pillar.title, language) || "Pillar Title" }} />
                 </h3>

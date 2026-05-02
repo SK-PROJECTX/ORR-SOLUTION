@@ -10,30 +10,37 @@ export function useCachedData<T>(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUrlRef = useRef(fetchUrl);
   const processDataRef = useRef(processData);
 
   useEffect(() => {
-    fetchUrlRef.current = fetchUrl;
     processDataRef.current = processData;
-  }, [fetchUrl, processData]);
+  }, [processData]);
 
   const fetchData = useCallback(async (isSilent = false) => {
+    if (!fetchUrl) return;
+
     try {
       if (!isSilent) setLoading(true);
       setError(null);
 
-      // Extract lang from URL if present to set Accept-Language header
-      const url = new URL(fetchUrlRef.current);
-      const lang = url.searchParams.get('lang') || 'en';
+      // Extract lang from URL safely (handles both absolute and relative)
+      let lang = 'en';
+      try {
+        const url = new URL(fetchUrl, typeof window !== 'undefined' ? window.location.origin : undefined);
+        lang = url.searchParams.get('lang') || 'en';
+      } catch (e) {
+        // Fallback for relative URLs or malformed strings
+        const langMatch = fetchUrl.match(/[?&]lang=([^&]+)/);
+        if (langMatch) lang = langMatch[1];
+      }
 
-      const response = await fetch(fetchUrlRef.current, {
+      const response = await fetch(fetchUrl, {
         headers: {
           'Accept-Language': lang
         }
       });
       if (!response.ok) {
-        throw new Error(`Failed to fetch from ${fetchUrlRef.current}`);
+        throw new Error(`Failed to fetch from ${fetchUrl}`);
       }
       
       const result = await response.json();
@@ -52,7 +59,7 @@ export function useCachedData<T>(
     } finally {
       if (!isSilent) setLoading(false);
     }
-  }, [cacheKey]);
+  }, [cacheKey, fetchUrl]);
 
   useEffect(() => {
     let hasCache = false;
