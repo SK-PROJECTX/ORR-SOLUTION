@@ -12,6 +12,7 @@ import { useLanguage } from "../components/LanguageProvider";
 import { GoogleButton } from "../components/ui/GoogleButton";
 import { Separator } from "../components/ui/Separator";
 import { useToastStore } from "@/store/toastStore";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 export default function Page() {
   const { t, language, interpolate } = useLanguage();
@@ -22,6 +23,7 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const { login, isLoading, error, clearError } = useAuthStore();
+  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
   const { onboardingStatus } = useOnboardingStore();
   const router = useRouter();
 
@@ -206,9 +208,8 @@ export default function Page() {
             <Separator text="OR" />
             <div className="mt-6">
               <GoogleButton 
-                onClick={() => {
-                  useToastStore.getState().addToast(interpolate(t.login.googleComingSoon), "info");
-                }} 
+                onClick={signInWithGoogle} 
+                isLoading={isGoogleLoading}
               />
             </div>
           </div>

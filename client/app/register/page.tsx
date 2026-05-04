@@ -11,6 +11,7 @@ import { useLanguage } from "../components/LanguageProvider";
 import { GoogleButton } from "../components/ui/GoogleButton";
 import { Separator } from "../components/ui/Separator";
 import { useToastStore } from "@/store/toastStore";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 export default function Page() {
   const { t, language, interpolate } = useLanguage();
@@ -26,6 +27,7 @@ export default function Page() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const { register, isLoading, error, clearError } = useAuthStore();
+  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -183,9 +185,8 @@ export default function Page() {
             <div className="mt-6">
               <GoogleButton 
                 text={interpolate(t.register.continueWithGoogle || "Continue with Google")}
-                onClick={() => {
-                  useToastStore.getState().addToast(interpolate(t.register.googleComingSoon), "info");
-                }} 
+                onClick={signInWithGoogle}
+                isLoading={isGoogleLoading}
               />
             </div>
           </div>

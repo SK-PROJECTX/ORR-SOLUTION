@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { AuthService } from '../lib/auth';
+import { GoogleButton } from '../app/components/ui/GoogleButton';
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
   const [error, setError] = useState('');
 
   const auth = AuthService.getInstance();
+  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +100,17 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
             </button>
           </div>
         </form>
+        
+        <div className="mt-6 mb-6 flex items-center">
+          <div className="flex-1 border-t border-gray-200"></div>
+          <span className="px-3 text-gray-500 text-sm">OR</span>
+          <div className="flex-1 border-t border-gray-200"></div>
+        </div>
+
+        <GoogleButton 
+          onClick={signInWithGoogle} 
+          isLoading={isGoogleLoading}
+        />
 
         <div className="mt-4 text-xs text-black">
           Only content editors and administrators can edit page content.
