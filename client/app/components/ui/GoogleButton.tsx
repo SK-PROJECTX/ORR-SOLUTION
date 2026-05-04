@@ -11,13 +11,13 @@ interface GoogleButtonProps {
 
 export const GoogleButton: React.FC<GoogleButtonProps> = ({ onClick, text, isLoading }) => {
   const { t, interpolate } = useLanguage();
-  
+
   return (
     <button
       onClick={onClick}
       disabled={isLoading}
       type="button"
-      className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold py-4 px-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
+      className="w-full cursor-pointer flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold py-4 px-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
     >
       {isLoading ? (
         <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />

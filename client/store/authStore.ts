@@ -33,6 +33,7 @@ interface AuthState {
     lastName: string,
   ) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
+  googleLogin: (credential: string) => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
   resetPassword: (
     uid: string,
@@ -222,6 +223,54 @@ export const useAuthStore = create<AuthState>()(
             status: err.response?.status,
             data: errorData,
           });
+
+          set({ error: errorMessage, isLoading: false });
+          useToastStore.getState().addToast(errorMessage, "error");
+          throw error;
+        }
+      },
+
+      googleLogin: async (credential: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await api.post("/api/auth/google-login/", {
+            credential,
+          });
+
+          if (response.status === 200 || response.status === 201) {
+            const data = response.data.data;
+            const user = data.user;
+            const accessToken = data.access || data.accessToken;
+            const refreshToken = data.refresh || data.refreshToken;
+
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            set({
+              user,
+              accessToken,
+              refreshToken,
+              isLoading: false,
+              error: null,
+            });
+
+            useToastStore
+              .getState()
+              .addToast(
+                `Welcome back, ${user?.first_name || "User"}!`,
+                "success",
+              );
+
+            // Check onboarding status
+            await useOnboardingStore.getState().checkOnboardingStatus();
+
+            return true;
+          } else {
+            throw new Error("Google login failed");
+          }
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          const errorData = err.response?.data as Record<string, unknown> | undefined;
+          let errorMessage = (errorData?.message as string) || err.message || "Google login failed";
 
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().addToast(errorMessage, "error");

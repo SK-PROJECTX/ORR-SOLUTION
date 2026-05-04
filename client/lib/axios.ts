@@ -30,6 +30,7 @@ api.interceptors.request.use(
       "/api/auth/forget-password/",
       "/api/auth/verify-reset-password/",
       "/api/auth/verify-email/",
+      "/api/auth/google-login/",
     ];
 
     const isPublicEndpoint = publicEndpoints.some(endpoint => url.includes(endpoint));
