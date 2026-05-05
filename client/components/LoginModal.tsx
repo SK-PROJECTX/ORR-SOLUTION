@@ -17,7 +17,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
   const [error, setError] = useState('');
 
   const auth = AuthService.getInstance();
-  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
+  const { signInWithGoogle, isLoading: isGoogleLoading, renderGoogleButton } = useGoogleAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,6 +110,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
         <GoogleButton 
           onClick={signInWithGoogle} 
           isLoading={isGoogleLoading}
+          renderGoogleButton={renderGoogleButton}
         />
 
         <div className="mt-4 text-xs text-black">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
@@ -8,6 +8,7 @@ import { useOnboardingStore } from '@/store/onboardingStore';
 export function useGoogleAuth() {
   const { googleLogin, isLoading } = useAuthStore();
   const router = useRouter();
+  const googleButtonRef = useRef<HTMLDivElement | null>(null);
 
   const handleCredentialResponse = useCallback(async (response: any) => {
     try {
@@ -39,6 +40,8 @@ export function useGoogleAuth() {
           client_id: clientId,
           callback: handleCredentialResponse,
           ux_mode: 'popup',
+          // @ts-ignore - disable FedCM which causes AbortError in newer Chrome
+          use_fedcm_for_prompt: false,
         });
       }
     };
@@ -58,11 +61,52 @@ export function useGoogleAuth() {
     }
   }, [handleCredentialResponse]);
 
+  // Render Google's native hidden button as a reliable fallback
+  const renderGoogleButton = useCallback((container: HTMLDivElement | null) => {
+    googleButtonRef.current = container;
+    if (container && typeof window !== 'undefined' && window.google) {
+      window.google.accounts.id.renderButton(container, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        width: '400',
+      });
+    }
+  }, []);
+
   const signInWithGoogle = () => {
     if (typeof window !== 'undefined' && window.google) {
-      window.google.accounts.id.prompt();
+      // Try to click Google's rendered button (most reliable approach)
+      if (googleButtonRef.current) {
+        const iframe = googleButtonRef.current.querySelector('iframe');
+        const btn = googleButtonRef.current.querySelector('div[role="button"]') as HTMLElement;
+        if (btn) {
+          btn.click();
+          return;
+        }
+      }
+      // Fallback to prompt()
+      window.google.accounts.id.prompt((notification: any) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          console.log('Google One Tap not available, reason:', notification.getNotDisplayedReason?.() || notification.getSkippedReason?.());
+          // If prompt fails, try opening Google's OAuth consent screen directly
+          const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+          if (clientId) {
+            const redirectUri = window.location.origin;
+            const scope = 'openid email profile';
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=select_account`;
+            // Open in popup window
+            const popup = window.open(authUrl, 'google-auth', 'width=500,height=600,menubar=no,toolbar=no');
+            if (!popup) {
+              console.error('Popup blocked. Please allow popups for this site.');
+            }
+          }
+        }
+      });
     }
   };
 
-  return { signInWithGoogle, isLoading };
+  return { signInWithGoogle, isLoading, renderGoogleButton };
 }

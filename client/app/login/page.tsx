@@ -23,7 +23,7 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const { login, isLoading, error, clearError } = useAuthStore();
-  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
+  const { signInWithGoogle, isLoading: isGoogleLoading, renderGoogleButton } = useGoogleAuth();
   const { onboardingStatus } = useOnboardingStore();
   const router = useRouter();
 
@@ -210,6 +210,7 @@ export default function Page() {
               <GoogleButton 
                 onClick={signInWithGoogle} 
                 isLoading={isGoogleLoading}
+                renderGoogleButton={renderGoogleButton}
               />
             </div>
           </div>
