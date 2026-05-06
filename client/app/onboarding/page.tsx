@@ -227,9 +227,9 @@ const getQuestionnaire = (t: any, interpolate: any) => ({
         type: "single"
       },
       {
-        question: interpolate(t?.onboarding?.s5?.q2 || '14. Preferred communication tone: (Select all that apply)'),
+        question: interpolate(t?.onboarding?.s5?.q2 || '14. Preferred communication tone:'),
         options: (t?.onboarding?.s5?.options2 || []).map((opt: string) => interpolate(opt)),
-        type: "multiple"
+        type: "single"
       },
       {
         question: interpolate(t?.onboarding?.s5?.q3 || '15. Preferred contact method for notifications:'),
@@ -436,11 +436,12 @@ export default function OnboardingPage() {
       project_description: finalAnswers['4-4'] || '',
       meeting_format: finalAnswers['5-0']?.toLowerCase().includes('video') ? 'video' : 'phone',
       communication_tone: (() => {
-        const tones = finalAnswers['5-1'];
-        if (!Array.isArray(tones)) return 'no_preference';
+        const tone = finalAnswers['5-1'];
+        if (!tone || Array.isArray(tone)) return 'no_preference';
         
         const q = getQuestionnaire(t, interpolate)[5 as keyof ReturnType<typeof getQuestionnaire>];
         const s = q.steps[1];
+        const idx = (s.options || []).indexOf(tone);
         const toneMap: Record<number, string> = {
           0: 'concise',
           1: 'detailed',
@@ -448,13 +449,7 @@ export default function OnboardingPage() {
           3: 'non_technical',
           4: 'no_preference'
         };
-
-        const result = tones.map(t => {
-          const idx = (s.options || []).indexOf(t);
-          return toneMap[idx];
-        }).filter(Boolean);
-
-        return result.length > 0 ? result.join(', ') : 'no_preference';
+        return toneMap[idx] ?? 'no_preference';
       })(),
       notification_preference: finalAnswers['5-2']?.toLowerCase().includes('email') ? 'email' : finalAnswers['5-2']?.toLowerCase().includes('both') ? 'both' : 'email',
       ai_specialist_domains: '',
