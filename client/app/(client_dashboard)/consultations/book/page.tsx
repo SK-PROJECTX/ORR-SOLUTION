@@ -287,34 +287,40 @@ export default function MeetingRequestPage() {
         </div>
 
         {/* DATE + TIME SECTION */}
-        <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-6">
-          {interpolate(t.dashboard.consultations.book.dateTime)}
-        </p>
+        <div className="mt-10 mb-6 flex flex-col items-center">
+          <p className="text-xl font-bold text-white">
+            {interpolate(t.dashboard.consultations.book.dateTime)}
+          </p>
+          <div className="h-1 w-12 bg-primary rounded-full mt-2" />
+        </div>
 
-        <div className="w-full bg-background p-8 rounded-3xl flex flex-col md:flex-row gap-8 justify-center border border-secondary">
+        <div className="w-full bg-white/5 p-8 rounded-3xl flex flex-col md:flex-row gap-8 justify-center border border-white/10 backdrop-blur-sm">
 
           {/* CALENDAR */}
           <div className="w-full lg:w-1/2">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-6">
               <button 
                 onClick={() => navigateMonth('prev')}
-                className="p-2 rounded-full bg-card hover:bg-lemon hover:text-background transition-all"
+                className="p-2.5 rounded-xl bg-white/5 hover:bg-primary hover:text-white transition-all border border-white/10"
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={20} />
               </button>
 
-              <h3 className="text-lg font-semibold">{formatMonthYear(currentMonth)}</h3>
+              <div className="text-center">
+                <h3 className="text-lg font-bold text-white">{formatMonthYear(currentMonth)}</h3>
+                <p className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold">Select Date</p>
+              </div>
 
               <button 
                 onClick={() => navigateMonth('next')}
-                className="p-2 rounded-full bg-card hover:bg-lemon hover:text-background transition-all"
+                className="p-2.5 rounded-xl bg-white/5 hover:bg-primary hover:text-white transition-all border border-white/10"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={20} />
               </button>
             </div>
 
             {/* Days Grid */}
-            <div className="grid grid-cols-7 gap-2 text-center text-sm opacity-70 mb-4">
+            <div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
               <div>Sun</div>
               <div>Mon</div>
               <div>Tue</div>
@@ -325,27 +331,36 @@ export default function MeetingRequestPage() {
             </div>
 
             {/* Dates */}
-            <div className="grid grid-cols-7 gap-2 text-center text-sm">
+            <div className="grid grid-cols-7 gap-3 text-center text-sm">
               {getDaysInMonth(currentMonth).map((date, index) => {
                 const hasSlots = date && getAvailableDates().includes(date.toDateString());
+                const isSelected = isDateSelected(date);
+                const isToday = date && date.toDateString() === new Date().toDateString();
+
                 return (
                   <button
                     key={index}
                     onClick={() => date && hasSlots && setSelectedDate(date)}
                     disabled={!date || !hasSlots}
-                    className={`w-10 h-10 flex items-center justify-center rounded-full transition-all
+                    className={`aspect-square flex items-center justify-center rounded-xl text-sm font-medium transition-all relative group
                       ${
                         !date
                           ? "invisible"
                           : !hasSlots
-                          ? "bg-secondary/30 text-foreground/30 cursor-not-allowed"
-                          : isDateSelected(date)
-                          ? "bg-lemon text-background font-semibold"
-                          : "bg-secondary text-foreground hover:bg-lemon/20"
+                          ? "text-white/20 cursor-not-allowed"
+                          : isSelected
+                          ? "bg-primary text-white shadow-lg shadow-primary/30"
+                          : "bg-white/5 text-white hover:bg-white/10 border border-white/5"
                       }
                     `}
                   >
                     {date?.getDate()}
+                    {isToday && !isSelected && (
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
+                    )}
+                    {hasSlots && !isSelected && (
+                      <div className="absolute bottom-1 w-1 h-1 bg-primary/40 rounded-full group-hover:bg-primary" />
+                    )}
                   </button>
                 );
               })}
@@ -353,39 +368,63 @@ export default function MeetingRequestPage() {
           </div>
 
           {/* TIME SELECTION */}
-          <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-secondary">
-            <h3 className="text-lg font-semibold mb-6">{formatSelectedDate(selectedDate)}</h3>
+          <div className="w-full md:w-1/2 pl-0 md:pl-8 border-t md:border-t-0 md:border-l border-white/10 flex flex-col">
+            <div className="mb-6">
+               <h3 className="text-lg font-bold text-white">{formatSelectedDate(selectedDate)}</h3>
+               <p className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold">Select Time</p>
+            </div>
 
             {loadingSlots ? (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-lemon"></div>
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8">
+                <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary border-t-transparent"></div>
+                <p className="text-xs text-gray-400">Fetching available slots...</p>
               </div>
             ) : selectedDate ? (
-              <div className="flex flex-col gap-3 sm:gap-4 max-h-80 overflow-y-auto pr-2">
-                {getTimeSlotsForDate(selectedDate).map((slot) => (
-                  <button
-                    key={slot.start_time}
-                    onClick={() => setSelectedTimeSlot(slot)}
-                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-center text-sm font-semibold transition-all flex-shrink-0
-                      ${
-                        selectedTimeSlot?.start_time === slot.start_time
-                          ? "bg-lemon text-background"
-                          : "bg-lemon/30 text-foreground hover:bg-lemon/50"
-                      }
-                    `}
-                  >
-                    {formatTime(slot.start_time)}
-                  </button>
-                ))}
+              <div className="flex flex-col gap-3 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+                {getTimeSlotsForDate(selectedDate).map((slot) => {
+                  const isSelected = selectedTimeSlot?.start_time === slot.start_time;
+                  return (
+                    <button
+                      key={slot.start_time}
+                      onClick={() => setSelectedTimeSlot(slot)}
+                      className={`px-6 py-4 rounded-xl text-left transition-all border group
+                        ${
+                          isSelected
+                            ? "bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-[1.02]"
+                            : "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20"
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-between">
+                         <span className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-gray-200'}`}>
+                           {formatTime(slot.start_time)}
+                         </span>
+                         <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${isSelected ? 'bg-white/20' : 'bg-primary/10 text-primary'}`}>
+                           60 MIN
+                         </span>
+                      </div>
+                    </button>
+                  );
+                })}
                 {getTimeSlotsForDate(selectedDate).length === 0 && (
-                  <p className="text-center text-foreground/60 py-4">{interpolate(t.dashboard.consultations.book.noSlots)}</p>
+                  <div className="flex-1 flex flex-col items-center justify-center py-8 text-center">
+                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-gray-500 mb-2">
+                       <ChevronRight size={24} />
+                    </div>
+                    <p className="text-sm text-gray-400">{interpolate(t.dashboard.consultations.book.noSlots)}</p>
+                  </div>
                 )}
               </div>
             ) : (
-              <p className="text-center text-foreground/60 py-4">{interpolate(t.dashboard.consultations.book.selectToSeeSlots)}</p>
+              <div className="flex-1 flex flex-col items-center justify-center py-8 text-center bg-white/5 rounded-2xl border border-dashed border-white/10">
+                <p className="text-sm text-gray-500 max-w-[200px]">
+                  {interpolate(t.dashboard.consultations.book.selectToSeeSlots)}
+                </p>
+              </div>
             )}
           </div>
         </div>
+
 
         {/* MEETING AGENDA */}
         <p className="text-center text-base sm:text-lg font-semibold mt-8 sm:mt-10 mb-3">{interpolate(t.dashboard.consultations.book.agenda)}</p>
