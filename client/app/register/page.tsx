@@ -27,7 +27,7 @@ export default function Page() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const { register, isLoading, error, clearError } = useAuthStore();
-  const { signInWithGoogle, isLoading: isGoogleLoading } = useGoogleAuth();
+  const { signInWithGoogle, isLoading: isGoogleLoading, renderGoogleButton } = useGoogleAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -187,6 +187,7 @@ export default function Page() {
                 text={interpolate(t.register.continueWithGoogle || "Continue with Google")}
                 onClick={signInWithGoogle}
                 isLoading={isGoogleLoading}
+                renderGoogleButton={renderGoogleButton}
               />
             </div>
           </div>

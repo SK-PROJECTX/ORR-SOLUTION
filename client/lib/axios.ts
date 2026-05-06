@@ -72,9 +72,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       const url = error.config?.url || "";
       const errorData = error.response?.data;
-      // Only clear tokens and redirect on explicit token invalidity errors.
-      // Do NOT redirect on 401s from the login endpoint itself (wrong password, etc.)
-      // or from public/onboarding endpoints that may legitimately return 401.
+      
       const isLoginEndpoint = url.includes("/auth/login/") || url.includes("/login/");
       const isTokenInvalid =
         errorData?.data?.code === "token_not_valid" ||
