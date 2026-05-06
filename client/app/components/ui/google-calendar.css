@@ -1,0 +1,177 @@
+/* Google Calendar Inspired Styling for React Big Calendar */
+
+.google-calendar-container {
+  font-family: 'Inter', sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rbc-calendar {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+/* Header Cells */
+.rbc-header {
+  border-bottom: 1px solid var(--color-border) !important;
+  padding: 12px 0 !important;
+  font-weight: 500 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+/* Day Background */
+.rbc-day-bg {
+  border-right: 1px solid var(--color-border) !important;
+  transition: background-color 0.2s;
+}
+
+.rbc-day-bg:hover {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Today Background */
+.rbc-today {
+  background-color: rgba(14, 194, 119, 0.05) !important;
+}
+
+/* Event Styling - Google Style */
+.rbc-event {
+  background-color: var(--color-primary) !important;
+  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+  margin-bottom: 1px !important;
+}
+
+.rbc-event:focus {
+  outline: none !important;
+}
+
+.rbc-event-label {
+  display: none !important;
+}
+
+.rbc-event-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Time Grid */
+.rbc-time-view {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid var(--color-border) !important;
+  min-height: 40px !important;
+}
+
+.rbc-time-slot {
+  border-top: none !important;
+}
+
+.rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: none !important;
+}
+
+.rbc-label {
+  font-size: 11px;
+  color: #64748b;
+  padding: 0 8px !important;
+}
+
+/* Month View Grid */
+.rbc-month-view {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 12px;
+  background: var(--color-surface) !important;
+  overflow: hidden;
+}
+
+.rbc-month-row {
+  border-top: 1px solid var(--color-border) !important;
+}
+
+/* Off-range days */
+.rbc-off-range-bg {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.rbc-off-range {
+  color: #475569 !important;
+}
+
+/* Date Number Styling */
+.rbc-date-cell {
+  padding: 8px !important;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center !important;
+}
+
+.rbc-now.rbc-date-cell {
+  color: #fff !important;
+}
+
+.rbc-now.rbc-date-cell button {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Tooltip/Popup */
+.rbc-overlay {
+  background-color: var(--color-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  padding: 8px !important;
+}
+
+/* Custom Toolbar Override */
+.rbc-toolbar {
+  margin-bottom: 24px !important;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rbc-toolbar button {
+  color: #94a3b8 !important;
+  border: 1px solid var(--color-border) !important;
+  background: transparent !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+}
+
+.rbc-toolbar button:hover {
+  background: var(--color-surface-hover) !important;
+  color: white !important;
+}
+
+.rbc-toolbar button.rbc-active {
+  background: rgba(14, 194, 119, 0.1) !important;
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
