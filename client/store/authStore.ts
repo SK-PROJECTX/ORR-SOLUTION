@@ -162,6 +162,8 @@ export const useAuthStore = create<AuthState>()(
 
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
+            // Also sync user_data for AuthService (used by CMS LoginModal)
+            localStorage.setItem("user_data", JSON.stringify(user));
             set({
               user,
               accessToken,
@@ -245,6 +247,8 @@ export const useAuthStore = create<AuthState>()(
 
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
+            // Also sync user_data for AuthService (used by CMS LoginModal)
+            localStorage.setItem("user_data", JSON.stringify(user));
             set({
               user,
               accessToken,
@@ -440,6 +444,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user_data"); // Sync with AuthService
         set({ user: null, accessToken: null, refreshToken: null });
         useToastStore.getState().addToast("Logged out successfully", "info");
         
